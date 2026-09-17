@@ -1,0 +1,15 @@
+# Verified resolved set, 2026-09-17, Python 3.11. `pip check` clean.
+qiskit==2.4.2
+qiskit-machine-learning==0.9.1
+qiskit-aer==0.17.2
+pennylane==0.45.1
+numpy==2.4.4
+scipy==1.17.1
+scikit-learn==1.8.0
+pandas>=2.2
+statsmodels==0.15.0
+matplotlib>=3.9
+joblib>=1.4
+pyyaml>=6.0
+pytest>=8.0
+pytest-cov

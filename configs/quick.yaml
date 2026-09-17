@@ -1,0 +1,9 @@
+# Reviewer-facing quick run. A DEMO, not evidence.
+# Target: complete in well under 30 minutes on a standard CI runner.
+dataset: synthetic      # needs no Kaggle credentials; swap to 'churn' locally
+n_per_class: 50         # 100 rows total -> ~4,950 quantum kernel entries
+n_qubits: 4
+mapping: pca
+seeds: [0, 1]           # two seeds. The full run uses ten.
+test_size: 0.3
+C: 1.0
