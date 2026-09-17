@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements.txt
+      - run: pip check
+      - name: Versions
+        run: |
+          python -c "
+          import qiskit, qiskit_machine_learning, qiskit_aer, pennylane, sklearn, numpy, scipy
+          for m in (qiskit, qiskit_machine_learning, qiskit_aer, pennylane, sklearn, numpy, scipy):
+              print(f'{m.__name__:28s}{m.__version__}')
+          "
+      - name: pytest
+        env:
+          PYTHONPATH: src
+        run: python -m pytest tests/ -q --cov=qbench --cov-report=term-missing
+      - name: Fail on deprecated quantum APIs
+        env:
+          PYTHONPATH: src
+        run: |
+          python -W error::DeprecationWarning -c "
+          import numpy as np
+          from qbench.kernels.qiskit_kernels import build_qiskit_kernel
+          X = np.random.default_rng(0).uniform(0, np.pi, (4, 3))
+          build_qiskit_kernel(3, reps=1).evaluate(x_vec=X)
+          print('no deprecated APIs in the kernel path')
+          "
+
+  quick-benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements.txt
+      - name: Quick benchmark under 30 minutes
+        env:
+          PYTHONPATH: src
+        run: python scripts/run_quick_benchmark.py --config configs/quick.yaml --max-seconds 1800

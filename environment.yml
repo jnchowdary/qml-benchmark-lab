@@ -1,0 +1,35 @@
+# Verified working together on 2026-09-17, Python 3.11.15, Linux x86_64.
+# These are RESOLVED versions from a real install, not planned ones.
+# `pip check` reported no broken requirements.
+#
+# Corrections against the first draft of the plan doc (section 3), which
+# guessed these: numpy is 2.4.x not 1.26.x, scikit-learn is 1.8.x not 1.5.x,
+# scipy is 1.17.x not 1.13.x. The Qiskit/PennyLane pins were right.
+name: qml-benchmark-lab
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # quantum
+      - qiskit==2.4.2
+      - qiskit-machine-learning==0.9.1
+      - qiskit-aer==0.17.2
+      - qiskit-ibm-runtime>=0.30          # hardware runs only; not needed for simulator work
+      - pennylane==0.45.1
+      # classical ML / analysis
+      - numpy==2.4.4
+      - scipy==1.17.1
+      - scikit-learn==1.8.0
+      - pandas>=2.2
+      - statsmodels==0.15.0
+      - imbalanced-learn>=0.12            # SMOTE ablation appendix ONLY, not the default pipeline
+      - matplotlib>=3.9
+      - seaborn>=0.13
+      # tooling
+      - joblib>=1.4
+      - pyyaml>=6.0
+      - pytest>=8.0
+      - pytest-cov
+      - jupyter

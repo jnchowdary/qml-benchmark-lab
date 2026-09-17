@@ -1,0 +1,13 @@
+data/raw/
+data/processed/
+results/kernels/*
+!results/kernels/.gitkeep
+results/runs/*
+!results/runs/.gitkeep
+results/figures/*
+!results/figures/.gitkeep
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.ipynb_checkpoints/
