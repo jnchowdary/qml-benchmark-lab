@@ -44,7 +44,15 @@ for anonymisation. Any further PCA is PCA on PCA.
 ## The quantum track does not see the full data
 
 A quantum kernel over n points needs ~n²/2 circuit evaluations at ~9 ms each
-(Qiskit, 4 qubits). The quantum track uses class-balanced subsamples of at most
-~500 points. Fraud has only 492 positives, so its quantum subsamples use all of
-them against a matched negative draw, and the original 0.17% base rate is not
-preserved. Results are reported against the subsample's own base rate.
+(Qiskit, 4 qubits). The quantum track, and the matched classical track, use
+class-balanced subsamples of 250 points per class, 500 in total.
+
+For fraud this means the 492 positives are themselves subsampled: each seed draws
+a different 250 of them. The original 0.17% base rate is not preserved; results
+are reported against the subsample's own base rate (0.5).
+
+**Correction, 21 September 2026.** An earlier version of this file said fraud's
+quantum subsamples would use all 492 positives against matched negatives inside a
+~500-point budget. That is 984 points, nearly double the budget, and at ~9 ms per
+kernel entry about 73 minutes per Qiskit Gram matrix against 19 minutes at 500.
+The statement was internally inconsistent and has been replaced by the rule above.

@@ -21,7 +21,10 @@ from sklearn.preprocessing import MinMaxScaler
 
 __all__ = ["MAPPINGS", "fit_mapping", "scale_to_angles"]
 
-MAPPINGS = ("pca", "rff", "selectk")
+# "randproj" was called "rff" until 21 Sep 2026. It is a plain Gaussian random
+# projection, X @ omega. True random Fourier features are cos(X @ omega + b),
+# an RBF approximation. Renamed before any results were filed under it.
+MAPPINGS = ("pca", "randproj", "selectk")
 
 
 def fit_mapping(X_train, y_train, n_qubits: int, strategy: str = "pca", seed: int = 0):
@@ -30,17 +33,17 @@ def fit_mapping(X_train, y_train, n_qubits: int, strategy: str = "pca", seed: in
     Returns (X_train_mapped, transform_fn). Apply transform_fn to the test fold.
     """
     X_train = np.asarray(X_train, dtype=float)
-    if n_qubits > X_train.shape[1] and strategy != "rff":
+    if n_qubits > X_train.shape[1] and strategy != "randproj":
         raise ValueError(
             f"n_qubits={n_qubits} exceeds feature count {X_train.shape[1]} for strategy "
-            f"{strategy!r}; use 'rff' or reduce n_qubits."
+            f"{strategy!r}; use 'randproj' or reduce n_qubits."
         )
 
     if strategy == "pca":
         model = PCA(n_components=n_qubits, random_state=seed).fit(X_train)
         return model.transform(X_train), model.transform
 
-    if strategy == "rff":
+    if strategy == "randproj":
         rng = np.random.default_rng(seed)
         omega = rng.normal(scale=1.0, size=(X_train.shape[1], n_qubits))
         return X_train @ omega, lambda X: np.asarray(X, dtype=float) @ omega

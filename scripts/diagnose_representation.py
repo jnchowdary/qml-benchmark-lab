@@ -100,7 +100,7 @@ def main():
     print("-" * 63)
 
     rows = []
-    for strategy in ("pca", "selectk", "rff"):
+    for strategy in ("pca", "selectk", "randproj"):
         for nq in args.qubits:
             try:
                 Xm_tr, transform = fit_mapping(X_tr, y_tr, nq, strategy, seed=args.seed)

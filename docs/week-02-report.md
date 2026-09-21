@@ -212,3 +212,13 @@ All three failed silently. Each was caught only because the result was checked, 
 Week 3 is the classical baselines: linear, RBF, polynomial, and the random-projection comparator, each tuned by nested cross-validation.
 
 The position going in: under-tuning the classical side is the most common way papers in this area produce an apparent quantum advantage. The failure is quiet. An RBF SVM left at default `gamma` loses to a carefully tuned quantum kernel, and it looks like a finding. The classical grid should therefore be wider and more carefully cross-validated than the quantum one, which is the opposite of where effort naturally goes.
+
+---
+
+## 13. Corrections (added 21 September 2026, start of week 3)
+
+Two statements in this record were wrong. They are corrected here rather than edited above, so the original remains readable.
+
+**The fraud subsample rule was internally inconsistent.** Sections 9 and 10 said fraud's quantum subsamples would use all 492 positives against matched negatives within a roughly 500-point budget. That is 984 points, nearly double the budget: about 73 minutes per Qiskit Gram matrix at 9 ms per entry, against 19 minutes at 500. The rule is now 250 per class on both datasets, so fraud's positives are themselves subsampled, and each seed draws a different 250 of the 492. That also tests sensitivity to which fraud cases were included. `data/README.md` carries the same correction.
+
+**"RFF" was a misnomer.** The mapping labelled "Random projection (RFF)" in sections 3 and 4.6 is a plain Gaussian random projection, `X @ ω`. True random Fourier features are `cos(X @ ω + b)`, a randomised approximation of an RBF kernel. The mapping is renamed `randproj` in the code before any results were filed under the old name. The numbers in the tables above are unaffected; only the label was wrong.
