@@ -56,6 +56,11 @@ def load_dataset(name: str, data_root: Path | None = None):
         _require(path, "kaggle datasets download -d mlg-ulb/creditcardfraud "
                        "-p data/raw/fraud --unzip")
         df = pd.read_csv(path)
+        # Time = seconds since the first transaction in a two-day window. It
+        # encodes row ordering, not a property of the transaction, and would not
+        # generalise to any other period. Measured 17 Sep 2026: dropping it moves
+        # full-feature RBF SVM PR-AUC from 0.9593 to 0.9548 (-0.0045). Dropped.
+        df = df.drop(columns=["Time"])
         y = df.pop("Class").to_numpy()
         return df.to_numpy(dtype=float), y, list(df.columns)
 

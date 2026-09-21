@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import numpy as np
 from sklearn.decomposition import PCA
+from functools import partial
+
 from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.preprocessing import MinMaxScaler
 
@@ -46,7 +48,12 @@ def fit_mapping(X_train, y_train, n_qubits: int, strategy: str = "pca", seed: in
     if strategy == "selectk":
         if y_train is None:
             raise ValueError("selectk mapping needs y_train")
-        model = SelectKBest(mutual_info_classif, k=n_qubits).fit(X_train, y_train)
+        # mutual_info_classif adds random noise to break ties among continuous
+        # features. Without random_state it is NON-DETERMINISTIC: two identical
+        # runs on churn at k=4 selected different features and scored PR-AUC
+        # 0.5199 vs 0.5664. Seeded so splits are reproducible bit-for-bit.
+        score_fn = partial(mutual_info_classif, random_state=seed)
+        model = SelectKBest(score_fn, k=n_qubits).fit(X_train, y_train)
         return model.transform(X_train), model.transform
 
     raise ValueError(f"Unknown mapping {strategy!r}; expected one of {MAPPINGS}")
