@@ -250,3 +250,40 @@ def test_no_fallback_needed_in_normal_case(prepared):
     X_tr, X_te, y_tr, y_te = prepared
     rec = tune_and_evaluate("rbf", gram("rbf"), CLASSICAL_GRIDS["rbf"][:5], X_tr, y_tr, X_te, y_te, seed=0, c_grid=SMALL_C)
     assert rec["final_fallback_rank"] == 0
+
+
+# --- plateau-aware edge flags (22 Sep 2026) -------------------------------------
+
+def _gs(entries):
+    return [{"params": p, "C": c, "score": s} for p, c, s in entries]
+
+
+def test_C_plateau_at_grid_edge_is_not_flagged():
+    """Linear SVM PR-AUC is flat in C below a threshold. An edge choice on a
+    plateau is a tie-break artefact, not under-tuning."""
+    cs = (1e-4, 1e-3, 1e-2)
+    gs = _gs([({}, 1e-4, 0.80), ({}, 1e-3, 0.80), ({}, 1e-2, 0.78)])
+    assert edge_flags({}, 1e-4, [{}], cs, grid_scores=gs) == []
+
+
+def test_C_genuine_edge_is_still_flagged():
+    cs = (1e-4, 1e-3, 1e-2)
+    gs = _gs([({}, 1e-4, 0.82), ({}, 1e-3, 0.80), ({}, 1e-2, 0.78)])
+    assert any("C=" in f and "minimum" in f for f in edge_flags({}, 1e-4, [{}], cs, grid_scores=gs))
+
+
+def test_param_plateau_not_flagged_but_genuine_edge_is():
+    grid = [{"gamma": g} for g in (0.01, 0.1, 1.0)]
+    cs = (0.1, 1.0, 10.0)
+    flat = _gs([({"gamma": 0.01}, 1.0, 0.7), ({"gamma": 0.1}, 1.0, 0.7), ({"gamma": 1.0}, 1.0, 0.6)])
+    assert not any("gamma" in f for f in edge_flags({"gamma": 0.01}, 1.0, grid, cs, grid_scores=flat))
+    slope = _gs([({"gamma": 0.01}, 1.0, 0.75), ({"gamma": 0.1}, 1.0, 0.7), ({"gamma": 1.0}, 1.0, 0.6)])
+    assert any("gamma" in f for f in edge_flags({"gamma": 0.01}, 1.0, grid, cs, grid_scores=slope))
+
+
+def test_missing_neighbour_keeps_the_flag():
+    """If the neighbour failed to converge (score None), we cannot claim a
+    plateau, so the flag stays."""
+    cs = (1e-4, 1e-3, 1e-2)
+    gs = _gs([({}, 1e-4, 0.80), ({}, 1e-3, None), ({}, 1e-2, 0.78)])
+    assert edge_flags({}, 1e-4, [{}], cs, grid_scores=gs) != []
