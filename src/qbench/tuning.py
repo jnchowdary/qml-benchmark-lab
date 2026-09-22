@@ -65,18 +65,9 @@ __all__ = [
     "tune_and_evaluate",
 ]
 
-# 1e-4 to 1e4, one value per decade.
-#   21 Sep 2026 (synthetic smoke run): widened from 1e-2..1e3 after linear hit
-#     the minimum and poly the maximum.
-#   21 Sep 2026 (first churn matched run): lower end extended to 1e-4 after
-#     linear chose C=1e-3 in 30 of 150 fits. Linear is the likeliest reference
-#     kernel, so under-regularising it is the one under-tuning that could bias
-#     the comparison. Driven by inner-CV edge flags only.
-# GRIDS FROZEN from this point, before any quantum result exists. Flexible-edge
-# flags on poly are NOT grounds to widen further: on churn, inner-CV optimism
-# rose with grid size (linear -0.0006, rbf +0.0136, poly +0.0137) while test
-# scores stayed tied, so widening would buy cross-validation flattery, not
-# performance.
+# 0.001 to 10,000, one value per decade. Widened on 21 Sep 2026 after the first
+# smoke run: linear hit the old minimum (0.01) and poly the old maximum (1000).
+# Widening was driven by inner-CV edge flags only; no test score was consulted.
 C_GRID = tuple(float(10.0**k) for k in range(-4, 5))
 
 # Hard cap on SVC solver iterations. Without it, an ill-conditioned kernel can
@@ -216,37 +207,59 @@ def select_hyperparameters(gram_fn, param_grid, X_tr, y_tr, *, seed, c_grid=C_GR
         C=best["C"],
         inner_score=best["score"],
         grid_scores=[{k: v for k, v in r.items() if k != "order"} for r in rows],
-        edge=edge_flags(best["params"], best["C"], param_grid, c_grid),
+        edge=edge_flags(best["params"], best["C"], param_grid, c_grid, grid_scores=rows),
         n_fits=n_fits,
         n_nonconverged=n_bad,
         seconds=time.perf_counter() - t0,
     )
 
 
-def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID):
+def _score_lookup(grid_scores):
+    import json as _json
+    return {(_json.dumps(g["params"], sort_keys=True), g["C"]): g["score"] for g in grid_scores}
+
+
+def _is_plateau(lookup, params, C, alt_params, alt_C, tol=1e-12):
+    """True if the neighbouring grid point scored identically (a flat region)."""
+    import json as _json
+    a = lookup.get((_json.dumps(params, sort_keys=True), C))
+    b = lookup.get((_json.dumps(alt_params, sort_keys=True), alt_C))
+    return a is not None and b is not None and abs(a - b) <= tol
+
+
+def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None):
     """Hyperparameters whose selected value sits at the edge of the searched range.
 
     Only parameters with at least 3 distinct searched values are checked: a
     parameter searched over 2 values is always 'at an edge', so flagging it
-    would be noise. A non-empty result means the grid should be widened before
-    the baseline can be called tuned.
+    would be noise.
+
+    Plateau-aware when grid_scores is given: an edge choice is NOT flagged if
+    its neighbouring grid value scored identically. Found 22 Sep 2026: linear
+    SVM ranking, and therefore PR-AUC, is invariant to C once C is small enough
+    that every dual variable sits at its bound. The tie-break then picks the
+    smallest C, which lands on the grid edge. In 49 of 49 such linear fits the
+    score at C=1e-4 equalled the score at C=1e-3 exactly. Extending the grid
+    could never change anything there, so flagging it was a false alarm.
     """
+    lookup = _score_lookup(grid_scores) if grid_scores is not None else None
     flags = []
     cs = sorted(set(c_grid))
     if len(cs) >= 3:
-        if best_C == cs[0]:
-            flags.append(f"C={best_C:g} (grid minimum)")
-        elif best_C == cs[-1]:
-            flags.append(f"C={best_C:g} (grid maximum)")
+        for edge_C, nbr_C, label in ((cs[0], cs[1], "grid minimum"), (cs[-1], cs[-2], "grid maximum")):
+            if best_C == edge_C:
+                if lookup is None or not _is_plateau(lookup, best_params, best_C, best_params, nbr_C):
+                    flags.append(f"C={best_C:g} ({label})")
     for key in sorted({k for p in param_grid for k in p}):
         vals = sorted({p[key] for p in param_grid if key in p})
         if len(vals) < 3 or key not in best_params:
             continue
         v = best_params[key]
-        if v == vals[0]:
-            flags.append(f"{key}={v:g} (grid minimum)")
-        elif v == vals[-1]:
-            flags.append(f"{key}={v:g} (grid maximum)")
+        for edge_v, nbr_v, label in ((vals[0], vals[1], "grid minimum"), (vals[-1], vals[-2], "grid maximum")):
+            if v == edge_v:
+                nbr = dict(best_params, **{key: nbr_v})
+                if lookup is None or not _is_plateau(lookup, best_params, best_C, nbr, best_C):
+                    flags.append(f"{key}={v:g} ({label})")
     return flags
 
 
@@ -305,7 +318,8 @@ def tune_and_evaluate(name, gram_fn, param_grid, X_tr, y_tr, X_te, y_te, *, seed
     record.update({k: v for k, v in asdict(sel).items() if k != "grid_scores"})
     record.update(params=chosen["params"], C=chosen["C"], inner_score=chosen["score"],
                   final_fallback_rank=rank,
-                  edge=edge_flags(chosen["params"], chosen["C"], param_grid, c_grid))
+                  edge=edge_flags(chosen["params"], chosen["C"], param_grid, c_grid,
+                                  grid_scores=sel.grid_scores))
     record.update(out)
     record["grid_scores"] = sel.grid_scores
     return record
