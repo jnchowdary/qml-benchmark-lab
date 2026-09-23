@@ -1,0 +1,2896 @@
+{
+  "alpha": 0.05,
+  "power": 0.8,
+  "target": 0.02,
+  "metric": "test_average_precision",
+  "summaries": [
+    {
+      "file": "churn_matched_n100.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.04241536240057247,
+      "max_paired_sd": 0.08548920516199192,
+      "mde_median_sd": 0.02801287212526938,
+      "mde_worst_sd": 0.056460632109593296,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 38,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.025423168280882584,
+          "paired_sd": 0.05142111106440745,
+          "mde": 0.03396064367393166,
+          "seeds_for_target": 54
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.03562344810204397,
+          "paired_sd": 0.07309883985881066,
+          "mde": 0.04827751874737653,
+          "seeds_for_target": 107
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.010200279821161385,
+          "paired_sd": 0.06165450077173531,
+          "mde": 0.04071920050464151,
+          "seeds_for_target": 77
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.01983476929074751,
+          "paired_sd": 0.04207420974175415,
+          "mde": 0.02778756069880036,
+          "seeds_for_target": 37
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0014054600713879427,
+          "paired_sd": 0.034778489771855235,
+          "mde": 0.022969163330214065,
+          "seeds_for_target": 26
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.01842930921935957,
+          "paired_sd": 0.04097893634072862,
+          "mde": 0.02706419652156247,
+          "seeds_for_target": 35
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0028968435348486143,
+          "paired_sd": 0.015884511558375402,
+          "mde": 0.010490793096492035,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.000992217529716366,
+          "paired_sd": 0.014504802023117018,
+          "mde": 0.00957957544812682,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0019046260051322483,
+          "paired_sd": 0.018620834976922213,
+          "mde": 0.012297975062620826,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0012694434831551026,
+          "paired_sd": 0.015344296117438318,
+          "mde": 0.010134012316826639,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.002389665794186352,
+          "paired_sd": 0.02237141561483668,
+          "mde": 0.01477501474492214,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0011202223110312493,
+          "paired_sd": 0.023582588913131804,
+          "mde": 0.015574924042083403,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.007508225521129469,
+          "paired_sd": 0.021526563286184637,
+          "mde": 0.01421703907507507,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.005622249881129982,
+          "paired_sd": 0.022772350015992766,
+          "mde": 0.015039808524216962,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0018859756399994877,
+          "paired_sd": 0.01761983548347887,
+          "mde": 0.011636873300894293,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.020379827186313024,
+          "paired_sd": 0.06860684825007855,
+          "mde": 0.04531082037675275,
+          "seeds_for_target": 95
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.01250331950221957,
+          "paired_sd": 0.06878871338930422,
+          "mde": 0.045430931690221193,
+          "seeds_for_target": 95
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.007876507684093453,
+          "paired_sd": 0.0699602676956202,
+          "mde": 0.04620467495476526,
+          "seeds_for_target": 98
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.025050226483607795,
+          "paired_sd": 0.06560153508349773,
+          "mde": 0.04332598637635574,
+          "seeds_for_target": 87
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.03948785903666307,
+          "paired_sd": 0.0845462783013783,
+          "mde": 0.05583788393358114,
+          "seeds_for_target": 143
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.014437632553055274,
+          "paired_sd": 0.08548920516199192,
+          "mde": 0.056460632109593296,
+          "seeds_for_target": 146
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.012694682828714637,
+          "paired_sd": 0.045560587597775246,
+          "mde": 0.030090109858672012,
+          "seeds_for_target": 43
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.02988889580968799,
+          "paired_sd": 0.061349460867240586,
+          "mde": 0.04051773944539097,
+          "seeds_for_target": 76
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.01719421298097335,
+          "paired_sd": 0.07718098114544217,
+          "mde": 0.05097353489312441,
+          "seeds_for_target": 119
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0002570568384956229,
+          "paired_sd": 0.03302745721952291,
+          "mde": 0.021812708494052924,
+          "seeds_for_target": 24
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.003595800644677111,
+          "paired_sd": 0.03514876967241486,
+          "mde": 0.023213711600413318,
+          "seeds_for_target": 27
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0038528574831727335,
+          "paired_sd": 0.04116814428247346,
+          "mde": 0.027189157327676246,
+          "seeds_for_target": 36
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.005057061466326696,
+          "paired_sd": 0.037773611604142956,
+          "mde": 0.02494726654892772,
+          "seeds_for_target": 30
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.001079979683057597,
+          "paired_sd": 0.06276598735572561,
+          "mde": 0.041453272543263364,
+          "seeds_for_target": 80
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0061370411493842925,
+          "paired_sd": 0.05614615471600658,
+          "mde": 0.03708125932135981,
+          "seeds_for_target": 64
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0017892377892931466,
+          "paired_sd": 0.03797429710047062,
+          "mde": 0.025079807610181207,
+          "seeds_for_target": 31
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.004402826043653435,
+          "paired_sd": 0.08025450619711062,
+          "mde": 0.05300341886377365,
+          "seeds_for_target": 129
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.006192063832946582,
+          "paired_sd": 0.07415481174432735,
+          "mde": 0.04897492656668257,
+          "seeds_for_target": 110
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.008112522219868945,
+          "paired_sd": 0.03770117298384052,
+          "mde": 0.02489942506667657,
+          "seeds_for_target": 30
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0017947875997275098,
+          "paired_sd": 0.06439513413912032,
+          "mde": 0.04252922894051235,
+          "seeds_for_target": 84
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.006317734620141435,
+          "paired_sd": 0.04574833179075162,
+          "mde": 0.030214103944127192,
+          "seeds_for_target": 44
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00880350143420292,
+          "paired_sd": 0.05287095302398613,
+          "mde": 0.03491817969665769,
+          "seeds_for_target": 57
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.023499392838420834,
+          "paired_sd": 0.07494563203739696,
+          "mde": 0.04949721722954693,
+          "seeds_for_target": 113
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.014695891404217915,
+          "paired_sd": 0.04241536240057247,
+          "mde": 0.02801287212526938,
+          "seeds_for_target": 38
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.005463589857286466,
+          "paired_sd": 0.03258772403389456,
+          "mde": 0.02152229038134388,
+          "seeds_for_target": 23
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.023360901895237384,
+          "paired_sd": 0.06288454447225632,
+          "mde": 0.04153157260147224,
+          "seeds_for_target": 80
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.01789731203795092,
+          "paired_sd": 0.07134573956819242,
+          "mde": 0.047119698290720505,
+          "seeds_for_target": 102
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.007790791651496032,
+          "paired_sd": 0.03365503882855617,
+          "mde": 0.022227189530333834,
+          "seeds_for_target": 25
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0017931502100289709,
+          "paired_sd": 0.02779200549200622,
+          "mde": 0.01835499809243282,
+          "seeds_for_target": 18
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0059976414414670606,
+          "paired_sd": 0.03471271328113627,
+          "mde": 0.022925721795848338,
+          "seeds_for_target": 26
+        }
+      ]
+    },
+    {
+      "file": "churn_matched_n250.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.024119232653354042,
+      "max_paired_sd": 0.05566375561054319,
+      "mde_median_sd": 0.015929345921818865,
+      "mde_worst_sd": 0.03676266285795891,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 14,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.008086523655957745,
+          "paired_sd": 0.04233814537795527,
+          "mde": 0.02796187478708701,
+          "seeds_for_target": 38
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0037191129483048757,
+          "paired_sd": 0.023364102020513113,
+          "mde": 0.01543062619720887,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.004367410707652869,
+          "paired_sd": 0.02430828494566831,
+          "mde": 0.016054203930565177,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.01286074615461924,
+          "paired_sd": 0.022583875313891024,
+          "mde": 0.014915331980106302,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.009739449704887932,
+          "paired_sd": 0.023044206928451133,
+          "mde": 0.015219354153301673,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.003121296449731309,
+          "paired_sd": 0.021309673061523506,
+          "mde": 0.014073795736228314,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.022388956991865265,
+          "paired_sd": 0.03815701269369877,
+          "mde": 0.025200480598898227,
+          "seeds_for_target": 31
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.005250921708139633,
+          "paired_sd": 0.015146488304848603,
+          "mde": 0.010003371797782528,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.017138035283725633,
+          "paired_sd": 0.03553921518000812,
+          "mde": 0.02347157807748833,
+          "seeds_for_target": 27
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.008996593523218355,
+          "paired_sd": 0.014008552221015462,
+          "mde": 0.00925183140772052,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.014180366322457283,
+          "paired_sd": 0.022256250196835855,
+          "mde": 0.014698954705702325,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.005183772799238928,
+          "paired_sd": 0.022100734962119877,
+          "mde": 0.014596245966767417,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0056269821424406175,
+          "paired_sd": 0.01601737954198784,
+          "mde": 0.010578544647435458,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0037855142564950316,
+          "paired_sd": 0.0122915188609728,
+          "mde": 0.00811783105437101,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0018414678859455858,
+          "paired_sd": 0.017221088818647055,
+          "mde": 0.011373524393797357,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.010744558657017084,
+          "paired_sd": 0.03319608985712128,
+          "mde": 0.021924080512251837,
+          "seeds_for_target": 24
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.014297028898340941,
+          "paired_sd": 0.05566375561054319,
+          "mde": 0.03676266285795891,
+          "seeds_for_target": 63
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0035524702413238574,
+          "paired_sd": 0.047947508056110213,
+          "mde": 0.031666531555628305,
+          "seeds_for_target": 48
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.014396082564667633,
+          "paired_sd": 0.03362267056359192,
+          "mde": 0.02220581217986357,
+          "seeds_for_target": 25
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.02233134841297075,
+          "paired_sd": 0.04042977152050255,
+          "mde": 0.026701505199031604,
+          "seeds_for_target": 35
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.007935265848303114,
+          "paired_sd": 0.0320993360192561,
+          "mde": 0.021199738592858005,
+          "seeds_for_target": 23
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.004809744400759425,
+          "paired_sd": 0.03941108343137118,
+          "mde": 0.026028721151900917,
+          "seeds_for_target": 33
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.014199393108552377,
+          "paired_sd": 0.04301520823056491,
+          "mde": 0.0284090352977483,
+          "seeds_for_target": 39
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.019009137509311803,
+          "paired_sd": 0.039434210002460834,
+          "mde": 0.026043994902777125,
+          "seeds_for_target": 33
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0031510246464023783,
+          "paired_sd": 0.02010519362144063,
+          "mde": 0.013278307341860562,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.011313582329308491,
+          "paired_sd": 0.0401301683881509,
+          "mde": 0.026503634810571042,
+          "seeds_for_target": 34
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.008162557682906113,
+          "paired_sd": 0.03257045889636039,
+          "mde": 0.02151088776534352,
+          "seeds_for_target": 23
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.002888767233279366,
+          "paired_sd": 0.012786153072451754,
+          "mde": 0.008444508091433328,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.004611847681757602,
+          "paired_sd": 0.038085502649763084,
+          "mde": 0.02515325238715918,
+          "seeds_for_target": 31
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0017230804484782369,
+          "paired_sd": 0.030491244265798953,
+          "mde": 0.02013768781441912,
+          "seeds_for_target": 21
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0032422460175435654,
+          "paired_sd": 0.01217057092875768,
+          "mde": 0.008037952001895624,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.00452076904062883,
+          "paired_sd": 0.01981606408103873,
+          "mde": 0.013087354149797135,
+          "seeds_for_target": 10
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0012785230230852652,
+          "paired_sd": 0.017390173643691643,
+          "mde": 0.011485195055421449,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0054897668888567565,
+          "paired_sd": 0.024119232653354042,
+          "mde": 0.015929345921818865,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.011114821775535627,
+          "paired_sd": 0.047714895366820984,
+          "mde": 0.03151290444622782,
+          "seeds_for_target": 47
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.005625054886678871,
+          "paired_sd": 0.04055540765234849,
+          "mde": 0.026784480533828377,
+          "seeds_for_target": 35
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0024962911197050964,
+          "paired_sd": 0.026081943784772573,
+          "mde": 0.01722560210899995,
+          "seeds_for_target": 16
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0024354421075216846,
+          "paired_sd": 0.0165403358184165,
+          "mde": 0.0109239267559355,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -6.0849012183411547e-05,
+          "paired_sd": 0.021808574817149703,
+          "mde": 0.01440329123720841,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0012924668389704352,
+          "paired_sd": 0.02184772330809864,
+          "mde": 0.014429146531346722,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0005319210586859025,
+          "paired_sd": 0.014996376500818484,
+          "mde": 0.009904231709550428,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0018243878976563377,
+          "paired_sd": 0.018057506731053056,
+          "mde": 0.011925929623823113,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00018271322753285468,
+          "paired_sd": 0.03218825025364941,
+          "mde": 0.02125846125694026,
+          "seeds_for_target": 23
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.001200099067724042,
+          "paired_sd": 0.021841683849866667,
+          "mde": 0.01442515782155897,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0010173858401911872,
+          "paired_sd": 0.02441545093082625,
+          "mde": 0.016124980811122194,
+          "seeds_for_target": 14
+        }
+      ]
+    },
+    {
+      "file": "churn_matched_n50.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.060352808020794756,
+      "max_paired_sd": 0.12808295767613312,
+      "mde_median_sd": 0.039859508390399534,
+      "mde_worst_sd": 0.0845913204966364,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 74,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.01602081314683969,
+          "paired_sd": 0.04539230631754428,
+          "mde": 0.029978969891514193,
+          "seeds_for_target": 43
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.012040487061446415,
+          "paired_sd": 0.03492823270056542,
+          "mde": 0.023068059797819517,
+          "seeds_for_target": 26
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.003980326085393277,
+          "paired_sd": 0.05573678983740534,
+          "mde": 0.036810897703591854,
+          "seeds_for_target": 63
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.014177610957470471,
+          "paired_sd": 0.031139905731213603,
+          "mde": 0.02056609086592777,
+          "seeds_for_target": 22
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.017225374122218057,
+          "paired_sd": 0.06714442500015516,
+          "mde": 0.04434497514581416,
+          "seeds_for_target": 91
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0030477631647475856,
+          "paired_sd": 0.06171978758346813,
+          "mde": 0.04076231863460741,
+          "seeds_for_target": 77
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0119902088483167,
+          "paired_sd": 0.02772418695396879,
+          "mde": 0.018310207904957264,
+          "seeds_for_target": 18
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.009938016029179047,
+          "paired_sd": 0.03111691623661132,
+          "mde": 0.02055090764607369,
+          "seeds_for_target": 22
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0020521928191376522,
+          "paired_sd": 0.032502253526405026,
+          "mde": 0.021465842097956024,
+          "seeds_for_target": 23
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.009614127662685101,
+          "paired_sd": 0.04273805419944339,
+          "mde": 0.028225991230848967,
+          "seeds_for_target": 38
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.01118908668189093,
+          "paired_sd": 0.050490911019122786,
+          "mde": 0.03334630081689344,
+          "seeds_for_target": 52
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0015749590192058293,
+          "paired_sd": 0.051320387428646544,
+          "mde": 0.033894121589270076,
+          "seeds_for_target": 54
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00110404449013346,
+          "paired_sd": 0.050684364110676464,
+          "mde": 0.03347406529677109,
+          "seeds_for_target": 53
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0012529544504656404,
+          "paired_sd": 0.07081036249048347,
+          "mde": 0.04676611296767118,
+          "seeds_for_target": 101
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0023569989405991002,
+          "paired_sd": 0.05702444187954363,
+          "mde": 0.03766131674888039,
+          "seeds_for_target": 66
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.012841301740771624,
+          "paired_sd": 0.12808295767613312,
+          "mde": 0.0845913204966364,
+          "seeds_for_target": 324
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.036236947309912185,
+          "paired_sd": 0.1239600990814193,
+          "mde": 0.08186841294456684,
+          "seeds_for_target": 304
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.023395645569140557,
+          "paired_sd": 0.07361198336869502,
+          "mde": 0.04861642009610363,
+          "seeds_for_target": 109
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.016545812403544958,
+          "paired_sd": 0.06428786585115456,
+          "mde": 0.04245838449491966,
+          "seeds_for_target": 84
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.008256986555061357,
+          "paired_sd": 0.08170606763164437,
+          "mde": 0.053962090499384094,
+          "seeds_for_target": 133
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.024802798958606313,
+          "paired_sd": 0.08550723438706867,
+          "mde": 0.05647253936083456,
+          "seeds_for_target": 146
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.013083394616355238,
+          "paired_sd": 0.04896034143970416,
+          "mde": 0.03233544891134653,
+          "seeds_for_target": 49
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0265545710654956,
+          "paired_sd": 0.05568059451724834,
+          "mde": 0.036773783973365295,
+          "seeds_for_target": 63
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.013471176449140365,
+          "paired_sd": 0.04241883967721497,
+          "mde": 0.02801516866360873,
+          "seeds_for_target": 38
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.010580916133508433,
+          "paired_sd": 0.06971181014110307,
+          "mde": 0.046040583236356375,
+          "seeds_for_target": 98
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.009241729640294802,
+          "paired_sd": 0.09265381523734137,
+          "mde": 0.0611924390424859,
+          "seeds_for_target": 171
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0013391864932136316,
+          "paired_sd": 0.08687270931781908,
+          "mde": 0.057374355883445624,
+          "seeds_for_target": 151
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.014802446271924303,
+          "paired_sd": 0.04995551085596582,
+          "mde": 0.032992700247252614,
+          "seeds_for_target": 51
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0018195301355673488,
+          "paired_sd": 0.060352808020794756,
+          "mde": 0.039859508390399534,
+          "seeds_for_target": 74
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.01662197640749165,
+          "paired_sd": 0.0652998736249949,
+          "mde": 0.043126756583566135,
+          "seeds_for_target": 86
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.019082895982667956,
+          "paired_sd": 0.0391590560993624,
+          "mde": 0.025862271803738807,
+          "seeds_for_target": 33
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0023678562964648984,
+          "paired_sd": 0.04289395924022854,
+          "mde": 0.028328957413949186,
+          "seeds_for_target": 39
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.01671503968620306,
+          "paired_sd": 0.0505648527487844,
+          "mde": 0.033395135015176845,
+          "seeds_for_target": 53
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.018708563215278844,
+          "paired_sd": 0.05379326359539562,
+          "mde": 0.03552731201651568,
+          "seeds_for_target": 59
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.004734338388595027,
+          "paired_sd": 0.05592991145190211,
+          "mde": 0.03693844326221358,
+          "seeds_for_target": 64
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.023442901603873873,
+          "paired_sd": 0.06431900825048742,
+          "mde": 0.042478952232663986,
+          "seeds_for_target": 84
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0011660905732101823,
+          "paired_sd": 0.060484260634050366,
+          "mde": 0.03994632517180259,
+          "seeds_for_target": 74
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.01988673320187272,
+          "paired_sd": 0.0650983726522799,
+          "mde": 0.04299367694773809,
+          "seeds_for_target": 86
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.018720642628662538,
+          "paired_sd": 0.08246248104449568,
+          "mde": 0.05446165742534666,
+          "seeds_for_target": 136
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.003931882043550139,
+          "paired_sd": 0.0641039031875886,
+          "mde": 0.042336887889005304,
+          "seeds_for_target": 83
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.014297801567520163,
+          "paired_sd": 0.06625620238494827,
+          "mde": 0.04375835593215333,
+          "seeds_for_target": 89
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.010365919523970025,
+          "paired_sd": 0.03843259589363847,
+          "mde": 0.025382487223452713,
+          "seeds_for_target": 31
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.01130897567089616,
+          "paired_sd": 0.060424899393835295,
+          "mde": 0.03990712053609447,
+          "seeds_for_target": 74
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.013692560766119332,
+          "paired_sd": 0.07879755487202436,
+          "mde": 0.05204118751992847,
+          "seeds_for_target": 124
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.002383585095223173,
+          "paired_sd": 0.07390481965978032,
+          "mde": 0.04880982138072167,
+          "seeds_for_target": 110
+        }
+      ]
+    },
+    {
+      "file": "churn_unconstrained.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.007338877710795908,
+      "max_paired_sd": 0.007635271005542546,
+      "mde_median_sd": 0.004846900538394096,
+      "mde_worst_sd": 0.005042651016395737,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 4,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0008736031730193994,
+          "paired_sd": 0.007338877710795908,
+          "mde": 0.004846900538394096,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0019342864285270712,
+          "paired_sd": 0.005605685213719326,
+          "mde": 0.0037022280178446243,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0010606832555076716,
+          "paired_sd": 0.007635271005542546,
+          "mde": 0.005042651016395737,
+          "seeds_for_target": 4
+        }
+      ]
+    },
+    {
+      "file": "fraud_matched_n100.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.013558202386929563,
+      "max_paired_sd": 0.04737383621597462,
+      "mde_median_sd": 0.008954401618137625,
+      "mde_worst_sd": 0.03128765477631853,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 6,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0017581758255860891,
+          "paired_sd": 0.01507920657023819,
+          "mde": 0.009958936137650518,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.005121583060709173,
+          "paired_sd": 0.028952465842231236,
+          "mde": 0.01912141444625985,
+          "seeds_for_target": 19
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.003363407235123084,
+          "paired_sd": 0.022408776290412574,
+          "mde": 0.01479968929131732,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0005050920450541729,
+          "paired_sd": 0.0126828622767394,
+          "mde": 0.00837629054740573,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.002344447600048988,
+          "paired_sd": 0.024000156941489426,
+          "mde": 0.015850703361649586,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0018393555549948148,
+          "paired_sd": 0.020225189408224844,
+          "mde": 0.01335755755783212,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0015221815536833494,
+          "paired_sd": 0.008478540367115291,
+          "mde": 0.005599581228845743,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0007097517101472217,
+          "paired_sd": 0.02691103722728023,
+          "mde": 0.017773169954006813,
+          "seeds_for_target": 17
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0022319332638305713,
+          "paired_sd": 0.024638114314280157,
+          "mde": 0.016272036984514456,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.003578524391536736,
+          "paired_sd": 0.011507890443650345,
+          "mde": 0.007600290205824945,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0005007902244200668,
+          "paired_sd": 0.01703331413770679,
+          "mde": 0.011249510172820857,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.003077734167116669,
+          "paired_sd": 0.013278925212112895,
+          "mde": 0.00876995533870326,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.005000608350803048,
+          "paired_sd": 0.008997738584760042,
+          "mde": 0.005942481358784369,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0037946471954388326,
+          "paired_sd": 0.006380463728375507,
+          "mde": 0.004213924022030523,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0012059611553642158,
+          "paired_sd": 0.007500849189421154,
+          "mde": 0.004953873249739092,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.027778460025380453,
+          "paired_sd": 0.04288807922957442,
+          "mde": 0.02832507400998357,
+          "seeds_for_target": 39
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.02527640118284079,
+          "paired_sd": 0.04737383621597462,
+          "mde": 0.03128765477631853,
+          "seeds_for_target": 46
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.002502058842539662,
+          "paired_sd": 0.02209343601401738,
+          "mde": 0.014591425437405594,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00377068700099617,
+          "paired_sd": 0.020120831745917465,
+          "mde": 0.013288635410665245,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.008783682169667222,
+          "paired_sd": 0.038463930188302055,
+          "mde": 0.025403181696866776,
+          "seeds_for_target": 32
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.005012995168671053,
+          "paired_sd": 0.03291736955223491,
+          "mde": 0.02174000201291565,
+          "seeds_for_target": 24
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0025824725383190306,
+          "paired_sd": 0.0389253384393147,
+          "mde": 0.025707914925622286,
+          "seeds_for_target": 32
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.011839686399554688,
+          "paired_sd": 0.02221123349777855,
+          "mde": 0.014669223802491253,
+          "seeds_for_target": 12
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.009257213861235658,
+          "paired_sd": 0.0366906178244445,
+          "mde": 0.024232012345117224,
+          "seeds_for_target": 29
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.013759811276532214,
+          "paired_sd": 0.03380314228611111,
+          "mde": 0.022325003222896805,
+          "seeds_for_target": 25
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.019745302631432315,
+          "paired_sd": 0.03347625420721608,
+          "mde": 0.022109112719194832,
+          "seeds_for_target": 24
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.005985491354900102,
+          "paired_sd": 0.027250476560043306,
+          "mde": 0.01799734982858099,
+          "seeds_for_target": 17
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0018253053099841043,
+          "paired_sd": 0.01158012963926294,
+          "mde": 0.007647999979703963,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0044509109210470795,
+          "paired_sd": 0.020192175879728515,
+          "mde": 0.013335754048447062,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0026256056110629754,
+          "paired_sd": 0.018319258245373723,
+          "mde": 0.012098801227041137,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0020161463761854902,
+          "paired_sd": 0.005336020693622369,
+          "mde": 0.0035241303359986654,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.002392505214125601,
+          "paired_sd": 0.012152560406102712,
+          "mde": 0.008026057102512751,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0003763588379401106,
+          "paired_sd": 0.013558202386929563,
+          "mde": 0.008954401618137625,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0003861062654573422,
+          "paired_sd": 0.003308011200885719,
+          "mde": 0.0021847483910244687,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0023379887511359664,
+          "paired_sd": 0.009844560636601916,
+          "mde": 0.006501757915874081,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0027240950165933085,
+          "paired_sd": 0.009421101437015583,
+          "mde": 0.006222087821433941,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0002243599238221039,
+          "paired_sd": 0.003923821573050138,
+          "mde": 0.0025914552121507587,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0014985303494145451,
+          "paired_sd": 0.004517413966507334,
+          "mde": 0.0029834883546572717,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0017228902732366492,
+          "paired_sd": 0.005138507885035317,
+          "mde": 0.0033936846498861923,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00013098057980939214,
+          "paired_sd": 0.004174908969624981,
+          "mde": 0.0027572837877996356,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0012381902459179639,
+          "paired_sd": 0.006154330901921135,
+          "mde": 0.004064576483962416,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0011072096661085718,
+          "paired_sd": 0.006118744924139429,
+          "mde": 0.004041074021914888,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0004616178555660377,
+          "paired_sd": 0.0038068784095799868,
+          "mde": 0.002514221075771681,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.00013408837410051612,
+          "paired_sd": 0.0060926792344650794,
+          "mde": 0.0040238591546974695,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0005957062296665539,
+          "paired_sd": 0.006637290301725806,
+          "mde": 0.0043835429890851565,
+          "seeds_for_target": 4
+        }
+      ]
+    },
+    {
+      "file": "fraud_matched_n250.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.008480477339898651,
+      "max_paired_sd": 0.03409159596234043,
+      "mde_median_sd": 0.005600860486355745,
+      "mde_worst_sd": 0.022515510046107797,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 4,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0035236926445504245,
+          "paired_sd": 0.011310999430772566,
+          "mde": 0.007470255179499541,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.004280504751315218,
+          "paired_sd": 0.009520551012245276,
+          "mde": 0.0062877684634501975,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0007568121067647926,
+          "paired_sd": 0.008480477339898651,
+          "mde": 0.005600860486355745,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00020495451260097998,
+          "paired_sd": 0.008790633552945232,
+          "mde": 0.005805700568891841,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.00368159370726035,
+          "paired_sd": 0.015513744301935946,
+          "mde": 0.01024592295616912,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0038865482198613297,
+          "paired_sd": 0.018206173503177114,
+          "mde": 0.01202411535279219,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0006138021376034586,
+          "paired_sd": 0.005274890496746465,
+          "mde": 0.003483757407626512,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.004784277905903861,
+          "paired_sd": 0.00509029054932912,
+          "mde": 0.0033618399129108772,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.004170475768300402,
+          "paired_sd": 0.007622967841231145,
+          "mde": 0.0050345254942008155,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0026690231956315036,
+          "paired_sd": 0.0049927503938326945,
+          "mde": 0.0032974203312226306,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.004010564133823441,
+          "paired_sd": 0.005855070407906523,
+          "mde": 0.003866932388132101,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0013415409381919373,
+          "paired_sd": 0.005701294803126112,
+          "mde": 0.00376537257327027,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0010645780258369542,
+          "paired_sd": 0.0026530712651674595,
+          "mde": 0.0017521987762000027,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.001034537057883922,
+          "paired_sd": 0.004464336540893329,
+          "mde": 0.002948433811861628,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -3.0040967953032238e-05,
+          "paired_sd": 0.004743860918669275,
+          "mde": 0.003133043354427445,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.023555120514738355,
+          "paired_sd": 0.028517685879782255,
+          "mde": 0.018834267648463104,
+          "seeds_for_target": 18
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.026325010026979612,
+          "paired_sd": 0.03409159596234043,
+          "mde": 0.022515510046107797,
+          "seeds_for_target": 25
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0027698895122412583,
+          "paired_sd": 0.017668157377138127,
+          "mde": 0.011668787092297132,
+          "seeds_for_target": 9
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.010132567025189637,
+          "paired_sd": 0.015476413296255457,
+          "mde": 0.010221268005008758,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0104945627188333,
+          "paired_sd": 0.008973930998062622,
+          "mde": 0.0059267578368333435,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.000361995693643663,
+          "paired_sd": 0.01142517943337123,
+          "mde": 0.007545664409340664,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.013000808046446077,
+          "paired_sd": 0.02056487381866685,
+          "mde": 0.013581899291914086,
+          "seeds_for_target": 11
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.019676954399193237,
+          "paired_sd": 0.024157559143246042,
+          "mde": 0.015954658332219034,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.006676146352747159,
+          "paired_sd": 0.0150724120554843,
+          "mde": 0.009954448757084098,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.013461513214135001,
+          "paired_sd": 0.02931997844661364,
+          "mde": 0.019364135078792977,
+          "seeds_for_target": 19
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.019427545572795663,
+          "paired_sd": 0.028832046224868235,
+          "mde": 0.019041884314919554,
+          "seeds_for_target": 19
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0059660323586606615,
+          "paired_sd": 0.010103325853297406,
+          "mde": 0.006672657243747338,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0020135742730118533,
+          "paired_sd": 0.009082556081346827,
+          "mde": 0.005998498366571128,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.009590773376337892,
+          "paired_sd": 0.011802214912179625,
+          "mde": 0.007794674344816467,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.007577199103326038,
+          "paired_sd": 0.012135001055833228,
+          "mde": 0.008014460176166667,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0006801333687482091,
+          "paired_sd": 0.004065301701080573,
+          "mde": 0.002684894582003457,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.002841873865625588,
+          "paired_sd": 0.01242804338286492,
+          "mde": 0.00820799753550606,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.002161740496877379,
+          "paired_sd": 0.014449534787112972,
+          "mde": 0.009543074663333867,
+          "seeds_for_target": 7
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0005038895484058336,
+          "paired_sd": 0.002254581897252038,
+          "mde": 0.0014890197987042577,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -6.59068362152182e-05,
+          "paired_sd": 0.0017078014319229296,
+          "mde": 0.0011279032034667532,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.00043798271219061546,
+          "paired_sd": 0.002580070324164211,
+          "mde": 0.001703985913934779,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0010068604263138825,
+          "paired_sd": 0.0018547007447357103,
+          "mde": 0.0012249216286838115,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0012847612233683804,
+          "paired_sd": 0.0023369338129568297,
+          "mde": 0.0015434084341737061,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0002779007970544978,
+          "paired_sd": 0.0024733527544933643,
+          "mde": 0.001633505185644017,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0001259170365520923,
+          "paired_sd": 0.0017527477185731815,
+          "mde": 0.0011575876033912062,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.00044786288593596233,
+          "paired_sd": 0.002435509038664014,
+          "mde": 0.0016085116193445973,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0005737799224880547,
+          "paired_sd": 0.002403331555185092,
+          "mde": 0.001587260268914173,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00013849238766321936,
+          "paired_sd": 0.0013992935042367422,
+          "mde": 0.0009241517172413666,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0021091732795847974,
+          "paired_sd": 0.004830781739890541,
+          "mde": 0.0031904494854160105,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.001970680891921578,
+          "paired_sd": 0.00501659369666575,
+          "mde": 0.0033131674415973716,
+          "seeds_for_target": 3
+        }
+      ]
+    },
+    {
+      "file": "fraud_matched_n50.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.023724445518703185,
+      "max_paired_sd": 0.07122143991025795,
+      "mde_median_sd": 0.015668612053386172,
+      "mde_worst_sd": 0.0470376056189652,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 14,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00030625450396698506,
+          "paired_sd": 0.02558750728184472,
+          "mde": 0.01689905564690026,
+          "seeds_for_target": 15
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.005350786413566577,
+          "paired_sd": 0.07097495793718081,
+          "mde": 0.04687481865683139,
+          "seeds_for_target": 101
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0056570409175335625,
+          "paired_sd": 0.04851041423138301,
+          "mde": 0.032038298241423,
+          "seeds_for_target": 49
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00545712421914486,
+          "paired_sd": 0.013612633550133835,
+          "mde": 0.00899035022562731,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.00459786311486422,
+          "paired_sd": 0.012349095613757508,
+          "mde": 0.008155857140247963,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0008592611042806397,
+          "paired_sd": 0.01316613463915267,
+          "mde": 0.00869546374607153,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0020821702297956547,
+          "paired_sd": 0.011674274760458654,
+          "mde": 0.007710177339321146,
+          "seeds_for_target": 5
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.012883424112397146,
+          "paired_sd": 0.03484523155899021,
+          "mde": 0.02301324238654199,
+          "seeds_for_target": 26
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0149655943421928,
+          "paired_sd": 0.03460347953498368,
+          "mde": 0.02285357927979865,
+          "seeds_for_target": 26
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0004822927666420673,
+          "paired_sd": 0.0170975908328269,
+          "mde": 0.011291961179699684,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.002435573843081573,
+          "paired_sd": 0.019717760413098865,
+          "mde": 0.013022430312687419,
+          "seeds_for_target": 10
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.001953281076439506,
+          "paired_sd": 0.019187004730855356,
+          "mde": 0.012671897151705943,
+          "seeds_for_target": 10
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.006759821497520757,
+          "paired_sd": 0.03131895347066133,
+          "mde": 0.020684341451225143,
+          "seeds_for_target": 22
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.006067282159033099,
+          "paired_sd": 0.034345289829258066,
+          "mde": 0.02268306004334259,
+          "seeds_for_target": 26
+        },
+        {
+          "mapping": "pca",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0006925393384876577,
+          "paired_sd": 0.008181701124994304,
+          "mde": 0.005403536228622313,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0023662812458806583,
+          "paired_sd": 0.06622543262181528,
+          "mde": 0.04373803429887742,
+          "seeds_for_target": 88
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.009989704670291344,
+          "paired_sd": 0.07122143991025795,
+          "mde": 0.0470376056189652,
+          "seeds_for_target": 102
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.007623423424410686,
+          "paired_sd": 0.049128168143334545,
+          "mde": 0.03244628865718211,
+          "seeds_for_target": 50
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00021150567953880372,
+          "paired_sd": 0.033804219367833954,
+          "mde": 0.022325714572532004,
+          "seeds_for_target": 25
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.00263947419802929,
+          "paired_sd": 0.03962302849091442,
+          "mde": 0.02616869849771483,
+          "seeds_for_target": 33
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0028509798775680937,
+          "paired_sd": 0.02832948763313278,
+          "mde": 0.018709973687048773,
+          "seeds_for_target": 18
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.005815313259348059,
+          "paired_sd": 0.029815365496877785,
+          "mde": 0.01969130932194825,
+          "seeds_for_target": 20
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.012719734187381227,
+          "paired_sd": 0.040567925427676906,
+          "mde": 0.026792747794078472,
+          "seeds_for_target": 35
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.006904420928033167,
+          "paired_sd": 0.025630737126141327,
+          "mde": 0.016927606436796607,
+          "seeds_for_target": 15
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.006460415507946749,
+          "paired_sd": 0.025209639727230122,
+          "mde": 0.016649496173902236,
+          "seeds_for_target": 15
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.003016998490668765,
+          "paired_sd": 0.048854692708871245,
+          "mde": 0.03226567408874642,
+          "seeds_for_target": 49
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.009477413998615514,
+          "paired_sd": 0.039904753366214844,
+          "mde": 0.026354761340506707,
+          "seeds_for_target": 34
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0005217030732211303,
+          "paired_sd": 0.022719623923119096,
+          "mde": 0.015004986016197666,
+          "seeds_for_target": 13
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.009583615419749041,
+          "paired_sd": 0.023724445518703185,
+          "mde": 0.015668612053386172,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.010105318492970172,
+          "paired_sd": 0.02364835229010166,
+          "mde": 0.01561835691558297,
+          "seeds_for_target": 14
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0030949795741434193,
+          "paired_sd": 0.009187840458457342,
+          "mde": 0.006068032554795951,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0018060010696739793,
+          "paired_sd": 0.012027605370293605,
+          "mde": 0.007943531591909504,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.004900980643817399,
+          "paired_sd": 0.01613654724486683,
+          "mde": 0.010657247962302484,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00031749060755783545,
+          "paired_sd": 0.01605377646630833,
+          "mde": 0.010602582692356873,
+          "seeds_for_target": 8
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0012285782025316383,
+          "paired_sd": 0.005814339485026062,
+          "mde": 0.0038400319900306064,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0015460688100894736,
+          "paired_sd": 0.01939740380282305,
+          "mde": 0.012810853462927438,
+          "seeds_for_target": 10
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.0037541115027103166,
+          "paired_sd": 0.02495350058194453,
+          "mde": 0.016480331212976092,
+          "seeds_for_target": 15
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.003855586071745698,
+          "paired_sd": 0.029347973707218505,
+          "mde": 0.01938262431502846,
+          "seeds_for_target": 19
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.007609697574456014,
+          "paired_sd": 0.02491590213098701,
+          "mde": 0.016455499629814446,
+          "seeds_for_target": 15
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.00025609585632806463,
+          "paired_sd": 0.007862173911773384,
+          "mde": 0.005192507147225605,
+          "seeds_for_target": 4
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.002667350770779897,
+          "paired_sd": 0.013804866461927771,
+          "mde": 0.0091173088479655,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0024112549144518327,
+          "paired_sd": 0.01190614363178702,
+          "mde": 0.007863313200356825,
+          "seeds_for_target": 6
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": -0.00023864220392271206,
+          "paired_sd": 0.004523694753369367,
+          "mde": 0.0029876364479247673,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": 0.0003220113313497475,
+          "paired_sd": 0.004895886067762839,
+          "mde": 0.0032334470954391106,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": -0.0005606535352724595,
+          "paired_sd": 0.0063360663413820125,
+          "mde": 0.0041846021383036,
+          "seeds_for_target": 4
+        }
+      ]
+    },
+    {
+      "file": "fraud_unconstrained.jsonl",
+      "metric": "test_average_precision",
+      "n_seeds": 20,
+      "median_paired_sd": 0.004783527735568212,
+      "max_paired_sd": 0.005536861831706836,
+      "mde_median_sd": 0.003159240972613808,
+      "mde_worst_sd": 0.0036567741895515422,
+      "target": 0.02,
+      "seeds_for_target_median_sd": 3,
+      "sign_test_floor_p": 1.9073486328125e-06,
+      "sign_test_wins_needed": 15,
+      "wilcoxon_floor_p": 1.9073486328125e-06,
+      "rows": [
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "linear-poly",
+          "n": 20,
+          "mean_difference": 0.0008881858858331648,
+          "paired_sd": 0.005536861831706836,
+          "mde": 0.0036567741895515422,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "linear-rbf",
+          "n": 20,
+          "mean_difference": -0.0005956584278123345,
+          "paired_sd": 0.0036398284690157593,
+          "mde": 0.0024038943366207644,
+          "seeds_for_target": 3
+        },
+        {
+          "mapping": "none",
+          "n_qubits": null,
+          "pair": "rbf-poly",
+          "n": 20,
+          "mean_difference": 0.0014838443136454993,
+          "paired_sd": 0.004783527735568212,
+          "mde": 0.003159240972613808,
+          "seeds_for_target": 3
+        }
+      ]
+    }
+  ]
+}

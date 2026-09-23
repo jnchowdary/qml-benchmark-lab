@@ -1,0 +1,612 @@
+churn_matched_n50.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 30
+   Chance AP for a RANDOM ranking here is 0.5516, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.7735 ± 0.106   0.7614 ± 0.107   0.7574 ± 0.105             +0.0120
+   pca             6   0.7705 ± 0.108   0.7533 ± 0.107   0.7563 ± 0.105             +0.0142
+   pca             8   0.7551 ± 0.116   0.7452 ± 0.126   0.7431 ± 0.129             +0.0099
+   pca            10   0.7707 ± 0.091   0.7595 ± 0.092   0.7610 ± 0.092             +0.0096
+   pca            12   0.7527 ± 0.100   0.7514 ± 0.111   0.7538 ± 0.092             -0.0011
+   randproj        4   0.7199 ± 0.100   0.6836 ± 0.099   0.7070 ± 0.103             +0.0128
+   randproj        6   0.6617 ± 0.101   0.6699 ± 0.089   0.6451 ± 0.111             -0.0083
+   randproj        8   0.7055 ± 0.113   0.6789 ± 0.103   0.6924 ± 0.096             +0.0131
+   randproj       10   0.7318 ± 0.086   0.7225 ± 0.097   0.7212 ± 0.090             +0.0092
+   randproj       12   0.7341 ± 0.101   0.7359 ± 0.093   0.7193 ± 0.091             -0.0018
+   selectk         4   0.6916 ± 0.098   0.6892 ± 0.098   0.6725 ± 0.099             +0.0024
+   selectk         6   0.6989 ± 0.095   0.6942 ± 0.101   0.7176 ± 0.107             -0.0187
+   selectk         8   0.7358 ± 0.094   0.7159 ± 0.117   0.7346 ± 0.105             +0.0012
+   selectk        10   0.7376 ± 0.087   0.7233 ± 0.114   0.7337 ± 0.106             +0.0039
+   selectk        12   0.7406 ± 0.097   0.7269 ± 0.125   0.7293 ± 0.106             +0.0113
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.4948 ± 0.236   0.4679 ± 0.238   0.4590 ± 0.234             +0.0269
+   pca             6   0.4881 ± 0.241   0.4497 ± 0.239   0.4565 ± 0.234             +0.0316
+   pca             8   0.4538 ± 0.258   0.4316 ± 0.281   0.4271 ± 0.289             +0.0222
+   pca            10   0.4885 ± 0.203   0.4635 ± 0.205   0.4671 ± 0.205             +0.0214
+   pca            12   0.4483 ± 0.223   0.4455 ± 0.249   0.4508 ± 0.205             -0.0025
+   randproj        4   0.3752 ± 0.223   0.2944 ± 0.221   0.3466 ± 0.229             +0.0286
+   randproj        6   0.2454 ± 0.226   0.2638 ± 0.198   0.2085 ± 0.248             -0.0184
+   randproj        8   0.3431 ± 0.253   0.2839 ± 0.230   0.3139 ± 0.215             +0.0292
+   randproj       10   0.4018 ± 0.191   0.3812 ± 0.216   0.3782 ± 0.202             +0.0206
+   randproj       12   0.4069 ± 0.225   0.4110 ± 0.207   0.3739 ± 0.204             -0.0041
+   selectk         4   0.3121 ± 0.219   0.3068 ± 0.219   0.2695 ± 0.220             +0.0053
+   selectk         6   0.3285 ± 0.213   0.3179 ± 0.226   0.3702 ± 0.239             -0.0417
+   selectk         8   0.4108 ± 0.210   0.3664 ± 0.261   0.4082 ± 0.234             +0.0026
+   selectk        10   0.4148 ± 0.195   0.3829 ± 0.254   0.4061 ± 0.236             +0.0088
+   selectk        12   0.4215 ± 0.217   0.3909 ± 0.279   0.3963 ± 0.235             +0.0252
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.7756 ± 0.089   0.7567 ± 0.096   0.7649 ± 0.088             +0.0107
+   pca             6   0.7689 ± 0.092   0.7492 ± 0.095   0.7507 ± 0.088             +0.0182
+   pca             8   0.7564 ± 0.097   0.7460 ± 0.103   0.7502 ± 0.106             +0.0062
+   pca            10   0.7607 ± 0.088   0.7538 ± 0.084   0.7536 ± 0.085             +0.0069
+   pca            12   0.7529 ± 0.089   0.7436 ± 0.099   0.7460 ± 0.085             +0.0069
+   randproj        4   0.7118 ± 0.102   0.6591 ± 0.108   0.6956 ± 0.095             +0.0162
+   randproj        6   0.6467 ± 0.109   0.6533 ± 0.097   0.6256 ± 0.137             -0.0067
+   randproj        8   0.6942 ± 0.107   0.6742 ± 0.099   0.6753 ± 0.089             +0.0189
+   randproj       10   0.7149 ± 0.092   0.7016 ± 0.096   0.7087 ± 0.103             +0.0062
+   randproj       12   0.7360 ± 0.089   0.7289 ± 0.097   0.7258 ± 0.087             +0.0071
+   selectk         4   0.7071 ± 0.092   0.6971 ± 0.094   0.6958 ± 0.101             +0.0100
+   selectk         6   0.7014 ± 0.098   0.7001 ± 0.097   0.7128 ± 0.106             -0.0113
+   selectk         8   0.7467 ± 0.087   0.7178 ± 0.104   0.7418 ± 0.101             +0.0049
+   selectk        10   0.7489 ± 0.080   0.7327 ± 0.108   0.7387 ± 0.103             +0.0102
+   selectk        12   0.7402 ± 0.098   0.7320 ± 0.128   0.7258 ± 0.121             +0.0082
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 296 recorded -> 296 after removing plateaus (of 900)
+   linear  C maximum 3->3, C minimum 1->1
+   rbf     C maximum 9->9, gamma maximum 1->1, gamma minimum 47->47
+   poly    C maximum 15->15, C minimum 3->3, degree maximum 71->71, degree minimum 85->85, gamma maximum 81->81, gamma minimum 88->88
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0762  (sd 0.1034)
+   rbf     grid size   99   mean optimism +0.1084  (sd 0.1016)
+   poly    grid size  288   mean optimism +0.1063  (sd 0.1015)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'poly': 142, 'linear': 33, 'rbf': 125}
+   inner winner = test winner in 102/300 cells (34%; chance 33%)
+   test PR-AUC: always-linear 0.7320  vs  inner-CV winner 0.7197  (difference -0.0123)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 380, 'rbf': 0, 'poly': 576}
+   final-fit fallbacks: 1;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+churn_matched_n100.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 60
+   Chance AP for a RANDOM ranking here is 0.5312, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8017 ± 0.061   0.7660 ± 0.078   0.7762 ± 0.069             +0.0254
+   pca             6   0.8056 ± 0.058   0.8042 ± 0.067   0.7857 ± 0.072             +0.0014
+   pca             8   0.8085 ± 0.057   0.8075 ± 0.057   0.8056 ± 0.061             +0.0010
+   pca            10   0.8111 ± 0.054   0.8134 ± 0.058   0.8123 ± 0.055             -0.0024
+   pca            12   0.8079 ± 0.053   0.8023 ± 0.056   0.8004 ± 0.057             +0.0056
+   randproj        4   0.6783 ± 0.103   0.6908 ± 0.080   0.6987 ± 0.082             -0.0204
+   randproj        6   0.6945 ± 0.101   0.7340 ± 0.074   0.7196 ± 0.093             -0.0395
+   randproj        8   0.7325 ± 0.079   0.7624 ± 0.059   0.7452 ± 0.086             -0.0299
+   randproj       10   0.7378 ± 0.084   0.7414 ± 0.084   0.7375 ± 0.088             -0.0036
+   randproj       12   0.7567 ± 0.068   0.7578 ± 0.057   0.7516 ± 0.063             -0.0011
+   selectk         4   0.7234 ± 0.079   0.7190 ± 0.079   0.7252 ± 0.082             -0.0018
+   selectk         6   0.7411 ± 0.080   0.7429 ± 0.071   0.7492 ± 0.078             -0.0081
+   selectk         8   0.7647 ± 0.067   0.7412 ± 0.073   0.7559 ± 0.066             +0.0088
+   selectk        10   0.7692 ± 0.055   0.7458 ± 0.068   0.7637 ± 0.067             +0.0055
+   selectk        12   0.7726 ± 0.060   0.7744 ± 0.065   0.7804 ± 0.064             -0.0078
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.5770 ± 0.131   0.5010 ± 0.167   0.5227 ± 0.147             +0.0542
+   pca             6   0.5853 ± 0.124   0.5823 ± 0.143   0.5429 ± 0.154             +0.0030
+   pca             8   0.5914 ± 0.121   0.5893 ± 0.121   0.5852 ± 0.131             +0.0021
+   pca            10   0.5970 ± 0.114   0.6021 ± 0.124   0.5997 ± 0.117             -0.0051
+   pca            12   0.5903 ± 0.112   0.5783 ± 0.120   0.5742 ± 0.122             +0.0120
+   randproj        4   0.3138 ± 0.221   0.3405 ± 0.171   0.3573 ± 0.175             -0.0435
+   randproj        6   0.3484 ± 0.215   0.4326 ± 0.158   0.4018 ± 0.198             -0.0842
+   randproj        8   0.4295 ± 0.168   0.4932 ± 0.126   0.4566 ± 0.183             -0.0638
+   randproj       10   0.4407 ± 0.178   0.4484 ± 0.179   0.4401 ± 0.188             -0.0077
+   randproj       12   0.4810 ± 0.145   0.4833 ± 0.121   0.4702 ± 0.135             -0.0023
+   selectk         4   0.4101 ± 0.169   0.4007 ± 0.169   0.4139 ± 0.176             -0.0038
+   selectk         6   0.4478 ± 0.170   0.4516 ± 0.151   0.4651 ± 0.166             -0.0173
+   selectk         8   0.4982 ± 0.142   0.4480 ± 0.155   0.4794 ± 0.140             +0.0188
+   selectk        10   0.5077 ± 0.118   0.4579 ± 0.145   0.4961 ± 0.142             +0.0117
+   selectk        12   0.5150 ± 0.129   0.5188 ± 0.139   0.5316 ± 0.136             -0.0166
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8099 ± 0.053   0.7932 ± 0.055   0.7993 ± 0.053             +0.0107
+   pca             6   0.8129 ± 0.051   0.8120 ± 0.054   0.8008 ± 0.059             +0.0009
+   pca             8   0.8132 ± 0.049   0.8166 ± 0.049   0.8121 ± 0.055             -0.0033
+   pca            10   0.8166 ± 0.044   0.8201 ± 0.050   0.8167 ± 0.048             -0.0035
+   pca            12   0.8147 ± 0.046   0.8067 ± 0.050   0.8101 ± 0.048             +0.0046
+   randproj        4   0.7001 ± 0.106   0.6935 ± 0.092   0.7021 ± 0.091             -0.0020
+   randproj        6   0.7107 ± 0.089   0.7310 ± 0.071   0.7246 ± 0.081             -0.0203
+   randproj        8   0.7431 ± 0.088   0.7674 ± 0.056   0.7608 ± 0.077             -0.0243
+   randproj       10   0.7538 ± 0.078   0.7487 ± 0.080   0.7501 ± 0.078             +0.0037
+   randproj       12   0.7685 ± 0.055   0.7646 ± 0.059   0.7656 ± 0.052             +0.0029
+   selectk         4   0.7592 ± 0.071   0.7370 ± 0.083   0.7515 ± 0.075             +0.0078
+   selectk         6   0.7716 ± 0.071   0.7573 ± 0.071   0.7736 ± 0.066             -0.0019
+   selectk         8   0.7936 ± 0.056   0.7752 ± 0.067   0.7823 ± 0.061             +0.0113
+   selectk        10   0.7937 ± 0.050   0.7722 ± 0.060   0.7878 ± 0.056             +0.0059
+   selectk        12   0.7971 ± 0.051   0.7945 ± 0.048   0.7964 ± 0.049             +0.0007
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 319 recorded -> 319 after removing plateaus (of 900)
+   linear  C maximum 1->1
+   rbf     C maximum 12->12, gamma maximum 4->4, gamma minimum 65->65
+   poly    C maximum 18->18, C minimum 4->4, degree maximum 60->60, degree minimum 108->108, gamma maximum 68->68, gamma minimum 103->103
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0423  (sd 0.0864)
+   rbf     grid size   99   mean optimism +0.0561  (sd 0.0888)
+   poly    grid size  288   mean optimism +0.0546  (sd 0.0856)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'rbf': 116, 'linear': 33, 'poly': 151}
+   inner winner = test winner in 110/300 cells (37%; chance 33%)
+   test PR-AUC: always-linear 0.7604  vs  inner-CV winner 0.7608  (difference +0.0005)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 487, 'rbf': 3, 'poly': 2214}
+   final-fit fallbacks: 2;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+churn_matched_n250.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 150
+   Chance AP for a RANDOM ranking here is 0.5154, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8144 ± 0.050   0.8107 ± 0.056   0.8063 ± 0.064             +0.0037
+   pca             6   0.8167 ± 0.047   0.8069 ± 0.055   0.8038 ± 0.051             +0.0097
+   pca             8   0.8160 ± 0.048   0.8107 ± 0.054   0.7936 ± 0.066             +0.0053
+   pca            10   0.8189 ± 0.045   0.8047 ± 0.045   0.8099 ± 0.045             +0.0090
+   pca            12   0.8192 ± 0.046   0.8154 ± 0.045   0.8135 ± 0.048             +0.0038
+   randproj        4   0.6937 ± 0.075   0.7080 ± 0.068   0.7044 ± 0.063             -0.0143
+   randproj        6   0.7327 ± 0.055   0.7551 ± 0.052   0.7471 ± 0.053             -0.0223
+   randproj        8   0.7512 ± 0.058   0.7654 ± 0.052   0.7464 ± 0.060             -0.0142
+   randproj       10   0.7736 ± 0.053   0.7623 ± 0.063   0.7705 ± 0.050             +0.0032
+   randproj       12   0.7810 ± 0.044   0.7856 ± 0.048   0.7839 ± 0.044             -0.0046
+   selectk         4   0.7682 ± 0.064   0.7727 ± 0.060   0.7714 ± 0.063             -0.0045
+   selectk         6   0.7976 ± 0.046   0.7864 ± 0.056   0.7921 ± 0.042             +0.0055
+   selectk         8   0.7929 ± 0.049   0.7953 ± 0.046   0.7954 ± 0.051             -0.0025
+   selectk        10   0.7979 ± 0.054   0.7974 ± 0.055   0.7992 ± 0.050             -0.0013
+   selectk        12   0.8004 ± 0.048   0.8016 ± 0.043   0.8006 ± 0.038             -0.0012
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.6170 ± 0.104   0.6093 ± 0.116   0.6003 ± 0.133             +0.0077
+   pca             6   0.6217 ± 0.097   0.6016 ± 0.113   0.5951 ± 0.105             +0.0201
+   pca             8   0.6203 ± 0.098   0.6095 ± 0.111   0.5741 ± 0.136             +0.0108
+   pca            10   0.6263 ± 0.093   0.5970 ± 0.093   0.6077 ± 0.093             +0.0186
+   pca            12   0.6268 ± 0.095   0.6190 ± 0.093   0.6152 ± 0.100             +0.0078
+   randproj        4   0.3678 ± 0.156   0.3973 ± 0.141   0.3900 ± 0.131             -0.0295
+   randproj        6   0.4484 ± 0.114   0.4945 ± 0.107   0.4782 ± 0.110             -0.0461
+   randproj        8   0.4866 ± 0.120   0.5159 ± 0.107   0.4766 ± 0.123             -0.0293
+   randproj       10   0.5329 ± 0.110   0.5096 ± 0.129   0.5264 ± 0.104             +0.0065
+   randproj       12   0.5481 ± 0.091   0.5576 ± 0.100   0.5540 ± 0.092             -0.0095
+   selectk         4   0.5216 ± 0.131   0.5309 ± 0.125   0.5283 ± 0.130             -0.0093
+   selectk         6   0.5823 ± 0.095   0.5593 ± 0.115   0.5709 ± 0.087             +0.0113
+   selectk         8   0.5725 ± 0.101   0.5776 ± 0.094   0.5777 ± 0.104             -0.0052
+   selectk        10   0.5830 ± 0.112   0.5820 ± 0.114   0.5857 ± 0.103             -0.0027
+   selectk        12   0.5881 ± 0.099   0.5906 ± 0.089   0.5885 ± 0.079             -0.0025
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8354 ± 0.041   0.8324 ± 0.044   0.8294 ± 0.046             +0.0030
+   pca             6   0.8372 ± 0.041   0.8325 ± 0.046   0.8295 ± 0.042             +0.0047
+   pca             8   0.8374 ± 0.039   0.8307 ± 0.044   0.8233 ± 0.051             +0.0067
+   pca            10   0.8381 ± 0.039   0.8302 ± 0.040   0.8330 ± 0.041             +0.0051
+   pca            12   0.8379 ± 0.039   0.8335 ± 0.039   0.8321 ± 0.042             +0.0044
+   randproj        4   0.7260 ± 0.072   0.7337 ± 0.072   0.7376 ± 0.058             -0.0115
+   randproj        6   0.7544 ± 0.055   0.7685 ± 0.052   0.7681 ± 0.054             -0.0141
+   randproj        8   0.7730 ± 0.055   0.7875 ± 0.047   0.7742 ± 0.051             -0.0145
+   randproj       10   0.7985 ± 0.044   0.7860 ± 0.064   0.7963 ± 0.042             +0.0022
+   randproj       12   0.8117 ± 0.037   0.8087 ± 0.037   0.8136 ± 0.035             -0.0019
+   selectk         4   0.7982 ± 0.046   0.7982 ± 0.047   0.7995 ± 0.045             -0.0013
+   selectk         6   0.8163 ± 0.048   0.8119 ± 0.039   0.8153 ± 0.035             +0.0010
+   selectk         8   0.8203 ± 0.041   0.8176 ± 0.041   0.8194 ± 0.037             +0.0010
+   selectk        10   0.8256 ± 0.042   0.8232 ± 0.042   0.8244 ± 0.040             +0.0013
+   selectk        12   0.8285 ± 0.039   0.8278 ± 0.039   0.8281 ± 0.034             +0.0003
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 350 recorded -> 350 after removing plateaus (of 900)
+   linear  C maximum 1->1, C minimum 3->3
+   rbf     C maximum 27->27, gamma minimum 94->94
+   poly    C maximum 22->22, degree maximum 72->72, degree minimum 88->88, gamma maximum 46->46, gamma minimum 133->133
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0068  (sd 0.0519)
+   rbf     grid size   99   mean optimism +0.0177  (sd 0.0534)
+   poly    grid size  288   mean optimism +0.0199  (sd 0.0520)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'rbf': 96, 'poly': 166, 'linear': 38}
+   inner winner = test winner in 89/300 cells (30%; chance 33%)
+   test PR-AUC: always-linear 0.7850  vs  inner-CV winner 0.7823  (difference -0.0026)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 578, 'rbf': 82, 'poly': 6327}
+   final-fit fallbacks: 1;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+churn_unconstrained.jsonl: 60 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 600
+   Chance AP for a RANDOM ranking here is 0.5050, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.8231 ± 0.017   0.8212 ± 0.016   0.8223 ± 0.015             +0.0009
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.6427 ± 0.034   0.6388 ± 0.033   0.6409 ± 0.031             +0.0018
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.8372 ± 0.016   0.8355 ± 0.016   0.8346 ± 0.017             +0.0017
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 29 recorded -> 29 after removing plateaus (of 60)
+   linear  none
+   rbf     gamma minimum 10->10
+   poly    C minimum 2->2, degree maximum 2->2, degree minimum 10->10, gamma maximum 2->2, gamma minimum 15->15
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism -0.0002  (sd 0.0195)
+   rbf     grid size   81   mean optimism +0.0027  (sd 0.0198)
+   poly    grid size  288   mean optimism +0.0022  (sd 0.0175)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'rbf': 4, 'poly': 9, 'linear': 7}
+   inner winner = test winner in 8/20 cells (40%; chance 33%)
+   test PR-AUC: always-linear 0.8231  vs  inner-CV winner 0.8217  (difference -0.0014)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 60, 'rbf': 0, 'poly': 421}
+   final-fit fallbacks: 0;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 60/60
+   seeds whose cells share one test-label fingerprint: 20/20
+
+fraud_matched_n50.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 30
+   Chance AP for a RANDOM ranking here is 0.5516, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9536 ± 0.043   0.9483 ± 0.068   0.9539 ± 0.037             -0.0003
+   pca             6   0.9601 ± 0.034   0.9647 ± 0.036   0.9656 ± 0.031             -0.0055
+   pca             8   0.9639 ± 0.034   0.9510 ± 0.048   0.9660 ± 0.031             -0.0021
+   pca            10   0.9689 ± 0.032   0.9665 ± 0.031   0.9684 ± 0.030             +0.0005
+   pca            12   0.9571 ± 0.050   0.9632 ± 0.039   0.9639 ± 0.039             -0.0068
+   randproj        4   0.8787 ± 0.077   0.8687 ± 0.096   0.8763 ± 0.090             +0.0024
+   randproj        6   0.9279 ± 0.041   0.9306 ± 0.044   0.9277 ± 0.042             -0.0026
+   randproj        8   0.9175 ± 0.069   0.9302 ± 0.052   0.9233 ± 0.061             -0.0127
+   randproj       10   0.9265 ± 0.056   0.9235 ± 0.074   0.9330 ± 0.053             -0.0065
+   randproj       12   0.9403 ± 0.047   0.9499 ± 0.039   0.9398 ± 0.043             -0.0096
+   selectk         4   0.9721 ± 0.028   0.9739 ± 0.025   0.9690 ± 0.031             -0.0018
+   selectk         6   0.9740 ± 0.032   0.9752 ± 0.029   0.9737 ± 0.034             -0.0012
+   selectk         8   0.9752 ± 0.028   0.9713 ± 0.046   0.9790 ± 0.032             -0.0038
+   selectk        10   0.9824 ± 0.019   0.9797 ± 0.026   0.9821 ± 0.020             +0.0003
+   selectk        12   0.9811 ± 0.020   0.9808 ± 0.021   0.9813 ± 0.021             -0.0002
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8965 ± 0.095   0.8846 ± 0.151   0.8972 ± 0.083             -0.0007
+   pca             6   0.9111 ± 0.077   0.9214 ± 0.080   0.9233 ± 0.070             -0.0122
+   pca             8   0.9195 ± 0.077   0.8907 ± 0.108   0.9241 ± 0.068             -0.0046
+   pca            10   0.9306 ± 0.072   0.9252 ± 0.069   0.9295 ± 0.066             +0.0011
+   pca            12   0.9044 ± 0.112   0.9179 ± 0.087   0.9195 ± 0.086             -0.0151
+   randproj        4   0.7295 ± 0.172   0.7072 ± 0.213   0.7242 ± 0.201             +0.0053
+   randproj        6   0.8393 ± 0.091   0.8451 ± 0.097   0.8388 ± 0.094             -0.0059
+   randproj        8   0.8160 ± 0.154   0.8444 ± 0.117   0.8290 ± 0.135             -0.0284
+   randproj       10   0.8361 ± 0.124   0.8294 ± 0.164   0.8505 ± 0.119             -0.0144
+   randproj       12   0.8669 ± 0.105   0.8883 ± 0.086   0.8658 ± 0.096             -0.0214
+   selectk         4   0.9378 ± 0.062   0.9419 ± 0.056   0.9309 ± 0.069             -0.0040
+   selectk         6   0.9420 ± 0.070   0.9448 ± 0.065   0.9413 ± 0.076             -0.0027
+   selectk         8   0.9447 ± 0.062   0.9361 ± 0.103   0.9531 ± 0.071             -0.0084
+   selectk        10   0.9607 ± 0.043   0.9548 ± 0.057   0.9602 ± 0.045             +0.0006
+   selectk        12   0.9578 ± 0.044   0.9571 ± 0.047   0.9583 ± 0.047             -0.0005
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9278 ± 0.069   0.9362 ± 0.061   0.9313 ± 0.058             -0.0084
+   pca             6   0.9378 ± 0.058   0.9498 ± 0.057   0.9498 ± 0.048             -0.0120
+   pca             8   0.9464 ± 0.052   0.9327 ± 0.064   0.9511 ± 0.047             -0.0047
+   pca            10   0.9587 ± 0.044   0.9553 ± 0.045   0.9567 ± 0.042             +0.0020
+   pca            12   0.9389 ± 0.078   0.9487 ± 0.060   0.9496 ± 0.059             -0.0107
+   randproj        4   0.8347 ± 0.096   0.8349 ± 0.120   0.8438 ± 0.107             -0.0091
+   randproj        6   0.8996 ± 0.060   0.9042 ± 0.064   0.9011 ± 0.061             -0.0047
+   randproj        8   0.8982 ± 0.084   0.9173 ± 0.058   0.9058 ± 0.074             -0.0191
+   randproj       10   0.8976 ± 0.077   0.9060 ± 0.073   0.9122 ± 0.070             -0.0147
+   randproj       12   0.9187 ± 0.068   0.9311 ± 0.056   0.9171 ± 0.064             -0.0124
+   selectk         4   0.9562 ± 0.048   0.9611 ± 0.042   0.9518 ± 0.053             -0.0049
+   selectk         6   0.9613 ± 0.049   0.9624 ± 0.047   0.9620 ± 0.056             -0.0011
+   selectk         8   0.9651 ± 0.040   0.9651 ± 0.049   0.9738 ± 0.038             -0.0087
+   selectk        10   0.9760 ± 0.027   0.9704 ± 0.040   0.9769 ± 0.027             -0.0009
+   selectk        12   0.9744 ± 0.028   0.9731 ± 0.031   0.9738 ± 0.031             +0.0007
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 277 recorded -> 277 after removing plateaus (of 900)
+   linear  C maximum 3->3
+   rbf     C maximum 21->21, gamma minimum 24->24
+   poly    C maximum 15->15, degree maximum 75->75, degree minimum 82->82, gamma maximum 101->101, gamma minimum 64->64
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0073  (sd 0.0464)
+   rbf     grid size   99   mean optimism +0.0174  (sd 0.0476)
+   poly    grid size  288   mean optimism +0.0146  (sd 0.0421)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'poly': 108, 'rbf': 138, 'linear': 54}
+   inner winner = test winner in 102/300 cells (34%; chance 33%)
+   test PR-AUC: always-linear 0.9520  vs  inner-CV winner 0.9517  (difference -0.0003)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 56, 'rbf': 0, 'poly': 276}
+   final-fit fallbacks: 1;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+fraud_matched_n100.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 60
+   Chance AP for a RANDOM ranking here is 0.5312, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9503 ± 0.025   0.9554 ± 0.026   0.9521 ± 0.024             -0.0051
+   pca             6   0.9582 ± 0.021   0.9559 ± 0.029   0.9577 ± 0.016             +0.0005
+   pca             8   0.9625 ± 0.018   0.9618 ± 0.024   0.9640 ± 0.016             -0.0015
+   pca            10   0.9665 ± 0.021   0.9670 ± 0.019   0.9701 ± 0.019             -0.0036
+   pca            12   0.9679 ± 0.017   0.9716 ± 0.013   0.9729 ± 0.016             -0.0050
+   randproj        4   0.8590 ± 0.091   0.8843 ± 0.068   0.8868 ± 0.063             -0.0278
+   randproj        6   0.9194 ± 0.039   0.9282 ± 0.041   0.9232 ± 0.037             -0.0088
+   randproj        8   0.9242 ± 0.052   0.9360 ± 0.040   0.9268 ± 0.057             -0.0118
+   randproj       10   0.9200 ± 0.056   0.9398 ± 0.036   0.9338 ± 0.041             -0.0197
+   randproj       12   0.9449 ± 0.033   0.9493 ± 0.028   0.9467 ± 0.032             -0.0045
+   selectk         4   0.9717 ± 0.016   0.9693 ± 0.018   0.9697 ± 0.015             +0.0020
+   selectk         6   0.9778 ± 0.016   0.9755 ± 0.016   0.9782 ± 0.017             -0.0004
+   selectk         8   0.9802 ± 0.014   0.9787 ± 0.015   0.9804 ± 0.014             -0.0002
+   selectk        10   0.9808 ± 0.012   0.9796 ± 0.013   0.9807 ± 0.011             +0.0001
+   selectk        12   0.9811 ± 0.011   0.9809 ± 0.010   0.9815 ± 0.012             -0.0005
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.8940 ± 0.053   0.9050 ± 0.056   0.8978 ± 0.051             -0.0109
+   pca             6   0.9109 ± 0.044   0.9059 ± 0.063   0.9099 ± 0.035             +0.0011
+   pca             8   0.9199 ± 0.038   0.9184 ± 0.051   0.9232 ± 0.034             -0.0032
+   pca            10   0.9285 ± 0.045   0.9296 ± 0.040   0.9362 ± 0.040             -0.0076
+   pca            12   0.9314 ± 0.035   0.9395 ± 0.029   0.9421 ± 0.034             -0.0107
+   randproj        4   0.6993 ± 0.193   0.7532 ± 0.144   0.7586 ± 0.135             -0.0593
+   randproj        6   0.8281 ± 0.083   0.8469 ± 0.088   0.8362 ± 0.079             -0.0187
+   randproj        8   0.8383 ± 0.110   0.8635 ± 0.084   0.8438 ± 0.121             -0.0253
+   randproj       10   0.8294 ± 0.120   0.8715 ± 0.078   0.8588 ± 0.088             -0.0421
+   randproj       12   0.8824 ± 0.070   0.8919 ± 0.059   0.8863 ± 0.069             -0.0095
+   selectk         4   0.9396 ± 0.034   0.9345 ± 0.039   0.9353 ± 0.033             +0.0043
+   selectk         6   0.9526 ± 0.035   0.9477 ± 0.035   0.9535 ± 0.036             -0.0008
+   selectk         8   0.9577 ± 0.031   0.9545 ± 0.033   0.9582 ± 0.030             -0.0005
+   selectk        10   0.9591 ± 0.026   0.9565 ± 0.028   0.9589 ± 0.025             +0.0003
+   selectk        12   0.9596 ± 0.023   0.9593 ± 0.022   0.9606 ± 0.026             -0.0010
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9241 ± 0.039   0.9382 ± 0.033   0.9253 ± 0.038             -0.0141
+   pca             6   0.9377 ± 0.033   0.9438 ± 0.027   0.9370 ± 0.026             -0.0061
+   pca             8   0.9455 ± 0.030   0.9518 ± 0.026   0.9479 ± 0.026             -0.0063
+   pca            10   0.9521 ± 0.032   0.9556 ± 0.027   0.9580 ± 0.030             -0.0059
+   pca            12   0.9536 ± 0.026   0.9602 ± 0.021   0.9612 ± 0.025             -0.0076
+   randproj        4   0.8260 ± 0.097   0.8680 ± 0.062   0.8576 ± 0.070             -0.0420
+   randproj        6   0.8949 ± 0.038   0.9138 ± 0.042   0.9016 ± 0.040             -0.0189
+   randproj        8   0.8953 ± 0.071   0.9249 ± 0.047   0.9109 ± 0.052             -0.0296
+   randproj       10   0.9017 ± 0.071   0.9276 ± 0.048   0.9149 ± 0.057             -0.0259
+   randproj       12   0.9228 ± 0.044   0.9344 ± 0.033   0.9282 ± 0.040             -0.0116
+   selectk         4   0.9581 ± 0.026   0.9583 ± 0.024   0.9548 ± 0.025             -0.0002
+   selectk         6   0.9672 ± 0.027   0.9649 ± 0.026   0.9680 ± 0.028             -0.0008
+   selectk         8   0.9731 ± 0.020   0.9711 ± 0.022   0.9737 ± 0.020             -0.0006
+   selectk        10   0.9746 ± 0.017   0.9734 ± 0.018   0.9747 ± 0.015             -0.0002
+   selectk        12   0.9743 ± 0.016   0.9759 ± 0.014   0.9753 ± 0.018             -0.0017
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 265 recorded -> 265 after removing plateaus (of 900)
+   linear  C maximum 6->6
+   rbf     C maximum 18->18, gamma maximum 1->1, gamma minimum 21->21
+   poly    C maximum 29->29, C minimum 5->5, degree maximum 72->72, degree minimum 80->80, gamma maximum 92->92, gamma minimum 50->50
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0094  (sd 0.0301)
+   rbf     grid size   99   mean optimism +0.0134  (sd 0.0274)
+   poly    grid size  288   mean optimism +0.0132  (sd 0.0288)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'poly': 143, 'rbf': 139, 'linear': 18}
+   inner winner = test winner in 120/300 cells (40%; chance 33%)
+   test PR-AUC: always-linear 0.9510  vs  inner-CV winner 0.9551  (difference +0.0041)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 143, 'rbf': 0, 'poly': 950}
+   final-fit fallbacks: 2;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+fraud_matched_n250.jsonl: 900 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.500, n_test 150
+   Chance AP for a RANDOM ranking here is 0.5154, not the base rate (0.5000).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9611 ± 0.015   0.9654 ± 0.011   0.9646 ± 0.011             -0.0043
+   pca             6   0.9650 ± 0.012   0.9687 ± 0.016   0.9648 ± 0.016             -0.0037
+   pca             8   0.9676 ± 0.010   0.9724 ± 0.010   0.9682 ± 0.012             -0.0048
+   pca            10   0.9685 ± 0.011   0.9725 ± 0.009   0.9712 ± 0.011             -0.0040
+   pca            12   0.9771 ± 0.009   0.9781 ± 0.010   0.9781 ± 0.010             -0.0011
+   randproj        4   0.8734 ± 0.065   0.8997 ± 0.040   0.8969 ± 0.045             -0.0263
+   randproj        6   0.9353 ± 0.024   0.9458 ± 0.022   0.9454 ± 0.019             -0.0105
+   randproj        8   0.9375 ± 0.037   0.9572 ± 0.020   0.9505 ± 0.023             -0.0197
+   randproj       10   0.9378 ± 0.038   0.9572 ± 0.022   0.9512 ± 0.027             -0.0194
+   randproj       12   0.9560 ± 0.020   0.9655 ± 0.019   0.9580 ± 0.024             -0.0096
+   selectk         4   0.9769 ± 0.011   0.9741 ± 0.014   0.9762 ± 0.011             +0.0007
+   selectk         6   0.9830 ± 0.007   0.9830 ± 0.007   0.9835 ± 0.007             -0.0005
+   selectk         8   0.9847 ± 0.006   0.9834 ± 0.006   0.9837 ± 0.005             +0.0010
+   selectk        10   0.9842 ± 0.006   0.9838 ± 0.007   0.9843 ± 0.006             -0.0001
+   selectk        12   0.9844 ± 0.006   0.9822 ± 0.007   0.9842 ± 0.007             +0.0001
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9197 ± 0.032   0.9285 ± 0.023   0.9270 ± 0.023             -0.0088
+   pca             6   0.9279 ± 0.025   0.9355 ± 0.033   0.9274 ± 0.034             -0.0076
+   pca             8   0.9332 ± 0.021   0.9431 ± 0.021   0.9345 ± 0.025             -0.0099
+   pca            10   0.9350 ± 0.022   0.9432 ± 0.020   0.9405 ± 0.023             -0.0083
+   pca            12   0.9527 ± 0.019   0.9548 ± 0.021   0.9549 ± 0.020             -0.0022
+   randproj        4   0.7386 ± 0.135   0.7930 ± 0.082   0.7873 ± 0.094             -0.0543
+   randproj        6   0.8664 ± 0.050   0.8881 ± 0.045   0.8874 ± 0.040             -0.0217
+   randproj        8   0.8711 ± 0.077   0.9117 ± 0.040   0.8979 ± 0.048             -0.0406
+   randproj       10   0.8716 ± 0.078   0.9117 ± 0.045   0.8994 ± 0.055             -0.0401
+   randproj       12   0.9091 ± 0.042   0.9289 ± 0.039   0.9133 ± 0.050             -0.0198
+   selectk         4   0.9524 ± 0.022   0.9465 ± 0.029   0.9509 ± 0.022             +0.0014
+   selectk         6   0.9649 ± 0.015   0.9650 ± 0.015   0.9659 ± 0.014             -0.0010
+   selectk         8   0.9684 ± 0.012   0.9658 ± 0.012   0.9663 ± 0.011             +0.0021
+   selectk        10   0.9674 ± 0.013   0.9665 ± 0.015   0.9677 ± 0.012             -0.0003
+   selectk        12   0.9677 ± 0.013   0.9634 ± 0.014   0.9674 ± 0.013             +0.0003
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   pca             4   0.9413 ± 0.024   0.9489 ± 0.018   0.9482 ± 0.016             -0.0077
+   pca             6   0.9478 ± 0.020   0.9585 ± 0.016   0.9514 ± 0.018             -0.0107
+   pca             8   0.9522 ± 0.017   0.9625 ± 0.015   0.9564 ± 0.015             -0.0103
+   pca            10   0.9547 ± 0.017   0.9626 ± 0.015   0.9599 ± 0.016             -0.0079
+   pca            12   0.9679 ± 0.015   0.9706 ± 0.015   0.9692 ± 0.016             -0.0027
+   randproj        4   0.8374 ± 0.081   0.8804 ± 0.046   0.8720 ± 0.055             -0.0430
+   randproj        6   0.9103 ± 0.034   0.9306 ± 0.026   0.9260 ± 0.028             -0.0204
+   randproj        8   0.9183 ± 0.047   0.9449 ± 0.024   0.9362 ± 0.026             -0.0267
+   randproj       10   0.9142 ± 0.043   0.9440 ± 0.026   0.9368 ± 0.032             -0.0297
+   randproj       12   0.9395 ± 0.030   0.9577 ± 0.021   0.9443 ± 0.030             -0.0182
+   selectk         4   0.9663 ± 0.019   0.9659 ± 0.017   0.9660 ± 0.019             +0.0002
+   selectk         6   0.9769 ± 0.010   0.9769 ± 0.011   0.9772 ± 0.011             -0.0003
+   selectk         8   0.9795 ± 0.008   0.9781 ± 0.008   0.9781 ± 0.008             +0.0014
+   selectk        10   0.9789 ± 0.009   0.9789 ± 0.009   0.9794 ± 0.008             -0.0005
+   selectk        12   0.9789 ± 0.009   0.9765 ± 0.009   0.9789 ± 0.009             -0.0000
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 279 recorded -> 279 after removing plateaus (of 900)
+   linear  C maximum 6->6, C minimum 1->1
+   rbf     C maximum 20->20, gamma minimum 14->14
+   poly    C maximum 35->35, C minimum 1->1, degree maximum 106->106, degree minimum 67->67, gamma maximum 82->82, gamma minimum 68->68
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0001  (sd 0.0182)
+   rbf     grid size   99   mean optimism +0.0023  (sd 0.0178)
+   poly    grid size  288   mean optimism +0.0023  (sd 0.0188)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'rbf': 180, 'poly': 112, 'linear': 8}
+   inner winner = test winner in 145/300 cells (48%; chance 33%)
+   test PR-AUC: always-linear 0.9595  vs  inner-CV winner 0.9657  (difference +0.0062)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 252, 'rbf': 0, 'poly': 3070}
+   final-fit fallbacks: 5;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 900/900
+   seeds whose cells share one test-label fingerprint: 20/20
+
+fraud_unconstrained.jsonl: 60 records, 20 seeds, commit 2cf7ec7, C grid 0.0001..10000
+
+1. PERFORMANCE by cell (mean ± sd over seeds).  base rate 0.330, n_test 448
+   Chance AP for a RANDOM ranking here is 0.3389, not the base rate (0.3304).
+   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or
+   ROC-AUC for any comparison across tracks, training sizes or datasets.
+
+   test PR-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.9735 ± 0.007   0.9741 ± 0.008   0.9726 ± 0.009             -0.0006
+
+   normalised AP
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.9599 ± 0.011   0.9608 ± 0.012   0.9585 ± 0.013             -0.0009
+
+   ROC-AUC
+   mapping    qubits           linear              rbf             poly   lin - best nonlin
+   none            -   0.9797 ± 0.006   0.9811 ± 0.006   0.9801 ± 0.006             -0.0014
+
+2. EDGE FLAGS: recorded at run time vs plateau-aware
+   models with any flag: 21 recorded -> 21 after removing plateaus (of 60)
+   linear  none
+   rbf     C maximum 1->1, gamma minimum 3->3
+   poly    degree maximum 4->4, degree minimum 9->9, gamma minimum 12->12
+
+3. INNER-CV OPTIMISM (inner score minus outer test score)
+   linear  grid size    9   mean optimism +0.0011  (sd 0.0103)
+   rbf     grid size   81   mean optimism +0.0029  (sd 0.0097)
+   poly    grid size  288   mean optimism +0.0040  (sd 0.0104)
+   If optimism rises with grid size, cross-validation is flattering the kernels that
+   search more settings, and inner-CV scores must not be used to rank kernels.
+
+4. DOES THE INNER-CV WINNER WIN ON TEST?
+   inner-CV winners: {'poly': 7, 'rbf': 12, 'linear': 1}
+   inner winner = test winner in 9/20 cells (45%; chance 33%)
+   test PR-AUC: always-linear 0.9735  vs  inner-CV winner 0.9737  (difference +0.0003)
+
+5. SOLVER
+   non-converged inner fits by kernel: {'linear': 55, 'rbf': 0, 'poly': 0}
+   final-fit fallbacks: 0;  final models not converged: 0
+
+6. PAIRING READINESS (what week 9's statistics need from this file)
+   records carrying per-test-point decision scores: 60/60
+   seeds whose cells share one test-label fingerprint: 20/20
+

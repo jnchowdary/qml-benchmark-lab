@@ -1,0 +1,388 @@
+Paired design: same subsample, same split, same mapping; only the kernel differs.
+alpha=0.05 two-sided, power=0.8, exact non-central t.
+
+=== churn_matched_n100.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    +0.0254     0.0514    0.0340            54
+    pca/4             linear-rbf         20    +0.0356     0.0731    0.0483           107
+    pca/4             rbf-poly           20    -0.0102     0.0617    0.0407            77
+    pca/6             linear-poly        20    +0.0198     0.0421    0.0278            37
+    pca/6             linear-rbf         20    +0.0014     0.0348    0.0230            26
+    pca/6             rbf-poly           20    +0.0184     0.0410    0.0271            35
+    pca/8             linear-poly        20    +0.0029     0.0159    0.0105             8
+    pca/8             linear-rbf         20    +0.0010     0.0145    0.0096             7
+    pca/8             rbf-poly           20    +0.0019     0.0186    0.0123             9
+    pca/10            linear-poly        20    -0.0013     0.0153    0.0101             7
+    pca/10            linear-rbf         20    -0.0024     0.0224    0.0148            12
+    pca/10            rbf-poly           20    +0.0011     0.0236    0.0156            13
+    pca/12            linear-poly        20    +0.0075     0.0215    0.0142            12
+    pca/12            linear-rbf         20    +0.0056     0.0228    0.0150            13
+    pca/12            rbf-poly           20    +0.0019     0.0176    0.0116             9
+    randproj/4        linear-poly        20    -0.0204     0.0686    0.0453            95
+    randproj/4        linear-rbf         20    -0.0125     0.0688    0.0454            95
+    randproj/4        rbf-poly           20    -0.0079     0.0700    0.0462            98
+    randproj/6        linear-poly        20    -0.0251     0.0656    0.0433            87
+    randproj/6        linear-rbf         20    -0.0395     0.0845    0.0558           143
+    randproj/6        rbf-poly           20    +0.0144     0.0855    0.0565           146
+    randproj/8        linear-poly        20    -0.0127     0.0456    0.0301            43
+    randproj/8        linear-rbf         20    -0.0299     0.0613    0.0405            76
+    randproj/8        rbf-poly           20    +0.0172     0.0772    0.0510           119
+    randproj/10       linear-poly        20    +0.0003     0.0330    0.0218            24
+    randproj/10       linear-rbf         20    -0.0036     0.0351    0.0232            27
+    randproj/10       rbf-poly           20    +0.0039     0.0412    0.0272            36
+    randproj/12       linear-poly        20    +0.0051     0.0378    0.0249            30
+    randproj/12       linear-rbf         20    -0.0011     0.0628    0.0415            80
+    randproj/12       rbf-poly           20    +0.0061     0.0561    0.0371            64
+    selectk/4         linear-poly        20    -0.0018     0.0380    0.0251            31
+    selectk/4         linear-rbf         20    +0.0044     0.0803    0.0530           129
+    selectk/4         rbf-poly           20    -0.0062     0.0742    0.0490           110
+    selectk/6         linear-poly        20    -0.0081     0.0377    0.0249            30
+    selectk/6         linear-rbf         20    -0.0018     0.0644    0.0425            84
+    selectk/6         rbf-poly           20    -0.0063     0.0457    0.0302            44
+    selectk/8         linear-poly        20    +0.0088     0.0529    0.0349            57
+    selectk/8         linear-rbf         20    +0.0235     0.0749    0.0495           113
+    selectk/8         rbf-poly           20    -0.0147     0.0424    0.0280            38
+    selectk/10        linear-poly        20    +0.0055     0.0326    0.0215            23
+    selectk/10        linear-rbf         20    +0.0234     0.0629    0.0415            80
+    selectk/10        rbf-poly           20    -0.0179     0.0713    0.0471           102
+    selectk/12        linear-poly        20    -0.0078     0.0337    0.0222            25
+    selectk/12        linear-rbf         20    -0.0018     0.0278    0.0184            18
+    selectk/12        rbf-poly           20    -0.0060     0.0347    0.0229            26
+
+    paired sd across all cells: median 0.0424, max 0.0855
+    MDE at n=20 seeds : 0.0280 (median sd), 0.0565 (worst cell)
+    seeds to detect 0.020  : 38 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== churn_matched_n250.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    +0.0081     0.0423    0.0280            38
+    pca/4             linear-rbf         20    +0.0037     0.0234    0.0154            13
+    pca/4             rbf-poly           20    +0.0044     0.0243    0.0161            14
+    pca/6             linear-poly        20    +0.0129     0.0226    0.0149            13
+    pca/6             linear-rbf         20    +0.0097     0.0230    0.0152            13
+    pca/6             rbf-poly           20    +0.0031     0.0213    0.0141            11
+    pca/8             linear-poly        20    +0.0224     0.0382    0.0252            31
+    pca/8             linear-rbf         20    +0.0053     0.0151    0.0100             7
+    pca/8             rbf-poly           20    +0.0171     0.0355    0.0235            27
+    pca/10            linear-poly        20    +0.0090     0.0140    0.0093             7
+    pca/10            linear-rbf         20    +0.0142     0.0223    0.0147            12
+    pca/10            rbf-poly           20    -0.0052     0.0221    0.0146            12
+    pca/12            linear-poly        20    +0.0056     0.0160    0.0106             8
+    pca/12            linear-rbf         20    +0.0038     0.0123    0.0081             6
+    pca/12            rbf-poly           20    +0.0018     0.0172    0.0114             8
+    randproj/4        linear-poly        20    -0.0107     0.0332    0.0219            24
+    randproj/4        linear-rbf         20    -0.0143     0.0557    0.0368            63
+    randproj/4        rbf-poly           20    +0.0036     0.0479    0.0317            48
+    randproj/6        linear-poly        20    -0.0144     0.0336    0.0222            25
+    randproj/6        linear-rbf         20    -0.0223     0.0404    0.0267            35
+    randproj/6        rbf-poly           20    +0.0079     0.0321    0.0212            23
+    randproj/8        linear-poly        20    +0.0048     0.0394    0.0260            33
+    randproj/8        linear-rbf         20    -0.0142     0.0430    0.0284            39
+    randproj/8        rbf-poly           20    +0.0190     0.0394    0.0260            33
+    randproj/10       linear-poly        20    +0.0032     0.0201    0.0133            11
+    randproj/10       linear-rbf         20    +0.0113     0.0401    0.0265            34
+    randproj/10       rbf-poly           20    -0.0082     0.0326    0.0215            23
+    randproj/12       linear-poly        20    -0.0029     0.0128    0.0084             6
+    randproj/12       linear-rbf         20    -0.0046     0.0381    0.0252            31
+    randproj/12       rbf-poly           20    +0.0017     0.0305    0.0201            21
+    selectk/4         linear-poly        20    -0.0032     0.0122    0.0080             6
+    selectk/4         linear-rbf         20    -0.0045     0.0198    0.0131            10
+    selectk/4         rbf-poly           20    +0.0013     0.0174    0.0115             9
+    selectk/6         linear-poly        20    +0.0055     0.0241    0.0159            14
+    selectk/6         linear-rbf         20    +0.0111     0.0477    0.0315            47
+    selectk/6         rbf-poly           20    -0.0056     0.0406    0.0268            35
+    selectk/8         linear-poly        20    -0.0025     0.0261    0.0172            16
+    selectk/8         linear-rbf         20    -0.0024     0.0165    0.0109             8
+    selectk/8         rbf-poly           20    -0.0001     0.0218    0.0144            12
+    selectk/10        linear-poly        20    -0.0013     0.0218    0.0144            12
+    selectk/10        linear-rbf         20    +0.0005     0.0150    0.0099             7
+    selectk/10        rbf-poly           20    -0.0018     0.0181    0.0119             9
+    selectk/12        linear-poly        20    -0.0002     0.0322    0.0213            23
+    selectk/12        linear-rbf         20    -0.0012     0.0218    0.0144            12
+    selectk/12        rbf-poly           20    +0.0010     0.0244    0.0161            14
+
+    paired sd across all cells: median 0.0241, max 0.0557
+    MDE at n=20 seeds : 0.0159 (median sd), 0.0368 (worst cell)
+    seeds to detect 0.020  : 14 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== churn_matched_n50.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    +0.0160     0.0454    0.0300            43
+    pca/4             linear-rbf         20    +0.0120     0.0349    0.0231            26
+    pca/4             rbf-poly           20    +0.0040     0.0557    0.0368            63
+    pca/6             linear-poly        20    +0.0142     0.0311    0.0206            22
+    pca/6             linear-rbf         20    +0.0172     0.0671    0.0443            91
+    pca/6             rbf-poly           20    -0.0030     0.0617    0.0408            77
+    pca/8             linear-poly        20    +0.0120     0.0277    0.0183            18
+    pca/8             linear-rbf         20    +0.0099     0.0311    0.0206            22
+    pca/8             rbf-poly           20    +0.0021     0.0325    0.0215            23
+    pca/10            linear-poly        20    +0.0096     0.0427    0.0282            38
+    pca/10            linear-rbf         20    +0.0112     0.0505    0.0333            52
+    pca/10            rbf-poly           20    -0.0016     0.0513    0.0339            54
+    pca/12            linear-poly        20    -0.0011     0.0507    0.0335            53
+    pca/12            linear-rbf         20    +0.0013     0.0708    0.0468           101
+    pca/12            rbf-poly           20    -0.0024     0.0570    0.0377            66
+    randproj/4        linear-poly        20    +0.0128     0.1281    0.0846           324
+    randproj/4        linear-rbf         20    +0.0362     0.1240    0.0819           304
+    randproj/4        rbf-poly           20    -0.0234     0.0736    0.0486           109
+    randproj/6        linear-poly        20    +0.0165     0.0643    0.0425            84
+    randproj/6        linear-rbf         20    -0.0083     0.0817    0.0540           133
+    randproj/6        rbf-poly           20    +0.0248     0.0855    0.0565           146
+    randproj/8        linear-poly        20    +0.0131     0.0490    0.0323            49
+    randproj/8        linear-rbf         20    +0.0266     0.0557    0.0368            63
+    randproj/8        rbf-poly           20    -0.0135     0.0424    0.0280            38
+    randproj/10       linear-poly        20    +0.0106     0.0697    0.0460            98
+    randproj/10       linear-rbf         20    +0.0092     0.0927    0.0612           171
+    randproj/10       rbf-poly           20    +0.0013     0.0869    0.0574           151
+    randproj/12       linear-poly        20    +0.0148     0.0500    0.0330            51
+    randproj/12       linear-rbf         20    -0.0018     0.0604    0.0399            74
+    randproj/12       rbf-poly           20    +0.0166     0.0653    0.0431            86
+    selectk/4         linear-poly        20    +0.0191     0.0392    0.0259            33
+    selectk/4         linear-rbf         20    +0.0024     0.0429    0.0283            39
+    selectk/4         rbf-poly           20    +0.0167     0.0506    0.0334            53
+    selectk/6         linear-poly        20    -0.0187     0.0538    0.0355            59
+    selectk/6         linear-rbf         20    +0.0047     0.0559    0.0369            64
+    selectk/6         rbf-poly           20    -0.0234     0.0643    0.0425            84
+    selectk/8         linear-poly        20    +0.0012     0.0605    0.0399            74
+    selectk/8         linear-rbf         20    +0.0199     0.0651    0.0430            86
+    selectk/8         rbf-poly           20    -0.0187     0.0825    0.0545           136
+    selectk/10        linear-poly        20    +0.0039     0.0641    0.0423            83
+    selectk/10        linear-rbf         20    +0.0143     0.0663    0.0438            89
+    selectk/10        rbf-poly           20    -0.0104     0.0384    0.0254            31
+    selectk/12        linear-poly        20    +0.0113     0.0604    0.0399            74
+    selectk/12        linear-rbf         20    +0.0137     0.0788    0.0520           124
+    selectk/12        rbf-poly           20    -0.0024     0.0739    0.0488           110
+
+    paired sd across all cells: median 0.0604, max 0.1281
+    MDE at n=20 seeds : 0.0399 (median sd), 0.0846 (worst cell)
+    seeds to detect 0.020  : 74 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== churn_unconstrained.jsonl  (test_average_precision) ===
+    60 records, 1 cell, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    none/-            linear-poly        20    +0.0009     0.0073    0.0048             4
+    none/-            linear-rbf         20    +0.0019     0.0056    0.0037             3
+    none/-            rbf-poly           20    -0.0011     0.0076    0.0050             4
+
+    paired sd across all cells: median 0.0073, max 0.0076
+    MDE at n=20 seeds : 0.0048 (median sd), 0.0050 (worst cell)
+    seeds to detect 0.020  : 4 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== fraud_matched_n100.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    -0.0018     0.0151    0.0100             7
+    pca/4             linear-rbf         20    -0.0051     0.0290    0.0191            19
+    pca/4             rbf-poly           20    +0.0034     0.0224    0.0148            12
+    pca/6             linear-poly        20    +0.0005     0.0127    0.0084             6
+    pca/6             linear-rbf         20    +0.0023     0.0240    0.0159            14
+    pca/6             rbf-poly           20    -0.0018     0.0202    0.0134            11
+    pca/8             linear-poly        20    -0.0015     0.0085    0.0056             4
+    pca/8             linear-rbf         20    +0.0007     0.0269    0.0178            17
+    pca/8             rbf-poly           20    -0.0022     0.0246    0.0163            14
+    pca/10            linear-poly        20    -0.0036     0.0115    0.0076             5
+    pca/10            linear-rbf         20    -0.0005     0.0170    0.0112             8
+    pca/10            rbf-poly           20    -0.0031     0.0133    0.0088             6
+    pca/12            linear-poly        20    -0.0050     0.0090    0.0059             4
+    pca/12            linear-rbf         20    -0.0038     0.0064    0.0042             4
+    pca/12            rbf-poly           20    -0.0012     0.0075    0.0050             4
+    randproj/4        linear-poly        20    -0.0278     0.0429    0.0283            39
+    randproj/4        linear-rbf         20    -0.0253     0.0474    0.0313            46
+    randproj/4        rbf-poly           20    -0.0025     0.0221    0.0146            12
+    randproj/6        linear-poly        20    -0.0038     0.0201    0.0133            11
+    randproj/6        linear-rbf         20    -0.0088     0.0385    0.0254            32
+    randproj/6        rbf-poly           20    +0.0050     0.0329    0.0217            24
+    randproj/8        linear-poly        20    -0.0026     0.0389    0.0257            32
+    randproj/8        linear-rbf         20    -0.0118     0.0222    0.0147            12
+    randproj/8        rbf-poly           20    +0.0093     0.0367    0.0242            29
+    randproj/10       linear-poly        20    -0.0138     0.0338    0.0223            25
+    randproj/10       linear-rbf         20    -0.0197     0.0335    0.0221            24
+    randproj/10       rbf-poly           20    +0.0060     0.0273    0.0180            17
+    randproj/12       linear-poly        20    -0.0018     0.0116    0.0076             5
+    randproj/12       linear-rbf         20    -0.0045     0.0202    0.0133            11
+    randproj/12       rbf-poly           20    +0.0026     0.0183    0.0121             9
+    selectk/4         linear-poly        20    +0.0020     0.0053    0.0035             3
+    selectk/4         linear-rbf         20    +0.0024     0.0122    0.0080             6
+    selectk/4         rbf-poly           20    -0.0004     0.0136    0.0090             6
+    selectk/6         linear-poly        20    -0.0004     0.0033    0.0022             3
+    selectk/6         linear-rbf         20    +0.0023     0.0098    0.0065             5
+    selectk/6         rbf-poly           20    -0.0027     0.0094    0.0062             5
+    selectk/8         linear-poly        20    -0.0002     0.0039    0.0026             3
+    selectk/8         linear-rbf         20    +0.0015     0.0045    0.0030             3
+    selectk/8         rbf-poly           20    -0.0017     0.0051    0.0034             3
+    selectk/10        linear-poly        20    +0.0001     0.0042    0.0028             3
+    selectk/10        linear-rbf         20    +0.0012     0.0062    0.0041             4
+    selectk/10        rbf-poly           20    -0.0011     0.0061    0.0040             3
+    selectk/12        linear-poly        20    -0.0005     0.0038    0.0025             3
+    selectk/12        linear-rbf         20    +0.0001     0.0061    0.0040             3
+    selectk/12        rbf-poly           20    -0.0006     0.0066    0.0044             4
+
+    paired sd across all cells: median 0.0136, max 0.0474
+    MDE at n=20 seeds : 0.0090 (median sd), 0.0313 (worst cell)
+    seeds to detect 0.020  : 6 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== fraud_matched_n250.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    -0.0035     0.0113    0.0075             5
+    pca/4             linear-rbf         20    -0.0043     0.0095    0.0063             5
+    pca/4             rbf-poly           20    +0.0008     0.0085    0.0056             4
+    pca/6             linear-poly        20    +0.0002     0.0088    0.0058             4
+    pca/6             linear-rbf         20    -0.0037     0.0155    0.0102             7
+    pca/6             rbf-poly           20    +0.0039     0.0182    0.0120             9
+    pca/8             linear-poly        20    -0.0006     0.0053    0.0035             3
+    pca/8             linear-rbf         20    -0.0048     0.0051    0.0034             3
+    pca/8             rbf-poly           20    +0.0042     0.0076    0.0050             4
+    pca/10            linear-poly        20    -0.0027     0.0050    0.0033             3
+    pca/10            linear-rbf         20    -0.0040     0.0059    0.0039             3
+    pca/10            rbf-poly           20    +0.0013     0.0057    0.0038             3
+    pca/12            linear-poly        20    -0.0011     0.0027    0.0018             3
+    pca/12            linear-rbf         20    -0.0010     0.0045    0.0029             3
+    pca/12            rbf-poly           20    -0.0000     0.0047    0.0031             3
+    randproj/4        linear-poly        20    -0.0236     0.0285    0.0188            18
+    randproj/4        linear-rbf         20    -0.0263     0.0341    0.0225            25
+    randproj/4        rbf-poly           20    +0.0028     0.0177    0.0117             9
+    randproj/6        linear-poly        20    -0.0101     0.0155    0.0102             7
+    randproj/6        linear-rbf         20    -0.0105     0.0090    0.0059             4
+    randproj/6        rbf-poly           20    +0.0004     0.0114    0.0075             5
+    randproj/8        linear-poly        20    -0.0130     0.0206    0.0136            11
+    randproj/8        linear-rbf         20    -0.0197     0.0242    0.0160            14
+    randproj/8        rbf-poly           20    +0.0067     0.0151    0.0100             7
+    randproj/10       linear-poly        20    -0.0135     0.0293    0.0194            19
+    randproj/10       linear-rbf         20    -0.0194     0.0288    0.0190            19
+    randproj/10       rbf-poly           20    +0.0060     0.0101    0.0067             5
+    randproj/12       linear-poly        20    -0.0020     0.0091    0.0060             4
+    randproj/12       linear-rbf         20    -0.0096     0.0118    0.0078             5
+    randproj/12       rbf-poly           20    +0.0076     0.0121    0.0080             6
+    selectk/4         linear-poly        20    +0.0007     0.0041    0.0027             3
+    selectk/4         linear-rbf         20    +0.0028     0.0124    0.0082             6
+    selectk/4         rbf-poly           20    -0.0022     0.0144    0.0095             7
+    selectk/6         linear-poly        20    -0.0005     0.0023    0.0015             3
+    selectk/6         linear-rbf         20    -0.0001     0.0017    0.0011             3
+    selectk/6         rbf-poly           20    -0.0004     0.0026    0.0017             3
+    selectk/8         linear-poly        20    +0.0010     0.0019    0.0012             3
+    selectk/8         linear-rbf         20    +0.0013     0.0023    0.0015             3
+    selectk/8         rbf-poly           20    -0.0003     0.0025    0.0016             3
+    selectk/10        linear-poly        20    -0.0001     0.0018    0.0012             3
+    selectk/10        linear-rbf         20    +0.0004     0.0024    0.0016             3
+    selectk/10        rbf-poly           20    -0.0006     0.0024    0.0016             3
+    selectk/12        linear-poly        20    +0.0001     0.0014    0.0009             3
+    selectk/12        linear-rbf         20    +0.0021     0.0048    0.0032             3
+    selectk/12        rbf-poly           20    -0.0020     0.0050    0.0033             3
+
+    paired sd across all cells: median 0.0085, max 0.0341
+    MDE at n=20 seeds : 0.0056 (median sd), 0.0225 (worst cell)
+    seeds to detect 0.020  : 4 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== fraud_matched_n50.jsonl  (test_average_precision) ===
+    900 records, 15 cells, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    pca/4             linear-poly        20    -0.0003     0.0256    0.0169            15
+    pca/4             linear-rbf         20    +0.0054     0.0710    0.0469           101
+    pca/4             rbf-poly           20    -0.0057     0.0485    0.0320            49
+    pca/6             linear-poly        20    -0.0055     0.0136    0.0090             6
+    pca/6             linear-rbf         20    -0.0046     0.0123    0.0082             6
+    pca/6             rbf-poly           20    -0.0009     0.0132    0.0087             6
+    pca/8             linear-poly        20    -0.0021     0.0117    0.0077             5
+    pca/8             linear-rbf         20    +0.0129     0.0348    0.0230            26
+    pca/8             rbf-poly           20    -0.0150     0.0346    0.0229            26
+    pca/10            linear-poly        20    +0.0005     0.0171    0.0113             8
+    pca/10            linear-rbf         20    +0.0024     0.0197    0.0130            10
+    pca/10            rbf-poly           20    -0.0020     0.0192    0.0127            10
+    pca/12            linear-poly        20    -0.0068     0.0313    0.0207            22
+    pca/12            linear-rbf         20    -0.0061     0.0343    0.0227            26
+    pca/12            rbf-poly           20    -0.0007     0.0082    0.0054             4
+    randproj/4        linear-poly        20    +0.0024     0.0662    0.0437            88
+    randproj/4        linear-rbf         20    +0.0100     0.0712    0.0470           102
+    randproj/4        rbf-poly           20    -0.0076     0.0491    0.0324            50
+    randproj/6        linear-poly        20    +0.0002     0.0338    0.0223            25
+    randproj/6        linear-rbf         20    -0.0026     0.0396    0.0262            33
+    randproj/6        rbf-poly           20    +0.0029     0.0283    0.0187            18
+    randproj/8        linear-poly        20    -0.0058     0.0298    0.0197            20
+    randproj/8        linear-rbf         20    -0.0127     0.0406    0.0268            35
+    randproj/8        rbf-poly           20    +0.0069     0.0256    0.0169            15
+    randproj/10       linear-poly        20    -0.0065     0.0252    0.0166            15
+    randproj/10       linear-rbf         20    +0.0030     0.0489    0.0323            49
+    randproj/10       rbf-poly           20    -0.0095     0.0399    0.0264            34
+    randproj/12       linear-poly        20    +0.0005     0.0227    0.0150            13
+    randproj/12       linear-rbf         20    -0.0096     0.0237    0.0157            14
+    randproj/12       rbf-poly           20    +0.0101     0.0236    0.0156            14
+    selectk/4         linear-poly        20    +0.0031     0.0092    0.0061             4
+    selectk/4         linear-rbf         20    -0.0018     0.0120    0.0079             6
+    selectk/4         rbf-poly           20    +0.0049     0.0161    0.0107             8
+    selectk/6         linear-poly        20    +0.0003     0.0161    0.0106             8
+    selectk/6         linear-rbf         20    -0.0012     0.0058    0.0038             3
+    selectk/6         rbf-poly           20    +0.0015     0.0194    0.0128            10
+    selectk/8         linear-poly        20    -0.0038     0.0250    0.0165            15
+    selectk/8         linear-rbf         20    +0.0039     0.0293    0.0194            19
+    selectk/8         rbf-poly           20    -0.0076     0.0249    0.0165            15
+    selectk/10        linear-poly        20    +0.0003     0.0079    0.0052             4
+    selectk/10        linear-rbf         20    +0.0027     0.0138    0.0091             6
+    selectk/10        rbf-poly           20    -0.0024     0.0119    0.0079             6
+    selectk/12        linear-poly        20    -0.0002     0.0045    0.0030             3
+    selectk/12        linear-rbf         20    +0.0003     0.0049    0.0032             3
+    selectk/12        rbf-poly           20    -0.0006     0.0063    0.0042             4
+
+    paired sd across all cells: median 0.0237, max 0.0712
+    MDE at n=20 seeds : 0.0157 (median sd), 0.0470 (worst cell)
+    seeds to detect 0.020  : 14 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+=== fraud_unconstrained.jsonl  (test_average_precision) ===
+    60 records, 1 cell, 20 seeds per cell
+
+    cell              pair            seeds  mean diff  paired sd       MDE   n for 0.020
+    none/-            linear-poly        20    +0.0009     0.0055    0.0037             3
+    none/-            linear-rbf         20    -0.0006     0.0036    0.0024             3
+    none/-            rbf-poly           20    +0.0015     0.0048    0.0032             3
+
+    paired sd across all cells: median 0.0048, max 0.0055
+    MDE at n=20 seeds : 0.0032 (median sd), 0.0037 (worst cell)
+    seeds to detect 0.020  : 3 (median sd)
+
+    RANK-TEST FLOOR at 20 pairs (these do not improve with effect size):
+      sign test     : best two-sided p = 0.0000; needs 15/20 wins to reach p<=0.05
+      Wilcoxon      : best two-sided p = 0.0000 (all differences same sign)
+
+-> results/analysis/power.json
+
+How to read this: if the MDE is bigger than the advantage you would find
+interesting, a null result from this design is uninformative. Fix it by adding
+seeds or enlarging the test set, and decide that BEFORE the quantum runs.

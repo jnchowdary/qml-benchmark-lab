@@ -66,8 +66,16 @@ def test_split_preserves_stratification(data):
     assert abs(y_tr.mean() - y_te.mean()) < 0.05
 
 
-def test_seeds_list_is_the_documented_ten():
-    assert SEEDS == list(range(10))
+def test_seeds_list_is_the_documented_twenty():
+    """Widened from 10 on 23 Sep 2026 after the power analysis; see data.py."""
+    assert SEEDS == list(range(20))
+
+
+def test_the_original_ten_seeds_are_still_a_prefix():
+    """Week-3 ran seeds 0..9. If the list were reordered or re-based, every
+    result produced before 23 Sep 2026 would silently stop being comparable
+    with everything after it, and nothing else in the suite would notice."""
+    assert SEEDS[:10] == list(range(10))
 
 
 def test_balanced_subsample_is_deterministic(data):

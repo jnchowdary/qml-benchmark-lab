@@ -1,0 +1,35 @@
+machine: macOS-26.2-arm64-arm-64bit-Mach-O
+python : 3.13.15  |  processor: arm
+timing : n=16 (120 entries per Gram), fastest of 2
+
+pennylane devices usable here: ['lightning.qubit', 'default.qubit']
+qiskit: skipped
+
+--- 10 qubits ---
+  pennylane/lightning.qubit     0.550 ms/entry   one kernel matrix     62s
+  pennylane/default.qubit       1.032 ms/entry   one kernel matrix    2.0m
+
+--- 12 qubits ---
+  pennylane/lightning.qubit     0.650 ms/entry   one kernel matrix     74s
+  pennylane/default.qubit       1.598 ms/entry   one kernel matrix    3.0m
+
+--- 14 qubits ---
+  pennylane/lightning.qubit     0.985 ms/entry   one kernel matrix    1.9m
+  pennylane/default.qubit       2.522 ms/entry   one kernel matrix    4.8m
+
+--- 16 qubits ---
+  pennylane/lightning.qubit     2.249 ms/entry   one kernel matrix    4.3m
+  pennylane/default.qubit       5.502 ms/entry   one kernel matrix   10.4m
+
+workload assumed: 350 train + 150 test = 113,575 entries per kernel matrix, per seed, per structural setting.
+
+BUDGET at the measured rates (10 seeds x one structural setting):
+  10 qubits: fastest is pennylane/lightning.qubit at 0.550 ms/entry  ->  10 seeds = 10.4m
+  12 qubits: fastest is pennylane/lightning.qubit at 0.650 ms/entry  ->  10 seeds = 12.3m
+  14 qubits: fastest is pennylane/lightning.qubit at 0.985 ms/entry  ->  10 seeds = 18.6m
+  16 qubits: fastest is pennylane/lightning.qubit at 2.249 ms/entry  ->  10 seeds = 42.6m
+
+Multiply by the number of structural settings in the quantum grid, and again
+by the number of (mapping, qubit) cells, before promising anyone a date.
+
+-> results/analysis/backend_benchmark_highq.json

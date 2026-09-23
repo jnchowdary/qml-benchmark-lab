@@ -1,0 +1,52 @@
+
+==============================================================================
+churn_matched_n250_shuffled.jsonl: 900 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.5078  sd 0.0462  -> +0.76 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean +0.0038  sd 0.0400  -> +0.43 sigma
+     base rate 0.5000, chance AP 0.5154 (the gap of +0.0154 is expected, not leakage)
+     for reference, AP minus BASE would read +0.0192, which is the wrong comparison
+  worst cell by ROC-AUC      : rbf pca q=8 seed=12 -> 0.6549  (max of 900 draws; ~0.6478 expected by chance)
+  (900 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.
+
+==============================================================================
+churn_unconstrained_shuffled.jsonl: 60 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.4901  sd 0.0247  -> -1.79 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean -0.0062  sd 0.0215  -> -1.29 sigma
+     base rate 0.5000, chance AP 0.5050 (the gap of +0.0050 is expected, not leakage)
+     for reference, AP minus BASE would read -0.0012, which is the wrong comparison
+  worst cell by ROC-AUC      : linear none q=None seed=2 -> 0.5422  (max of 60 draws; ~0.5791 expected by chance)
+  (60 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.
+
+==============================================================================
+fraud_matched_n250_shuffled.jsonl: 900 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.5058  sd 0.0445  -> +0.58 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean +0.0069  sd 0.0409  -> +0.76 sigma
+     base rate 0.5000, chance AP 0.5154 (the gap of +0.0154 is expected, not leakage)
+     for reference, AP minus BASE would read +0.0223, which is the wrong comparison
+  worst cell by ROC-AUC      : rbf pca q=8 seed=18 -> 0.6199  (max of 900 draws; ~0.6425 expected by chance)
+  (900 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.
+
+==============================================================================
+fraud_unconstrained_shuffled.jsonl: 60 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.5031  sd 0.0292  -> +0.47 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean +0.0046  sd 0.0214  -> +0.97 sigma
+     base rate 0.3304, chance AP 0.3389 (the gap of +0.0085 is expected, not leakage)
+     for reference, AP minus BASE would read +0.0132, which is the wrong comparison
+  worst cell by ROC-AUC      : poly none q=None seed=11 -> 0.5521  (max of 60 draws; ~0.5934 expected by chance)
+  (60 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.
