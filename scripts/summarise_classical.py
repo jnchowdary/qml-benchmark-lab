@@ -3,8 +3,10 @@
 
 Reads results/runs/classical/<dataset>_<track>.jsonl and reports:
 
-  1. Test PR-AUC per kernel, per (mapping, qubits) cell, and linear against
-     the best nonlinear kernel.
+  1. Test PR-AUC, normalised AP and ROC-AUC per kernel, per (mapping, qubits)
+     cell, and linear against the best nonlinear kernel. normAP and ROC-AUC
+     are base-rate invariant and are the only two safe for cross-track or
+     cross-dataset comparison.
   2. Edge flags recomputed plateau-aware from the stored grid scores, next to
      the flags recorded at run time, so the false alarms are visible.
   3. Inner-CV optimism per kernel (inner score minus outer test score) against
@@ -12,6 +14,9 @@ Reads results/runs/classical/<dataset>_<track>.jsonl and reports:
      settings.
   4. Whether the inner-CV winner is also the test winner, and what trusting it
      costs against always choosing linear.
+  5. Solver health.
+  6. Pairing readiness: whether per-test-point decision scores were stored and
+     whether every cell in a seed was scored on the same test points.
 
 Outer test scores are used here ONLY for after-the-fact diagnosis. No grid,
 selection rule or reference-kernel choice may be changed on the strength of
@@ -33,9 +38,37 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from qbench.metrics import chance_average_precision, normalised_average_precision  # noqa: E402
 from qbench.tuning import edge_flags  # noqa: E402
 
 KERNELS = ("linear", "rbf", "poly")
+
+METRICS = {
+    "ap": ("test PR-AUC", lambda r: r["test_average_precision"]),
+    "normap": ("normalised AP", lambda r: norm_ap(r)),
+    "roc": ("ROC-AUC", lambda r: r["test_roc_auc"]),
+}
+
+
+def norm_ap(r):
+    """(AP - chance) / (1 - chance): average precision rescaled so chance is 0.
+
+    Raw PR-AUC depends on the test base rate, so a cell at base 0.500 and a
+    cell at base 0.330 cannot be compared on it. Found 22 Sep 2026: the fraud
+    unconstrained track has base 0.330, because the 1000-per-class cap meets
+    only 492 available positives, while the matched track is balanced at
+    0.500.
+
+    Corrected 23 Sep 2026: the chance floor is NOT the base rate. A random
+    ranking of 150 test points at base 0.500 scores 0.5154, and of 30 points
+    scores 0.5516 (qbench.metrics, exact). The first version of this function
+    divided by (1 - base) and was therefore optimistic, most so for the
+    smallest test sets -- which is exactly the training-size sweep. Use
+    qbench.metrics for the real floor.
+    """
+    return normalised_average_precision(r["test_average_precision"],
+                                        int(r["n_test"]),
+                                        int(round(r["test_base_rate"] * r["n_test"])))
 
 
 def load(path):
@@ -53,20 +86,31 @@ def mean_sd(xs):
 
 
 def section_performance(recs):
-    print("1. TEST PR-AUC by cell (mean ± sd over seeds)")
-    cells = defaultdict(lambda: defaultdict(list))
-    for r in recs:
-        cells[(r["mapping"], r["n_qubits"])][r["method"]].append(r["test_average_precision"])
-    print(f"   {'mapping':<10}{'qubits':>7}{'linear':>17}{'rbf':>17}{'poly':>17}{'lin - best nonlin':>20}")
-    for (mapping, nq), by in sorted(cells.items(), key=lambda kv: (kv[0][0], kv[0][1] or 0)):
-        cols = []
-        for k in KERNELS:
-            m, s = mean_sd(by[k]) if by[k] else (float("nan"), 0.0)
-            cols.append(f"{m:.4f} ± {s:.3f}")
-        lin = st.mean(by["linear"])
-        best_nl = max(st.mean(by["rbf"]), st.mean(by["poly"]))
-        q = "-" if nq is None else str(nq)
-        print(f"   {mapping:<10}{q:>7}" + "".join(f"{c:>17}" for c in cols) + f"{lin - best_nl:>+20.4f}")
+    base = st.mean([r["test_base_rate"] for r in recs])
+    n_test = recs[0]["n_test"]
+    chance = chance_average_precision(int(n_test), int(round(base * n_test)))
+    print(f"1. PERFORMANCE by cell (mean ± sd over seeds).  base rate {base:.3f}, "
+          f"n_test {n_test}")
+    print(f"   Chance AP for a RANDOM ranking here is {chance:.4f}, not the base rate "
+          f"({base:.4f}).")
+    print("   normAP = (AP - chance)/(1 - chance): 0 is chance, 1 is perfect. Use normAP or")
+    print("   ROC-AUC for any comparison across tracks, training sizes or datasets.")
+    for key in ("ap", "normap", "roc"):
+        label, fn = METRICS[key]
+        cells = defaultdict(lambda: defaultdict(list))
+        for r in recs:
+            cells[(r["mapping"], r["n_qubits"])][r["method"]].append(fn(r))
+        print(f"\n   {label}")
+        print(f"   {'mapping':<10}{'qubits':>7}{'linear':>17}{'rbf':>17}{'poly':>17}{'lin - best nonlin':>20}")
+        for (mapping, nq), by in sorted(cells.items(), key=lambda kv: (kv[0][0], kv[0][1] or 0)):
+            cols = []
+            for k in KERNELS:
+                m, s = mean_sd(by[k]) if by[k] else (float("nan"), 0.0)
+                cols.append(f"{m:.4f} ± {s:.3f}")
+            lin = st.mean(by["linear"])
+            best_nl = max(st.mean(by["rbf"]), st.mean(by["poly"]))
+            q = "-" if nq is None else str(nq)
+            print(f"   {mapping:<10}{q:>7}" + "".join(f"{c:>17}" for c in cols) + f"{lin - best_nl:>+20.4f}")
     print()
 
 
@@ -136,22 +180,78 @@ def section_solver(recs):
     print(f"   final-fit fallbacks: {fb};  final models not converged: {nf}\n")
 
 
+def section_pairing(recs):
+    """Is this run usable for week 9's paired tests, or will it need re-running?
+
+    Two things have to hold. Every record must carry its per-test-point
+    decision scores, because a paired test cannot be reconstructed from a mean.
+    And every record within a seed must have been scored on the SAME test
+    points in the same order, which the label fingerprint proves rather than
+    assumes.
+    """
+    print("6. PAIRING READINESS (what week 9's statistics need from this file)")
+    have = sum(1 for r in recs if r.get("test_decision_scores"))
+    print(f"   records carrying per-test-point decision scores: {have}/{len(recs)}")
+    if not have:
+        print("   None stored. A paired test cannot be built from summary metrics, so this")
+        print("   file would have to be regenerated in week 9. Re-run it now instead.\n")
+        return
+    by_seed = defaultdict(set)
+    for r in recs:
+        by_seed[r["seed"]].add(r.get("test_label_fingerprint"))
+    bad = sorted(s for s, f in by_seed.items() if len(f) > 1)
+    print(f"   seeds whose cells share one test-label fingerprint: {len(by_seed) - len(bad)}/{len(by_seed)}")
+    if bad:
+        print(f"   MISMATCH in seeds {bad}: those records were not scored on the same test")
+        print("   points, so pairing them would be invalid. Diagnose before week 9.")
+    print()
+
+
+def resolve(in_dir, dataset, track, n_per_class, shuffled):
+    """Locate the run file, tolerating both naming schemes.
+
+    Files written before 23 Sep 2026 are <dataset>_<track>.jsonl. Since the
+    training-size sweep they are <dataset>_<track>_n<size>.jsonl. Fall back to
+    the old name rather than reporting 'no such file' for an archive that is
+    sitting right there.
+    """
+    in_dir = Path(in_dir)
+    suffix = "_shuffled" if shuffled else ""
+    names = []
+    if n_per_class is not None:
+        names.append(f"{dataset}_{track}_n{n_per_class}{suffix}.jsonl")
+    names.append(f"{dataset}_{track}{suffix}.jsonl")
+    for name in names:
+        if (in_dir / name).exists():
+            return in_dir / name
+    available = sorted(p.name for p in in_dir.glob(f"{dataset}_{track}*.jsonl"))
+    raise SystemExit(f"none of {names} found in {in_dir}\navailable: {available or 'nothing'}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--track", default="matched")
+    ap.add_argument("--n-per-class", type=int, default=None,
+                    help="training size to read, for sweep files written since 23 Sep 2026")
+    ap.add_argument("--shuffled", action="store_true", help="read the negative-control file")
     ap.add_argument("--in-dir", default=str(ROOT / "results" / "runs" / "classical"))
     args = ap.parse_args()
 
-    path = Path(args.in_dir) / f"{args.dataset}_{args.track}.jsonl"
+    path = resolve(args.in_dir, args.dataset, args.track, args.n_per_class, args.shuffled)
     recs = load(path)
     r0 = recs[0]
-    print(f"{path.name}: {len(recs)} records, commit {r0.get('git_commit')}, C grid {r0['c_grid'][0]:g}..{r0['c_grid'][-1]:g}\n")
+    print(f"{path.name}: {len(recs)} records, {r0.get('n_seeds', len({r['seed'] for r in recs}))} seeds, "
+          f"commit {r0.get('git_commit')}, C grid {r0['c_grid'][0]:g}..{r0['c_grid'][-1]:g}")
+    if r0.get("shuffled"):
+        print("NEGATIVE CONTROL FILE: labels were permuted. These are not results.")
+    print()
     section_performance(recs)
     section_flags(recs)
     section_optimism(recs)
     section_selection(recs)
     section_solver(recs)
+    section_pairing(recs)
 
 
 if __name__ == "__main__":

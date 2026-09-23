@@ -16,9 +16,26 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.preprocessing import StandardScaler
 
-__all__ = ["SEEDS", "load_dataset", "make_split", "make_cv", "balanced_subsample"]
+__all__ = ["SEEDS", "SHUFFLE_SEED_OFFSET", "load_dataset", "make_split", "make_cv",
+           "balanced_subsample", "shuffle_labels"]
 
-SEEDS = list(range(10))
+# Widened from 10 to 20 on 23 Sep 2026, decided from measured variance rather
+# than from habit. scripts/power_analysis.py on the week-3 results gave a
+# median paired sd of 0.0325 PR-AUC across the churn matched cells, so 10 seeds
+# could only detect a true difference of 0.0324 with 80% power -- larger than
+# almost any effect this literature reports, which would have made a null
+# churn result a statement about our sample size. At 20 the minimum detectable
+# effect is 0.0215; fraud goes from 0.0078 to 0.0052.
+#
+# 0..9 are kept as a PREFIX so every week-3 run remains a subset of every
+# later run and the two are directly comparable. Never reorder this list.
+SEEDS = list(range(20))
+
+# Offset applied to the outer seed when permuting labels for the negative
+# control, so the permutation is reproducible AND independent of the split it
+# is paired with. Without an offset, seed s would drive both the split and the
+# permutation and the two would be correlated in a way nobody could audit.
+SHUFFLE_SEED_OFFSET = 10_000
 
 DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 
@@ -108,3 +125,27 @@ def balanced_subsample(X, y, n_per_class: int, seed: int = 0):
     idx = np.concatenate(idx)
     rng.shuffle(idx)
     return X[idx], y[idx]
+
+
+def shuffle_labels(y, seed: int):
+    """Permute labels within the sample, destroying any X-y relationship.
+
+    The negative control. Run the ENTIRE pipeline -- mapping, angle scaling,
+    nested CV, tuning, final fit, scoring -- on labels that carry no signal.
+    The expected test PR-AUC is then the test base rate, and the expected
+    ROC-AUC is 0.5. Anything materially above that is not a property of the
+    data; it is leakage somewhere in the pipeline, and the most likely place
+    is a step that sees labels it should not (SelectKBest is fit on the
+    outer-train labels, which is legitimate, but a bug there would show up
+    here and nowhere else).
+
+    Class counts are preserved exactly, so the base rate is unchanged and the
+    control is comparable to the real run cell for cell.
+
+    Permute BEFORE the train/test split, never after: permuting each side
+    separately would leave the two label vectors independently balanced and
+    would not test the split itself.
+    """
+    rng = np.random.default_rng(int(seed) + SHUFFLE_SEED_OFFSET)
+    y = np.asarray(y)
+    return y[rng.permutation(len(y))]

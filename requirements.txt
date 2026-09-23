@@ -3,6 +3,12 @@ qiskit==2.4.2
 qiskit-machine-learning==0.9.1
 qiskit-aer==0.17.2
 pennylane==0.45.1
+# Added 23 Sep 2026. It ships as a pennylane dependency, so it was already
+# present and already being used by `qml.device("lightning.qubit", ...)` in
+# scripts/benchmark_backends.py. Pinned explicitly because the benchmark that
+# sets the project's compute budget depends on WHICH simulator ran, and an
+# unpinned transitive dependency is not a record of that.
+pennylane-lightning==0.45.0
 numpy==2.4.4
 scipy==1.17.1
 scikit-learn==1.8.0

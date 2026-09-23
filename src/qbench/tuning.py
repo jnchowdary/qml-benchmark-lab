@@ -2,7 +2,8 @@
 
 Design
 ------
-Outer loop = the 10 seeds in qbench.data.SEEDS: each seed is one stratified
+Outer loop = the seeds in qbench.data.SEEDS (20 since 23 Sep 2026, chosen from
+the measured paired variance rather than by convention): each seed is one stratified
 train/test split. Inner loop = stratified k-fold CV on the outer-train portion
 only, used to choose hyperparameters. The outer test set is touched exactly
 once, after selection, which is what makes the reported score an unbiased
@@ -38,10 +39,22 @@ hyperparameter sitting on the boundary of its grid, which means the optimum
 may lie outside the searched range and the baseline may be under-tuned.
 Explicit grids are used instead of sklearn's data-dependent gamma='scale' so
 that every searched value is written down and reproducible.
+
+What every record stores, and why
+---------------------------------
+Each record carries the RAW per-test-point decision scores and the test labels,
+not only the summary metrics. Summary metrics cannot be turned back into a
+paired test: McNemar, DeLong and a paired bootstrap all need the individual
+predictions. Storing them costs a few hundred floats per record; NOT storing
+them would mean re-running every experiment in week 9 to get a p-value.
+`test_label_fingerprint` is a hash of the test labels in order, so week 9 can
+ASSERT that two records were scored on the same points in the same order
+rather than assuming it.
 """
 
 from __future__ import annotations
 
+import hashlib
 import time
 import warnings
 from dataclasses import asdict, dataclass
@@ -62,6 +75,7 @@ __all__ = [
     "select_hyperparameters",
     "edge_flags",
     "evaluate",
+    "label_fingerprint",
     "tune_and_evaluate",
 ]
 
@@ -263,14 +277,30 @@ def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None)
     return flags
 
 
+def label_fingerprint(y):
+    """Short hash of a label vector IN ORDER.
+
+    Two records share a fingerprint only if they were scored on the same test
+    points in the same order. Week 9's paired tests assert on this instead of
+    trusting that identical seeds produced identical splits.
+    """
+    return hashlib.sha256(np.asarray(y, dtype=np.int64).tobytes()).hexdigest()[:16]
+
+
 def evaluate(kernel, X_tr, y_tr, X_te, y_te, C, max_iter=MAX_ITER):
-    """Fit once on the full outer-train set, score once on the outer test set."""
+    """Fit once on the full outer-train set, score once on the outer test set.
+
+    Returns the per-test-point decision scores alongside the summary metrics.
+    An average precision of 0.6438 cannot be turned back into a paired test;
+    the 150 numbers behind it can.
+    """
     t0 = time.perf_counter()
     K_tr = np.asarray(kernel(X_tr), dtype=float)
     K_te = np.asarray(kernel(X_te, X_tr), dtype=float)
     model, converged = _fit(K_tr, y_tr, C, max_iter)
     fit_s = time.perf_counter() - t0
-    scores = model.decision_function(K_te)
+    scores = np.asarray(model.decision_function(K_te), dtype=float).ravel()
+    y_te = np.asarray(y_te).ravel()
     return {
         "test_average_precision": float(average_precision_score(y_te, scores)),
         "test_roc_auc": float(roc_auc_score(y_te, scores)),
@@ -279,6 +309,9 @@ def evaluate(kernel, X_tr, y_tr, X_te, y_te, C, max_iter=MAX_ITER):
         "n_support": int(model.n_support_.sum()),
         "final_converged": converged,
         "fit_seconds": fit_s,
+        "test_decision_scores": [float(s) for s in scores],
+        "test_labels": [int(v) for v in y_te],
+        "test_label_fingerprint": label_fingerprint(y_te),
     }
 
 

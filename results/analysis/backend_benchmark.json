@@ -1,0 +1,78 @@
+{
+  "measured_utc": "2026-09-22T23:17:12Z",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "processor": "arm",
+  "python": "3.13.15",
+  "n_timing_points": 24,
+  "repeats": 2,
+  "workload": {
+    "n_train": 350,
+    "n_test": 150,
+    "entries": 113575
+  },
+  "results": [
+    {
+      "n_qubits": 4,
+      "backend": "pennylane/lightning.qubit",
+      "ms_per_entry": 0.40053864485462726,
+      "workload_seconds": 45.49117658936429,
+      "max_abs_disagreement": null
+    },
+    {
+      "n_qubits": 4,
+      "backend": "pennylane/default.qubit",
+      "ms_per_entry": 0.5495215907854879,
+      "workload_seconds": 62.41191467346179,
+      "max_abs_disagreement": 0.0
+    },
+    {
+      "n_qubits": 4,
+      "backend": "qiskit/statevector",
+      "ms_per_entry": 2.8467936301266477,
+      "workload_seconds": 323.324586541634,
+      "max_abs_disagreement": null
+    },
+    {
+      "n_qubits": 6,
+      "backend": "pennylane/lightning.qubit",
+      "ms_per_entry": 0.4396487029093871,
+      "workload_seconds": 49.93310143293364,
+      "max_abs_disagreement": null
+    },
+    {
+      "n_qubits": 6,
+      "backend": "pennylane/default.qubit",
+      "ms_per_entry": 0.6697641920122871,
+      "workload_seconds": 76.06846810779551,
+      "max_abs_disagreement": 3.3306690738754696e-16
+    },
+    {
+      "n_qubits": 6,
+      "backend": "qiskit/statevector",
+      "ms_per_entry": 3.9636524777144087,
+      "workload_seconds": 450.17183015641393,
+      "max_abs_disagreement": null
+    },
+    {
+      "n_qubits": 8,
+      "backend": "pennylane/lightning.qubit",
+      "ms_per_entry": 0.4770310976933958,
+      "workload_seconds": 54.17880692052743,
+      "max_abs_disagreement": null
+    },
+    {
+      "n_qubits": 8,
+      "backend": "pennylane/default.qubit",
+      "ms_per_entry": 0.7543982465522012,
+      "workload_seconds": 85.68078085216627,
+      "max_abs_disagreement": 0.0
+    },
+    {
+      "n_qubits": 8,
+      "backend": "qiskit/statevector",
+      "ms_per_entry": 5.088747888162354,
+      "workload_seconds": 577.9545413980393,
+      "max_abs_disagreement": null
+    }
+  ]
+}
