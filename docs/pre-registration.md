@@ -1,7 +1,9 @@
 # Pre-registration: quantum kernel methods on business tabular data, and the predictive value of the geometric difference
 
 **Version 1.0. Registered 24 September 2026.**
-Repository: `github.com/jnchowdary/qml-benchmark-lab`, commit `a8bafbb`.
+Repository: `github.com/jnchowdary/qml-benchmark-lab`.
+Code state this design rests on: commit `a8bafbb`. This document added at commit `61f7db9`.
+The two differ because a document cannot contain its own commit hash; both are on `main` and public.
 Author: Nagesh Chowdary, Diarka Quantum Ltd.
 
 This document is registered **before any quantum kernel has been evaluated on real data**. Section 12 states exactly what was already observed at registration time, because a pre-registration that hides its starting point is worse than none.
