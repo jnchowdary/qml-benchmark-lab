@@ -1,8 +1,10 @@
 # QML Benchmark Lab: Week 3 Record
 
-Written 23 September 2026. Covers work done 22 to 23 September 2026.
-Results produced at commit `2cf7ec7` on `main`. 175 tests passing, `qbench` coverage 96%, `tuning.py` 100%.
-The chance-AP correction in section 7 landed after those runs and is analysis-only: no experiment was re-run for it.
+Written 23 September 2026, revised 24 September after the grid-edge question closed.
+Covers work done 22 to 24 September 2026. Baselines produced at commit `2cf7ec7`; record current
+at `132a6ea`. 183 tests passing, `qbench` coverage 96%, `tuning.py` 100%.
+The chance-AP correction in section 7 and the grid-edge result in section 14 both landed after
+those runs and are analysis-only: no experiment was re-run for either.
 
 ---
 
@@ -227,21 +229,47 @@ Good for fairness, bad for the optimistic quantum case: if a few dimensions and 
 
 ---
 
-## 14. The one thing not yet clean: grid edges
+## 14. Grid edges: a wider search helps more when there is no signal
 
-Between 265 and 350 of the 900 tuned models in each matched file chose a hyperparameter at the edge of its searched range, and the plateau-aware rule removed none of them. The concentration is specific. On churn at 250 per class, 94 of 300 RBF models chose the smallest gamma in the grid and 133 of 300 polynomial models did the same; the C grid is barely touched, with 1 to 27 flags.
+Between 265 and 350 of the 900 tuned models in each matched file chose a hyperparameter at the edge of its searched range, and the plateau rule removed none of them. On churn at 250 per class, 94 of 300 RBF models chose the smallest gamma and 133 of 300 polynomial models did the same; polynomial degree sat at its maximum 72 times and at its minimum 88; the C grid was barely touched. On fraud the largest single flag was polynomial degree at its maximum, 106 of 300, against a cap of 5.
 
-Under-tuning the classical baseline is the most common way this literature manufactures an apparent quantum advantage, so a third of models sitting at a grid boundary cannot be called tuned. The likely reading is that both kernels want gamma small enough to behave almost linearly, which would make this a plateau the current tolerance is too strict to detect, but that is a hypothesis and it has not been measured.
+Under-tuning the classical baseline is the most common way this literature manufactures an apparent quantum advantage, so a third of models on a boundary had to be explained before any quantum work began.
 
-This must be settled before the quantum runs, because the classical reference has to be credible. The test is cheap: extend the RBF gamma grid below 1e-3 and the polynomial multiplier below 0.1, re-run churn at 250 per class only, and check whether the flags move to the new edge and whether any test score changes materially. Half an hour of machine time. It is the first item of week 4.
+`scripts/check_grid_edges.py` runs the inner-CV selection twice per cell, once on the frozen grid and once on that grid extended in both directions, reading inner-CV scores only. Extended downward: RBF gamma to 1e-5, polynomial multiplier to 0.003. Extended upward: RBF gamma to 1e4, multiplier to 100, degree to 9.
+
+The gain on real labels is real but small, and the winners scatter:
+
+| | winners leaving the frozen grid | mean gain | max gain |
+| --- | --- | --- | --- |
+| churn, polynomial | 11/15 | +0.00160 | +0.00793 |
+| churn, RBF | 7/15 | +0.00041 | +0.00237 |
+| fraud, polynomial | 9/15 | +0.00083 | +0.00635 |
+| fraud, RBF | 1/15 | +0.00002 | +0.00025 |
+
+Raising the degree ceiling did not stop the winners reaching it. Capped at 7, degree 7 was the single best setting on both datasets; raised to 9, degree 9 won in two churn cells and one fraud cell and the maximum gain moved by less than 0.001. The winning degree scattered across the whole range, 3 to 9 on churn and 2 to 9 on fraud. A parameter spanning "almost linear" to "extremely nonlinear" whose optimum lands anywhere does not have an optimum outside the grid; it has a score surface too noisy to rank.
+
+**The decisive measurement is the same comparison on shuffled labels**, where there is no signal and the whole gain is therefore selection noise:
+
+| | real mean | real max | null mean | null max |
+| --- | --- | --- | --- | --- |
+| churn, polynomial | +0.00160 | +0.00793 | +0.00803 | +0.02151 |
+| churn, RBF | +0.00041 | +0.00237 | +0.00081 | +0.00770 |
+| fraud, polynomial | +0.00083 | +0.00635 | +0.00550 | +0.02793 |
+| fraud, RBF | +0.00002 | +0.00025 | +0.00060 | +0.00803 |
+
+**Extending the grid gains five to seven times more on random labels than on real ones.** Degree-up winners are commoner under the null too: 10 of 15 against 5 on churn, with degree 9 taking five cells. The excess of real over null is negative in all four comparisons, against a pre-declared threshold of +0.002 for widening. The frozen grid is not under-tuned, no re-run is required, and the edge flags are the winner's curse.
+
+This also settles what the flags are for. The plateau test absorbs exact ties, which is the case it was built for: linear PR-AUC is invariant to C below a threshold, so the score repeats to the last bit. It cannot absorb approximate flatness, and no tolerance would let it. Raising the tolerance from 1e-12 to 1e-3 removed only 11 of 350 flags, so neighbouring points genuinely differ by more than 1e-3; absorbing that would need a tolerance near the measured selection noise of 0.008, which exceeds the smallest effect the experiment can resolve, 0.0056. The two constraints do not overlap. **Edge flags are therefore descriptive, not diagnostic**: they report that a value sits on a boundary, and `check_grid_edges.py` against a shuffled null is what adjudicates whether that matters. A test in `test_tuning.py` records the arithmetic so the mechanism is not quietly "fixed" later.
+
+Read alongside section 12, this is one finding rather than two. Inner-CV optimism rises with grid size, and a wider grid raises the inner-CV maximum more when the labels are random than when they carry signal. In the small-data regime this literature works in, searching harder produces a better cross-validation number and a worse-behaved selection. That is a statement about how the field selects models, not about this pipeline, and it belongs in the paper.
 
 ---
 
 ## 15. Tests, coverage and housekeeping
 
-175 tests passing, up from 137. `qbench` coverage 96%. `tuning.py` at 100%. Two new test files: `test_audit_fixes.py` (23 tests, one per closed gap plus the design decisions) and `test_metrics.py` (14 tests on the chance-AP calculation).
+183 tests passing, up from 137. `qbench` coverage 96%. `tuning.py` at 100%. Two new test files: `test_audit_fixes.py` (29 tests, one per closed gap plus the design decisions and the grid-edge diagnostic) and `test_metrics.py` (14 tests on the chance-AP calculation).
 
-Tests worth naming, because each encodes a failure rather than a feature. The stored decision scores must reproduce the reported metric exactly, or week 9's p-value would describe a different model from week 3's table with nothing to announce it. The label fingerprint must be order-sensitive, because a hash that ignored order would license an invalid pairing. The training-size sweep must write separate files, because a size silently mixed into a within-cell pairing would be invisible. A shuffled run must never overwrite a real one. The power solver must deliver the power it claims, verified by simulating the test it describes. And the backends must agree to 1e-8, because a fast backend computing something else is not a speedup.
+Tests worth naming, because each encodes a failure rather than a feature. The stored decision scores must reproduce the reported metric exactly, or week 9's p-value would describe a different model from week 3's table with nothing to announce it. The label fingerprint must be order-sensitive, because a hash that ignored order would license an invalid pairing. The training-size sweep must write separate files, because a size silently mixed into a within-cell pairing would be invisible. A shuffled run must never overwrite a real one. The power solver must deliver the power it claims, verified by simulating the test it describes. The backends must agree to 1e-8, because a fast backend computing something else is not a speedup. The grid-edge extension must be a strict superset of the frozen grid, or the diagnostic compares two different grids and means nothing. And grid membership must be decided by set difference rather than by one parameter, because a degree-6 point is outside the grid even when its gamma is inside it, which the first version of that diagnostic got wrong.
 
 Environment: `pip install -r requirements.txt` downgraded numpy from 2.5.3 to the pinned 2.4.4 and scipy from 1.18.1 to 1.17.1. The pre-22-September results were therefore produced on different numerics from the ones now pinned. Everything in this record was produced after the downgrade. `pennylane-lightning==0.45.0` is now pinned explicitly; it was already installed as a PennyLane dependency and already the backend `lightning.qubit` resolved to, but an unpinned transitive dependency is not a record of which simulator set the compute budget.
 
@@ -263,19 +291,21 @@ The pre-registration is written next, and it now has real numbers to carry: the 
 
 The quantum structural grids are still not frozen, while the classical ones are. That asymmetry is exactly the freedom a referee would attack, and it closes with the pre-registration.
 
-The grid-edge question in section 14. The IBM Quantum Open Plan allocation is still unconfirmed. The pre-registration mechanism, OSF or a published hash, is still unchosen. And the Kaggle credential file remains somewhere on the machine that neither of us has located.
+The IBM Quantum Open Plan allocation is still unconfirmed. The pre-registration mechanism, OSF or a published hash, is still unchosen. And the Kaggle credential file remains somewhere on the machine that neither of us has located.
 
 ---
 
 ## 18. Week 4
 
-In order: settle the grid edges; write and timestamp the pre-registration with the numbers from this record; freeze the quantum feature-map grids inside it; then build the quantum kernels and pre-screen the structural grid with the geometric difference on one seed before committing 34 hours of compute to a full sweep.
+In order: write and timestamp the pre-registration with the numbers from this record; freeze the quantum feature-map grids inside it; then build the quantum kernels and pre-screen the structural grid with the geometric difference on one seed before committing 34 hours of compute to a full sweep.
+
+The pre-registration carries one analysis decision that came out of section 14 and must be declared rather than discovered: quantum feature-map grids will be compared against a shuffled-label null before any grid is called too narrow, and edge flags alone will never be used to justify widening one.
 
 ---
 
-## 19. Corrections (23 September 2026)
+## 19. Corrections (23 and 24 September 2026)
 
-Four, all mine, all recorded because the pattern matters more than the individual errors.
+Seven, all mine, all recorded because the pattern matters more than the individual errors.
 
 **The negative-control expectation.** The verdict block asserted that a random ranker's average precision equals the test base rate. It does not, at finite sample size. Read against the base rate, a clean pipeline appeared to leak at 2.2 and 2.5 sigma. Fixed in `qbench/metrics.py` with an exact calculation, validated two independent ways. Section 7.
 
@@ -285,4 +315,10 @@ Four, all mine, all recorded because the pattern matters more than the individua
 
 **A remembered constant in a power test.** 0.9386 was written in as the required effect size for a paired t-test at n = 10; the correct value is 0.9960, and 0.9386 delivers 75% power rather than 80%. Caught only because a solver had been written to disagree. The test now carries the simulation that settled it.
 
-The common thread with the plateau misreading in week 3's first pass and the fraud base-rate error: a number held with confidence, written into code as an assertion, never checked against anything independent. Every expectation introduced from here on gets an independent check in the same commit, or it does not go in.
+**A one-sided grid diagnostic reported as a clean result.** The first version of `check_grid_edges.py` extended the grid downward only, and returned a plateau verdict, while the run it was explaining had flagged both boundaries and, on fraud, degree at its maximum 106 times. Half the question answered and presented as the answer. Section 14.
+
+**A verdict rule that measured the winner's curse.** The replacement compared the maximum gain over an extended grid against the minimum detectable effect. The expected maximum over a grid grows with the number of points searched, under the null, so that statistic cannot separate "the optimum lies outside" from "the search is noisy". It returned "widen the grid" on both datasets; the shuffled-label null showed the real gain running five to seven times BELOW the noise floor. Section 14.
+
+**A plateau tolerance chosen to look reasonable.** 1e-4 was picked as a compromise between absorbing noise and preserving signal. The tolerance sweep showed it removed 2 of 350 flags, and the arithmetic shows no value could work: the noise is 0.008 and the smallest detectable effect is 0.0056. Reverted to exact-tie detection with the limitation documented in code. Section 14.
+
+The common thread, across all seven and the plateau misreading and fraud base-rate error before them: a number or a rule held with confidence, written into code as an assertion, never checked against anything independent. The three corrections above were caught by controls built for the purpose rather than by an output looking wrong, which is the first time in this project that has happened. Every expectation introduced from here on gets an independent check in the same commit, or it does not go in.
