@@ -1,0 +1,119 @@
+{
+  "alpha": 0.05,
+  "power": 0.8,
+  "n_sim": 40000,
+  "summaries": [
+    {
+      "file": "churn_matched_n100.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.882543045441157,
+      "rho_iqr": [
+        0.7686497557201581,
+        0.9206957456686449
+      ],
+      "rho_min": 0.48517676832970197,
+      "paired_sd": 0.04241536240057247,
+      "mde_single": 0.02801287212526938,
+      "mde_union": 0.031347942877504295,
+      "mde_intersection_union": 0.029827099444642232
+    },
+    {
+      "file": "churn_matched_n250.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.8184421391594575,
+      "rho_iqr": [
+        0.735042618384341,
+        0.8720362039251754
+      ],
+      "rho_min": 0.566855051426117,
+      "paired_sd": 0.024119232653354042,
+      "mde_single": 0.015929345921818865,
+      "mde_union": 0.01782581321187472,
+      "mde_intersection_union": 0.017146530814053994
+    },
+    {
+      "file": "churn_matched_n50.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.8559480136516981,
+      "rho_iqr": [
+        0.8030848752858467,
+        0.8930798182942372
+      ],
+      "rho_min": 0.5614417755214143,
+      "paired_sd": 0.060352808020794756,
+      "mde_single": 0.039859508390399534,
+      "mde_union": 0.044604979687909545,
+      "mde_intersection_union": 0.04267672691464798
+    },
+    {
+      "file": "churn_unconstrained.jsonl",
+      "n_cell_pairs": 3,
+      "rho_median": 0.4292822017776837,
+      "rho_iqr": [
+        0.3591796708819406,
+        0.6259800505596039
+      ],
+      "rho_min": 0.2890771399861975,
+      "paired_sd": 0.007338877710795908,
+      "mde_single": 0.004846900538394096,
+      "mde_union": 0.005423947981166243,
+      "mde_intersection_union": 0.005432265590671876
+    },
+    {
+      "file": "fraud_matched_n100.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.9142467444757346,
+      "rho_iqr": [
+        0.7752645365112906,
+        0.9523270363193348
+      ],
+      "rho_min": 0.4312693410175307,
+      "paired_sd": 0.013558202386929563,
+      "mde_single": 0.008954401618137625,
+      "mde_union": 0.010020467347023632,
+      "mde_intersection_union": 0.00944001401312634
+    },
+    {
+      "file": "fraud_matched_n250.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.933991679165966,
+      "rho_iqr": [
+        0.8846678721614697,
+        0.9492731953257993
+      ],
+      "rho_min": -0.19977815290750836,
+      "paired_sd": 0.008480477339898651,
+      "mde_single": 0.005600860486355745,
+      "mde_union": 0.0062676705839374005,
+      "mde_intersection_union": 0.005866301717747723
+    },
+    {
+      "file": "fraud_matched_n50.jsonl",
+      "n_cell_pairs": 45,
+      "rho_median": 0.9474373351993752,
+      "rho_iqr": [
+        0.9214622587003557,
+        0.970673019685319
+      ],
+      "rho_min": 0.6111040075783257,
+      "paired_sd": 0.023724445518703185,
+      "mde_single": 0.015668612053386172,
+      "mde_union": 0.017534037688918404,
+      "mde_intersection_union": 0.01633010419291354
+    },
+    {
+      "file": "fraud_unconstrained.jsonl",
+      "n_cell_pairs": 3,
+      "rho_median": 0.880670263397349,
+      "rho_iqr": [
+        0.7610326278536577,
+        0.8910501742101951
+      ],
+      "rho_min": 0.6413949923099664,
+      "paired_sd": 0.004783527735568212,
+      "mde_single": 0.003159240972613808,
+      "mde_union": 0.003535364210527786,
+      "mde_intersection_union": 0.0033647221332851196
+    }
+  ]
+}

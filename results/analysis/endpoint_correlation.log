@@ -1,0 +1,77 @@
+Two primary endpoints, same decision scores, same test set.
+UNION needs alpha split; INTERSECTION-UNION needs no correction but must clear twice.
+alpha=0.05, power=0.8, 40000 simulations per step.
+
+=== churn_matched_n100.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.883   IQR +0.769 to +0.921   min +0.485
+    median paired sd (AP): 0.0424
+    MDE, single endpoint            : 0.0280
+    MDE, union (alpha split)        : 0.0313   (+12%)
+    MDE, intersection-union         : 0.0298   (+6%)
+    cheaper rule here: intersection-union
+
+=== churn_matched_n250.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.818   IQR +0.735 to +0.872   min +0.567
+    median paired sd (AP): 0.0241
+    MDE, single endpoint            : 0.0159
+    MDE, union (alpha split)        : 0.0178   (+12%)
+    MDE, intersection-union         : 0.0171   (+8%)
+    cheaper rule here: intersection-union
+
+=== churn_matched_n50.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.856   IQR +0.803 to +0.893   min +0.561
+    median paired sd (AP): 0.0604
+    MDE, single endpoint            : 0.0399
+    MDE, union (alpha split)        : 0.0446   (+12%)
+    MDE, intersection-union         : 0.0427   (+7%)
+    cheaper rule here: intersection-union
+
+=== churn_unconstrained.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 3 cell-pairs
+      median +0.429   IQR +0.359 to +0.626   min +0.289
+    median paired sd (AP): 0.0073
+    MDE, single endpoint            : 0.0048
+    MDE, union (alpha split)        : 0.0054   (+12%)
+    MDE, intersection-union         : 0.0054   (+12%)
+    cheaper rule here: union
+
+=== fraud_matched_n100.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.914   IQR +0.775 to +0.952   min +0.431
+    median paired sd (AP): 0.0136
+    MDE, single endpoint            : 0.0090
+    MDE, union (alpha split)        : 0.0100   (+12%)
+    MDE, intersection-union         : 0.0094   (+5%)
+    cheaper rule here: intersection-union
+
+=== fraud_matched_n250.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.934   IQR +0.885 to +0.949   min -0.200
+    median paired sd (AP): 0.0085
+    MDE, single endpoint            : 0.0056
+    MDE, union (alpha split)        : 0.0063   (+12%)
+    MDE, intersection-union         : 0.0059   (+5%)
+    cheaper rule here: intersection-union
+
+=== fraud_matched_n50.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 45 cell-pairs
+      median +0.947   IQR +0.921 to +0.971   min +0.611
+    median paired sd (AP): 0.0237
+    MDE, single endpoint            : 0.0157
+    MDE, union (alpha split)        : 0.0175   (+12%)
+    MDE, intersection-union         : 0.0163   (+4%)
+    cheaper rule here: intersection-union
+
+=== fraud_unconstrained.jsonl ===
+    correlation of the AP and ROC-AUC paired differences, across 3 cell-pairs
+      median +0.881   IQR +0.761 to +0.891   min +0.641
+    median paired sd (AP): 0.0048
+    MDE, single endpoint            : 0.0032
+    MDE, union (alpha split)        : 0.0035   (+12%)
+    MDE, intersection-union         : 0.0034   (+7%)
+    cheaper rule here: intersection-union
+
+-> results/analysis/endpoint_correlation.json
