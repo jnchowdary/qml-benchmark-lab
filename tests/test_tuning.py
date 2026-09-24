@@ -287,3 +287,44 @@ def test_missing_neighbour_keeps_the_flag():
     cs = (1e-4, 1e-3, 1e-2)
     gs = _gs([({}, 1e-4, 0.80), ({}, 1e-3, None), ({}, 1e-2, 0.78)])
     assert edge_flags({}, 1e-4, [{}], cs, grid_scores=gs) != []
+
+
+# --- what the plateau test can and cannot do (measured 24 Sep 2026) ------------
+
+def test_exact_ties_are_absorbed():
+    """The case this was built for: linear PR-AUC is invariant to C below a
+    threshold, so neighbouring scores repeat to the last bit."""
+    from qbench.tuning import PLATEAU_TOL
+
+    cs = (1e-4, 1e-3, 1e-2)
+    gs = _gs([({}, 1e-4, 0.80), ({}, 1e-3, 0.80), ({}, 1e-2, 0.78)])
+    assert edge_flags({}, 1e-4, [{}], cs, grid_scores=gs, tol=PLATEAU_TOL) == []
+
+
+def test_approximate_flatness_is_not_absorbed_and_that_is_honest():
+    """Flat to five decimals still flags. Recorded so nobody 'fixes' it later:
+    raising the tolerance far enough to absorb this would also hide effects the
+    experiment can detect. See the next test."""
+    from qbench.tuning import PLATEAU_TOL
+
+    cs = (1e-4, 1e-3, 1e-2)
+    gs = _gs([({}, 1e-4, 0.80000), ({}, 1e-3, 0.80001), ({}, 1e-2, 0.78)])
+    assert edge_flags({}, 1e-4, [{}], cs, grid_scores=gs, tol=PLATEAU_TOL) != []
+
+
+def test_no_tolerance_can_both_absorb_the_noise_and_preserve_the_signal():
+    """The reason the plateau test is descriptive rather than diagnostic.
+
+    Selection noise on this surface, from the shuffled-label null run, is about
+    0.008 mean gain from extending the grid. The smallest detectable effect is
+    0.0056. A tolerance must exceed the former to absorb neighbour noise and
+    stay below the latter to preserve what the experiment can measure. It
+    cannot do both, so edge flags are reported and then adjudicated by
+    scripts/check_grid_edges.py against that null.
+    """
+    measured_selection_noise = 0.0080   # results/analysis/grid_edges_churn_both_shuffled.json
+    smallest_mde = 0.0056               # results/analysis/power.json, fraud matched n250
+    assert measured_selection_noise > smallest_mde, (
+        "If this ever reverses, a usable plateau tolerance exists and the "
+        "mechanism can be made diagnostic again. Re-derive it from the data."
+    )

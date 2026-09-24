@@ -73,6 +73,7 @@ __all__ = [
     "unconstrained_grids",
     "Selection",
     "select_hyperparameters",
+    "PLATEAU_TOL",
     "edge_flags",
     "evaluate",
     "label_fingerprint",
@@ -233,7 +234,34 @@ def _score_lookup(grid_scores):
     return {(_json.dumps(g["params"], sort_keys=True), g["C"]): g["score"] for g in grid_scores}
 
 
-def _is_plateau(lookup, params, C, alt_params, alt_C, tol=1e-12):
+# Tolerance for calling two neighbouring grid points equal.
+#
+# 1e-12 is float equality, and that is deliberate: this test detects EXACT
+# ties, which is the case it was built for. Linear-SVM PR-AUC is invariant to C
+# once every dual variable sits at its bound, so the score repeats to the last
+# bit and the tie-break lands on the grid edge; 49 of 49 such fits scored
+# identically on 22 Sep 2026.
+#
+# It CANNOT detect approximate flatness, and no tolerance would let it. The
+# shuffled-label null of 24 Sep 2026 measured selection noise on this surface
+# at about 0.008 mean gain from extending the grid, so absorbing
+# neighbour-to-neighbour noise would need a tolerance near that. The smallest
+# effect the experiment can resolve is 0.0056 (fraud, 250 per class, 20 seeds).
+# A tolerance large enough to absorb the noise would hide differences the
+# experiment is built to detect. The two constraints do not overlap.
+#
+# The consequence, and it matters: an edge flag here is DESCRIPTIVE, not
+# diagnostic. It says the selected value sits at a boundary; it does not say
+# the grid is too narrow. Under-tuning is adjudicated by
+# scripts/check_grid_edges.py, which extends the grid in both directions and
+# compares the gain against a shuffled-label null. Measured 24 Sep 2026: the
+# extension gained +0.0016 on real churn labels against +0.0080 on shuffled
+# ones, and +0.0008 against +0.0055 on fraud. Widening this grid buys more on
+# random labels than on real ones. The grid is frozen.
+PLATEAU_TOL = 1e-12
+
+
+def _is_plateau(lookup, params, C, alt_params, alt_C, tol=PLATEAU_TOL):
     """True if the neighbouring grid point scored identically (a flat region)."""
     import json as _json
     a = lookup.get((_json.dumps(params, sort_keys=True), C))
@@ -241,7 +269,7 @@ def _is_plateau(lookup, params, C, alt_params, alt_C, tol=1e-12):
     return a is not None and b is not None and abs(a - b) <= tol
 
 
-def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None):
+def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None, tol=PLATEAU_TOL):
     """Hyperparameters whose selected value sits at the edge of the searched range.
 
     Only parameters with at least 3 distinct searched values are checked: a
@@ -262,7 +290,7 @@ def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None)
     if len(cs) >= 3:
         for edge_C, nbr_C, label in ((cs[0], cs[1], "grid minimum"), (cs[-1], cs[-2], "grid maximum")):
             if best_C == edge_C:
-                if lookup is None or not _is_plateau(lookup, best_params, best_C, best_params, nbr_C):
+                if lookup is None or not _is_plateau(lookup, best_params, best_C, best_params, nbr_C, tol):
                     flags.append(f"C={best_C:g} ({label})")
     for key in sorted({k for p in param_grid for k in p}):
         vals = sorted({p[key] for p in param_grid if key in p})
@@ -272,7 +300,7 @@ def edge_flags(best_params, best_C, param_grid, c_grid=C_GRID, grid_scores=None)
         for edge_v, nbr_v, label in ((vals[0], vals[1], "grid minimum"), (vals[-1], vals[-2], "grid maximum")):
             if v == edge_v:
                 nbr = dict(best_params, **{key: nbr_v})
-                if lookup is None or not _is_plateau(lookup, best_params, best_C, nbr, best_C):
+                if lookup is None or not _is_plateau(lookup, best_params, best_C, nbr, best_C, tol):
                     flags.append(f"{key}={v:g} ({label})")
     return flags
 

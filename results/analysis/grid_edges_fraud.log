@@ -1,0 +1,33 @@
+dataset=fraud  seeds=[0, 1, 2, 3, 4]  mappings=['pca', 'randproj', 'selectk']  qubits=[8]  n_per_class=250  direction=both
+  down: RBF gamma 1e-05..0.0316228, poly multiplier (0.003, 0.01, 0.03)
+  up  : RBF gamma 316.228..10000, poly multiplier (30.0, 100.0), poly degree (6, 7, 8, 9)
+Inner-CV scores only; no test score is read.
+
+
+  RBF  (15 cells)
+    frozen-grid winner sat on an edge : gamma-min 1
+    winner left the frozen grid       : 1/15  (gamma-down 1)
+    inner-CV gain   mean +0.00002   median +0.00000   max +0.00025
+    gain where it moved: mean +0.00025   max +0.00025
+
+  POLY  (15 cells)
+    frozen-grid winner sat on an edge : degree-max 4, degree-min 5, gamma-max 4, gamma-min 4
+    winner left the frozen grid       : 9/15  (degree-up 5, gamma-down 1, gamma-up 3)
+    inner-CV gain   mean +0.00083   median +0.00000   max +0.00635
+    gain where it moved: mean +0.00138   max +0.00635
+    winning degree on the extended grid: 2:3, 3:4, 4:1, 5:2, 6:1, 7:2, 8:1, 9:1
+    highest winning degree 9 against an extension ceiling of 9   <-- STILL AT THE CEILING, extend further
+    non-converged points in the extended grid, mean per cell: 166
+
+VERDICT
+  largest gain available anywhere from widening the grid : +0.00635
+  mean gain                                              : +0.00083
+  winners leaving the frozen grid                        : 60% of cells
+  minimum detectable effect for this arm                 : 0.0056
+  largest gain as a fraction of the MDE                  : 113%
+
+  UNDER-TUNED. A wider grid would change the classical baseline by more
+  than the effect the experiment is built to detect. Widen tuning.py's grids
+  and re-run week 3 BEFORE any quantum work.
+
+wall-clock 415.9s  ->  results/analysis/grid_edges_fraud_both.json

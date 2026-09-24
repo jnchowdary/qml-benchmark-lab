@@ -351,3 +351,83 @@ def test_shuffled_run_never_overwrites_a_real_one(tmp_path):
     assert real.exists() and fake.exists()
     assert json.loads(real.open().readline())["shuffled"] is False
     assert json.loads(fake.open().readline())["shuffled"] is True
+
+
+# --- the grid-edge diagnostic (week 4 gate) -------------------------------------
+
+def _grid_mod():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import check_grid_edges  # noqa: PLC0415
+    return check_grid_edges
+
+
+def test_extended_grid_strictly_contains_the_frozen_one():
+    """If the extension were not a superset, the comparison would be between two
+    different grids rather than a grid and its extension, and every conclusion
+    drawn from it would be meaningless."""
+    from qbench.tuning import matched_grids
+
+    ge = _grid_mod()
+    for d in (4, 8, 12):
+        for direction in ("down", "up", "both"):
+            base, ext = matched_grids(d), ge.extended_grids(d, direction)
+            for kernel in ("rbf", "poly"):
+                b = {ge._key(p) for p in base[kernel]}
+                e = {ge._key(p) for p in ext[kernel]}
+                assert b <= e, f"{kernel} d={d} {direction}: extension drops frozen points"
+                assert len(e) > len(b), f"{kernel} d={d} {direction}: extension adds nothing"
+
+
+def test_extension_reaches_both_edges():
+    """The run flagged BOTH boundaries: gamma at its minimum and maximum, and
+    degree at its maximum on fraud. A one-sided extension would answer half the
+    question and then be reported as a clean result."""
+    from qbench.tuning import matched_grids
+
+    ge = _grid_mod()
+    d = 8
+    base, ext = matched_grids(d), ge.extended_grids(d, "both")
+    seen = {ge.classify(p, base[k]) for k in ("rbf", "poly") for p in ext[k]}
+    assert {"gamma-down", "gamma-up", "degree-up"} <= seen, seen
+
+
+def test_classify_uses_set_membership_not_one_parameter():
+    """A degree-6 point is outside the frozen grid even though its gamma is
+    inside it. The first version of this diagnostic compared gamma alone and
+    would have called that point 'inside'."""
+    from qbench.tuning import matched_grids
+
+    ge = _grid_mod()
+    d = 8
+    base = matched_grids(d)["poly"]
+    inside_gamma = sorted({p["gamma"] for p in base})[2]
+    assert ge.classify({"degree": 6, "gamma": inside_gamma, "coef0": 0.0}, base) == "degree-up"
+    assert all(ge.classify(p, base) == "inside" for p in base)
+
+
+def test_frozen_edge_detection_names_the_boundary():
+    from qbench.tuning import matched_grids
+
+    ge = _grid_mod()
+    base = matched_grids(8)["poly"]
+    gammas = sorted({p["gamma"] for p in base})
+    degs = sorted({p["degree"] for p in base})
+    assert "gamma-min" in ge.at_frozen_edge({"degree": degs[1], "gamma": gammas[0], "coef0": 0.0}, base)
+    assert "degree-max" in ge.at_frozen_edge({"degree": degs[-1], "gamma": gammas[2], "coef0": 0.0}, base)
+    assert ge.at_frozen_edge({"degree": degs[1], "gamma": gammas[2], "coef0": 0.0}, base) == []
+
+
+def test_grid_edge_diagnostic_runs_end_to_end(tmp_path):
+    env = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
+    out = tmp_path / "grid_edges.json"
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_grid_edges.py"),
+         "--dataset", "synthetic", "--seeds", "0", "--mappings", "pca",
+         "--qubits", "4", "--n-per-class", "40", "--out", str(out)],
+        env=env, capture_output=True, text=True, timeout=1800,
+    )
+    assert proc.returncode == 0, proc.stderr
+    payload = json.loads(out.read_text())
+    assert {s["kernel"] for s in payload["summaries"]} == {"rbf", "poly"}
+    assert all(r["inner_extended"] >= r["inner_current"] - 1e-12 for r in payload["rows"]), \
+        "a superset grid can never score worse than its subset"

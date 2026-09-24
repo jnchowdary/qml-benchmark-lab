@@ -1,0 +1,752 @@
+{
+  "dataset": "fraud",
+  "n_per_class": 250,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "mappings": [
+    "pca",
+    "randproj",
+    "selectk"
+  ],
+  "qubits": [
+    8
+  ],
+  "direction": "both",
+  "mde": null,
+  "c_grid": [
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "shuffled": true,
+  "extension": {
+    "rbf_low": [
+      1e-05,
+      3.1622777e-05,
+      0.0001,
+      0.000316227766,
+      0.001,
+      0.00316227766,
+      0.01,
+      0.031622776602
+    ],
+    "rbf_high": [
+      316.227766016838,
+      1000.0,
+      3162.27766016838,
+      10000.0
+    ],
+    "poly_mult_low": [
+      0.003,
+      0.01,
+      0.03
+    ],
+    "poly_mult_high": [
+      30.0,
+      100.0
+    ],
+    "poly_degrees": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "elapsed_seconds": 811.4093132908456,
+  "summaries": [
+    {
+      "kernel": "rbf",
+      "n": 15,
+      "n_moved": 4,
+      "where": {
+        "gamma-down": 2,
+        "gamma-up": 2
+      },
+      "winning_degrees": {},
+      "frozen_edges": {
+        "gamma-min": 3
+      },
+      "mean_gain": 0.0006013267666885517,
+      "median_gain": 0.0,
+      "max_gain": 0.008033234045002224
+    },
+    {
+      "kernel": "poly",
+      "n": 15,
+      "n_moved": 11,
+      "where": {
+        "gamma-down": 2,
+        "degree-up": 7,
+        "gamma-up": 2
+      },
+      "winning_degrees": {
+        "2": 4,
+        "3": 1,
+        "8": 4,
+        "6": 2,
+        "5": 2,
+        "9": 1,
+        "4": 1
+      },
+      "frozen_edges": {
+        "gamma-min": 5,
+        "degree-min": 5,
+        "gamma-max": 3,
+        "degree-max": 6
+      },
+      "mean_gain": 0.0055036116000855674,
+      "median_gain": 0.0016013104389992483,
+      "max_gain": 0.02792795214428867
+    }
+  ],
+  "rows": [
+    {
+      "seed": 0,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5984769561771376,
+      "inner_extended": 0.6065101902221398,
+      "gain": 0.008033234045002224,
+      "where": "gamma-down",
+      "frozen_edges": [
+        "gamma-min"
+      ],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.001
+      },
+      "params_extended": {
+        "gamma": 0.000316227766
+      }
+    },
+    {
+      "seed": 0,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.6132302575306361,
+      "inner_extended": 0.6132302575306361,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [
+        "gamma-min",
+        "degree-min"
+      ],
+      "n_nonconverged_extended": 291,
+      "params_current": {
+        "degree": 2,
+        "gamma": 0.0012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 2,
+        "gamma": 0.0012665147955292222,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 0,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.6233511064633384,
+      "inner_extended": 0.623878087345356,
+      "gain": 0.0005269808820176358,
+      "where": "gamma-up",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 31.6227766017
+      },
+      "params_extended": {
+        "gamma": 316.227766016838
+      }
+    },
+    {
+      "seed": 0,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.6080176090409879,
+      "inner_extended": 0.610212059816613,
+      "gain": 0.0021944507756250786,
+      "where": "gamma-down",
+      "frozen_edges": [
+        "gamma-min",
+        "degree-min"
+      ],
+      "n_nonconverged_extended": 300,
+      "params_current": {
+        "degree": 2,
+        "gamma": 0.0012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 3,
+        "gamma": 0.00037995443865876665,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 0,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.6490169921765836,
+      "inner_extended": 0.6490169921765836,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 31.6227766017
+      },
+      "params_extended": {
+        "gamma": 31.6227766017
+      }
+    },
+    {
+      "seed": 0,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5542002387129517,
+      "inner_extended": 0.5821281908572403,
+      "gain": 0.02792795214428867,
+      "where": "degree-up",
+      "frozen_edges": [
+        "gamma-max",
+        "degree-min"
+      ],
+      "n_nonconverged_extended": 302,
+      "params_current": {
+        "degree": 2,
+        "gamma": 0.12665147955292222,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 8,
+        "gamma": 0.12665147955292222,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5952684264768706,
+      "inner_extended": 0.5952684264768706,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 1.0
+      },
+      "params_extended": {
+        "gamma": 1.0
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5888786533824816,
+      "inner_extended": 0.5968833010828299,
+      "gain": 0.008004647700348366,
+      "where": "degree-up",
+      "frozen_edges": [
+        "gamma-min",
+        "degree-min"
+      ],
+      "n_nonconverged_extended": 307,
+      "params_current": {
+        "degree": 2,
+        "gamma": 0.0012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 8,
+        "gamma": 0.12665147955292222,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5816420783747974,
+      "inner_extended": 0.5816420783747974,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.316227766
+      },
+      "params_extended": {
+        "gamma": 0.316227766
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5809790598418552,
+      "inner_extended": 0.5811466932626216,
+      "gain": 0.00016763342076642207,
+      "where": "degree-up",
+      "frozen_edges": [
+        "gamma-max"
+      ],
+      "n_nonconverged_extended": 268,
+      "params_current": {
+        "degree": 4,
+        "gamma": 0.12665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 6,
+        "gamma": 0.012665147955292222,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.6001975788643337,
+      "inner_extended": 0.6001975788643337,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.316227766
+      },
+      "params_extended": {
+        "gamma": 0.316227766
+      }
+    },
+    {
+      "seed": 1,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.600661955532696,
+      "inner_extended": 0.6009576556846764,
+      "gain": 0.0002957001519804381,
+      "where": "gamma-up",
+      "frozen_edges": [
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 272,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.037995443865876666,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 2,
+        "gamma": 0.37995443865876666,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5562335531203182,
+      "inner_extended": 0.5562335531203182,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 1.0
+      },
+      "params_extended": {
+        "gamma": 1.0
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5833486438293136,
+      "inner_extended": 0.5833486438293136,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 295,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.037995443865876666,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 5,
+        "gamma": 0.037995443865876666,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5787020124905929,
+      "inner_extended": 0.5787020124905929,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.0316227766
+      },
+      "params_extended": {
+        "gamma": 0.0316227766
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5933856584980738,
+      "inner_extended": 0.5969507652614434,
+      "gain": 0.00356510676336963,
+      "where": "degree-up",
+      "frozen_edges": [
+        "gamma-min",
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 286,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.0012665147955292222,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 6,
+        "gamma": 0.037995443865876666,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5551305740105651,
+      "inner_extended": 0.5551305740105651,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [
+        "gamma-min"
+      ],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.001
+      },
+      "params_extended": {
+        "gamma": 0.001
+      }
+    },
+    {
+      "seed": 2,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5658194735330829,
+      "inner_extended": 0.5830252748021556,
+      "gain": 0.017205801269072674,
+      "where": "degree-up",
+      "frozen_edges": [
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 319,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.012665147955292222,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 9,
+        "gamma": 0.012665147955292222,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.549674609610995,
+      "inner_extended": 0.549674609610995,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 31.6227766017
+      },
+      "params_extended": {
+        "gamma": 31.6227766017
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5493591430706722,
+      "inner_extended": 0.5493591430706722,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [
+        "gamma-max",
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 296,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.12665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 5,
+        "gamma": 0.12665147955292222,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5440921902167059,
+      "inner_extended": 0.5442376317462954,
+      "gain": 0.0001454415295895073,
+      "where": "gamma-down",
+      "frozen_edges": [
+        "gamma-min"
+      ],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.001
+      },
+      "params_extended": {
+        "gamma": 1e-05
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5441689372374287,
+      "inner_extended": 0.5444997068743286,
+      "gain": 0.0003307696368999302,
+      "where": "gamma-down",
+      "frozen_edges": [
+        "gamma-min",
+        "degree-min"
+      ],
+      "n_nonconverged_extended": 272,
+      "params_current": {
+        "degree": 2,
+        "gamma": 0.0012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 2,
+        "gamma": 0.00037995443865876665,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5761314300934982,
+      "inner_extended": 0.5761314300934982,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 0.1
+      },
+      "params_extended": {
+        "gamma": 0.1
+      }
+    },
+    {
+      "seed": 3,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5805946551849678,
+      "inner_extended": 0.5805946551849678,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 298,
+      "params_current": {
+        "degree": 4,
+        "gamma": 0.012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 4,
+        "gamma": 0.012665147955292222,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5695660591044829,
+      "inner_extended": 0.5695660591044829,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 3.1622776602
+      },
+      "params_extended": {
+        "gamma": 3.1622776602
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "pca",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5472337968536467,
+      "inner_extended": 0.548835107292646,
+      "gain": 0.0016013104389992483,
+      "where": "degree-up",
+      "frozen_edges": [
+        "degree-max"
+      ],
+      "n_nonconverged_extended": 301,
+      "params_current": {
+        "degree": 5,
+        "gamma": 0.012665147955292222,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 8,
+        "gamma": 3.799544386587667e-05,
+        "coef0": 1.0
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5981658215579218,
+      "inner_extended": 0.5981658215579218,
+      "gain": 0.0,
+      "where": "inside",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 1.0
+      },
+      "params_extended": {
+        "gamma": 1.0
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "randproj",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5757559412510334,
+      "inner_extended": 0.5953634025058668,
+      "gain": 0.01960746125483348,
+      "where": "degree-up",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 274,
+      "params_current": {
+        "degree": 4,
+        "gamma": 0.037995443865876666,
+        "coef0": 0.0
+      },
+      "params_extended": {
+        "degree": 8,
+        "gamma": 0.12665147955292222,
+        "coef0": 0.0
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "rbf",
+      "inner_current": 0.5739549191478494,
+      "inner_extended": 0.5742691641915683,
+      "gain": 0.00031424504371890816,
+      "where": "gamma-up",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 0,
+      "params_current": {
+        "gamma": 10.0
+      },
+      "params_extended": {
+        "gamma": 316.227766016838
+      }
+    },
+    {
+      "seed": 4,
+      "mapping": "selectk",
+      "n_qubits": 8,
+      "kernel": "poly",
+      "inner_current": 0.5220600985014605,
+      "inner_extended": 0.5237134389465601,
+      "gain": 0.0016533404450995715,
+      "where": "gamma-up",
+      "frozen_edges": [],
+      "n_nonconverged_extended": 278,
+      "params_current": {
+        "degree": 3,
+        "gamma": 0.037995443865876666,
+        "coef0": 1.0
+      },
+      "params_extended": {
+        "degree": 2,
+        "gamma": 0.37995443865876666,
+        "coef0": 1.0
+      }
+    }
+  ]
+}
