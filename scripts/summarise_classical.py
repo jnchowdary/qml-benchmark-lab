@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from qbench.metrics import chance_average_precision, normalised_average_precision  # noqa: E402
-from qbench.tuning import edge_flags  # noqa: E402
+from qbench.tuning import PLATEAU_TOL, edge_flags  # noqa: E402
 
 KERNELS = ("linear", "rbf", "poly")
 
@@ -76,9 +76,9 @@ def load(path):
         return [json.loads(line) for line in f]
 
 
-def recompute_flags(r):
+def recompute_flags(r, tol=PLATEAU_TOL):
     grid = [dict(p) for p in {json.dumps(g["params"], sort_keys=True): g["params"] for g in r["grid_scores"]}.values()]
-    return edge_flags(r["params"], r["C"], grid, tuple(r["c_grid"]), grid_scores=r["grid_scores"])
+    return edge_flags(r["params"], r["C"], grid, tuple(r["c_grid"]), grid_scores=r["grid_scores"], tol=tol)
 
 
 def mean_sd(xs):
@@ -114,12 +114,19 @@ def section_performance(recs):
     print()
 
 
-def section_flags(recs):
-    print("2. EDGE FLAGS: recorded at run time vs plateau-aware")
+def section_flags(recs, tol=PLATEAU_TOL):
+    print(f"2. EDGE FLAGS: recorded at run time vs plateau-aware (tolerance {tol:g})")
+    print("   DESCRIPTIVE, NOT DIAGNOSTIC. These flags say a selected value sits at a grid")
+    print("   boundary. They do NOT say the grid is too narrow. Measured 24 Sep 2026 against a")
+    print("   shuffled-label null, extending this grid gained +0.0016 on real churn labels and")
+    print("   +0.0080 on random ones (+0.0008 against +0.0055 on fraud): widening buys more")
+    print("   where there is no signal. The grid is frozen. The plateau column absorbs exact")
+    print("   ties only; selection noise here (~0.008) exceeds the MDE (0.0056), so no")
+    print("   tolerance can absorb the noise without hiding a detectable effect.")
     raw, fixed = defaultdict(Counter), defaultdict(Counter)
     n_raw = n_fixed = 0
     for r in recs:
-        f_new = recompute_flags(r)
+        f_new = recompute_flags(r, tol)
         n_raw += bool(r["edge"])
         n_fixed += bool(f_new)
         for f in r["edge"]:
@@ -235,6 +242,8 @@ def main():
     ap.add_argument("--n-per-class", type=int, default=None,
                     help="training size to read, for sweep files written since 23 Sep 2026")
     ap.add_argument("--shuffled", action="store_true", help="read the negative-control file")
+    ap.add_argument("--plateau-tol", type=float, default=PLATEAU_TOL,
+                    help="two neighbouring grid points scoring within this are one plateau")
     ap.add_argument("--in-dir", default=str(ROOT / "results" / "runs" / "classical"))
     args = ap.parse_args()
 
@@ -247,7 +256,7 @@ def main():
         print("NEGATIVE CONTROL FILE: labels were permuted. These are not results.")
     print()
     section_performance(recs)
-    section_flags(recs)
+    section_flags(recs, args.plateau_tol)
     section_optimism(recs)
     section_selection(recs)
     section_solver(recs)
