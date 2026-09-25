@@ -1,0 +1,26 @@
+
+==============================================================================
+churn_matched_n250_shuffled.jsonl: 80 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.5058  sd 0.0493  -> +0.52 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean +0.0040  sd 0.0395  -> +0.45 sigma
+     base rate 0.5000, chance AP 0.5154 (the gap of +0.0154 is expected, not leakage)
+     for reference, AP minus BASE would read +0.0194, which is the wrong comparison
+  worst cell by ROC-AUC      : quantum-iqp-r2 pca q=12 seed=12 -> 0.6078  (max of 80 draws; ~0.6578 expected by chance)
+  (80 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.
+
+==============================================================================
+fraud_matched_n250_shuffled.jsonl: 80 records
+
+NEGATIVE CONTROL VERDICT (labels permuted)
+  ROC-AUC                    : mean 0.5001  sd 0.0452  -> +0.01 sigma from the exact null of 0.500
+  AP vs CHANCE (not base)    : mean -0.0008  sd 0.0407  -> -0.09 sigma
+     base rate 0.5000, chance AP 0.5154 (the gap of +0.0154 is expected, not leakage)
+     for reference, AP minus BASE would read +0.0146, which is the wrong comparison
+  worst cell by ROC-AUC      : quantum-iqp-r2 selectk q=8 seed=8 -> 0.6142  (max of 80 draws; ~0.6448 expected by chance)
+  (80 records, 20 seeds; sigma uses the seed count, not the record count)
+  Clean means ROC-AUC within about 2 sigma of 0.500 and the AP residual within about
+  2 sigma of zero, with no consistent sign. A real leak shows in BOTH at once.

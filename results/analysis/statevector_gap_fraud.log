@@ -1,0 +1,38 @@
+fraud primary cell ('selectk', 8)  seed=0  350 train / 150 test  shuffled=True
+
+--- angle-r1 ---
+  A. Gram difference (pairwise vs statevector): train 1.33e-15   test 1.33e-15
+  B. statevector vs ITSELF, fresh factory     : train 0.00e+00   test 0.00e+00
+     cond(K_train) = 4.391e+18   eigenvalue range [-2.38e-16, 2.14e+02]
+  C. C=0.01    |score diff| max 7.355e-16 median 1.301e-16 | after removing a constant shift 7.008e-16 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 350 vs 350
+  C. C=1       |score diff| max 8.527e-14 median 1.463e-14 | after removing a constant shift 8.488e-14 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 341 vs 341
+  C. C=100     |score diff| max 4.272e-04 median 7.638e-05 | after removing a constant shift 4.573e-04 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 295 vs 295
+  C. C=10000   |score diff| max 6.317e-02 median 1.357e-03 | after removing a constant shift 6.287e-02 | rank corr 0.999993 | self-repeat 0.0e+00 | nSV 233 vs 234
+
+--- angle-r2 ---
+  A. Gram difference (pairwise vs statevector): train 2.22e-15   test 1.67e-15
+  B. statevector vs ITSELF, fresh factory     : train 0.00e+00   test 0.00e+00
+     cond(K_train) = 2.371e+19   eigenvalue range [7.03e-17, 1.02e+02]
+  C. C=0.01    |score diff| max 4.441e-16 median 6.939e-17 | after removing a constant shift 4.354e-16 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 350 vs 350
+  C. C=1       |score diff| max 6.769e-04 median 1.396e-04 | after removing a constant shift 6.488e-04 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 334 vs 334
+  C. C=100     |score diff| max 2.116e-03 median 4.037e-04 | after removing a constant shift 2.118e-03 | rank corr 0.999982 | self-repeat 0.0e+00 | nSV 258 vs 257
+  C. C=10000   |score diff| max 2.036e-02 median 1.210e-03 | after removing a constant shift 2.037e-02 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 201 vs 201
+
+--- iqp-r1 ---
+  A. Gram difference (pairwise vs statevector): train 5.33e-15   test 1.44e-15
+  B. statevector vs ITSELF, fresh factory     : train 0.00e+00   test 0.00e+00
+     cond(K_train) = 1.625e+18   eigenvalue range [-1.03e-15, 3.33e+01]
+  C. C=0.01    |score diff| max 1.596e-16 median 2.429e-17 | after removing a constant shift 1.561e-16 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 350 vs 350
+  C. C=1       |score diff| max 1.021e-14 median 2.207e-15 | after removing a constant shift 9.992e-15 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 334 vs 334
+  C. C=100     |score diff| max 6.273e-14 median 1.155e-14 | after removing a constant shift 6.173e-14 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 294 vs 294
+  C. C=10000   |score diff| max 6.273e-14 median 1.155e-14 | after removing a constant shift 6.173e-14 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 294 vs 294
+
+--- iqp-r2 ---
+  A. Gram difference (pairwise vs statevector): train 9.99e-15   test 1.22e-15
+  B. statevector vs ITSELF, fresh factory     : train 0.00e+00   test 0.00e+00
+     cond(K_train) = 5.305e+16   eigenvalue range [-3.57e-16, 9.29e+00]
+  C. C=0.01    |score diff| max 4.163e-17 median 8.674e-18 | after removing a constant shift 4.163e-17 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 350 vs 350
+  C. C=1       |score diff| max 4.413e-15 median 8.119e-16 | after removing a constant shift 4.545e-15 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 336 vs 336
+  C. C=100     |score diff| max 1.266e-14 median 1.936e-15 | after removing a constant shift 1.244e-14 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 325 vs 325
+  C. C=10000   |score diff| max 1.266e-14 median 1.936e-15 | after removing a constant shift 1.244e-14 | rank corr 1.000000 | self-repeat 0.0e+00 | nSV 325 vs 325
+
