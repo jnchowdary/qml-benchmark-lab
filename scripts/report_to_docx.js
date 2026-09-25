@@ -1,0 +1,245 @@
+#!/usr/bin/env node
+/**
+ * Turn a weekly record in Markdown into the .docx that gets shared.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * Weeks 1 to 3 were transcribed into Word by hand. That is fine once and a
+ * liability by week 12: a record and its document drift, and the drift is
+ * invisible because nobody diffs a .docx against a .md. It also repeats the
+ * step that produced two of week 4's ten logged errors, both of which came
+ * from copying numbers out of one representation into another.
+ *
+ * So the document is generated from the record, and the record stays the
+ * single source of truth.
+ *
+ * WHAT IT MATCHES, AND WHAT IT DELIBERATELY DOES NOT
+ * ---------------------------------------------------
+ * It reproduces the visual style of the week 1 to 3 documents: a bold wordmark,
+ * the week line, the metadata block, bold section headings, tables with a
+ * shaded header row. It differs in one respect: headings use the built-in Word
+ * heading styles rather than bold body text, so the document has a navigation
+ * pane and can carry a table of contents. At fifteen sections that is worth the
+ * small divergence, and it looks the same on the page.
+ *
+ * Usage:
+ *   node scripts/report_to_docx.js docs/week-04-report.md "QML-Benchmark-Lab-Week-4.docx"
+ */
+
+const fs = require('fs');
+const {
+  Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType,
+  Table, TableRow, TableCell, WidthType, ShadingType, BorderStyle,
+} = require('docx');
+
+const PAGE = { width: 12240, height: 15840 };          // US Letter, DXA
+const CONTENT_WIDTH = PAGE.width - 1440 * 2;
+
+/** Inline **bold**, `code` and _italic_ into TextRuns. */
+function runs(text, base = {}) {
+  const out = [];
+  // No underscore-italics rule. These records are full of identifiers and
+  // subscripts (K_ij, n_qubits, iqp-r1), and an eager _.._ rule silently ate
+  // "K_ij = prod_d" into an italic span, deleting both underscores from the
+  // rendered formula. Italics via *single asterisks* only.
+  const re = /(\*\*[^*]+\*\*|`[^`]+`|(?<![*\w])\*[^*\n]+\*(?![*\w]))/g;
+  let last = 0, m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(new TextRun({ ...base, text: text.slice(last, m.index) }));
+    const tok = m[0];
+    if (tok.startsWith('**')) {
+      out.push(new TextRun({ ...base, text: tok.slice(2, -2), bold: true }));
+    } else if (tok.startsWith('`')) {
+      out.push(new TextRun({ ...base, text: tok.slice(1, -1), font: 'Consolas', size: 19 }));
+    } else {
+      out.push(new TextRun({ ...base, text: tok.slice(1, -1), italics: true }));
+    }
+    last = m.index + tok.length;
+  }
+  if (last < text.length) out.push(new TextRun({ ...base, text: text.slice(last) }));
+  return out.length ? out : [new TextRun({ ...base, text: '' })];
+}
+
+function cells(row) {
+  return row.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+}
+
+function buildTable(header, rows) {
+  const n = header.length;
+  const w = Math.floor(CONTENT_WIDTH / n);
+  const widths = Array(n).fill(w);
+  widths[n - 1] = CONTENT_WIDTH - w * (n - 1);          // must sum to the table width
+
+  const mkCell = (text, i, isHeader) => new TableCell({
+    width: { size: widths[i], type: WidthType.DXA },
+    shading: isHeader
+      ? { type: ShadingType.CLEAR, fill: 'EDEDED' }     // never SOLID: renders black
+      : undefined,
+    margins: { top: 60, bottom: 60, left: 100, right: 100 },
+    children: [new Paragraph({
+      spacing: { before: 0, after: 0 },
+      children: runs(text, { size: 19, bold: isHeader }),
+    })],
+  });
+
+  return new Table({
+    columnWidths: widths,
+    width: { size: CONTENT_WIDTH, type: WidthType.DXA },
+    rows: [
+      new TableRow({ tableHeader: true, children: header.map((c, i) => mkCell(c, i, true)) }),
+      ...rows.map(r => new TableRow({ children: r.map((c, i) => mkCell(c, i, false)) })),
+    ],
+  });
+}
+
+function convert(md) {
+  const lines = md.split('\n');
+  const body = [];
+  let i = 0, titleDone = false;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (/^\s*$/.test(line)) { i++; continue; }
+
+    // horizontal rules become spacing, as in the week 1-3 documents
+    if (/^---+\s*$/.test(line)) {
+      body.push(new Paragraph({ spacing: { before: 120, after: 120 }, children: [] }));
+      i++; continue;
+    }
+
+    // tables
+    if (/^\s*\|/.test(line) && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1] || '')) {
+      const header = cells(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /^\s*\|/.test(lines[i])) { rows.push(cells(lines[i])); i++; }
+      body.push(buildTable(header, rows));
+      body.push(new Paragraph({ spacing: { after: 160 }, children: [] }));
+      continue;
+    }
+
+    // title: "# QML Benchmark Lab: Week 4 Record"
+    const h1 = line.match(/^#\s+(.*)$/);
+    if (h1 && !titleDone) {
+      const [lead, ...rest] = h1[1].split(':');
+      body.push(new Paragraph({
+        spacing: { after: 0 },
+        children: [new TextRun({ text: lead.trim(), bold: true, size: 32 })],
+      }));
+      if (rest.length) {
+        body.push(new Paragraph({
+          spacing: { after: 240 },
+          children: [new TextRun({ text: rest.join(':').trim(), size: 26 })],
+        }));
+      }
+      titleDone = true; i++; continue;
+    }
+
+    const h3 = line.match(/^###\s+(.*)$/);
+    if (h3) {
+      body.push(new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200, after: 100 },
+        children: runs(h3[1], { bold: true, size: 22, color: '000000' }),
+      }));
+      i++; continue;
+    }
+
+    const h2 = line.match(/^##\s+(.*)$/);
+    if (h2) {
+      body.push(new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        spacing: { before: 280, after: 140 },
+        children: runs(h2[1], { bold: true, size: 24, color: '000000' }),
+      }));
+      i++; continue;
+    }
+
+    // blockquote
+    const q = line.match(/^>\s?(.*)$/);
+    if (q) {
+      const parts = [q[1]];
+      i++;
+      while (i < lines.length && /^>/.test(lines[i])) { parts.push(lines[i].replace(/^>\s?/, '')); i++; }
+      body.push(new Paragraph({
+        indent: { left: 360 },
+        spacing: { before: 120, after: 120 },
+        border: { left: { style: BorderStyle.SINGLE, size: 12, color: '999999', space: 8 } },
+        children: runs(parts.join(' '), { italics: true }),
+      }));
+      continue;
+    }
+
+    // bullets and numbered items
+    const b = line.match(/^(\s*)[-*]\s+(.*)$/);
+    const nlist = line.match(/^(\s*)(\d+)\.\s+(.*)$/);
+    if (b || nlist) {
+      const text = b ? b[2] : `${nlist[2]}.  ${nlist[3]}`;
+      body.push(new Paragraph({
+        bullet: b ? { level: 0 } : undefined,
+        indent: nlist ? { left: 360, hanging: 240 } : undefined,
+        spacing: { after: 80 },
+        children: runs(text),
+      }));
+      i++; continue;
+    }
+
+    // four-space indented block: code, rendered monospace and unwrapped
+    if (/^ {4}\S/.test(line)) {
+      while (i < lines.length && (/^ {4}/.test(lines[i]) || /^\s*$/.test(lines[i]))) {
+        if (lines[i].trim()) {
+          body.push(new Paragraph({
+            spacing: { before: 40, after: 40 },
+            indent: { left: 360 },
+            children: [new TextRun({ text: lines[i].replace(/^ {4}/, ''),
+                                     font: 'Consolas', size: 19 })],
+          }));
+        }
+        i++;
+        if (i < lines.length && /^\s*$/.test(lines[i]) &&
+            !(i + 1 < lines.length && /^ {4}\S/.test(lines[i + 1]))) break;
+      }
+      body.push(new Paragraph({ spacing: { after: 120 }, children: [] }));
+      continue;
+    }
+
+    // paragraph: join continuation lines
+    const parts = [line.trim()];
+    i++;
+    while (i < lines.length && lines[i].trim() && !/^[#>|-]|^\s*[-*]\s|^\s*\d+\.\s/.test(lines[i])) {
+      parts.push(lines[i].trim()); i++;
+    }
+    body.push(new Paragraph({
+      spacing: { after: 140 },
+      alignment: AlignmentType.LEFT,
+      children: runs(parts.join(' ')),
+    }));
+  }
+  return body;
+}
+
+const [, , mdPath, outPath] = process.argv;
+if (!mdPath || !outPath) {
+  console.error('usage: node scripts/report_to_docx.js <record.md> <output.docx>');
+  process.exit(1);
+}
+
+const doc = new Document({
+  styles: {
+    default: {
+      document: { run: { font: 'Calibri', size: 22 } },
+      heading1: { run: { font: 'Calibri', size: 24, bold: true, color: '000000' } },
+      heading2: { run: { font: 'Calibri', size: 22, bold: true, color: '000000' } },
+    },
+  },
+  sections: [{
+    properties: { page: { size: PAGE, margin: { top: 1440, bottom: 1440, left: 1440, right: 1440 } } },
+    children: convert(fs.readFileSync(mdPath, 'utf8')),
+  }],
+});
+
+Packer.toBuffer(doc).then(buf => {
+  fs.writeFileSync(outPath, buf);
+  console.log(`${outPath}  ${buf.length} bytes`);
+});
