@@ -210,3 +210,88 @@ def test_nothing_to_replicate_when_the_primary_cell_is_null():
     adj = rs.holm([x["e"]["p_wilcoxon"] for x in entries])
     reading = rs._replication_reading("iqp-r1", entries, adj, primary, [], [])
     assert "nothing here to replicate" in reading
+
+
+# ------------------------- trends, and the confound they have to expose
+
+def test_trend_stats_reports_both_correlates_and_both_levels():
+    """The gap is quantum minus surrogate, so a gap growing with qubit count has
+    two readings with opposite consequences: the quantum kernel improving, or the
+    best-fit RBF degrading because it gets more localised as the quantum kernel
+    concentrates. The summary must carry the absolute level of BOTH arms or the
+    two cannot be told apart."""
+    rows = [{"n_qubits": q, "gamma": g, "d_normap": d,
+             "quantum_normap": qn, "surrogate_normap": sn}
+            for q, g, d, qn, sn in [(12, 4.0, 0.018, 0.96, 0.942),
+                                    (10, 3.5, 0.006, 0.96, 0.954),
+                                    (8, 3.0, 0.001, 0.95, 0.949),
+                                    (6, 2.4, -0.004, 0.95, 0.954),
+                                    (4, 1.6, -0.006, 0.94, 0.946)]]
+    t = rs.trend_stats([{"cell": ("pca", r["n_qubits"]), "gamma_median": r["gamma"], "e": {"mean": r["d_normap"]}} for r in rows], rows)
+    assert t["spearman_qubits"][0] > 0.9
+    for nq in (12, 4):
+        assert "quantum" in t["by_qubits"][nq] and "surrogate" in t["by_qubits"][nq]
+
+
+def test_trend_stats_needs_more_than_one_qubit_count():
+    rows = [{"n_qubits": 8, "gamma": 1.0, "d_normap": 0.01,
+             "quantum_normap": 0.9, "surrogate_normap": 0.89}] * 3
+    assert rs.trend_stats([{"cell": ("pca", 8), "gamma_median": 1.0, "e": {"mean": 0.01}}], rows) is None
+
+
+def test_absent_small_gamma_is_reported_as_untestable_not_passed():
+    """On fraud no mapping fits gamma below 1.0, so a prediction conditioned on
+    small gamma never fires. Vacuous truth is not confirmation."""
+    rows = [{"n_qubits": q, "gamma": 2.0, "d_normap": d,
+             "quantum_normap": 0.9, "surrogate_normap": 0.9 - d}
+            for q, d in ((4, 0.001), (8, 0.002), (12, 0.003))]
+    t = rs.trend_stats([{"cell": ("pca", r["n_qubits"]), "gamma_median": r["gamma"],
+                         "e": {"mean": r["d_normap"]}} for r in rows], rows)
+    assert t["gamma_below_0.2"]["n"] == 0
+    assert t["gamma_below_0.2"]["mean"] is None
+
+
+def test_output_path_is_unique_per_dataset_and_training_size():
+    """Three all-cells runs in one command overwrote each other because the
+    default filename carried only the arm. The fix is asserted here rather than
+    trusted, because the symptom was silent."""
+    import re
+    src = (ROOT / "scripts" / "rbf_surrogate.py").read_text()
+    tag = re.search(r'tag = \(f"([^"]+)"', src).group(1)
+    assert "dataset" in tag or "who" in tag
+    assert "n_per_class" in tag
+
+
+def test_trend_is_computed_over_cells_not_records():
+    """Twenty seeds inside a cell are one configuration observed twenty times, not
+    twenty independent observations of a trend across cells, and seeds are paired
+    across cells by construction.
+
+    The fixture reproduces the shape of fraud angle-r2, where the real run
+    correlated over 300 records and returned rho = -0.149 at p = 0.0099 on a
+    column whose every entry sat at or below the 1e-3 precision floor of D2. A
+    weak trend with real scatter is the case that separates the two units; a
+    perfect trend underflows both p-values to zero and tests nothing.
+    """
+    import random
+    from scipy import stats as _st
+    rng = random.Random(0)
+    entries, rows = [], []
+    for nq in (12, 10, 8, 6, 4):
+        for mapping in ("pca", "randproj", "selectk"):
+            gap = 0.0004 * (nq - 8) + rng.gauss(0, 0.002)
+            entries.append({"cell": (mapping, nq), "gamma_median": 1.1,
+                            "e": {"mean": gap}})
+            rows += [{"n_qubits": nq, "gamma": 1.1, "d_normap": gap,
+                      "quantum_normap": 0.93, "surrogate_normap": 0.93 - gap}
+                     for _ in range(20)]
+
+    t = rs.trend_stats(entries, rows)
+    assert t["n_cells"] == 15 and t["n_records"] == 300
+
+    p_rows = _st.spearmanr([r["n_qubits"] for r in rows],
+                           [r["d_normap"] for r in rows]).pvalue
+    # Same trend, same data, twentyfold the apparent sample size. The cell-level
+    # p must be dramatically weaker, and it is the one the project reports.
+    assert t["spearman_qubits"][1] > 100 * p_rows
+    assert t["spearman_qubits"][1] > 0.01

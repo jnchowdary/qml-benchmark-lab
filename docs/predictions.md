@@ -40,7 +40,34 @@ Rules: an entry is added before the run that tests it, never after. Entries are 
 
 **What it does not claim, in any outcome.** Nothing here is an advantage. At its strongest cell the `iqp-r1` kernel beats its own nearest RBF by +0.0852 and loses to the best classical kernel by −0.1011. A kernel that is not an RBF is not thereby a good kernel.
 
-**Outcome.** Not yet run.
+**Outcome, 25 September 2026. HELD, in all three arms, including the independent dataset.**
+
+| arm | Spearman(qubits, gap) | p | mean gap at 12 / 6 / 4 qubits |
+| --- | --- | --- | --- |
+| fraud 250 (independent dataset) | **+0.961** | 1.2e−08 | +0.0121 / −0.0020 / −0.0074 |
+| churn 100 | +0.698 | 3.8e−03 | +0.0669 / −0.0240 / −0.0353 |
+| churn 50 | +0.720 | 2.5e−03 | +0.0924 / −0.0072 / −0.0550 |
+| churn 250 (generated the hypothesis, not a test) | +0.873 | 2.2e−05 | +0.0404 / −0.0150 / −0.0261 |
+
+P1a holds. P1b holds in both arms, and the churn 250 estimate falls between the others rather than being an outlier. P1c holds everywhere: positive at 12 qubits, negative at 6 and 4, in every arm.
+
+Note on the arm I called weaker in advance: fraud gave the cleanest ordering of the four while compressing magnitudes to roughly a tenth of churn's. That is what a ceiling does — it shrinks effects without disturbing rank — and it means the saturation caveat registered above was right about magnitude and wrong about power.
+
+**Confound identified after the result, and NOT yet ruled out.** The gap is quantum minus surrogate. At higher qubit counts the quantum kernel concentrates, so its best-fit RBF has larger γ and is a more localised, worse classifier. A gap growing with qubit count is therefore also consistent with the *comparator degrading* while the quantum kernel stays flat, which would remove the quantum content from P1 entirely. Distinguishing the two needs the absolute normAP of both arms by qubit count. The script records this per row, but the first three runs all wrote to one filename and overwrote each other, so only the logs survived and the logs do not carry absolute levels. `trend_stats` now prints both columns and the runs must be repeated before P1 is described as a property of the quantum kernel anywhere.
+
+**Confound TESTED and rejected, 25 September 2026, on the re-run with absolute levels preserved.** For `iqp-r1` the quantum arm's own normAP rises with qubit count in every arm, and faster than its surrogate:
+
+| arm | quantum, 4 → 12 qubits | surrogate, 4 → 12 qubits |
+| --- | --- | --- |
+| fraud 250 | 0.8850 → 0.9392 (+0.054) | 0.8923 → 0.9271 (+0.035) |
+| churn 100 | 0.3944 → 0.4887 (+0.094) | 0.4297 → 0.4218 (−0.008) |
+| churn 50 | 0.2807 → 0.3822 (+0.102) | 0.3357 → 0.2898 (−0.046) |
+
+On fraud the comparator improves as well, so none of the gap is comparator decay. On churn 50 roughly a third of the gap growth is surrogate decay and two thirds is quantum gain. The alternative explanation is real but secondary and does not carry the result.
+
+**Correction to the statistics reported above, 25 September 2026.** The first version of `trend_stats` correlated over all 300 records rather than the 15 cells, treating twenty seeds of one configuration as twenty independent observations of a trend. It reported fraud `angle-r2` at rho −0.149 with p 0.0099 on a column where every gap sat at or below D2's 1e−3 precision floor. The Spearman values in the table above are the cell-level ones, n = 15, and those are the ones this project reports. The row-level figures printed in the first re-run are void.
+
+**Status: held as stated, confound rejected, mechanism now the leading explanation but still exploratory and still not an advantage.** The `iqp-r1` kernel improving faster than its nearest RBF as qubits rise says it is not a classical kernel in disguise. It says nothing about whether it beats the best classical kernel, which it does not.
 
 ---
 
@@ -63,7 +90,15 @@ Rules: an entry is added before the run that tests it, never after. Entries are 
 
 **Why this one is more likely to hold than P1.** It has a mechanism that does not depend on the dataset: a doubled-angle kernel compared against a broad RBF is a comparison between a sharply varying kernel and a nearly flat one, and the mismatch should grow as the best-fit RBF flattens. P1 has a plausible mechanism too, but a weaker one, and P1's variable is confounded with γ in the data that produced it.
 
-**Outcome.** Not yet run.
+**Outcome, 25 September 2026. PARTIALLY HELD. The strong half holds; the weak half fails; one arm cannot test it at all.**
+
+* **P2a holds on both churn arms.** Spearman(γ, gap) +0.836 (p 1.0e−04) at 100 per class and +0.823 (p 1.7e−04) at 50, against qubit-count correlations of −0.060 (p 0.83) and +0.109 (p 0.70). γ is the correlate and qubit count is not, as predicted.
+* **P2a fails on fraud, but degenerately.** γ there is −0.119 (p 0.67) and qubits −0.235 (p 0.40), neither significant. Every fraud cell fits γ between 1.00 and 1.12, so there is almost no variation in γ to correlate against. Recorded as uninformative rather than as a failure of the claim.
+* **P2b, first half: holds.** Every cell fitting γ below 0.2 is a SelectKBest cell with a gap beyond −0.13. Mean −0.2132 at 100 per class (n=5) and −0.2341 at 50 (n=5), against −0.0191 and −0.0365 for everything else.
+* **P2b, second half: FAILS.** The prediction was that cells with γ at or above 0.2 stay within ±0.03. They do not: `pca/6` reaches −0.0455 at 100 per class and −0.0705 at 50, and `pca/4` −0.0600 at 50. The threshold was stated too tightly and the failure is recorded rather than the threshold moved.
+* **On fraud, no mapping fits γ below 1.0 at all**, so P2b's antecedent never fires there. That is untestable, not passed, and the script now says so in those words rather than printing a vacuous pass.
+
+**Status: the γ-mediated SelectKBest collapse is confirmed out of sample on churn and untested elsewhere; the quantitative bound in P2b is withdrawn.**
 
 ---
 
