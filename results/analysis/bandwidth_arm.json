@@ -1,0 +1,120 @@
+{
+  "exploratory": true,
+  "deviation": "D4",
+  "results": [
+    {
+      "dataset": "churn",
+      "n_per_class": 250,
+      "cell": [
+        "pca",
+        12
+      ],
+      "gain_real": {
+        "n": 20,
+        "mean": 0.06972299404010499,
+        "median": 0.05647934146871364,
+        "sd": 0.10572391744138408,
+        "ci": [
+          0.020242677574387025,
+          0.11920331050582295
+        ],
+        "p_t": 0.00823473477565872,
+        "p_wilcoxon": 0.000965118408203125,
+        "n_nonzero": 19
+      },
+      "gain_permuted": {
+        "n": 20,
+        "mean": 0.00047472522871787223,
+        "median": 0.0,
+        "sd": 0.03881129167472418,
+        "ci": [
+          -0.01768951840681853,
+          0.018638968864254278
+        ],
+        "p_t": 0.9569473809561231,
+        "p_wilcoxon": 1.0,
+        "n_nonzero": 10
+      },
+      "excess": {
+        "n": 20,
+        "mean": 0.0692482688113871,
+        "median": 0.0467962843142917,
+        "sd": 0.12213133438550784,
+        "ci": [
+          0.012089044843680924,
+          0.12640749277909327
+        ],
+        "p_t": 0.020161164176732846,
+        "p_wilcoxon": 0.00830841064453125,
+        "n_nonzero": 20
+      },
+      "ratio": 146.8702100126664,
+      "bandwidths": {
+        "0.25": 3,
+        "0.5": 4,
+        "0.0625": 6,
+        "0.125": 6,
+        "1.0": 1
+      },
+      "verdict": "widening gained materially more on real labels than on noise. The registered H1 rejection on churn is a result about FIXED-BANDWIDTH quantum kernels and the paper must say so in those words. H1 stands as computed; its scope narrows. D4 outcome one.",
+      "confirmatory": false
+    },
+    {
+      "dataset": "fraud",
+      "n_per_class": 250,
+      "cell": [
+        "selectk",
+        8
+      ],
+      "gain_real": {
+        "n": 20,
+        "mean": 0.0029146619031136856,
+        "median": 0.0012924067375322257,
+        "sd": 0.010480064747253588,
+        "ci": [
+          -0.001990159378814527,
+          0.007819483185041899
+        ],
+        "p_t": 0.22871254369969324,
+        "p_wilcoxon": 0.24125289916992188,
+        "n_nonzero": 19
+      },
+      "gain_permuted": {
+        "n": 20,
+        "mean": 0.0011537825236028931,
+        "median": 0.0,
+        "sd": 0.031279760327991395,
+        "ci": [
+          -0.013485595939259352,
+          0.01579316098646514
+        ],
+        "p_t": 0.8707187995924047,
+        "p_wilcoxon": 0.67724609375,
+        "n_nonzero": 12
+      },
+      "excess": {
+        "n": 20,
+        "mean": 0.0017608793795107925,
+        "median": 0.00017005364915195775,
+        "sd": 0.03566049434658784,
+        "ci": [
+          -0.014928745714748415,
+          0.018450504473770002
+        ],
+        "p_t": 0.8275808486830807,
+        "p_wilcoxon": 0.8287849426269531,
+        "n_nonzero": 19
+      },
+      "ratio": 2.52617962526606,
+      "bandwidths": {
+        "0.125": 9,
+        "0.5": 2,
+        "0.0625": 5,
+        "0.25": 3,
+        "1.0": 1
+      },
+      "verdict": "widening gained no more on real labels than on permuted ones. This is winner's curse, the registered result stands unqualified, and this arm becomes a control that strengthens H1. D4 outcome two.",
+      "confirmatory": false
+    }
+  ]
+}

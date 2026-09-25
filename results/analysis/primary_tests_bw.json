@@ -1,0 +1,54 @@
+{
+  "alpha": 0.05,
+  "rule": "intersection-union",
+  "quantum_suffix": "_bw",
+  "confirmatory_n_per_class": 250,
+  "results": [
+    {
+      "dataset": "fraud",
+      "n_per_class": 250,
+      "cell": [
+        "selectk",
+        8
+      ],
+      "confirmatory": false,
+      "normap": {
+        "n": 20,
+        "mean": 0.00015458404945993266,
+        "median": 0.000316931027848244,
+        "sd": 0.004791883412060097,
+        "ci": [
+          -0.002088086421268833,
+          0.0023972545201886987
+        ],
+        "p_t": 0.8868072192676056,
+        "p_wilcoxon": 0.3117942810058594,
+        "n_nonzero": 20
+      },
+      "roc": {
+        "n": 20,
+        "mean": 0.0001244444444444104,
+        "median": 0.0003555555555554979,
+        "sd": 0.0038829823147832924,
+        "ci": [
+          -0.0016928472187479379,
+          0.0019417361076367586
+        ],
+        "p_t": 0.8875418369516874,
+        "p_wilcoxon": 0.25472647171402363,
+        "n_nonzero": 20
+      },
+      "reject": false,
+      "quantum_chosen": {
+        "angle-r1": 7,
+        "iqp-r1": 3,
+        "iqp-r2": 10
+      },
+      "classical_chosen": {
+        "poly": 16,
+        "rbf": 3,
+        "linear": 1
+      }
+    }
+  ]
+}

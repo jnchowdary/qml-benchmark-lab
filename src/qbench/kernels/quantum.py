@@ -10,6 +10,30 @@ All four are run. An earlier design used the geometric difference to screen
 them down to three, which is circular: conditioning the experiment on g and
 then testing whether g predicts the outcome cannot answer the question.
 
+BANDWIDTH, AND WHY IT IS NOT PART OF THE REGISTRATION
+------------------------------------------------------
+The registered grid tunes embedding family, repetitions and C. It does not
+tune bandwidth: `features.scale_to_angles` fixes the range at [0, pi] and
+nothing varies it. The classical arm meanwhile tunes RBF gamma over eleven
+values spanning five decades. That asymmetry is not the declared search-size
+asymmetry of pre-registration section 9, which is about grid point counts and
+inner-CV optimism; it is a shape parameter the quantum arm cannot vary at all,
+and bandwidth is the parameter the recent literature identifies as deciding
+whether a fidelity kernel works past a handful of qubits.
+
+The registered results themselves say the grid stops on the wrong side of a
+boundary. `reps` is a bandwidth knob in disguise for the angle family, since
+two applications of AngleEmbedding is one application at twice the angle, and
+across both datasets, all three training sizes and both embedding families the
+SMALLER effective scale won twelve times out of twelve, monotonically. The
+registered grid contains scale factors 1 and 2 and no value below 1.
+
+So `BANDWIDTH_GRID` exists, and it is EXPLORATORY. It was added after the
+registered sweep was seen, which makes any result from it post-hoc, and
+docs/deviations.md D4 records that and fixes in advance what it may conclude.
+The registered path is untouched: bandwidth 1.0 is the registered kernel, and
+a test asserts the registered settings still produce identical Gram matrices.
+
 HOW THE GRAM IS COMPUTED, AND WHY IT IS NOT WHAT IT COSTS
 ---------------------------------------------------------
 A fidelity kernel is K_ij = |<phi(x_i)|phi(x_j)>|^2. The textbook protocol,
@@ -68,6 +92,9 @@ from .pennylane_kernels import DEFAULT_DEVICE
 
 __all__ = [
     "FROZEN_SETTINGS",
+    "BANDWIDTH_GRID",
+    "REGISTERED_BANDWIDTH",
+    "bandwidth_grid_for",
     "QuantumGramFactory",
     "setting_label",
     "expected_entries",
@@ -82,8 +109,60 @@ FROZEN_SETTINGS = (
     {"embedding": "iqp", "reps": 2},
 )
 
+# The registered grid has no bandwidth: `scale_to_angles` fixes the feature
+# range at [0, pi] and nothing varies it. A bandwidth of 1.0 IS the registered
+# kernel, exactly, and every registered record is reproduced by it. See
+# docs/deviations.md D4 for why an exploratory arm with other values exists and
+# what it is and is not allowed to conclude.
+REGISTERED_BANDWIDTH = 1.0
+
+# Powers of two around the registered value, so the registered kernel is nested
+# inside the grid rather than sitting beside it. Chosen before any bandwidth
+# result was computed, and frozen in D4.
+#
+# The range is set by where concentration bites, not by taste. For a product
+# angle kernel on n qubits the Gram concentrates when the per-qubit fidelity
+# falls much below exp(-1/n); at 12 qubits with typical angle gaps near pi/2
+# that puts the interesting region around 0.1 to 0.5, and at 4 qubits much
+# higher. 0.0625 to 4.0 brackets both ends with room to spare, and the grid is
+# wide enough that a selected value on its boundary is itself informative.
+BANDWIDTH_GRID = (0.0625, 0.125, 0.25, 0.5, 1.0, 2.0, 4.0)
+
+
+def bandwidth_grid_for(params, grid=BANDWIDTH_GRID) -> list[dict]:
+    """One structural setting expanded into a bandwidth grid.
+
+    This is the shape that makes the two arms symmetric. On the classical side
+    a kernel FAMILY is one record and its shape parameter (RBF gamma, poly
+    degree) is chosen by inner CV inside it. Registered as it stands, the
+    quantum side has a family per record and no shape parameter at all, so the
+    classical arm tunes bandwidth over eleven values and the quantum arm over
+    none. Expanding here, rather than adding settings to the sweep, keeps one
+    record per embedding family and lets `select_hyperparameters` choose the
+    bandwidth on training folds exactly as it chooses gamma.
+    """
+    return [{**params, "bandwidth": float(b)} for b in grid]
+
 
 def setting_label(params) -> str:
+    """Stable label for a structural setting.
+
+    Backwards compatible on purpose: at the registered bandwidth the label is
+    the one already written into every record of the registered sweep, so
+    resume keys, cache keys and `primary_tests.py` all keep working and the
+    registered files are never reinterpreted.
+    """
+    base = f"{params['embedding']}-r{params['reps']}"
+    bw = float(params.get("bandwidth", REGISTERED_BANDWIDTH))
+    return base if bw == REGISTERED_BANDWIDTH else f"{base}-b{bw:g}"
+
+
+def circuit_label(params) -> str:
+    """Identity of the CIRCUIT, which bandwidth does not change.
+
+    Bandwidth scales the data going in, not the gates, so all bandwidths of one
+    embedding family share a QNode and a device.
+    """
     return f"{params['embedding']}-r{params['reps']}"
 
 
@@ -142,7 +221,7 @@ class QuantumGramFactory:
 
     def _states_fn(self, params):
         """QNode returning the embedded statevector for one point."""
-        key = setting_label(params)
+        key = circuit_label(params)
         if key not in self._kernels:
             nq, embedding, reps = self.n_qubits, params["embedding"], params["reps"]
             dev = qml.device(self.device, wires=nq)
@@ -169,12 +248,17 @@ class QuantumGramFactory:
         nearly free: it reuses the training states already computed for the
         training Gram, so a cell costs n_train + n_test executions instead of
         n_train(n_train-1)/2 + n_test*n_train.
+
+        Bandwidth scales the data on the way into the circuit, so it is part of
+        the cache key via `setting_label`: two bandwidths are two different
+        kernels and must never share cached states.
         """
         key = (setting_label(params), _fingerprint(X))
         if key in self._states_cache:
             return self._states_cache[key]
         psi = self._states_fn(params)
-        A = np.stack([np.asarray(psi(x)) for x in np.asarray(X, dtype=float)])
+        bw = float(params.get("bandwidth", REGISTERED_BANDWIDTH))
+        A = np.stack([np.asarray(psi(x)) for x in np.asarray(X, dtype=float) * bw])
         self._simulator_executions += len(A)
         self._states_cache[key] = A
         return A

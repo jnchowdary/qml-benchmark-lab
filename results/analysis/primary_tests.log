@@ -1,0 +1,313 @@
+H1: no quantum advantage in the pre-registered primary cell.
+Rule: intersection-union, Wilcoxon signed-rank on 20 paired seeds, alpha 0.05 two-sided.
+Selection of both arms is by inner-CV only. The confirmatory arm is 250 per class.
+
+--- churn, 250 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 136,290,000 hardware-equivalent circuit evaluations; 600,000 statevectors actually simulated (227x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 CONFIRMATORY: churn, pca/12 qubits, 250 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0798   95% CI [-0.1229, -0.0367]   median -0.0659   sd 0.0921
+    Wilcoxon p = 8.20e-05    (paired t p = 0.0010, sensitivity only)
+    rejects at alpha 0.05: YES
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean -0.0292   95% CI [-0.0457, -0.0128]   median -0.0171   sd 0.0352
+    Wilcoxon p = 3.38e-04    (paired t p = 0.0015, sensitivity only)
+    rejects at alpha 0.05: YES
+
+  INTERSECTION-UNION VERDICT: REJECT H1. Both endpoints reject; the difference favours the classical kernel.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 16, 'iqp-r1': 3, 'angle-r2': 1}
+    classical {'poly': 15, 'rbf': 3, 'linear': 2}
+  absolute level: quantum normAP 0.5339, classical 0.6137
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP -0.0606   p 0.0017   Holm 0.0017
+    angle-r2   mean normAP -0.0959   p 2.67e-05   Holm 5.34e-05
+    iqp-r1     mean normAP -0.1011   p 1.91e-06   Holm 7.63e-06
+    iqp-r2     mean normAP -0.3008   p 1.91e-06   Holm 7.63e-06
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    randproj/8             +0.0083      0.8983      1.0000
+    randproj/10            -0.0020      0.7562      1.0000
+    randproj/6             -0.0085      0.4749      1.0000
+    selectk/6              -0.0088      0.4304      1.0000
+    randproj/4             -0.0135      0.3884      1.0000
+    pca/4                  -0.0148      0.0897      0.8969
+    pca/8                  -0.0186      0.2162      1.0000
+    randproj/12            -0.0261      0.1536      1.0000
+    selectk/4              -0.0325      0.1536      1.0000
+    pca/6                  -0.0366      0.1231      1.0000
+    pca/10                 -0.0427      0.0136      0.1634
+    selectk/8              -0.0482      0.0759      0.8344
+    selectk/10             -0.0578      0.0083      0.1080
+    pca/12                 -0.0798    8.20e-05      0.0012  *
+    selectk/12             -0.0918    5.86e-04      0.0082  *
+
+--- fraud, 250 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 136,290,000 hardware-equivalent circuit evaluations; 600,000 statevectors actually simulated (227x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 CONFIRMATORY: fraud, selectk/8 qubits, 250 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0028   95% CI [-0.0072, +0.0017]   median -0.0014   sd 0.0095
+    Wilcoxon p = 0.2455    (paired t p = 0.2091, sensitivity only)
+    rejects at alpha 0.05: no
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean +0.0001   95% CI [-0.0017, +0.0019]   median +0.0005   sd 0.0038
+    Wilcoxon p = 0.8227    (paired t p = 0.9092, sensitivity only)
+    rejects at alpha 0.05: no
+
+  INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
+    Stated as an exclusion bound, not as 'no difference': an advantage larger than
+    0.0059 in normAP is excluded at 80% power in this cell.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 20}
+    classical {'poly': 16, 'rbf': 3, 'linear': 1}
+  absolute level: quantum normAP 0.9632, classical 0.9659
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP -0.0028   p 0.2455   Holm 0.2455
+    angle-r2   mean normAP -0.0164   p 3.95e-04   Holm 0.0012
+    iqp-r1     mean normAP -0.0125   p 0.0107   Holm 0.0214
+    iqp-r2     mean normAP -0.0172   p 6.29e-05   Holm 2.52e-04
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    selectk/4              +0.0080      0.4524      1.0000
+    randproj/4             +0.0051      0.9273      1.0000
+    randproj/12            +0.0043      0.9854      1.0000
+    pca/12                 +0.0034      0.1231      1.0000
+    pca/10                 +0.0023      0.8408      1.0000
+    pca/8                  +0.0011      0.4091      1.0000
+    randproj/10            +0.0010      0.7562      1.0000
+    pca/4                  +0.0003      0.5958      1.0000
+    randproj/6             -0.0006      0.7562      1.0000
+    pca/6                  -0.0015      0.7012      1.0000
+    selectk/6              -0.0024      0.4749      1.0000
+    selectk/8              -0.0028      0.2455      1.0000
+    selectk/12             -0.0044      0.2611      1.0000
+    selectk/10             -0.0056      0.3118      1.0000
+    randproj/8             -0.0083      0.0240      0.3593
+
+--- churn, 100 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 21,756,000 hardware-equivalent circuit evaluations; 240,000 statevectors actually simulated (91x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 EXPLORATORY (not a hypothesis test): churn, pca/12 qubits, 100 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0287   95% CI [-0.0588, +0.0013]   median -0.0185   sd 0.0641
+    Wilcoxon p = 0.0583    (paired t p = 0.0594, sensitivity only)
+    rejects at alpha 0.05: no
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean -0.0119   95% CI [-0.0219, -0.0020]   median -0.0083   sd 0.0213
+    Wilcoxon p = 0.0268    (paired t p = 0.0216, sensitivity only)
+    rejects at alpha 0.05: YES
+
+  INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 15, 'iqp-r1': 5}
+    classical {'poly': 9, 'rbf': 7, 'linear': 4}
+  absolute level: quantum normAP 0.5423, classical 0.5711
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP -0.0152   p 0.1893   Holm 0.3787
+    angle-r2   mean normAP -0.1112   p 1.68e-04   Holm 5.04e-04
+    iqp-r1     mean normAP -0.0279   p 0.2305   Holm 0.3787
+    iqp-r2     mean normAP -0.2734   p 3.81e-06   Holm 1.53e-05
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    randproj/4             +0.0276      0.3884      1.0000
+    randproj/6             +0.0273      0.2024      1.0000
+    pca/4                  +0.0180      0.7285      1.0000
+    randproj/10            +0.0155      0.7562      1.0000
+    randproj/12            +0.0148      0.5706      1.0000
+    selectk/6              -0.0202      0.8408      1.0000
+    selectk/10             -0.0282      0.2611      1.0000
+    pca/12                 -0.0287      0.0583      0.6408
+    pca/6                  -0.0290      0.1650      1.0000
+    selectk/4              -0.0389      0.2935      1.0000
+    randproj/8             -0.0419      0.0826      0.8255
+    pca/10                 -0.0509      0.0153      0.2144
+    pca/8                  -0.0582      0.0192      0.2500
+    selectk/8              -0.0825      0.0362      0.4348
+    selectk/12             -0.1270      0.0121      0.1812
+
+--- fraud, 100 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 21,756,000 hardware-equivalent circuit evaluations; 240,000 statevectors actually simulated (91x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 EXPLORATORY (not a hypothesis test): fraud, selectk/8 qubits, 100 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0088   95% CI [-0.0236, +0.0061]   median -0.0042   sd 0.0318
+    Wilcoxon p = 0.3488    (paired t p = 0.2323, sensitivity only)
+    rejects at alpha 0.05: no
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean -0.0027   95% CI [-0.0097, +0.0042]   median -0.0022   sd 0.0149
+    Wilcoxon p = 0.3316    (paired t p = 0.4235, sensitivity only)
+    rejects at alpha 0.05: no
+
+  INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 14, 'angle-r2': 3, 'iqp-r1': 2, 'iqp-r2': 1}
+    classical {'poly': 13, 'linear': 4, 'rbf': 3}
+  absolute level: quantum normAP 0.9474, classical 0.9562
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP -0.0002   p 0.9854   Holm 0.9854
+    angle-r2   mean normAP -0.0188   p 0.0153   Holm 0.0306
+    iqp-r1     mean normAP -0.0158   p 0.0017   Holm 0.0051
+    iqp-r2     mean normAP -0.0237   p 7.08e-04   Holm 0.0028
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    randproj/10            +0.0252      0.2162      1.0000
+    pca/8                  +0.0144      0.4091      1.0000
+    randproj/6             +0.0130      0.1429      1.0000
+    randproj/8             +0.0089      0.2935      1.0000
+    randproj/12            +0.0064      0.2455      1.0000
+    pca/6                  +0.0055      0.8695      1.0000
+    selectk/4              +0.0023      0.7337      1.0000
+    pca/12                 +0.0022      0.9273      1.0000
+    pca/10                 +0.0002      0.7012      1.0000
+    selectk/6              -0.0025      0.9843      1.0000
+    randproj/4             -0.0031      0.2579      1.0000
+    selectk/10             -0.0049      0.1819      1.0000
+    pca/4                  -0.0056      0.6215      1.0000
+    selectk/8              -0.0088      0.3488      1.0000
+    selectk/12             -0.0114      0.0602      0.9031
+
+--- churn, 50 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 5,418,000 hardware-equivalent circuit evaluations; 120,000 statevectors actually simulated (45x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 EXPLORATORY (not a hypothesis test): churn, pca/12 qubits, 50 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0331   95% CI [-0.1059, +0.0397]   median -0.0220   sd 0.1555
+    Wilcoxon p = 0.4091    (paired t p = 0.3532, sensitivity only)
+    rejects at alpha 0.05: no
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean -0.0202   95% CI [-0.0479, +0.0075]   median -0.0267   sd 0.0591
+    Wilcoxon p = 0.1474    (paired t p = 0.1427, sensitivity only)
+    rejects at alpha 0.05: no
+
+  INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 13, 'iqp-r1': 5, 'angle-r2': 1, 'iqp-r2': 1}
+    classical {'poly': 10, 'rbf': 9, 'linear': 1}
+  absolute level: quantum normAP 0.3804, classical 0.4135
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP +0.0032   p 1.0000   Holm 1.0000
+    angle-r2   mean normAP -0.1415   p 0.0296   Holm 0.0887
+    iqp-r1     mean normAP +0.0013   p 0.9273   Holm 1.0000
+    iqp-r2     mean normAP -0.2346   p 2.10e-04   Holm 8.39e-04
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    randproj/12            +0.0245      0.4091      1.0000
+    randproj/10            +0.0116      1.0000      1.0000
+    pca/10                 +0.0101      0.4749      1.0000
+    pca/4                  +0.0051      0.8983      1.0000
+    randproj/8             -0.0028      0.9854      1.0000
+    selectk/4              -0.0029      0.6397      1.0000
+    randproj/6             -0.0079      0.9273      1.0000
+    randproj/4             -0.0165      0.6477      1.0000
+    pca/12                 -0.0331      0.4091      1.0000
+    pca/8                  -0.0333      0.2455      1.0000
+    pca/6                  -0.0497      0.0400      0.5599
+    selectk/10             -0.0619      0.2305      1.0000
+    selectk/6              -0.0762      0.1134      1.0000
+    selectk/8              -0.0903      0.0484      0.6297
+    selectk/12             -0.1499      0.0049      0.0729
+
+--- fraud, 50 per class -------------------------------
+  quantum records written at commit(s): 0b796a3 x1200
+  1200 quantum records: 15 cells x 20 seeds x 4 settings ['angle-r1', 'angle-r2', 'iqp-r1', 'iqp-r2']
+  cost: 5,418,000 hardware-equivalent circuit evaluations; 120,000 statevectors actually simulated (45x, and the paper reports the former)
+  integrity: clean. Pairing is sound on every cell.
+
+==========================================================================
+H1 EXPLORATORY (not a hypothesis test): fraud, selectk/8 qubits, 50 per class
+==========================================================================
+
+  normAP: quantum - classical, 20 paired seeds
+    mean -0.0130   95% CI [-0.0436, +0.0176]   median +0.0000   sd 0.0654
+    Wilcoxon p = 0.9658    (paired t p = 0.3852, sensitivity only)
+    rejects at alpha 0.05: no
+
+  ROC-AUC: quantum - classical, 20 paired seeds
+    mean -0.0031   95% CI [-0.0192, +0.0130]   median +0.0000   sd 0.0343
+    Wilcoxon p = 0.8818    (paired t p = 0.6899, sensitivity only)
+    rejects at alpha 0.05: no
+
+  INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
+
+  inner-CV chose, across seeds:
+    quantum   {'angle-r1': 12, 'angle-r2': 5, 'iqp-r1': 2, 'iqp-r2': 1}
+    classical {'poly': 13, 'linear': 5, 'rbf': 2}
+  absolute level: quantum normAP 0.9434, classical 0.9564
+
+  EXPLORATORY: each quantum setting against best classical (Holm-corrected within this family of 4)
+    angle-r1   mean normAP -0.0128   p 0.9658   Holm 1.0000
+    angle-r2   mean normAP -0.0285   p 0.2439   Holm 0.7317
+    iqp-r1     mean normAP -0.0077   p 0.6698   Holm 1.0000
+    iqp-r2     mean normAP -0.0358   p 0.0079   Holm 0.0316
+
+  EXPLORATORY: all cells (Holm-corrected within this family; no cell here bears on H1)
+    cell              mean dNormAP           p        Holm
+    randproj/12            +0.0129      0.3289      1.0000
+    pca/4                  +0.0076      0.9515      1.0000
+    randproj/6             +0.0051      0.9217      1.0000
+    pca/8                  -0.0010      0.9661      1.0000
+    selectk/4              -0.0030      0.2734      1.0000
+    randproj/10            -0.0048      1.0000      1.0000
+    randproj/4             -0.0070      0.8317      1.0000
+    randproj/8             -0.0109      0.4524      1.0000
+    selectk/8              -0.0130      0.9658      1.0000
+    pca/10                 -0.0136      0.2645      1.0000
+    selectk/6              -0.0154      0.9097      1.0000
+    selectk/10             -0.0165      0.9095      1.0000
+    pca/12                 -0.0238      0.1337      1.0000
+    selectk/12             -0.0241      0.2216      1.0000
+    pca/6                  -0.0425      0.0215      0.3232
+
+-> results/analysis/primary_tests.json

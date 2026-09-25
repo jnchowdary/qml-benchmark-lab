@@ -62,8 +62,10 @@ from qbench.data import SEEDS, balanced_subsample, load_dataset, make_split, shu
 from qbench.features import MAPPINGS, fit_mapping, scale_to_angles  # noqa: E402
 from qbench.kernels.pennylane_kernels import available_devices  # noqa: E402
 from qbench.kernels.quantum import (  # noqa: E402
+    BANDWIDTH_GRID,
     FROZEN_SETTINGS,
     QuantumGramFactory,
+    bandwidth_grid_for,
     setting_label,
 )
 from qbench.tuning import C_GRID, tune_and_evaluate  # noqa: E402
@@ -159,8 +161,16 @@ def completed_keys(path):
     return done
 
 
-def run_cell(X, y, seed, n_per_class, mapping, nq, shuffle, device, done, out, meta):
-    """One (seed, mapping, qubits) cell: all four settings, appended as they finish."""
+def run_cell(X, y, seed, n_per_class, mapping, nq, shuffle, device, done, out, meta,
+             bandwidths=None):
+    """One (seed, mapping, qubits) cell: all four settings, appended as they finish.
+
+    `bandwidths` is None for the registered run, which is the registered kernel
+    at its single fixed scale. Given a grid, each embedding family still writes
+    ONE record and the bandwidth is chosen inside it by inner CV, mirroring how
+    the classical arm chooses RBF gamma. That keeps the record shape identical,
+    so every downstream analysis works unchanged on either file.
+    """
     Xs, ys = balanced_subsample(X, y, n_per_class=n_per_class, seed=seed)
     if shuffle:
         ys = shuffle_labels(ys, seed)
@@ -178,10 +188,14 @@ def run_cell(X, y, seed, n_per_class, mapping, nq, shuffle, device, done, out, m
         if (seed, mapping, nq, label) in done:
             continue
         ev0, sx0 = factory.evaluations(), factory.simulator_executions()
-        rec = tune_and_evaluate(f"quantum-{label}", factory.gram_fn, [dict(params)],
+        grid = ([dict(params)] if bandwidths is None
+                else bandwidth_grid_for(params, bandwidths))
+        rec = tune_and_evaluate(f"quantum-{label}", factory.gram_fn, grid,
                                 Xa_tr, y_tr, Xa_te, y_te, seed=seed)
         rec.update(track="matched", mapping=mapping, n_qubits=nq, setting=label,
                    embedding=params["embedding"], reps=params["reps"],
+                   bandwidth=float(rec["params"].get("bandwidth", 1.0)),
+                   bandwidth_grid=(list(bandwidths) if bandwidths else None),
                    n_per_class=int(n_per_class), shuffled=bool(shuffle),
                    device=device,
                    # hardware-equivalent: what this kernel would cost on a QPU
@@ -212,6 +226,11 @@ def main():
                          "pre-registration section 7.")
     ap.add_argument("--primary-only", action="store_true",
                     help="only the pre-registered primary cell for this dataset")
+    ap.add_argument("--bandwidth-grid", action="store_true",
+                    help="EXPLORATORY ARM, not the registration. Tune the embedding "
+                         "bandwidth by inner CV inside each family, as the classical "
+                         "arm tunes gamma. Writes to a separate _bw file so no "
+                         "registered record can be overwritten. See deviations D4.")
     ap.add_argument("--dry-run", action="store_true",
                     help="print the plan and the projected wall clock; compute nothing")
     ap.add_argument("--out-dir", default=str(ROOT / "results" / "runs" / "quantum"))
@@ -238,7 +257,10 @@ def main():
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    suffix = "_shuffled" if args.shuffle_labels else ""
+    # The bandwidth arm NEVER shares a file with the registered run. A reader
+    # who opens a registered file must not have to check a field to know what
+    # they are looking at.
+    suffix = ("_bw" if args.bandwidth_grid else "") + ("_shuffled" if args.shuffle_labels else "")
     out = out_dir / f"{args.dataset}_matched_n{args.n_per_class}{suffix}.jsonl"
     dropped = repair_jsonl(out)
     if dropped:
@@ -256,13 +278,23 @@ def main():
     print(f"dataset={args.dataset}  device={args.device}  n_per_class={args.n_per_class} "
           f"({n_train} train / {n_test} test)")
     print(f"settings={[setting_label(p) for p in FROZEN_SETTINGS]}  (all four run; g does not screen)")
+    if args.bandwidth_grid:
+        print(f"EXPLORATORY BANDWIDTH ARM: bandwidth chosen by inner CV from "
+              f"{list(BANDWIDTH_GRID)} inside each family.")
+        print("  This is NOT the registered grid. It was added after the registered "
+              "sweep was seen; see docs/deviations.md D4.")
     print(f"cells={len(cells)}  seeds={len(args.seeds)}  first cell={cells[0]}"
           f"{'  <- pre-registered primary' if cells[0] == PRIMARY_CELL.get(args.dataset) else ''}")
     if args.shuffle_labels:
         print("NEGATIVE CONTROL: labels permuted. These are not results.")
     print(f"already complete: {len(done)} records  |  remaining: {len(todo)} records")
 
-    secs = sum(SEC_PER_STATE.get(q, 0.006) * (n_train + n_test) for _, _, q, _ in todo)
+    # With a bandwidth grid, inner CV needs one training Gram per bandwidth
+    # (different scalings share no states), while the test block is computed
+    # only for the winner.
+    n_bw = len(BANDWIDTH_GRID) if args.bandwidth_grid else 1
+    secs = sum(SEC_PER_STATE.get(q, 0.006) * (n_bw * n_train + n_test)
+               for _, _, q, _ in todo)
     print(f"projected wall clock from the measured cost model: {secs / 3600:.2f} h "
           f"(statevector path; hardware-equivalent cost is reported per record)")
     print(f"-> {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
@@ -276,13 +308,15 @@ def main():
 
     meta = {"dataset": args.dataset, "git_commit": git_commit(), "c_grid": list(C_GRID),
             "n_seeds": len(args.seeds), "device": args.device,
-            "shuffled": bool(args.shuffle_labels)}
+            "shuffled": bool(args.shuffle_labels),
+            "bandwidth_arm": bool(args.bandwidth_grid)}
 
     t0, total = time.perf_counter(), 0
     for i, (mapping, nq) in enumerate(cells, 1):
         for seed in args.seeds:
             written, elapsed = run_cell(X, y, seed, args.n_per_class, mapping, nq,
-                                        args.shuffle_labels, args.device, done, out, meta)
+                                        args.shuffle_labels, args.device, done, out, meta,
+                                        bandwidths=BANDWIDTH_GRID if args.bandwidth_grid else None)
             total += written
             if written:
                 rate = (time.perf_counter() - t0) / total

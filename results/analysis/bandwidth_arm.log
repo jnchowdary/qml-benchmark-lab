@@ -1,0 +1,43 @@
+Adding a hyperparameter always raises the best inner-CV score. The test is
+whether it raises it MORE on real labels than on permuted ones.
+This arm is exploratory (deviations D4) and produces no confirmatory result.
+
+==========================================================================
+BANDWIDTH ARM (EXPLORATORY, deviations D4): churn, pca/12 qubits, 250 per class
+==========================================================================
+
+  Gain from adding a bandwidth grid, in normAP:
+    real labels     : mean gain +0.0697  median +0.0565  sd 0.1057  p 9.65e-04  (n=20)
+    permuted labels : mean gain +0.0005  median +0.0000  sd 0.0388  p 1.0000  (n=20)
+
+  The comparison that decides it:
+    real gain / permuted gain = 146.87   (the classical grids measured 0.14 to 0.20 here, which is why they were left frozen)
+    excess of real over permuted, paired by seed: +0.0692 [+0.0121, +0.1264]  p 0.0083
+
+  inner CV chose bandwidth (real labels): {0.0625: 6, 0.125: 6, 0.25: 3, 0.5: 4, 1.0: 1}
+    6/20 seeds selected a value on the grid boundary. Per section 7 this is descriptive, not a licence to widen again.
+
+  absolute normAP in this cell: registered 0.5339 -> widened 0.6036
+
+  READING, per D4: widening gained materially more on real labels than on noise. The registered H1 rejection on churn is a result about FIXED-BANDWIDTH quantum kernels and the paper must say so in those words. H1 stands as computed; its scope narrows. D4 outcome one.
+
+==========================================================================
+BANDWIDTH ARM (EXPLORATORY, deviations D4): fraud, selectk/8 qubits, 250 per class
+==========================================================================
+
+  Gain from adding a bandwidth grid, in normAP:
+    real labels     : mean gain +0.0029  median +0.0013  sd 0.0105  p 0.2413  (n=20)
+    permuted labels : mean gain +0.0012  median +0.0000  sd 0.0313  p 0.6772  (n=20)
+
+  The comparison that decides it:
+    real gain / permuted gain = 2.53   (the classical grids measured 0.14 to 0.20 here, which is why they were left frozen)
+    excess of real over permuted, paired by seed: +0.0018 [-0.0149, +0.0185]  p 0.8288
+
+  inner CV chose bandwidth (real labels): {0.0625: 5, 0.125: 9, 0.25: 3, 0.5: 2, 1.0: 1}
+    5/20 seeds selected a value on the grid boundary. Per section 7 this is descriptive, not a licence to widen again.
+
+  absolute normAP in this cell: registered 0.9632 -> widened 0.9661
+
+  READING, per D4: widening gained no more on real labels than on permuted ones. This is winner's curse, the registered result stands unqualified, and this arm becomes a control that strengthens H1. D4 outcome two.
+
+-> results/analysis/bandwidth_arm.json
