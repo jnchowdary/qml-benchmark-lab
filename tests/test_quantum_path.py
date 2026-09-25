@@ -221,7 +221,11 @@ def test_runner_defaults_to_the_registered_backend():
     assert rq.REGISTERED_DEVICE == "lightning.qubit"
     text = (ROOT / "docs" / "pre-registration.md").read_text()
     assert "`lightning.qubit`" in text
-    assert set(rq.MS_PER_ENTRY) == {4, 6, 8, 10, 12}, "cost model must cover the frozen sweep"
+    assert set(rq.SEC_PER_STATE) == {4, 6, 8, 10, 12}, "cost model must cover the frozen sweep"
+    # measured per STATEVECTOR, worst of the four settings. The previous model
+    # was per pairwise entry from an angle-r1-only benchmark and under-predicted
+    # the churn control by 3.7x.
+    assert rq.SEC_PER_STATE[12] > rq.SEC_PER_STATE[4], "cost must rise with qubit count"
 
 
 def test_unusable_device_refuses_rather_than_falling_back(tmp_path):
@@ -229,3 +233,67 @@ def test_unusable_device_refuses_rather_than_falling_back(tmp_path):
     assert proc.returncode != 0
     assert "deviation" in (proc.stdout + proc.stderr)
     assert not list(tmp_path.glob("*.jsonl"))
+
+
+# --- the statevector formulation (25 Sep 2026) ----------------------------------
+
+@pytest.mark.parametrize("nq", [4, 8])
+def test_statevector_gram_equals_the_pairwise_protocol(nq):
+    """THE test for this optimisation. The statevector path must reproduce the
+    textbook fidelity protocol -- run U(x_i)^dagger U(x_j), measure all-zeros --
+    exactly, for every frozen setting, square and rectangular.
+
+    If it does not, every quantum result in the project is wrong and nothing
+    else would say so.
+    """
+    from qbench.kernels.pennylane_kernels import build_pennylane_kernel
+
+    rng = np.random.default_rng(nq)
+    X, Y = rng.uniform(0, np.pi, (10, nq)), rng.uniform(0, np.pi, (4, nq))
+    f = QuantumGramFactory(nq, device="default.qubit")
+    for params in FROZEN_SETTINGS:
+        ref = build_pennylane_kernel(nq, embedding=params["embedding"],
+                                     reps=params["reps"], device="default.qubit")
+        k = f.gram_fn(dict(params))
+        assert np.abs(k(X) - np.asarray(ref.evaluate(X))).max() < 1e-12, setting_label(params)
+        got = k(X, Y)
+        assert got.shape == (len(X), len(Y)), "sklearn convention: k(X, Y) is (len(X), len(Y))"
+        assert np.abs(got - np.asarray(ref.evaluate(X, Y))).max() < 1e-12, setting_label(params)
+
+
+def test_hardware_cost_is_reported_not_the_simulator_shortcut():
+    """The pre-registration reports cost in circuit evaluations. A fidelity
+    kernel needs n(n-1)/2 of them on hardware however cleverly a simulator
+    computes it, and the paper must not claim otherwise."""
+    f = QuantumGramFactory(4)
+    k = f.gram_fn(dict(FROZEN_SETTINGS[0]))
+    X = np.random.default_rng(0).uniform(0, np.pi, (20, 4))
+    k(X)
+    assert f.evaluations() == 20 * 19 // 2
+    assert f.simulator_executions() == 20
+    assert f.simulator_executions() < f.evaluations()
+
+
+def test_repeating_a_gram_does_not_inflate_the_reported_cost():
+    """Asking for the same matrix twice does not make the experiment more
+    expensive to run on a quantum computer."""
+    f = QuantumGramFactory(4)
+    k = f.gram_fn(dict(FROZEN_SETTINGS[0]))
+    X = np.random.default_rng(1).uniform(0, np.pi, (12, 4))
+    k(X)
+    n = f.evaluations()
+    k(X)
+    assert f.evaluations() == n
+    assert f.cache_hits() == 1
+
+
+def test_test_block_reuses_training_states():
+    """A cell must cost n_train + n_test executions, not n_train + n_test twice
+    over. This reuse is most of the speedup."""
+    f = QuantumGramFactory(4)
+    k = f.gram_fn(dict(FROZEN_SETTINGS[0]))
+    rng = np.random.default_rng(2)
+    Xtr, Xte = rng.uniform(0, np.pi, (30, 4)), rng.uniform(0, np.pi, (10, 4))
+    k(Xtr)
+    k(Xte, Xtr)
+    assert f.simulator_executions() == 40

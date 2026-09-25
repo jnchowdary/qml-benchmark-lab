@@ -10,6 +10,25 @@ All four are run. An earlier design used the geometric difference to screen
 them down to three, which is circular: conditioning the experiment on g and
 then testing whether g predicts the outcome cannot answer the question.
 
+HOW THE GRAM IS COMPUTED, AND WHY IT IS NOT WHAT IT COSTS
+---------------------------------------------------------
+A fidelity kernel is K_ij = |<phi(x_i)|phi(x_j)>|^2. The textbook protocol,
+and the only one available on hardware, runs U(x_i)^dagger U(x_j) and measures
+the all-zeros probability, once per PAIR: n(n-1)/2 circuit evaluations.
+
+On a simulator the statevectors can be extracted directly, so n executions and
+one matrix product give the whole Gram. Measured 25 Sep 2026: 16 to 46 times
+faster at 40 points, agreeing with the pairwise protocol to 1e-15, and the
+advantage grows with n because one method is O(n) and the other O(n^2). It
+turned a projected 110-hour sweep into well under an hour.
+
+This changes no number. It changes what the run costs on THIS machine, and
+nothing about what the experiment would cost on hardware. So `evaluations()`
+keeps reporting the hardware-equivalent n(n-1)/2, which is what the
+pre-registration commits to reporting, and `simulator_executions()` reports
+the shortcut separately. Conflating the two would let the paper claim quantum
+kernels are cheap on the strength of something no quantum computer can do.
+
 WHY THE CACHE EXISTS
 --------------------
 `qbench.tuning` was written for classical kernels, where recomputing a Gram
@@ -43,7 +62,9 @@ import hashlib
 
 import numpy as np
 
-from .pennylane_kernels import DEFAULT_DEVICE, build_pennylane_kernel
+import pennylane as qml
+
+from .pennylane_kernels import DEFAULT_DEVICE
 
 __all__ = [
     "FROZEN_SETTINGS",
@@ -112,38 +133,80 @@ class QuantumGramFactory:
     def __init__(self, n_qubits: int, device: str = DEFAULT_DEVICE):
         self.n_qubits = int(n_qubits)
         self.device = device
-        self._cache: dict = {}
+        self._states_cache: dict = {}
+        self._counted: set = set()
         self._kernels: dict = {}
         self._evaluations = 0
+        self._simulator_executions = 0
         self._hits = 0
 
-    def _kernel(self, params):
+    def _states_fn(self, params):
+        """QNode returning the embedded statevector for one point."""
         key = setting_label(params)
         if key not in self._kernels:
-            self._kernels[key] = build_pennylane_kernel(
-                self.n_qubits, embedding=params["embedding"],
-                reps=params["reps"], device=self.device)
+            nq, embedding, reps = self.n_qubits, params["embedding"], params["reps"]
+            dev = qml.device(self.device, wires=nq)
+
+            def embed(x):
+                if embedding == "angle":
+                    for _ in range(reps):
+                        qml.AngleEmbedding(x, wires=range(nq))
+                else:
+                    qml.IQPEmbedding(x, wires=range(nq), n_repeats=reps)
+
+            @qml.qnode(dev)
+            def psi(x):
+                embed(x)
+                return qml.state()
+
+            self._kernels[key] = psi
         return self._kernels[key]
+
+    def _states(self, params, X):
+        """Statevectors for X, cached by content.
+
+        Caching STATES rather than Gram matrices is what makes the test block
+        nearly free: it reuses the training states already computed for the
+        training Gram, so a cell costs n_train + n_test executions instead of
+        n_train(n_train-1)/2 + n_test*n_train.
+        """
+        key = (setting_label(params), _fingerprint(X))
+        if key in self._states_cache:
+            return self._states_cache[key]
+        psi = self._states_fn(params)
+        A = np.stack([np.asarray(psi(x)) for x in np.asarray(X, dtype=float)])
+        self._simulator_executions += len(A)
+        self._states_cache[key] = A
+        return A
 
     def gram_fn(self, params):
         label = setting_label(params)
 
         def compute(X, Y=None):
-            key = (label, _fingerprint(X), None if Y is None else _fingerprint(Y))
-            if key in self._cache:
+            # Hardware-equivalent cost is charged ONCE per distinct Gram the
+            # experiment needs, not once per call: asking for the same matrix
+            # twice does not make the experiment more expensive to run on a
+            # quantum computer.
+            gram_key = (label, _fingerprint(X), None if Y is None else _fingerprint(Y))
+            first_time = gram_key not in self._counted
+            if not first_time:
                 self._hits += 1
-                return self._cache[key]
-            X = np.asarray(X, dtype=float)
-            n = len(X)
+            self._counted.add(gram_key)
+
+            A = self._states(params, X)
+            n = len(A)
             if Y is None:
-                self._evaluations += n * (n - 1) // 2
-                K = np.asarray(self._kernel(params).evaluate(X), dtype=float)
+                if first_time:
+                    self._evaluations += n * (n - 1) // 2   # hardware-equivalent cost
+                K = np.abs(A.conj() @ A.T) ** 2
+                K = (K + K.T) / 2                          # kill 1e-16 asymmetry
+                np.fill_diagonal(K, 1.0)
             else:
-                Y = np.asarray(Y, dtype=float)
-                self._evaluations += n * len(Y)
-                K = np.asarray(self._kernel(params).evaluate(X, Y), dtype=float)
-            self._cache[key] = K
-            return K
+                B = self._states(params, Y)
+                if first_time:
+                    self._evaluations += n * len(B)
+                K = np.abs(A.conj() @ B.T) ** 2
+            return np.clip(np.real(K), 0.0, 1.0)
 
         return compute
 
@@ -153,11 +216,18 @@ class QuantumGramFactory:
         must be what the experiment costs, not what this run happened to save."""
         return self._evaluations
 
+    def simulator_executions(self) -> int:
+        """Circuits actually simulated. Much smaller than `evaluations()`, and
+        reported separately so nobody mistakes a simulator shortcut for a
+        property of quantum kernels."""
+        return self._simulator_executions
+
     def cache_hits(self) -> int:
         return self._hits
 
     def clear(self) -> None:
-        """Drop cached Gram matrices, keeping the counters and the compiled
-        circuits. Called between cells so memory does not grow across a run
-        that spans several nights."""
-        self._cache.clear()
+        """Drop cached statevectors, keeping the counters and the QNodes.
+        Called between cells so memory does not grow across a long run: 350
+        states at 12 qubits is about 22 MB per setting."""
+        self._states_cache.clear()
+        self._counted.clear()

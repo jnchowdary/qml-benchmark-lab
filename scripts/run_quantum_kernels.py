@@ -64,7 +64,6 @@ from qbench.kernels.pennylane_kernels import available_devices  # noqa: E402
 from qbench.kernels.quantum import (  # noqa: E402
     FROZEN_SETTINGS,
     QuantumGramFactory,
-    expected_entries,
     setting_label,
 )
 from qbench.tuning import C_GRID, tune_and_evaluate  # noqa: E402
@@ -80,9 +79,15 @@ PRIMARY_CELL = {"churn": ("pca", 12), "fraud": ("selectk", 8)}
 # run on 24 Sep 2026 before any compute was spent.
 REGISTERED_DEVICE = "lightning.qubit"
 
-# Measured on the target machine, results/analysis/backend_benchmark*.json.
-# These are LIGHTNING rates. If the device changes, this table is wrong.
-MS_PER_ENTRY = {4: 0.401, 6: 0.440, 8: 0.477, 10: 0.550, 12: 0.650}
+# Seconds per STATEVECTOR on lightning.qubit, worst of the four frozen settings
+# at each qubit count, measured 25 Sep 2026.
+#
+# The previous model was milliseconds per PAIRWISE kernel entry, taken from a
+# benchmark that hardcoded angle-r1 -- the cheapest of the four settings. It
+# under-predicted the churn control by 3.7x. The spread across settings at 12
+# qubits is 1.11 ms (angle-r1) to 5.06 ms (iqp-r2), so budgeting four settings
+# at one setting's rate was never going to work. This table takes the worst.
+SEC_PER_STATE = {4: 0.00113, 6: 0.00159, 8: 0.00224, 10: 0.00293, 12: 0.00506}
 
 
 def git_commit():
@@ -172,12 +177,18 @@ def run_cell(X, y, seed, n_per_class, mapping, nq, shuffle, device, done, out, m
         label = setting_label(params)
         if (seed, mapping, nq, label) in done:
             continue
+        ev0, sx0 = factory.evaluations(), factory.simulator_executions()
         rec = tune_and_evaluate(f"quantum-{label}", factory.gram_fn, [dict(params)],
                                 Xa_tr, y_tr, Xa_te, y_te, seed=seed)
         rec.update(track="matched", mapping=mapping, n_qubits=nq, setting=label,
                    embedding=params["embedding"], reps=params["reps"],
                    n_per_class=int(n_per_class), shuffled=bool(shuffle),
-                   device=device, circuit_evaluations=factory.evaluations(),
+                   device=device,
+                   # hardware-equivalent: what this kernel would cost on a QPU
+                   circuit_evaluations=factory.evaluations() - ev0,
+                   # what the simulator actually ran, reported separately so the
+                   # shortcut is never mistaken for a property of the method
+                   simulator_executions=factory.simulator_executions() - sx0,
                    cache_hits=factory.cache_hits())
         with out.open("a") as f:
             f.write(json.dumps({**meta, **rec}) + "\n")
@@ -251,10 +262,9 @@ def main():
         print("NEGATIVE CONTROL: labels permuted. These are not results.")
     print(f"already complete: {len(done)} records  |  remaining: {len(todo)} records")
 
-    secs = 0.0
-    for _, _, q, _ in todo:
-        secs += expected_entries(n_train, n_test) * MS_PER_ENTRY.get(q, 0.65) / 1000
-    print(f"projected wall clock from the measured cost model: {secs / 3600:.1f} h")
+    secs = sum(SEC_PER_STATE.get(q, 0.006) * (n_train + n_test) for _, _, q, _ in todo)
+    print(f"projected wall clock from the measured cost model: {secs / 3600:.2f} h "
+          f"(statevector path; hardware-equivalent cost is reported per record)")
     print(f"-> {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
 
     if args.dry_run:

@@ -1,0 +1,8 @@
+FAIL churn_matched_n250_shuffled.jsonl: 80 common records
+       largest metric difference        4.68e-04  (inner_score, (0, 'pca', 12, 'angle-r2', 'quantum-angle-r2'))
+       largest decision-score difference 5.29e-03
+FAIL fraud_matched_n250_shuffled.jsonl: 80 common records
+       largest metric difference        9.52e-04  (inner_score, (5, 'selectk', 8, 'iqp-r2', 'quantum-iqp-r2'))
+       largest decision-score difference 6.05e-01
+
+DIFFERENCES FOUND
