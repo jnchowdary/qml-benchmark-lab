@@ -1,0 +1,73 @@
+A kernel that scores what its nearest RBF scores is that RBF, whatever its
+Spearman. Exploratory under deviations D4; nothing here is confirmatory.
+
+==============================================================================
+REPLICATION ACROSS CELLS (EXPLORATORY, D4): fraud, 250/class, registered arm
+==============================================================================
+  settings: ['iqp-r1', 'angle-r2']   cells: 15   primary: selectk/8
+  Question: does the primary cell's surrogate gap appear anywhere else?
+
+  --- angle-r2 ---
+  cell                 gamma    d normAP                 95% CI          p       Holm      
+  pca/4             1.12e+00     +0.0025 [-0.0017, +0.0067]     0.3488     1.0000      
+  selectk/4         1.12e+00     +0.0014 [-0.0040, +0.0067]     0.8124     1.0000      
+  selectk/8         1.12e+00     +0.0013 [-0.0017, +0.0042]     0.3683     1.0000       <- primary
+  randproj/10       1.12e+00     +0.0004 [-0.0048, +0.0055]     0.2943     1.0000      
+  randproj/6        1.12e+00     +0.0003 [-0.0046, +0.0052]     0.7012     1.0000      
+  selectk/12        1.00e+00     -0.0005 [-0.0051, +0.0042]     0.0204     0.2308      
+  selectk/10        1.06e+00     -0.0014 [-0.0043, +0.0016]     0.1429     1.0000      
+  randproj/12       1.00e+00     -0.0014 [-0.0026, -0.0002]     0.0266     0.2664      
+  pca/6             1.12e+00     -0.0020 [-0.0075, +0.0035]     0.8124     1.0000      
+  selectk/6         1.12e+00     -0.0020 [-0.0095, +0.0054]     0.2455     1.0000      
+  pca/10            1.12e+00     -0.0033 [-0.0068, +0.0002]     0.0192     0.2308      
+  randproj/8        1.12e+00     -0.0052 [-0.0086, -0.0017]     0.0049     0.0680      
+  pca/8             1.12e+00     -0.0056 [-0.0096, -0.0015]     0.0056     0.0726      
+  randproj/4        1.12e+00     -0.0067 [-0.0159, +0.0025]     0.0973     0.8758      
+  pca/12            1.12e+00     -0.0086 [-0.0136, -0.0037]   1.91e-06   2.86e-05  REAL
+    trend: Spearman(qubits, gap) -0.149 p 0.0099   |   Spearman(gamma, gap) -0.033 p 0.5721
+     qubits   n       gap   quantum  surrogate     gamma
+         12  60   -0.0035    0.9375     0.9410  1.00e+00
+         10  60   -0.0014    0.9334     0.9349  1.12e+00
+          8  60   -0.0032    0.9301     0.9333  1.12e+00
+          6  60   -0.0012    0.9268     0.9280  1.12e+00
+          4  60   -0.0010    0.8904     0.8913  1.12e+00
+    Read the last three columns together: a gap that grows while the
+    surrogate column falls and the quantum column is flat means the
+    comparator degraded, not that the quantum kernel improved.
+    gamma < 0.2: none in this arm, so any prediction conditioned on small gamma is untestable here, not passed.
+    1/15 cells clear all three conditions after Holm: 0 positive, 1 negative
+    the primary cell itself does not clear the three conditions for this setting, so there is nothing here to replicate.
+
+  --- iqp-r1 ---
+  cell                 gamma    d normAP                 95% CI          p       Holm      
+  pca/12            3.98e+00     +0.0177 [+0.0049, +0.0305]     0.0073     0.1021      
+  selectk/12        7.08e+00     +0.0122 [+0.0053, +0.0191]   3.22e-04     0.0048  REAL
+  selectk/10        7.08e+00     +0.0081 [+0.0011, +0.0152]     0.0296     0.3549      
+  randproj/12       3.55e+00     +0.0064 [-0.0015, +0.0142]     0.1054     1.0000      
+  pca/10            3.98e+00     +0.0063 [-0.0079, +0.0205]     0.7841     1.0000      
+  pca/8             3.98e+00     +0.0057 [-0.0078, +0.0191]     0.9854     1.0000      
+  randproj/10       3.16e+00     +0.0048 [-0.0047, +0.0143]     0.7012     1.0000      
+  selectk/8         6.31e+00     +0.0021 [-0.0034, +0.0075]     0.5958     1.0000       <- primary
+  randproj/8        3.16e+00     +0.0014 [-0.0140, +0.0168]     0.3118     1.0000      
+  pca/6             3.98e+00     +0.0002 [-0.0053, +0.0057]     0.9273     1.0000      
+  selectk/6         4.47e+00     -0.0021 [-0.0075, +0.0034]     0.4749     1.0000      
+  randproj/6        2.38e+00     -0.0040 [-0.0107, +0.0028]     0.3118     1.0000      
+  randproj/4        1.58e+00     -0.0063 [-0.0190, +0.0063]     0.1327     1.0000      
+  selectk/4         3.55e+00     -0.0079 [-0.0149, -0.0009]     0.0107     0.1390      
+  pca/4             3.16e+00     -0.0079 [-0.0162, +0.0005]     0.0696     0.7654      
+    trend: Spearman(qubits, gap) +0.349 p 5.21e-10   |   Spearman(gamma, gap) +0.191 p 8.75e-04
+     qubits   n       gap   quantum  surrogate     gamma
+         12  60   +0.0121    0.9392     0.9271  3.98e+00
+         10  60   +0.0064    0.9302     0.9238  3.98e+00
+          8  60   +0.0030    0.9288     0.9257  3.98e+00
+          6  60   -0.0020    0.9235     0.9255  3.98e+00
+          4  60   -0.0074    0.8850     0.8923  3.16e+00
+    Read the last three columns together: a gap that grows while the
+    surrogate column falls and the quantum column is flat means the
+    comparator degraded, not that the quantum kernel improved.
+    gamma < 0.2: none in this arm, so any prediction conditioned on small gamma is untestable here, not passed.
+    1/15 cells clear all three conditions after Holm: 1 positive, 0 negative
+    the primary cell itself does not clear the three conditions for this setting, so there is nothing here to replicate.
+
+
+-> results/analysis/rbf_surrogate_fraud_n250_registered_allcells.json

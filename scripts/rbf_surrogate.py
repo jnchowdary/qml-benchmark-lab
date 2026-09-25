@@ -52,6 +52,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
+from scipy import stats
 from sklearn.metrics.pairwise import euclidean_distances, rbf_kernel
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -138,6 +139,7 @@ def one_record(dataset, cell, seed, n_per_class, qrec):
                          sur["test_base_rate"])
     lo, hi = REGISTERED_RBF_RANGE
     return {"seed": seed, "setting": qrec["setting"], "embedding": qrec["embedding"],
+            "n_qubits": int(qrec["n_qubits"]), "mapping": qrec["mapping"],
             "bandwidth": bw, "gamma": gamma, "gram_rmse": rmse,
             "in_registered_rbf_range": bool(lo <= gamma <= hi),
             "quantum_normap": q_nap, "surrogate_normap": s_nap,
@@ -328,7 +330,7 @@ def report_all_cells(dataset, n_per_class, arm, q_dir, seeds, settings):
             if len(rs_) < 2:
                 continue
             per_setting[setting].append({
-                "cell": cell, "n": len(rs_),
+                "cell": cell, "n": len(rs_), "rows": rs_,
                 "gamma_median": float(np.median([r["gamma"] for r in rs_])),
                 "e": endpoint_test([r["d_normap"] for r in rs_])})
 
@@ -353,10 +355,13 @@ def report_all_cells(dataset, n_per_class, arm, q_dir, seeds, settings):
                if rs_significant_with_holm(x["e"], pa)[0] and x["e"]["mean"] > 0]
         neg = [x for x, pa in zip(entries, adj)
                if rs_significant_with_holm(x["e"], pa)[0] and x["e"]["mean"] < 0]
+        flat = [r for x in entries for r in x["rows"]]
+        t = trend_stats(entries, flat)
+        print_trend(setting, t)
         print(f"    {reps}/{len(entries)} cells clear all three conditions after Holm: "
               f"{len(pos)} positive, {len(neg)} negative")
         print(f"    {_replication_reading(setting, entries, adj, primary, pos, neg)}\n")
-        out.append({"setting": setting, "n_cells": len(entries),
+        out.append({"setting": setting, "n_cells": len(entries), "trend": t,
                     "n_real": reps, "n_positive": len(pos), "n_negative": len(neg),
                     "cells": [{"cell": list(x["cell"]), "mean": x["e"]["mean"],
                                "ci": list(x["e"]["ci"]), "p": x["e"]["p_wilcoxon"],
@@ -364,6 +369,81 @@ def report_all_cells(dataset, n_per_class, arm, q_dir, seeds, settings):
                               for x, pa in zip(entries, adj)]})
     return {"dataset": dataset, "n_per_class": n_per_class, "arm": arm,
             "mode": "all_cells", "per_setting": out, "confirmatory": False}
+
+
+def trend_stats(entries, rows):
+    """Spearman of the gap against qubit count and against fitted gamma, computed
+    over CELLS, plus the absolute levels of both arms by qubit count.
+
+    The unit of analysis is the cell, n = 15, not the individual record, n = 300.
+    Twenty records inside one cell are twenty seeds of the same configuration and
+    are not twenty independent observations of the trend; seeds are also paired
+    across cells by construction. The first version of this function correlated
+    over rows and reported fraud angle-r2 at rho = -0.149 with p = 0.0099, on a
+    column where every gap sat at or below the 1e-3 precision floor of D2. That is
+    significance manufactured by row count.
+
+    The absolute levels below stay at row granularity because they are means, not
+    tests, and the cells are balanced across qubit counts.
+
+    The absolute levels are here for one reason. The gap is quantum minus
+    surrogate, and at higher qubit counts the quantum kernel concentrates, so its
+    best-fit RBF has larger gamma and is a worse classifier. A gap that grows with
+    qubits could therefore mean the SURROGATE is degrading rather than the quantum
+    kernel improving, and those two readings have opposite consequences. Printing
+    both levels is the only way to tell them apart, and it is cheap.
+    """
+    q = [x["cell"][1] for x in entries]
+    g = [x["gamma_median"] for x in entries]
+    d = [x["e"]["mean"] for x in entries]
+    if len(set(q)) < 2 or len(set(d)) < 2:
+        return None
+    rq = stats.spearmanr(q, d)
+    rg = stats.spearmanr(g, d)
+    by_q = {}
+    for nq in sorted(set(q), reverse=True):
+        sel = [r for r in rows if r["n_qubits"] == nq]
+        by_q[nq] = {"gap": float(np.mean([r["d_normap"] for r in sel])),
+                    "quantum": float(np.mean([r["quantum_normap"] for r in sel])),
+                    "surrogate": float(np.mean([r["surrogate_normap"] for r in sel])),
+                    "gamma": float(np.median([r["gamma"] for r in sel])),
+                    "n": len(sel)}
+    small = [x["e"]["mean"] for x in entries if x["gamma_median"] < 0.2]
+    big = [x["e"]["mean"] for x in entries if x["gamma_median"] >= 0.2]
+    return {"n_cells": len(entries), "n_records": len(rows),
+            "spearman_qubits": [float(rq.statistic), float(rq.pvalue)],
+            "spearman_gamma": [float(rg.statistic), float(rg.pvalue)],
+            "by_qubits": by_q,
+            "gamma_below_0.2": {"n": len(small),
+                                "mean": float(np.mean(small)) if small else None},
+            "gamma_at_or_above_0.2": {"n": len(big),
+                                      "mean": float(np.mean(big)) if big else None}}
+
+
+def print_trend(setting, t):
+    if t is None:
+        print("    (only one qubit count present; no trend to report)")
+        return
+    rq, pq = t["spearman_qubits"]
+    rg, pg = t["spearman_gamma"]
+    print(f"    trend over {t['n_cells']} CELLS (not {t['n_records']} records: seeds "
+          f"within a cell are not independent observations of a trend)")
+    print(f"      Spearman(qubits, gap) {rq:+.3f} p {fmt_p(pq)}   |   "
+          f"Spearman(gamma, gap) {rg:+.3f} p {fmt_p(pg)}")
+    print(f"    {'qubits':>7} {'n':>3} {'gap':>9} {'quantum':>9} {'surrogate':>10} {'gamma':>9}")
+    for nq, v in t["by_qubits"].items():
+        print(f"    {nq:>7} {v['n']:>3} {v['gap']:>+9.4f} {v['quantum']:>9.4f} "
+              f"{v['surrogate']:>10.4f} {v['gamma']:>9.2e}")
+    print("    Read the last three columns together: a gap that grows while the")
+    print("    surrogate column falls and the quantum column is flat means the")
+    print("    comparator degraded, not that the quantum kernel improved.")
+    sm, bg = t["gamma_below_0.2"], t["gamma_at_or_above_0.2"]
+    if sm["n"]:
+        print(f"    gamma < 0.2: n={sm['n']} mean gap {sm['mean']:+.4f}   |   "
+              f"gamma >= 0.2: n={bg['n']} mean gap {bg['mean']:+.4f}")
+    else:
+        print(f"    gamma < 0.2: none in this arm, so any prediction conditioned on "
+              f"small gamma is untestable here, not passed.")
 
 
 def rs_significant_with_holm(e, p_adj):
@@ -420,7 +500,13 @@ def main():
     if not args.all and not args.dataset:
         ap.error("give --dataset or --all")
     if args.out is None:
-        tag = f"{args.arm}_allcells" if args.all_cells else args.arm
+        # Dataset and training size MUST be in the name. The first version left
+        # them out, so three all-cells runs in one command overwrote each other
+        # and only the tee logs survived. Scoring then had to be done by
+        # transcribing rows out of a log by hand, which is not a method.
+        who = args.dataset if not args.all else "all"
+        tag = (f"{who}_n{args.n_per_class}_{args.arm}"
+               + ("_allcells" if args.all_cells else ""))
         args.out = str(ROOT / "results" / "analysis" / f"rbf_surrogate_{tag}.json")
 
     print("A kernel that scores what its nearest RBF scores is that RBF, whatever its")
