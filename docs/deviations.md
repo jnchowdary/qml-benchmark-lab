@@ -108,9 +108,11 @@ Powers of two bracketing the registered value **on both sides**, so the register
 
 ---
 
-## D5. How lambda is handled in the test of H2 — DRAFT, requires sign-off before week 5 runs
+## D5. How lambda is handled in the test of H2 — IN FORCE from 25 September 2026
 
-**Date:** 25 September 2026. **Made after the registered sweep and after H1, but before H2 has been tested at all.** Marked a draft because unlike D1 to D4 it changes how a REGISTERED HYPOTHESIS is tested rather than adding an exploratory arm, and that should not be settled by the person who noticed the problem alone.
+**Date:** 25 September 2026. **Made after the registered sweep and after H1, but before H2 has been tested at all.** Unlike D1 to D4 this changes how a REGISTERED HYPOTHESIS is tested rather than adding an exploratory arm, so it was drafted and held rather than applied.
+
+**Approval.** Drafted and presented in full, with the problem, the proposal, the frozen sweep and the three licensed outcomes, on 25 September 2026. Approved by Nagesh Chowdary the same day in conversation, after the alternative (keeping the registered lambda-from-C rule) had been shown to return g = 57.3 for a kernel provably equal to an RBF. The approval was given as assent to proceed rather than as a line-by-line review, which is recorded here plainly; if that was not the intent, this record reverts to DRAFT and no week-5 result computed under it stands.
 
 **The problem, measured.** Section 6 sets lambda from the classical model being compared against: `lambda_from_svm_C(C, n) = 1/(2*C*n)`. The point of that rule was to remove a free parameter. It does not survive contact with the data, because the classical arm's inner CV reaches the top of the C grid: C = 1e2 on churn and 1e3 on fraud in the primary cells, giving lambda near 1.4e-6, at which g diverges. Measured on the primary cells, 8 seeds each:
 
@@ -137,4 +139,4 @@ g above the sqrt(n) ceiling of 18.71 means the classical kernel is under-regular
 
 **What the data already suggests, flagged so the sweep is not read as a formality.** At every lambda, on both datasets, g is larger at the registered bandwidth than at the bandwidth inner CV selected. The ordering is robust even where the magnitudes are not. Since the registered bandwidth is where the quantum kernel performed worse, that ordering points the OPPOSITE way to Huang's prediction: g was highest exactly where the quantum kernel did least well. If that survives the full 360 units it is a finding about g, and it is the reason H2 must not be gated behind anything.
 
-**Status.** Not in force. No week-5 run proceeds under this until it is signed off, and if it is rejected the alternative must be written here before g is computed on real units.
+**Status.** In force from 25 September 2026. Every g reported in this project from that date carries its lambda, the full sweep, and the count of units excluded at each lambda for breaching the sqrt(n) ceiling.

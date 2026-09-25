@@ -191,7 +191,8 @@ New scripts: `primary_tests.py`, `bandwidth_arm.py`, `classical_limit.py`, `rbf_
 - The bandwidth arm is exploratory under D4 and no p-value from it is confirmatory.
 - The classical arm is not re-tuned. Its grids stay frozen.
 - Grid boundary pile-up in the bandwidth arm is **not** a licence to widen again: below 0.0625 the kernel provably converges on an RBF with γ → 0, a region the classical arm already covers analytically and empirically.
-- No result from week 4 is committed as a finding until D5 is settled and the week-4 record is reviewed.
+- D5 was ruled in force on 25 September, recorded with the manner of its approval stated plainly so it can be reversed.
+- **The direction question in section 15 was decided on 25 September: the project turns toward the audit protocol.** Reasoning in section 14.
 
 ---
 
@@ -251,6 +252,8 @@ This is a substantially larger study than ours on the axis we chose to compete o
 
 **What is genuinely informative about the failure.** This pipeline independently re-derived a peer-reviewed result, with the correct mechanism, in four weeks, without knowing it existed. That is evidence the machinery is trustworthy, and it is worth more than the finding it reproduced. It is not, however, a contribution, and no part of this project may present it as one.
 
-**The decision this forces, and it is not mine to make.** Either the project continues as a study and accepts that its central question is largely answered, or it turns toward the thing neither competing paper has: the audit protocol a quantum kernel comparison must pass, with churn and fraud as the worked example and the published literature as the demonstration of what the protocol catches. The second reading is what the list under "what survives" actually describes. It would also mean conceding that what has been built so far is one rigorous study rather than a benchmark: there is no public entry point, no results schema, no way to add a kernel without editing `FROZEN_SETTINGS`, and the churn licence forbids redistributing the data.
+**The decision this forces.** *Taken on 25 September: the project turns toward the audit protocol. See section 14 for the reasoning and what the turn costs.* The choice was between the two readings below.
+
+Either the project continues as a study and accepts that its central question is largely answered, or it turns toward the thing neither competing paper has: the audit protocol a quantum kernel comparison must pass, with churn and fraud as the worked example and the published literature as the demonstration of what the protocol catches. The second reading is what the list under "what survives" actually describes. It would also mean conceding that what has been built so far is one rigorous study rather than a benchmark: there is no public entry point, no results schema, no way to add a kernel without editing `FROZEN_SETTINGS`, and the churn licence forbids redistributing the data.
 
 **Process change, effective immediately.** A literature check is the first task of any new research direction in this project, before a line of code, and its date and queries are recorded in the weekly record. Four weeks of work went past the point where one search would have changed the design.
