@@ -128,6 +128,7 @@ NEVER_CELL = {
     # every method, would be inferred as a configuration and silently double
     # the cell count.
     "circuit_evaluations", "simulator_executions", "cache_hits",
+    "n_nonconverged", "n_failed", "elapsed_s", "wall_clock_s",
     # hyperparameters SELECTED per record rather than fixed per configuration
     "bandwidth", "bandwidth_grid", "setting",
 }
@@ -166,12 +167,24 @@ def infer_cell_fields(recs):
         vals = {r[f] for r in recs if isinstance(r[f], (str, int, float, bool))}
         if not 2 <= len(vals) <= max(2, len(recs) // 2):
             continue
-        # every value of a configuration field is scored by the same methods
         by_val = defaultdict(set)
+        counts = defaultdict(int)
         for r in recs:
             by_val[r[f]].add(r.get("method"))
-        if all(m == methods for m in by_val.values()):
-            candidates.append(f)
+            counts[r[f]] += 1
+        # Every value of a configuration field is scored by the same methods.
+        if not all(m == methods for m in by_val.values()):
+            continue
+        # And a configuration is a DESIGNED grid, so its values appear in
+        # roughly equal numbers. Telemetry does not: on churn at 100 per class
+        # the field n_nonconverged varied, was scored by every method, and so
+        # passed the rule above, giving 20 configurations instead of 15, ragged
+        # 367-group pairing, and a cross-arm failure because the other arm
+        # inferred a different field set. Its values were wildly unbalanced,
+        # which is what distinguishes an outcome from a design.
+        if max(counts.values()) > 3 * min(counts.values()):
+            continue
+        candidates.append(f)
     return candidates
 
 
@@ -537,10 +550,19 @@ def run(path, control, floor, cell_fields=None, compare=None):
         return 2, []
     fields = cell_fields if cell_fields is not None else infer_cell_fields(recs)
     other = load(compare) if compare else None
+    # Both arms MUST be grouped by the same fields or no cell tuple can ever
+    # match and the cross-arm check fails for a reason that looks like a data
+    # problem. Intersect the two inferences rather than letting each file
+    # decide for itself.
+    if other is not None and cell_fields is None:
+        theirs = infer_cell_fields(other)
+        shared = [f for f in fields if f in theirs]
+        if shared != fields or shared != theirs:
+            print(f"  NOTE: the two arms inferred different configuration fields "
+                  f"({fields} and {theirs}); using their intersection {shared}.")
+        fields = shared
     ctx = {"control": load(control) if control else None, "floor": floor,
-           "cell_fields": fields, "compare": other,
-           "compare_fields": (cell_fields if cell_fields is not None
-                              else infer_cell_fields(other)) if other else None}
+           "cell_fields": fields, "compare": other, "compare_fields": fields}
     outs = []
     for fn in CHECKS:
         try:

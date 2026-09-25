@@ -410,3 +410,48 @@ def test_cross_arm_will_not_claim_pairing_it_cannot_verify():
     o = audit.check_cross_arm(q, cross_ctx(q, c))
     assert o.status == audit.WARN
     assert "ASSUMED and not verified" in o.detail
+
+
+def test_unbalanced_telemetry_is_not_a_configuration():
+    """On churn at 100 per class, n_nonconverged varied and every one of its
+    values was scored by every method, so the co-occurrence rule alone accepted
+    it. That gave 20 configurations instead of 15, ragged 367-group pairing, and
+    a cross-arm failure because the classical arm inferred a different field set.
+
+    A configuration is a designed grid and its values appear in roughly equal
+    numbers. Telemetry does not. That is the discriminator."""
+    recs = qbench_shaped()
+    for i, r in enumerate(recs):
+        r["n_nonconverged"] = 0 if i % 40 else 3        # 39:1, wildly unbalanced
+    fields = audit.infer_cell_fields(recs)
+    assert fields == ["mapping", "n_qubits"]
+    assert len({audit.cell_of(r, fields) for r in recs}) == 15
+
+
+def test_a_balanced_field_is_still_accepted_as_a_configuration():
+    """The balance rule must not reject a genuine configuration. A training-size
+    sweep inside one file is balanced and is a configuration."""
+    recs = []
+    for n in (50, 100, 250):
+        for r in qbench_shaped(n_seeds=4):
+            recs.append(dict(r, n_per_class=n))
+    assert "n_per_class" in audit.infer_cell_fields(recs)
+
+
+def test_both_arms_are_grouped_by_the_same_fields(tmp_path):
+    """If each file infers its own fields the tuples have different shapes, no
+    cell ever matches, and the cross-arm check fails in a way that reads like a
+    data problem rather than a tooling one."""
+    import json
+    q = qbench_shaped(n_seeds=5)
+    for i, r in enumerate(q):
+        r["n_nonconverged"] = 0 if i % 40 else 3
+    c = classical_arm(qbench_shaped(n_seeds=5))
+    qp, cp = tmp_path / "q.jsonl", tmp_path / "c.jsonl"
+    qp.write_text("".join(json.dumps(r) + "\n" for r in q))
+    cp.write_text("".join(json.dumps(r) + "\n" for r in c))
+    fields, outs = audit.run(str(qp), None, audit.DEFAULT_PRECISION_FLOOR,
+                             None, str(cp))
+    assert fields == ["mapping", "n_qubits"]
+    cross = [o for o in outs if o.name == "cross-arm comparison"][0]
+    assert cross.status == audit.PASS

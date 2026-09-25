@@ -1,0 +1,180 @@
+
+########## churn  n=250 ##########
+
+AUDIT: results/runs/quantum/churn_matched_n250.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=150, p=75); chance AP is 0.5154, which exceeds the base rate 0.5000 by 0.0154. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ PASS  ] negative control      80 control records: ROC-AUC 0.5058 (+1.04 sigma), normAP +0.0082 (+0.90 sigma).
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ WARN  ] statistical power     median paired sd 0.0841 over 20 seeds gives a minimum detectable effect near 0.0555 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.
+  [ WARN  ] precision floor       1 of 90 method pairs differ by less than the declared floor of 0.001. Below it a difference is not reproducible and must be reported as such, not as a measurement.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.0921 over 20 seeds per configuration gives a minimum detectable effect near 0.0609. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.429. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  6 passed, 5 warnings, 0 failed, 0 skipped for missing fields.
+
+########## churn  n=100 ##########
+
+AUDIT: results/runs/quantum/churn_matched_n100.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=60, p=30); chance AP is 0.5312, which exceeds the base rate 0.5000 by 0.0312. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ SKIP  ] negative control      no permuted-label control supplied (--control). Without one there is no evidence the pipeline does not leak.
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ WARN  ] statistical power     median paired sd 0.1501 over 20 seeds gives a minimum detectable effect near 0.0991 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.
+  [ PASS  ] precision floor       all 90 method-pair differences exceed the declared floor of 0.001.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.1521 over 20 seeds per configuration gives a minimum detectable effect near 0.1005. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.206. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  6 passed, 4 warnings, 0 failed, 1 skipped for missing fields.
+
+########## churn  n=50 ##########
+
+AUDIT: results/runs/quantum/churn_matched_n50.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=30, p=15); chance AP is 0.5516, which exceeds the base rate 0.5000 by 0.0516. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ SKIP  ] negative control      no permuted-label control supplied (--control). Without one there is no evidence the pipeline does not leak.
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ WARN  ] statistical power     median paired sd 0.2050 over 20 seeds gives a minimum detectable effect near 0.1354 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.
+  [ WARN  ] precision floor       2 of 90 method pairs differ by less than the declared floor of 0.001. Below it a difference is not reproducible and must be reported as such, not as a measurement.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.2071 over 20 seeds per configuration gives a minimum detectable effect near 0.1368. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.401. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  5 passed, 5 warnings, 0 failed, 1 skipped for missing fields.
+
+########## fraud  n=250 ##########
+
+AUDIT: results/runs/quantum/fraud_matched_n250.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=150, p=75); chance AP is 0.5154, which exceeds the base rate 0.5000 by 0.0154. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ PASS  ] negative control      80 control records: ROC-AUC 0.5001 (+0.02 sigma), normAP -0.0017 (-0.18 sigma).
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ PASS  ] statistical power     median paired sd 0.0211 over 20 seeds gives a minimum detectable effect near 0.0140 in normAP. A null result here excludes effects LARGER than that and nothing smaller.
+  [ WARN  ] precision floor       8 of 90 method pairs differ by less than the declared floor of 0.001. Below it a difference is not reproducible and must be reported as such, not as a measurement.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.0209 over 20 seeds per configuration gives a minimum detectable effect near 0.0138. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.580. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  7 passed, 4 warnings, 0 failed, 0 skipped for missing fields.
+
+########## fraud  n=100 ##########
+
+AUDIT: results/runs/quantum/fraud_matched_n100.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=60, p=30); chance AP is 0.5312, which exceeds the base rate 0.5000 by 0.0312. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ SKIP  ] negative control      no permuted-label control supplied (--control). Without one there is no evidence the pipeline does not leak.
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ WARN  ] statistical power     median paired sd 0.0565 over 20 seeds gives a minimum detectable effect near 0.0373 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.
+  [ WARN  ] precision floor       4 of 90 method pairs differ by less than the declared floor of 0.001. Below it a difference is not reproducible and must be reported as such, not as a measurement.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.0553 over 20 seeds per configuration gives a minimum detectable effect near 0.0365. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.533. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  5 passed, 5 warnings, 0 failed, 1 skipped for missing fields.
+
+########## fraud  n=50 ##########
+
+AUDIT: results/runs/quantum/fraud_matched_n50.jsonl
+This audits METHOD, not results. It never says which model won.
+  Configuration grouped by: mapping, n_qubits (inferred from the data). Override with --cell-fields if that is wrong.
+
+  [ WARN  ] schema                1200 records readable; missing recommended fields cell, so some checks below will skip.
+  [ PASS  ] chance correction     one test-set shape (n=30, p=15); chance AP is 0.5516, which exceeds the base rate 0.5000 by 0.0516. Constant here, so raw AP is comparable WITHIN this file and nowhere else.
+  [ SKIP  ] negative control      no permuted-label control supplied (--control). Without one there is no evidence the pipeline does not leak.
+  [ PASS  ] pairing integrity     all 300 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.
+  [ PASS  ] solver health         all 1200 final fits converged.
+  [ WARN  ] unit of analysis      1200 records = 15 configurations x ~20 seeds. Across-configuration claims have n=15, not n=1200. State which n any reported p-value rests on.
+  [ WARN  ] statistical power     median paired sd 0.1016 over 20 seeds gives a minimum detectable effect near 0.0671 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.
+  [ WARN  ] precision floor       1 of 90 method pairs differ by less than the declared floor of 0.001. Below it a difference is not reproducible and must be reported as such, not as a measurement.
+  [ WARN  ] multiplicity          this file supports 90 pairwise comparisons across 15 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.99. Declare which are confirmatory, or correct (Bonferroni would be 5.56e-04).
+  [ PASS  ] cross-arm comparison  300 (seed, configuration) groups pair across the two files on verified matching test points. Across-arm paired sd 0.0864 over 20 seeds per configuration gives a minimum detectable effect near 0.0571. THIS is the power of the comparison being made; the figure above is the power of comparisons within one arm.
+  [ PASS  ] selection             inner scores recorded alongside test scores; their rank correlation is +0.623. Selection auditable.
+
+  Not runnable from records alone:
+  [NOT RUN] kernel conditioning
+            needs the Gram matrices. An ill-conditioned kernel makes the SVM dual underdetermined, so decision scores move at machine precision and any threshold-based test (McNemar) is invalid.
+  [NOT RUN] classical surrogate equivalence
+            needs the kernels and training data. Fits the nearest classical kernel and runs it through the same pipeline; a quantum kernel that scores what its surrogate scores is that surrogate.
+  [NOT RUN] grid adequacy against a shuffled null
+            needs a re-run on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so edge flags alone never justify it.
+  [NOT RUN] bandwidth tuning
+            needs the embedding. A fidelity kernel with a fixed data scale is not a tuned model; the classical side almost always gets a bandwidth grid and the quantum side almost never does.
+
+  5 passed, 5 warnings, 0 failed, 1 skipped for missing fields.
