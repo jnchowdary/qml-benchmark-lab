@@ -47,10 +47,12 @@ def paired(n_seeds=20, delta=0.05, **kw):
     return out
 
 
-CTX = {"control": None, "floor": audit.DEFAULT_PRECISION_FLOOR}
+CTX = {"control": None, "floor": audit.DEFAULT_PRECISION_FLOOR,
+       "cell_fields": None, "compare": None, "compare_fields": None}
 
 
 def ctx(**kw):
+    """Default context; pass cell_fields=... to group by configuration."""
     return {**CTX, **kw}
 
 
@@ -259,3 +261,152 @@ def test_a_real_leak_still_fails_after_the_guard():
     ctrl = [rec(seed=s, ap=0.62, roc=0.60 + 0.004 * ((s % 5) - 2), shuffled=True)
             for s in range(20)]
     assert audit.check_negative_control(paired(), ctx(control=ctrl)).status == audit.FAIL
+
+
+# ------------------- configuration inference, from the failure that caused it
+
+def qbench_shaped(n_seeds=20):
+    """Records shaped like this project's own output: mapping and n_qubits at the
+    top level, no nested 'cell' dict, plus provenance and cost telemetry."""
+    return [{"dataset": "churn", "git_commit": "0b796a3", "track": "matched",
+             "method": f"quantum-{st}", "setting": st, "embedding": st.split("-")[0],
+             "reps": int(st[-1]), "mapping": mp, "n_qubits": q, "seed": s,
+             "test_label_fingerprint": hashlib.sha256(str(s).encode()).hexdigest()[:16],
+             "n_train": 350, "n_test": 150, "test_base_rate": 0.5,
+             "test_average_precision": 0.70 + 0.01 * (s % 5),
+             "test_roc_auc": 0.70, "n_per_class": 250, "shuffled": False,
+             "device": "lightning.qubit",
+             "circuit_evaluations": 113575 if s % 2 else 0,
+             "simulator_executions": 500, "cache_hits": 3,
+             "inner_score": 0.6, "final_converged": True}
+            for mp in ("pca", "selectk", "randproj") for q in (4, 6, 8, 10, 12)
+            for s in range(n_seeds) for st in ("angle-r1", "angle-r2", "iqp-r1", "iqp-r2")]
+
+
+def test_configuration_is_inferred_without_a_nested_cell_field():
+    """The bug this catches: the first version of the audit required a nested
+    'cell' dict. Run against this project's own results it found none, collapsed
+    fifteen configurations into one, skipped the unit-of-analysis check written
+    for exactly that case, understated multiplicity fifteenfold, and pooled
+    between-cell variance into the paired sd."""
+    recs = qbench_shaped()
+    assert audit.infer_cell_fields(recs) == ["mapping", "n_qubits"]
+    fields = audit.infer_cell_fields(recs)
+    assert len({audit.cell_of(r, fields) for r in recs}) == 15
+
+
+def test_inference_rejects_fields_that_track_the_method():
+    """embedding and reps vary, but each of their values is scored by only some
+    of the methods, so they are arms of the comparison and not configurations."""
+    fields = audit.infer_cell_fields(qbench_shaped())
+    for f in ("embedding", "reps", "setting", "method"):
+        assert f not in fields
+
+
+def test_inference_rejects_cost_telemetry():
+    """circuit_evaluations takes two values here, each scored by every method,
+    so the co-occurrence rule alone would accept it and silently double the
+    cell count. It is excluded by name."""
+    assert "circuit_evaluations" not in audit.infer_cell_fields(qbench_shaped())
+    assert "circuit_evaluations" in audit.NEVER_CELL
+
+
+def test_multiplicity_counts_all_cells_once_configuration_is_inferred():
+    recs = qbench_shaped()
+    ctx_ = ctx(cell_fields=audit.infer_cell_fields(recs))
+    o = audit.check_multiplicity(recs, ctx_)
+    assert o.numbers["comparisons"] == 90          # 15 cells x 6 method pairs
+
+
+def test_unit_of_analysis_fires_once_configuration_is_inferred():
+    recs = qbench_shaped()
+    o = audit.check_unit_of_analysis(recs, ctx(cell_fields=audit.infer_cell_fields(recs)))
+    assert o.status == audit.WARN
+    assert o.numbers["n_cells"] == 15 and o.numbers["n_records"] == 1200
+
+
+def test_explicit_cell_fields_override_the_inference():
+    recs = qbench_shaped()
+    assert len({audit.cell_of(r, ["mapping"]) for r in recs}) == 3
+
+
+def test_single_method_file_infers_nothing():
+    """With one method there is no comparison, so nothing distinguishes a
+    configuration field from any other varying field."""
+    recs = [r for r in qbench_shaped() if r["method"] == "quantum-angle-r1"]
+    assert audit.infer_cell_fields(recs) == []
+
+
+# ----------------------------------------- the comparison that spans two arms
+
+def classical_arm(q):
+    """A second arm on the same splits and configurations."""
+    out = []
+    for r in q:
+        if r["method"] != "quantum-angle-r1":
+            continue
+        for k in ("linear", "rbf", "poly"):
+            x = dict(r)
+            x["method"] = k
+            x["setting"] = k
+            x["test_average_precision"] = 0.72 + 0.008 * (x["seed"] % 5)
+            out.append(x)
+    return out
+
+
+def cross_ctx(q, c):
+    return ctx(cell_fields=audit.infer_cell_fields(q), compare=c,
+               compare_fields=audit.infer_cell_fields(c))
+
+
+def test_one_arm_alone_is_a_skip_that_says_the_figures_are_within_arm():
+    """The finding this encodes: handed only the quantum file, the audit reported
+    a minimum detectable effect of 0.0555 measured between quantum settings, while
+    the comparison actually being tested was quantum against classical at 0.0171.
+    Both were right about different pairs; reporting only the first describes the
+    power of a comparison nobody is making."""
+    o = audit.check_cross_arm(qbench_shaped(), ctx(cell_fields=["mapping", "n_qubits"]))
+    assert o.status == audit.SKIP
+    assert "WITHIN this file" in o.detail
+
+
+def test_cross_arm_n_is_seeds_per_configuration_not_records():
+    """Pooling all configurations into one bucket made n the record count. The
+    first version of this very check reported n = 300 on 20 seeds, which is the
+    fourth instance in this project of that mistake and the first committed
+    inside the check written to explain it."""
+    q = qbench_shaped(n_seeds=20)
+    o = audit.check_cross_arm(q, cross_ctx(q, classical_arm(q)))
+    assert o.status == audit.PASS
+    assert "verified matching test points" in o.detail
+    assert o.numbers["n_seeds"] == 20
+    assert o.numbers["paired_groups"] == 300          # 15 configurations x 20 seeds
+
+
+def test_cross_arm_fails_when_the_arms_were_scored_on_different_points():
+    q = qbench_shaped()
+    c = classical_arm(q)
+    for r in c[:10]:
+        r["test_label_fingerprint"] = "deadbeefdeadbeef"
+    o = audit.check_cross_arm(q, cross_ctx(q, c))
+    assert o.status == audit.FAIL
+    assert "DIFFERENT test points" in o.detail
+
+
+def test_cross_arm_fails_when_nothing_pairs():
+    q = qbench_shaped()
+    c = [dict(r, seed=r["seed"] + 1000) for r in classical_arm(q)]
+    assert audit.check_cross_arm(q, cross_ctx(q, c)).status == audit.FAIL
+
+
+def test_cross_arm_will_not_claim_pairing_it_cannot_verify():
+    """Without fingerprints the arms are assumed to share test points. The first
+    version printed "on matching test points" regardless, which is a claimed
+    verification that never happened: the failure this tool exists to catch."""
+    q = [{k: v for k, v in r.items() if k != "test_label_fingerprint"}
+         for r in qbench_shaped()]
+    c = [{k: v for k, v in r.items() if k != "test_label_fingerprint"}
+         for r in classical_arm(qbench_shaped())]
+    o = audit.check_cross_arm(q, cross_ctx(q, c))
+    assert o.status == audit.WARN
+    assert "ASSUMED and not verified" in o.detail

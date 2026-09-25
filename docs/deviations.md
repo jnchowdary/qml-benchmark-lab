@@ -140,3 +140,36 @@ g above the sqrt(n) ceiling of 18.71 means the classical kernel is under-regular
 **What the data already suggests, flagged so the sweep is not read as a formality.** At every lambda, on both datasets, g is larger at the registered bandwidth than at the bandwidth inner CV selected. The ordering is robust even where the magnitudes are not. Since the registered bandwidth is where the quantum kernel performed worse, that ordering points the OPPOSITE way to Huang's prediction: g was highest exactly where the quantum kernel did least well. If that survives the full 360 units it is a finding about g, and it is the reason H2 must not be gated behind anything.
 
 **Status.** In force from 25 September 2026. Every g reported in this project from that date carries its lambda, the full sweep, and the count of units excluded at each lambda for breaching the sqrt(n) ceiling.
+
+---
+
+## D6. The registered power analysis measured the wrong pairs
+
+**Date:** 25 September 2026. **Found after H1 was tested, by `scripts/audit.py` run against this project's own results.** This corrects a figure in the registered document rather than changing the design, and it was found by the tool this project built, on the first file that tool was ever pointed at.
+
+**What section 5 says.** A table of minimum detectable effects "from the measured median paired standard deviation in each arm", giving churn matched 250 a paired sd of 0.0241 and an intersection-union MDE of **0.0171**.
+
+**What that sd actually measures.** `scripts/power_analysis.py` line 62: `KERNELS = ("linear", "rbf", "poly")`. It pairs classical kernels against each other. It was written in week 3, when the classical arm was the only arm that existed, so it could not have measured anything else. The figure is the spread of *classical kernel A minus classical kernel B* on the same split.
+
+**What H1 tests.** The paired difference between the best quantum kernel and the best classical kernel. Two classical kernels on one split score similarly, so their differences are tight. A quantum kernel and a classical kernel do not, and on churn the quantum arm is both much worse and much more variable, so the cross-arm differences are far wider.
+
+**The measurement, from two independent pieces of code.** `primary_tests.py` reported **sd 0.0921** for the churn primary comparison on 20 paired seeds. `audit.py`, written three weeks later and pairing every quantum method against every classical method across all 15 configurations, computes a median cross-arm sd of **0.0921**.
+
+| arm | registered sd → MDE | observed cross-arm sd → MDE | ratio |
+| --- | --- | --- | --- |
+| churn 250, primary cell | 0.0241 → 0.0171 | 0.0921 → **0.0608** | 3.6x |
+| fraud 250, primary cell | 0.0085 → 0.0059 | 0.0095 → **0.0063** | 1.1x |
+| churn 250, bandwidth arm (D4) | — | 0.0353 → 0.0233 | — |
+
+**Why fraud is barely affected.** Both arms there sit at normAP 0.966 with 0.034 of headroom, so quantum-minus-classical differences are as tight as classical-minus-classical ones. The error is specific to arms where the two sides genuinely differ, which is to say the arms where power matters most.
+
+**What this does and does not change.**
+
+* **The churn H1 rejection stands.** A rejection does not depend on the prior MDE: the observed difference is −0.0798 with a 95% CI of −0.1229 to −0.0367 and Wilcoxon p = 8.2e−05. The interval excludes zero on the observed data.
+* **The fraud exclusion bound stands, corrected from 0.0059 to 0.0063.** The published claim moves by less than the precision floor of D2.
+* **Every churn statement of the form "a null result here would exclude effects larger than X" was wrong** and is corrected: the churn 250 figure is 0.061, not 0.0171. The churn rows for 100 and 50 per class in section 5 are derived the same way and are understated by a similar factor; they are not restated here because no confirmatory test rests on them, and section 5's declaration that the 50-per-class arm is underpowered becomes more true, not less.
+* **The bandwidth arm's null on churn (D4) excludes effects larger than 0.023, not 0.017.** Its point estimate of −0.0101 and interval of −0.0267 to +0.0064 are unchanged.
+
+**What is NOT done.** Section 5 of the pre-registration is not edited. Version 1.0 stands as registered, error included, and this record is the correction. No test is re-run and no verdict changes.
+
+**What it says about the project.** The registered design was powered on the only data that existed when it was written, which was reasonable, and nobody checked the assumption once the other arm existed. The check that caught it is nine lines long and had been sitting unwritten for a month. That is the argument for the audit protocol in one sentence.

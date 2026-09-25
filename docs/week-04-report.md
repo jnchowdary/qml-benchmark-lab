@@ -25,9 +25,9 @@ The registered H1 result stands exactly as computed. What changed is its scope, 
 
 The sweep ran all four frozen settings across 15 cells, 20 seeds and three training sizes on both datasets: 7,200 records, 0.56 hours of wall clock against a budgeted 46, the difference being D1. Integrity is clean on all six files: every quantum record was scored on the same test points as the classical record it pairs with, every record ran on `lightning.qubit`, no shuffled record leaked into a real-labels file, and no final model failed to converge.
 
-**Churn, primary cell (PCA at 12 qubits, 250 per class): H1 rejected, favouring the classical kernel.** normAP −0.0798 (95% CI −0.1229 to −0.0367, Wilcoxon p = 8.2e−05); ROC-AUC −0.0292 (95% CI −0.0457 to −0.0128, p = 3.4e−04). Both endpoints reject in the same direction, well clear of the 0.0171 the arm was powered for.
+**Churn, primary cell (PCA at 12 qubits, 250 per class): H1 rejected, favouring the classical kernel.** normAP −0.0798 (95% CI −0.1229 to −0.0367, Wilcoxon p = 8.2e−05); ROC-AUC −0.0292 (95% CI −0.0457 to −0.0128, p = 3.4e−04). Both endpoints reject in the same direction. *The arm's registered MDE of 0.0171 is wrong — see D6, added after this record was first written: it was measured between classical kernels, and the true cross-arm figure is 0.0608. The rejection stands regardless, because its interval excludes zero on the observed data, and the effect clears the corrected figure too.*
 
-**Fraud, primary cell (SelectKBest at 8 qubits): H1 not rejected.** normAP −0.0028 (p = 0.25), ROC-AUC +0.0001 (p = 0.82); the two endpoints do not agree on the sign. An advantage larger than 0.0059 is excluded at 80% power, on a problem where both arms sit at normAP 0.966 and only 0.034 of headroom exists above the classical baseline. The bound is tight but the ceiling limits what it is worth, and the paper says so.
+**Fraud, primary cell (SelectKBest at 8 qubits): H1 not rejected.** normAP −0.0028 (p = 0.25), ROC-AUC +0.0001 (p = 0.82); the two endpoints do not agree on the sign. An advantage larger than 0.0059 is excluded at 80% power (corrected to 0.0063 by D6, a move smaller than the precision floor), on a problem where both arms sit at normAP 0.966 and only 0.034 of headroom exists above the classical baseline. The bound is tight but the ceiling limits what it is worth, and the paper says so.
 
 The registered rule worked as designed and can be shown doing so: churn at 100 per class has ROC-AUC rejecting at p = 0.027 while normAP does not at p = 0.058, and the intersection-union rule correctly refuses.
 
@@ -173,13 +173,15 @@ Items 3, 5 and 6 were caught by reading output. Item 8 was caught by a single we
 
 Items 3, 5, 6, 9 and 10 are tests now, each carrying the real numbers that caught it.
 
+11. **The registered power analysis measured the wrong pairs.** Not found by reading output but by `audit.py`, on the first file it was ever pointed at. The churn MDE of 0.0171 came from classical-versus-classical variance; the cross-arm figure is 0.0608, off by 3.6x. Recorded as D6. The rejection survives it; every churn statement of the form "a null would exclude X" did not.
+
 **The pattern, named because the count is no longer the point.** Items 5, 7 and 10 are the same failure: a p-value reached for before the effect size and before the unit of analysis were checked. It produced a finding on a mean of +0.0002, an explanation fitted to the table that refuted its predecessor, and a trend on 300 non-independent rows. It is the failure most likely to survive into a paper, because each instance looked like a result.
 
 ---
 
 ## 11. Tests and housekeeping
 
-303 passing, up from 204 at the end of week 3. New files: `test_primary_tests.py` (18), `test_bandwidth.py` (35), `test_classical_limit.py` (15), `test_rbf_surrogate.py` (21). The load-bearing ones are the registered-path regression tests in `test_bandwidth.py` (if bandwidth 1.0 were not exactly the registered kernel, 7,200 records and the H1 verdict would be void) and the three-condition verdict tests in `test_rbf_surrogate.py`.
+303 at the end of week 4's machinery, up from 204 at the end of week 3; 341 including the audit protocol begun the same day. New files: `test_primary_tests.py` (18), `test_bandwidth.py` (35), `test_classical_limit.py` (15), `test_rbf_surrogate.py` (21). The load-bearing ones are the registered-path regression tests in `test_bandwidth.py` (if bandwidth 1.0 were not exactly the registered kernel, 7,200 records and the H1 verdict would be void) and the three-condition verdict tests in `test_rbf_surrogate.py`.
 
 New scripts: `primary_tests.py`, `bandwidth_arm.py`, `classical_limit.py`, `rbf_surrogate.py`. `primary_tests.py` detects an exploratory arm from the records rather than from a flag, so it prints EXPLORATORY even when run with default options.
 

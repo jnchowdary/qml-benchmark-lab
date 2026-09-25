@@ -115,16 +115,75 @@ def norm_ap(r):
     return (float(r["test_average_precision"]) - c) / (1 - c) if c < 1 else float("nan")
 
 
-def cell_of(r):
-    """The configuration a record belongs to. Records sharing a cell and a seed
-    are the same split scored by different methods, which is what makes them
-    pairable.
+# Fields that are never configuration: they identify a record or describe its
+# outcome, so grouping by them would put every record in its own cell.
+NEVER_CELL = {
+    # identity and outcome
+    "method", "seed", "inner_score", "shuffled", "final_converged",
+    "final_fallback_rank", "params", "C", "edge", "grid_scores", "cell",
+    # provenance
+    "git_commit", "device", "c_grid", "n_seeds",
+    # cost telemetry: varies per record and is not a configuration. Without
+    # this, a field like circuit_evaluations taking two values, each scored by
+    # every method, would be inferred as a configuration and silently double
+    # the cell count.
+    "circuit_evaluations", "simulator_executions", "cache_hits",
+    # hyperparameters SELECTED per record rather than fixed per configuration
+    "bandwidth", "bandwidth_grid", "setting",
+}
 
-    With no `cell` field every record falls into ONE cell. Falling back to the
-    method would be worse than useless: it would put each method in its own
-    configuration, so nothing would ever pair, and the audit would report no
-    comparisons on a file full of them.
+
+def infer_cell_fields(recs):
+    """Work out which fields define a configuration, from the data.
+
+    The first version of this tool required a nested `cell` dict and fell back
+    to a single cell when it was absent. Run against this project's OWN results,
+    where mapping and n_qubits are top-level fields, it collapsed fifteen
+    configurations into one: it skipped the unit-of-analysis check that exists
+    for exactly that case, understated the multiplicity correction fifteenfold,
+    and pooled between-cell variance into the paired sd, reporting a minimum
+    detectable effect five times too large.
+
+    A configuration field is one that varies across records but NOT across the
+    methods being compared: every one of its values is scored by the same set of
+    methods. That is what makes records with different values of it separate
+    comparisons rather than separate arms of one comparison. The rule needs no
+    knowledge of any particular pipeline.
+
+    The inferred grouping is always printed, because a wrong guess here quietly
+    changes three other answers and the reader has to be able to see it.
     """
+    methods = {r.get("method") for r in recs}
+    if len(methods) < 2:
+        return []
+    candidates = []
+    common = set(recs[0]) if recs else set()
+    for r in recs:
+        common &= set(r)
+    for f in sorted(common):
+        if f in NEVER_CELL or f.startswith("test_") or f.startswith("n_test"):
+            continue
+        vals = {r[f] for r in recs if isinstance(r[f], (str, int, float, bool))}
+        if not 2 <= len(vals) <= max(2, len(recs) // 2):
+            continue
+        # every value of a configuration field is scored by the same methods
+        by_val = defaultdict(set)
+        for r in recs:
+            by_val[r[f]].add(r.get("method"))
+        if all(m == methods for m in by_val.values()):
+            candidates.append(f)
+    return candidates
+
+
+def cell_of(r, fields=None):
+    """The configuration a record belongs to. Records sharing a cell and a seed
+    are one split scored by different methods, which is what makes them pairable.
+
+    Falling back to the method would be worse than useless: it would put each
+    method in its own configuration, so nothing would ever pair.
+    """
+    if fields:
+        return tuple((f, str(r.get(f))) for f in fields)
     c = r.get("cell")
     if isinstance(c, dict) and c:
         return tuple(sorted((k, str(v)) for k, v in c.items()))
@@ -221,7 +280,7 @@ def check_pairing(recs, ctx):
                        "be verified, only assumed, and a silent mismatch is invisible.")
     groups = defaultdict(set)
     for r in recs:
-        groups[(r["seed"], cell_of(r))].add(r["test_label_fingerprint"])
+        groups[(r["seed"], cell_of(r, ctx["cell_fields"]))].add(r["test_label_fingerprint"])
     bad = [k for k, v in groups.items() if len(v) > 1]
     if bad:
         return Outcome("pairing integrity", FAIL,
@@ -253,7 +312,7 @@ def check_unit_of_analysis(recs, ctx):
     week 4. The check cannot see which tests a reader will run, so it reports
     the two sample sizes and lets the reader be explicit about which is theirs.
     """
-    cells = {cell_of(r) for r in recs}
+    cells = {cell_of(r, ctx["cell_fields"]) for r in recs}
     seeds = {r["seed"] for r in recs}
     if len(cells) < 2:
         return Outcome("unit of analysis", SKIP,
@@ -271,7 +330,7 @@ def check_power(recs, ctx):
     """Smallest paired difference this file could resolve at 80% power."""
     by_cell = defaultdict(lambda: defaultdict(dict))
     for r in recs:
-        by_cell[cell_of(r)][r["seed"]][r["method"]] = norm_ap(r)
+        by_cell[cell_of(r, ctx["cell_fields"])][r["seed"]][r["method"]] = norm_ap(r)
     sds = []
     for cell, by_seed in by_cell.items():
         methods = sorted({m for v in by_seed.values() for m in v})
@@ -303,7 +362,7 @@ def check_precision_floor(recs, ctx):
     floor = ctx["floor"]
     by_cell = defaultdict(lambda: defaultdict(dict))
     for r in recs:
-        by_cell[cell_of(r)][r["seed"]][r["method"]] = norm_ap(r)
+        by_cell[cell_of(r, ctx["cell_fields"])][r["seed"]][r["method"]] = norm_ap(r)
     small = tot = 0
     for by_seed in by_cell.values():
         methods = sorted({m for v in by_seed.values() for m in v})
@@ -329,7 +388,7 @@ def check_precision_floor(recs, ctx):
 def check_multiplicity(recs, ctx):
     by_cell = defaultdict(set)
     for r in recs:
-        by_cell[cell_of(r)].add(r["method"])
+        by_cell[cell_of(r, ctx["cell_fields"])].add(r["method"])
     comparisons = sum(len(m) * (len(m) - 1) // 2 for m in by_cell.values())
     if comparisons <= 1:
         return Outcome("multiplicity", PASS, f"{comparisons} comparison in this file.")
@@ -341,6 +400,97 @@ def check_multiplicity(recs, ctx):
                    f"{1 - (1 - ALPHA) ** comparisons:.2f}. Declare which are "
                    f"confirmatory, or correct (Bonferroni would be {bonf:.2e}).",
                    numbers={"comparisons": comparisons, "bonferroni": bonf})
+
+
+def check_cross_arm(recs, ctx):
+    """The comparison that is actually being made usually spans two files.
+
+    Handed one arm, every power and multiplicity figure above describes
+    comparisons WITHIN that arm. This project's own quantum file gave a minimum
+    detectable effect of 0.0555 measured between quantum settings, against the
+    0.0171 its power analysis had measured for the quantum-versus-classical
+    comparison that the hypothesis actually tests. Both numbers were right about
+    different pairs, and reporting only the first would have described the power
+    of a comparison nobody is making.
+    """
+    other = ctx.get("compare")
+    if not other:
+        return Outcome("cross-arm comparison", SKIP,
+                       "only one arm supplied. Every figure above describes "
+                       "comparisons WITHIN this file. If the claim being made is "
+                       "against another arm, pass it with --compare or the power and "
+                       "multiplicity numbers describe the wrong comparison.")
+    fields = ctx["cell_fields"]
+    a, b = defaultdict(dict), defaultdict(dict)
+    for r in recs:
+        a[(r["seed"], cell_of(r, fields))][r["method"]] = r
+    for r in other:
+        b[(r["seed"], cell_of(r, ctx["compare_fields"]))][r["method"]] = r
+
+    keys = sorted(set(a) & set(b), key=str)
+    if not keys:
+        return Outcome("cross-arm comparison", FAIL,
+                       "no (seed, configuration) group appears in both files, so the "
+                       "two arms cannot be paired at all. Check that both were run on "
+                       "the same splits and configurations.")
+
+    mismatched, unverifiable = [], 0
+    for k in keys:
+        fps = {r.get("test_label_fingerprint") for r in list(a[k].values()) + list(b[k].values())}
+        if None in fps:
+            unverifiable += 1
+        fps.discard(None)
+        if len(fps) > 1:
+            mismatched.append(k)
+    if mismatched:
+        return Outcome("cross-arm comparison", FAIL,
+                       f"{len(mismatched)} of {len(keys)} paired groups were scored on "
+                       f"DIFFERENT test points across the two files, e.g. seed "
+                       f"{mismatched[0][0]}. The arms are not comparable.")
+
+    # Keyed by (configuration, method pair), NOT by method pair alone. Pooling
+    # every configuration into one bucket makes n the record count rather than
+    # the seed count: the first version of this check reported n = 300 on 20
+    # seeds and a minimum detectable effect of 0.0009. That is the fourth
+    # instance in this project of the same mistake, committed inside the check
+    # written to explain it, which is the clearest possible argument for the
+    # unit-of-analysis warning being in the report at all.
+    diffs = defaultdict(list)
+    for (seed, cell) in keys:
+        k = (seed, cell)
+        for ma, ra in a[k].items():
+            for mb, rb in b[k].items():
+                diffs[(cell, ma, mb)].append(norm_ap(ra) - norm_ap(rb))
+    sds = [st.stdev(v) for v in diffs.values() if len(v) > 1]
+    n = int(np.median([len(v) for v in diffs.values()]))
+    if not sds or n < 2:
+        return Outcome("cross-arm comparison", WARN,
+                       f"{len(keys)} groups pair across the two files, but too few "
+                       f"seeds per pair to estimate power.")
+    sd = float(np.median(sds))
+    crit = stats.t.ppf(1 - ALPHA / 2, n - 1)
+    mde = float(sd / math.sqrt(n) * (crit + stats.t.ppf(0.80, n - 1)))
+    # Never claim a verification that did not happen. Without fingerprints the
+    # arms are ASSUMED to share their test points; saying otherwise would be the
+    # failure this whole tool exists to catch.
+    if unverifiable:
+        verdict, pairing = WARN, (f"{len(keys)} groups pair across the two files by "
+                                  f"(seed, configuration), but {unverifiable} of them "
+                                  f"carry no test_label_fingerprint, so matching test "
+                                  f"points are ASSUMED and not verified.")
+    else:
+        verdict, pairing = PASS, (f"{len(keys)} (seed, configuration) groups pair "
+                                  f"across the two files on verified matching test "
+                                  f"points.")
+    return Outcome("cross-arm comparison", verdict,
+                   f"{pairing} Across-arm paired sd {sd:.4f} over "
+                   f"{n} seeds per configuration gives a minimum detectable effect "
+                   f"near {mde:.4f}. THIS "
+                   f"is the power of the comparison being made; the figure above is "
+                   f"the power of comparisons within one arm.",
+                   numbers={"paired_groups": len(keys), "cross_arm_sd": sd,
+                            "cross_arm_mde": mde, "n_seeds": n,
+                            "method_pairs": len(diffs)})
 
 
 def check_selection_leak(recs, ctx):
@@ -376,22 +526,28 @@ TIER2 = [
 
 CHECKS = [check_schema, check_chance_correction, check_negative_control, check_pairing,
           check_convergence, check_unit_of_analysis, check_power,
-          check_precision_floor, check_multiplicity, check_selection_leak]
+          check_precision_floor, check_multiplicity, check_cross_arm,
+          check_selection_leak]
 
 
-def run(path, control, floor):
+def run(path, control, floor, cell_fields=None, compare=None):
     recs = load(path)
     if not recs:
         print(f"{path}: empty")
         return 2, []
-    ctx = {"control": load(control) if control else None, "floor": floor}
+    fields = cell_fields if cell_fields is not None else infer_cell_fields(recs)
+    other = load(compare) if compare else None
+    ctx = {"control": load(control) if control else None, "floor": floor,
+           "cell_fields": fields, "compare": other,
+           "compare_fields": (cell_fields if cell_fields is not None
+                              else infer_cell_fields(other)) if other else None}
     outs = []
     for fn in CHECKS:
         try:
             outs.append(fn(recs, ctx))
         except Exception as exc:                      # a broken check is a failure
             outs.append(Outcome(fn.__name__, FAIL, f"check raised {exc!r}"))
-    return None, outs
+    return fields, outs
 
 
 def main():
@@ -400,13 +556,30 @@ def main():
     ap.add_argument("--control", help="permuted-label companion file")
     ap.add_argument("--floor", type=float, default=DEFAULT_PRECISION_FLOOR,
                     help="reproducibility floor of the pipeline, in normAP")
+    ap.add_argument("--cell-fields", nargs="*", default=None,
+                    help="fields that define a configuration, e.g. mapping n_qubits. "
+                         "Inferred from the data when omitted; the inference is always "
+                         "printed because a wrong grouping silently changes three "
+                         "other answers.")
+    ap.add_argument("--compare",
+                    help="the other arm of the comparison, e.g. the classical results. "
+                         "Without it every figure describes comparisons WITHIN one arm.")
     ap.add_argument("--json", help="write the report here")
     args = ap.parse_args()
 
-    _, outs = run(args.results, args.control, args.floor)
+    fields, outs = run(args.results, args.control, args.floor, args.cell_fields,
+                       args.compare)
 
     print(f"\nAUDIT: {args.results}")
-    print("This audits METHOD, not results. It never says which model won.\n")
+    print("This audits METHOD, not results. It never says which model won.")
+    if fields:
+        print(f"  Configuration grouped by: {', '.join(fields)}"
+              f"{' (given)' if args.cell_fields else ' (inferred from the data)'}. "
+              f"Override with --cell-fields if that is wrong.")
+    else:
+        print("  No configuration fields found, so every record is treated as one "
+              "cell. Pass --cell-fields if this file has configurations.")
+    print()
     width = max(len(o.name) for o in outs)
     for o in outs:
         print(f"  [{o.status:^7}] {o.name:<{width}}  {o.detail}")
