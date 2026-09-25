@@ -155,21 +155,34 @@ g above the sqrt(n) ceiling of 18.71 means the classical kernel is under-regular
 
 **The measurement, from two independent pieces of code.** `primary_tests.py` reported **sd 0.0921** for the churn primary comparison on 20 paired seeds. `audit.py`, written three weeks later and pairing every quantum method against every classical method across all 15 configurations, computes a median cross-arm sd of **0.0921**.
 
+Two figures are needed, not one, and the first version of this record mixed them. Section 5's table is an ARM-level quantity: a median across configurations and kernel pairs. The exclusion bound attached to a primary-cell test is a PRIMARY-CELL quantity. For churn the two coincide at 0.0921 — the audit's arm-level median and `primary_tests.py`'s primary-cell sd are the same number — and that coincidence concealed the conflation until fraud, where they differ by a factor of two.
+
+**Arm level, the quantity section 5's table reports:**
+
 | arm | registered sd → MDE | observed cross-arm sd → MDE | ratio |
 | --- | --- | --- | --- |
-| churn 250, primary cell | 0.0241 → 0.0171 | 0.0921 → **0.0608** | 3.6x |
-| fraud 250, primary cell | 0.0085 → 0.0059 | 0.0095 → **0.0063** | 1.1x |
-| churn 250, bandwidth arm (D4) | — | 0.0353 → 0.0233 | — |
+| churn 250 | 0.0241 → 0.0171 | 0.0921 → **0.0608** | 3.6x |
+| fraud 250 | 0.0085 → 0.0059 | 0.0209 → **0.0138** | 2.3x |
 
-**Why fraud is barely affected.** Both arms there sit at normAP 0.966 with 0.034 of headroom, so quantum-minus-classical differences are as tight as classical-minus-classical ones. The error is specific to arms where the two sides genuinely differ, which is to say the arms where power matters most.
+**Primary cell, the quantity an exclusion bound must quote:**
+
+| cell | observed paired sd → MDE |
+| --- | --- |
+| churn, PCA at 12 qubits | 0.0921 → **0.0608** |
+| fraud, SelectKBest at 8 qubits | 0.0095 → **0.0063** |
+| churn bandwidth arm, PCA at 12 (D4) | 0.0353 → 0.0233 |
+
+**Why the two datasets differ by different factors.** Fraud's arms both sit at normAP 0.966 with 0.034 of headroom, so cross-arm differences are compressed relative to churn's. They are not compressed to the level of classical-versus-classical differences, which is what the first version of this record claimed: fraud is off by 2.3x at the arm level, not 1.1x. The error is worst where the two sides genuinely differ, which is where power matters most, but it is not absent anywhere.
 
 **What this does and does not change.**
 
 * **The churn H1 rejection stands.** A rejection does not depend on the prior MDE: the observed difference is −0.0798 with a 95% CI of −0.1229 to −0.0367 and Wilcoxon p = 8.2e−05. The interval excludes zero on the observed data.
-* **The fraud exclusion bound stands, corrected from 0.0059 to 0.0063.** The published claim moves by less than the precision floor of D2.
+* **The fraud exclusion bound stands, corrected from 0.0059 to 0.0063.** That figure is the primary cell's own paired sd of 0.0095, which is the right quantity for a bound attached to a primary-cell test. The published claim moves by less than the precision floor of D2. The fraud ARM as a whole is a different matter: 0.0138 against a registered 0.0059.
 * **Every churn statement of the form "a null result here would exclude effects larger than X" was wrong** and is corrected: the churn 250 figure is 0.061, not 0.0171. The churn rows for 100 and 50 per class in section 5 are derived the same way and are understated by a similar factor; they are not restated here because no confirmatory test rests on them, and section 5's declaration that the 50-per-class arm is underpowered becomes more true, not less.
 * **The bandwidth arm's null on churn (D4) excludes effects larger than 0.023, not 0.017.** Its point estimate of −0.0101 and interval of −0.0267 to +0.0064 are unchanged.
 
 **What is NOT done.** Section 5 of the pre-registration is not edited. Version 1.0 stands as registered, error included, and this record is the correction. No test is re-run and no verdict changes.
 
-**What it says about the project.** The registered design was powered on the only data that existed when it was written, which was reasonable, and nobody checked the assumption once the other arm existed. The check that caught it is nine lines long and had been sitting unwritten for a month. That is the argument for the audit protocol in one sentence.
+**Correction to this record, same day.** The first version of D6 gave fraud's observed figure as 0.0095 → 0.0063 and called the dataset "barely affected" at 1.1x. That compared an arm-level registered number against a primary-cell observed one. Measured the same way as the registered figure, fraud is 0.0209 → 0.0138, a factor of 2.3. The conflation survived review because churn's two figures are identical to four decimal places by coincidence. Both quantities are now tabulated separately and neither is described as the other.
+
+**What it says about the project.** The registered design was powered on the only data that existed when it was written, which was reasonable, and nobody checked the assumption once the other arm existed. The check that caught it is nine lines long and had been sitting unwritten for a month. That is the argument for the audit protocol in one sentence. That the correction itself then needed correcting, for mixing two units of the same quantity, is the argument for measuring rather than inferring.
