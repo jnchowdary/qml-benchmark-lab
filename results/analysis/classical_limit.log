@@ -1,0 +1,92 @@
+
+==========================================================================
+CLASSICAL LIMIT CHECK: churn, pca/12 qubits, 250 per class, 8 seeds
+==========================================================================
+  Small-b limit of an angle fidelity kernel is RBF with gamma = (reps*b)^2/4.
+  If the selected kernel IS that RBF, the bandwidth fix made it classical.
+
+  gamma_pred and fit/pred apply to the ANGLE family only: (reps*b)^2/4 is
+  the angle limit, and IQP repetitions carry entangling terms, so those
+  cells are printed as '-'. rho is against each row's own best-fit RBF.
+
+  seed set             b    C_cls    g_pred     g_fit  fit/pred      rmse       rho    g_lam
+     0 iqp-r1     0.2500    1e-02         -  3.98e-02         -  2.58e-02   0.96759   3.414 
+     1 angle-r1   0.5000    1e-01  6.25e-02  6.31e-02      1.01  7.45e-03   0.99962   1.369 
+     2 angle-r1   0.0625    1e+01  9.77e-04  1.00e-03      1.02  2.34e-04   1.00000  57.336!
+     3 iqp-r2     0.0625    1e+02         -  1.12e-03         -  2.74e-04   0.99805   2.966 
+     4 iqp-r1     0.0625    1e-01         -  1.12e-03         -  4.70e-04   0.99886   2.092 
+     5 iqp-r1     0.1250    1e-02         -  5.62e-03         -  3.03e-03   0.99089   1.088 
+     6 angle-r1   0.1250    1e-01  3.91e-03  3.98e-03      1.02  6.91e-04   1.00000   2.042 
+     7 iqp-r1     0.5000    1e-01         -  2.51e-01         -  6.58e-02   0.89492   4.023 
+
+  Angle family (3 of 8 seeds), where the analytic limit applies:
+    max |K_quantum - K_RBF(predicted gamma)| : median 3.63e-04   worst 3.37e-02
+    Spearman of off-diagonals vs that RBF    : median 0.999999   worst 0.999621
+    fitted gamma / predicted gamma           : median 1.019
+
+  Concentration of off-diagonal Gram entries:
+    bandwidth 1.0 (registered)       mean 1.570e-02   sd/mean 1.706   (2^-n floor = 2.441e-04)
+    bandwidth selected by inner CV   mean 9.570e-01   sd/mean 0.018   (2^-n floor = 2.441e-04)
+
+  Geometric difference, PREVIEW of week 5. sqrt(n) ceiling = 18.71;
+  any g above it means lam is too small and the value says nothing about
+  the kernels. lam from C = 1/(2*C*n), and C reached 1e+02.
+    lam from C (as registered): median g 5.979 at bandwidth 1.0, 2.529 at the selected bandwidth
+      ceiling breaches: 2/8 registered, 1/8 selected   <- these values are not usable
+           lam   g (bw 1.0)   g (selected)   breaches
+         1e-01        2.470          1.922          0
+         1e-02        6.748          2.101          0
+         1e-03       19.796          2.287          6
+         1e-04       42.954          2.366          7
+
+  READING, one line per embedding family, because they do NOT behave
+  the same way and a single verdict across them would be wrong:
+    * angle (3/8 seeds): IS the classical limit. Median Spearman 0.999999 against its nearest RBF, worst 0.999621, and both registered endpoints are rank statistics. Any gain here is the kernel becoming classical, and no advantage claim can rest on it.
+    * iqp (5/8 seeds): NOT the classical limit. Worst Spearman 0.89492, median best-fit RMSE 3.03e-03. This kernel stays genuinely distinct from every RBF, so its performance is a property of the quantum kernel and not of a classical kernel in disguise.
+
+==========================================================================
+CLASSICAL LIMIT CHECK: fraud, selectk/8 qubits, 250 per class, 8 seeds
+==========================================================================
+  Small-b limit of an angle fidelity kernel is RBF with gamma = (reps*b)^2/4.
+  If the selected kernel IS that RBF, the bandwidth fix made it classical.
+
+  gamma_pred and fit/pred apply to the ANGLE family only: (reps*b)^2/4 is
+  the angle limit, and IQP repetitions carry entangling terms, so those
+  cells are printed as '-'. rho is against each row's own best-fit RBF.
+
+  seed set             b    C_cls    g_pred     g_fit  fit/pred      rmse       rho    g_lam
+     0 angle-r1   0.1250    1e+02  3.91e-03  3.98e-03      1.02  6.39e-04   1.00000   3.872 
+     1 angle-r1   0.1250    1e+03  3.91e-03  3.98e-03      1.02  5.79e-04   1.00000   6.202 
+     2 iqp-r1     0.1250    1e-01         -  5.62e-03         -  3.97e-03   0.99836   3.544 
+     3 angle-r1   0.5000    1e-01  6.25e-02  6.31e-02      1.01  4.34e-03   1.00000   1.173 
+     4 angle-r1   0.0625    1e+01  9.77e-04  1.00e-03      1.02  2.10e-04   1.00000   1.741 
+     5 iqp-r1     0.0625    1e+00         -  1.12e-03         -  5.36e-04   0.99986   1.434 
+     6 iqp-r2     0.2500    1e+00         -  7.94e-02         -  1.03e-01   0.96411  22.914!
+     7 iqp-r2     0.0625    1e+00         -  1.12e-03         -  3.51e-04   0.99977  13.476 
+
+  Angle family (4 of 8 seeds), where the analytic limit applies:
+    max |K_quantum - K_RBF(predicted gamma)| : median 6.18e-04   worst 2.72e-02
+    Spearman of off-diagonals vs that RBF    : median 1.000000   worst 0.999997
+    fitted gamma / predicted gamma           : median 1.019
+
+  Concentration of off-diagonal Gram entries:
+    bandwidth 1.0 (registered)       mean 2.787e-01   sd/mean 1.084   (2^-n floor = 3.906e-03)
+    bandwidth selected by inner CV   mean 9.763e-01   sd/mean 0.031   (2^-n floor = 3.906e-03)
+
+  Geometric difference, PREVIEW of week 5. sqrt(n) ceiling = 18.71;
+  any g above it means lam is too small and the value says nothing about
+  the kernels. lam from C = 1/(2*C*n), and C reached 1e+03.
+    lam from C (as registered): median g 24.518 at bandwidth 1.0, 3.708 at the selected bandwidth
+      ceiling breaches: 4/8 registered, 1/8 selected   <- these values are not usable
+           lam   g (bw 1.0)   g (selected)   breaches
+         1e-01        3.802          1.471          0
+         1e-02       10.182          1.593          2
+         1e-03       32.103          2.746          8
+         1e-04       87.554          3.334          9
+
+  READING, one line per embedding family, because they do NOT behave
+  the same way and a single verdict across them would be wrong:
+    * angle (4/8 seeds): IS the classical limit. Median Spearman 1.000000 against its nearest RBF, worst 0.999997, and both registered endpoints are rank statistics. Any gain here is the kernel becoming classical, and no advantage claim can rest on it.
+    * iqp (4/8 seeds): NOT the classical limit. Worst Spearman 0.96411, median best-fit RMSE 2.25e-03. This kernel stays genuinely distinct from every RBF, so its performance is a property of the quantum kernel and not of a classical kernel in disguise.
+
+-> results/analysis/classical_limit.json

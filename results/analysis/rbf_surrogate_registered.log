@@ -1,0 +1,48 @@
+A kernel that scores what its nearest RBF scores is that RBF, whatever its
+Spearman. Exploratory under deviations D4; nothing here is confirmatory.
+
+==========================================================================
+RBF SURROGATE (EXPLORATORY, D4): churn, pca/12 qubits, 250/class, registered arm
+==========================================================================
+  For each quantum kernel: fit the closest RBF on training Gram matrices
+  (no labels), run it through the same pipeline, compare out of sample.
+  A difference near zero means the quantum kernel is functionally that RBF.
+
+  setting      n  gamma (median)  in grid    d normAP                 95% CI          p
+  angle-r1    20       2.818e-01 20/20         +0.0000     [-0.0057, +0.0057]     0.8983
+  angle-r2    20       1.122e+00 20/20         -0.0162     [-0.0232, -0.0092]   1.05e-04
+  iqp-r1      20       2.818e+00 20/20         +0.0852     [+0.0645, +0.1058]   1.91e-06
+  iqp-r2      20       1.000e+01 20/20         -0.0493     [-0.0913, -0.0072]     0.0215
+
+  By embedding family:
+    angle  n=40  quantum minus surrogate: -0.0081 [-0.0131, -0.0030]   p 0.0037
+           the quantum kernel is WORSE than its own closest RBF, so its structure is costing rather than earning.
+    iqp    n=40  quantum minus surrogate: +0.0180 [-0.0132, +0.0492]   p 0.1701
+           no detectable difference, but the interval is wide, so this is absence of evidence. More seeds, not a conclusion.
+
+  Fitted gammas span 2.82e-01 to 1.00e+01; the registered classical RBF grid spans 1e-03 to 1e+02.
+  80/80 surrogates use a gamma inside the range the classical arm already searched.
+
+==========================================================================
+RBF SURROGATE (EXPLORATORY, D4): fraud, selectk/8 qubits, 250/class, registered arm
+==========================================================================
+  For each quantum kernel: fit the closest RBF on training Gram matrices
+  (no labels), run it through the same pipeline, compare out of sample.
+  A difference near zero means the quantum kernel is functionally that RBF.
+
+  setting      n  gamma (median)  in grid    d normAP                 95% CI          p
+  angle-r1    20       2.512e-01 20/20         +0.0007     [-0.0006, +0.0020]     0.5678
+  angle-r2    20       1.122e+00 20/20         +0.0013     [-0.0017, +0.0042]     0.3683
+  iqp-r1      20       6.310e+00 20/20         +0.0021     [-0.0034, +0.0075]     0.5958
+  iqp-r2      20       1.000e+01 20/20         +0.0093     [-0.0045, +0.0232]     0.2943
+
+  By embedding family:
+    angle  n=40  quantum minus surrogate: +0.0010 [-0.0006, +0.0025]   p 0.2248
+           no detectable difference, and the interval is tight: this family is functionally an RBF kernel and should be described that way.
+    iqp    n=40  quantum minus surrogate: +0.0057 [-0.0015, +0.0129]   p 0.2214
+           no detectable difference, and the interval is tight: this family is functionally an RBF kernel and should be described that way.
+
+  Fitted gammas span 2.51e-01 to 1.00e+01; the registered classical RBF grid spans 1e-03 to 1e+02.
+  80/80 surrogates use a gamma inside the range the classical arm already searched.
+
+-> results/analysis/rbf_surrogate_registered.json

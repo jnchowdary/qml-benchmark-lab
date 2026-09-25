@@ -1,0 +1,71 @@
+A kernel that scores what its nearest RBF scores is that RBF, whatever its
+Spearman. Exploratory under deviations D4; nothing here is confirmatory.
+
+==============================================================================
+REPLICATION ACROSS CELLS (EXPLORATORY, D4): churn, 250/class, registered arm
+==============================================================================
+  settings: ['iqp-r1', 'iqp-r2', 'angle-r2']   cells: 15   primary: pca/12
+  Question: does the primary cell's surrogate gap appear anywhere else?
+
+  --- angle-r2 ---
+  cell                 gamma    d normAP                 95% CI          p       Holm      
+  pca/10            1.12e+00     +0.0039 [-0.0186, +0.0265]     0.7841     1.0000      
+  randproj/10       1.12e+00     +0.0005 [-0.0030, +0.0040]     0.3300     1.0000      
+  pca/8             1.12e+00     -0.0010 [-0.0203, +0.0183]     0.8408     1.0000      
+  randproj/12       1.12e+00     -0.0021 [-0.0053, +0.0012]     0.2162     1.0000      
+  pca/6             1.12e+00     -0.0022 [-0.0299, +0.0254]     0.8695     1.0000      
+  randproj/8        1.12e+00     -0.0029 [-0.0091, +0.0033]     0.3118     1.0000      
+  randproj/6        1.12e+00     -0.0069 [-0.0247, +0.0109]     0.4091     1.0000      
+  randproj/4        1.12e+00     -0.0115 [-0.0350, +0.0120]     0.0696     0.6262      
+  pca/12            1.12e+00     -0.0162 [-0.0232, -0.0092]   1.05e-04     0.0012  REAL <- primary
+  pca/4             1.12e+00     -0.0195 [-0.0503, +0.0113]     0.3488     1.0000      
+  selectk/12        5.97e-02     -0.1608 [-0.2206, -0.1011]   1.91e-06   2.86e-05  REAL
+  selectk/10        7.61e-02     -0.1722 [-0.2223, -0.1221]   9.54e-06   1.34e-04  REAL
+  selectk/8         6.31e-02     -0.1735 [-0.2501, -0.0968]   1.05e-04     0.0012  REAL
+  selectk/6         8.43e-02     -0.2064 [-0.2800, -0.1329]   2.67e-05   3.47e-04  REAL
+  selectk/4         5.15e-02     -0.2541 [-0.3370, -0.1712]   3.62e-05   4.35e-04  REAL
+    6/15 cells clear all three conditions after Holm: 0 positive, 6 negative
+    the effect replicates in 5 of 14 further cells. Partial replication: report the count, and look for what distinguishes the cells where it appears.
+
+  --- iqp-r1 ---
+  cell                 gamma    d normAP                 95% CI          p       Holm      
+  pca/12            2.82e+00     +0.0852 [+0.0645, +0.1058]   1.91e-06   2.86e-05  REAL <- primary
+  randproj/12       2.51e+00     +0.0435 [+0.0184, +0.0686]   4.83e-04     0.0068  REAL
+  pca/10            2.51e+00     +0.0274 [+0.0063, +0.0485]     0.0172     0.2234      
+  selectk/10        3.18e+00     +0.0127 [-0.0322, +0.0576]     0.8408     1.0000      
+  randproj/10       2.24e+00     +0.0025 [-0.0267, +0.0316]     0.6477     1.0000      
+  randproj/8        2.12e+00     +0.0002 [-0.0190, +0.0193]     0.7562     1.0000      
+  selectk/12        4.74e+00     -0.0076 [-0.0376, +0.0224]     0.4980     1.0000      
+  randproj/6        1.78e+00     -0.0089 [-0.0294, +0.0116]     0.1327     1.0000      
+  pca/6             2.24e+00     -0.0121 [-0.0307, +0.0065]     0.2024     1.0000      
+  selectk/8         2.67e+00     -0.0165 [-0.0539, +0.0210]     0.1327     1.0000      
+  pca/8             2.24e+00     -0.0191 [-0.0421, +0.0039]     0.1231     1.0000      
+  randproj/4        1.41e+00     -0.0193 [-0.0451, +0.0066]     0.0532     0.5849      
+  selectk/6         1.89e+00     -0.0241 [-0.0682, +0.0201]     0.1536     1.0000      
+  selectk/4         1.19e+00     -0.0282 [-0.0730, +0.0166]     0.0973     0.9731      
+  pca/4             1.78e+00     -0.0307 [-0.0594, -0.0019]     0.0240     0.2874      
+    2/15 cells clear all three conditions after Holm: 2 positive, 0 negative
+    the effect replicates in 1 of 14 further cells. Partial replication: report the count, and look for what distinguishes the cells where it appears.
+
+  --- iqp-r2 ---
+  cell                 gamma    d normAP                 95% CI          p       Holm      
+  pca/10            1.00e+01     +0.0371 [+0.0036, +0.0705]     0.0266     0.2398      
+  pca/8             7.08e+00     +0.0232 [-0.0015, +0.0478]     0.0759     0.5098      
+  randproj/10       1.00e+01     +0.0110 [-0.0266, +0.0486]     0.5459     1.0000      
+  selectk/6         2.51e+00     -0.0079 [-0.0533, +0.0376]     0.3884     1.0000      
+  selectk/10        6.48e+00     -0.0111 [-0.0712, +0.0489]     0.3884     1.0000      
+  pca/6             5.01e+00     -0.0157 [-0.0384, +0.0069]     0.0973     0.5098      
+  selectk/12        1.00e+01     -0.0233 [-0.0747, +0.0281]     0.1140     0.5098      
+  selectk/8         4.22e+00     -0.0317 [-0.0722, +0.0089]     0.0696     0.5098      
+  randproj/8        7.94e+00     -0.0361 [-0.0771, +0.0048]     0.0637     0.5098      
+  pca/4             2.82e+00     -0.0428 [-0.0739, -0.0117]     0.0153     0.1684      
+  selectk/4         1.26e+00     -0.0450 [-0.0804, -0.0097]     0.0107     0.1283      
+  pca/12            1.00e+01     -0.0493 [-0.0913, -0.0072]     0.0215     0.2148       <- primary
+  randproj/4        2.51e+00     -0.0560 [-0.0823, -0.0297]   1.34e-04     0.0019  REAL
+  randproj/12       1.00e+01     -0.0639 [-0.1065, -0.0213]     0.0073     0.0948      
+  randproj/6        5.62e+00     -0.0768 [-0.1061, -0.0476]   6.29e-05   9.44e-04  REAL
+    2/15 cells clear all three conditions after Holm: 0 positive, 2 negative
+    the effect replicates in 2 of 14 further cells. Partial replication: report the count, and look for what distinguishes the cells where it appears.
+
+
+-> results/analysis/rbf_surrogate_registered_allcells.json
