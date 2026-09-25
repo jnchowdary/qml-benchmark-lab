@@ -3,7 +3,8 @@
 Written 25 September 2026, **revised the same day** after a literature check that should have happened in week 1.
 Sections 6, 7 and 14 are revised; **section 15 is new and is the most important section in this record.**
 Covers work done 25 September 2026.
-Quantum results produced at commit `0b796a3`. 298 tests passing.
+**Revised again the same evening** after P1 and P2 were tested out of sample: sections 8, 10, 11 and 13 updated.
+Quantum results produced at commit `0b796a3`. 303 tests passing.
 Four deviation records were opened this week: D1 and D2 before any real quantum result existed,
 D3 at the moment the primary tests first ran, D4 after the registered sweep was seen.
 D5 is drafted and **not in force**; week 5 does not start until it is ruled on.
@@ -118,7 +119,15 @@ The +0.0852 came from one cell on one dataset. Fourteen other cells were already
 
 This is the most replicated effect in the study, and it is quantum structure destroying performance relative to the nearest classical kernel, consistently, across every qubit count, on one mapping family.
 
-Both readings in this section are now registered as predictions P1 and P2 in `docs/predictions.md`, with falsification conditions, **before** the runs that could confirm them. Neither has been tested yet. If P1 fails on churn at 100 and 50 per class, the qubit-count reading above is withdrawn from this record.
+Both readings were registered as predictions P1 and P2 in `docs/predictions.md`, with falsification conditions, **before** the runs that could confirm them. They have since been tested.
+
+**P1 held in all three arms.** Cell-level Spearman of the `iqp-r1` gap against qubit count: **+0.961 (p 1.2e−08) on fraud**, the dataset that contributed nothing to the hypothesis, +0.698 (p 3.8e−03) on churn at 100 per class, +0.720 (p 2.5e−03) at 50, with churn 250's +0.873 falling between them. Mean gap positive at 12 qubits and negative at 6 and 4 in every arm. Fraud, registered in advance as the weaker test because of saturation, gave the cleanest ordering of the four while compressing magnitudes to a tenth of churn's: right about the ceiling, wrong about the power.
+
+**The confound was raised after the result and has been rejected.** The gap is quantum minus surrogate, so it could have grown with qubit count because the best-fit RBF becomes more localised and therefore worse, with no quantum content at all. The absolute levels say otherwise: the quantum arm's own normAP rises from 0.8850 to 0.9392 on fraud, 0.3944 to 0.4887 on churn 100 and 0.2807 to 0.3822 on churn 50 across 4 to 12 qubits, while the surrogate rises less (+0.035 on fraud), stays flat (−0.008 on churn 100) or falls (−0.046 on churn 50). Comparator decay is real on churn 50 and accounts for roughly a third of the gap growth there; it accounts for none of it on fraud.
+
+**P2 partially held and its quantitative bound is withdrawn.** γ beats qubit count as the correlate on both churn arms (+0.836 and +0.823, against −0.060 and +0.109), and every cell fitting γ below 0.2 is a SelectKBest cell with a gap beyond −0.13, mean −0.213 and −0.234 against −0.019 and −0.037 elsewhere. But the predicted ±0.03 ceiling for cells above γ 0.2 fails: `pca/6` reaches −0.0455 and −0.0705. On fraud no mapping fits γ below 1.0, so P2's antecedent never fires and the arm is untestable rather than passing.
+
+**What this does and does not establish.** The `iqp-r1` kernel improves faster with qubit count than the nearest RBF can follow, which says it is not a classical kernel in disguise. It says nothing about whether it beats the best classical kernel. It does not: at its strongest cell it exceeds its own surrogate by +0.085 and loses to the tuned polynomial by −0.101.
 
 **A methodological note, declared post-hoc.** Fifteen independent Holm-corrected cell tests is the wrong instrument for a monotone trend. `iqp-r1` shows only 2 of 15 cells surviving Holm while the trend across cells sits at p = 2.2e−05. The trend is the finding and the per-cell test is nearly blind to it. Proposing a trend test now, after seeing the trend, is post-hoc and is labelled as such wherever it appears; it is not a registered analysis and no confirmatory claim rests on it.
 
@@ -159,13 +168,18 @@ Recorded because the count matters more than the average.
 
 Items 3, 5 and 6 were caught by reading output. Item 8 was caught by a single web search that took under a minute and should have been week 1, day 1.
 
-Items 3, 5 and 6 are tests now, each carrying the real numbers that caught it.
+9. **An output filename that destroyed two of three results.** `rbf_surrogate.py` named its all-cells output after the arm alone, with no dataset or training size, so three runs in one command overwrote each other and only the `tee` logs survived. Scoring P1 then required transcribing sixty rows out of a log by hand, which is not a method.
+10. **A trend statistic on the wrong unit.** `trend_stats` correlated over all 300 records rather than the 15 cells, treating twenty seeds of one configuration as twenty independent observations of a trend across cells. It returned fraud `angle-r2` at rho −0.149 with p = 0.0099 on a column where every gap sat at or below D2's 1e−3 precision floor. The cell-level figures, n = 15, are the ones this record reports; every row-level figure printed before the fix is void.
+
+Items 3, 5, 6, 9 and 10 are tests now, each carrying the real numbers that caught it.
+
+**The pattern, named because the count is no longer the point.** Items 5, 7 and 10 are the same failure: a p-value reached for before the effect size and before the unit of analysis were checked. It produced a finding on a mean of +0.0002, an explanation fitted to the table that refuted its predecessor, and a trend on 300 non-independent rows. It is the failure most likely to survive into a paper, because each instance looked like a result.
 
 ---
 
 ## 11. Tests and housekeeping
 
-298 passing, up from 204 at the end of week 3. New files: `test_primary_tests.py` (18), `test_bandwidth.py` (35), `test_classical_limit.py` (15), `test_rbf_surrogate.py` (21). The load-bearing ones are the registered-path regression tests in `test_bandwidth.py` (if bandwidth 1.0 were not exactly the registered kernel, 7,200 records and the H1 verdict would be void) and the three-condition verdict tests in `test_rbf_surrogate.py`.
+303 passing, up from 204 at the end of week 3. New files: `test_primary_tests.py` (18), `test_bandwidth.py` (35), `test_classical_limit.py` (15), `test_rbf_surrogate.py` (21). The load-bearing ones are the registered-path regression tests in `test_bandwidth.py` (if bandwidth 1.0 were not exactly the registered kernel, 7,200 records and the H1 verdict would be void) and the three-condition verdict tests in `test_rbf_surrogate.py`.
 
 New scripts: `primary_tests.py`, `bandwidth_arm.py`, `classical_limit.py`, `rbf_surrogate.py`. `primary_tests.py` detects an exploratory arm from the records rather than from a flag, so it prints EXPLORATORY even when run with default options.
 
@@ -184,7 +198,8 @@ New scripts: `primary_tests.py`, `bandwidth_arm.py`, `classical_limit.py`, `rbf_
 ## 13. Still open
 
 - **D5.** Unresolved and blocking week 5.
-- **The `iqp-r1` trend.** Post-hoc, unregistered, and the only positive signal in the study. It is not evidence of advantage: at its strongest cell it beats its nearest RBF by +0.085 and loses to the best classical kernel by −0.101.
+- **The `iqp-r1` trend.** Registered as P1 after the fact, then held in three arms including an independent dataset, with its confound tested and rejected. Still exploratory, still post-hoc in origin, and still not evidence of advantage: at its strongest cell it beats its nearest RBF by +0.085 and loses to the best classical kernel by −0.101. What it does establish is that this one kernel family is not a classical kernel in disguise, which is the only such result in the study.
+- **A stale artefact to delete.** `results/analysis/rbf_surrogate_registered_allcells.json` holds churn 50 data under a name implying it is generic, left by the filename bug in item 9. It is committed and must be removed rather than left to be misread.
 - **A non-kernel classical baseline.** Gradient boosting on the same matched subsample, minutes of work, and without it "classical kernel beats quantum kernel" leaves open that both are far below what a practitioner would deploy.
 - **Scope.** 350 training points is simulator-feasible scale, not deployed scale. The learning curve makes this cost nothing, since the quantum deficit grows with data, but the claim needs saying.
 - **OSF registration.** The DOI still needs to go into the pre-registration and the README. **Hold this until section 15 is resolved**: registering a design whose central question has been answered elsewhere would be worse than not registering.
