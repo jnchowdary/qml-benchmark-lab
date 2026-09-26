@@ -50,6 +50,8 @@ Reported as results, not as advantage claims.
 
 **A classical surrogate fitted to each quantum kernel, no labels, same pipeline, scores what the quantum kernel scores** at every tuned bandwidth. At the registered bandwidth `iqp-r1` beats its nearest RBF by +0.0852 while losing to the best classical kernel by −0.1011: genuinely non-classical and genuinely worse. All 160 fitted γ values fall inside the classical RBF grid searched since week 2.
 
+**On fraud at tuned bandwidths the quantum kernels are Gaussian kernels the classical baseline had already searched.** All four settings, twenty seeds each: every interval spans zero, both families fall below the precision floor (angle +0.0002, IQP −0.0008), and 80 of 80 fitted γ values sit inside the 1e−3 to 1e2 grid `run_classical_baselines.py` searched in week 2 — before the quantum arm existed.
+
 **`angle-r2` collapses on every SelectKBest cell**, mean −0.1934, replicated at all five qubit counts. The most reproducible effect in the study, and it is quantum structure costing rather than earning.
 
 ## How the work is disciplined

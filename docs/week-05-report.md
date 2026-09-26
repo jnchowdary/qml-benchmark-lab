@@ -2,7 +2,9 @@
 
 Written 26 September 2026. Covers work done 26 September 2026.
 Committed at `5f27bc7`, `e90409f` and `8198a4e`. 373 tests passing, 97% coverage on `src/qbench`.
-**Revised the same day**, after the fraud arms were audited with the hook. Section 13 listed
+**Revised twice the same day**: after the fraud arms were audited with the hook, and again
+after the full per-family surrogate run on the fraud bandwidth arm established what the
+audit had only indicated. Section 13 listed
 that as an open gap and it is now closed; sections 4, 9, 10, 11 and 13 are updated, and the
 fraud bandwidth arm produced the strongest single result in this record.
 
@@ -119,9 +121,30 @@ The fraud **bandwidth** arm is the first arm in this project to return the outri
 
 Six times below the floor, across all four settings. This is Flórez-Ablan, Roth and
 Schnabel (2025) reproduced inside this project's own pipeline, measured in endpoint units
-rather than kernel-space distance, with no labels used in fitting the surrogate. It is
-sampled and therefore indicative rather than established; the full per-family run is what
-would establish it.
+rather than kernel-space distance, with no labels used in fitting the surrogate. **The full per-family run, added on second revision, establishes it.** All four settings,
+twenty seeds each, through `scripts/rbf_surrogate.py` with the three-condition rule:
+
+| setting | median gamma | d normAP | 95% CI | p |
+| --- | --- | --- | --- | --- |
+| angle-r1 | 3.981e-03 | +0.0003 | −0.0008 to +0.0015 | 0.0353 |
+| angle-r2 | 1.585e-02 | +0.0001 | −0.0009 to +0.0010 | 0.0681 |
+| iqp-r1 | 5.623e-03 | −0.0006 | −0.0023 to +0.0011 | 0.0973 |
+| iqp-r2 | 6.310e-03 | −0.0010 | −0.0027 to +0.0008 | 0.0897 |
+
+Every interval spans zero. Both families come in below D2's floor: angle at +0.0002 and IQP
+at −0.0008, neither a measurement. The rank tests do reject — angle at p = 0.0055 — and the
+three-condition rule refuses to call that an effect, which is the machinery built after week
+4's "finding declared on noise" working as intended.
+
+**80 of 80 fitted gammas fall inside 1e-03 to 1e+02, the classical RBF grid the baseline
+searched in week 2.** These are not exotic kernels found post hoc to match. The classical
+arm had already fitted kernels functionally indistinguishable from every tuned quantum
+kernel on this dataset, before the quantum arm existed.
+
+The audit's six-sample median was 1.66e-04 against family effects of +0.0002 and −0.0008
+from eighty records. The stratified sample agreed with the full run in direction and
+magnitude, which is the first evidence that the section 5 sampling fix produces readings
+worth acting on.
 
 Conditioning on fraud reaches 1.1e+33 registered and 7.5e+26 tuned, worse than churn by
 thirteen orders and further evidence that nothing threshold-based was ever usable here.
@@ -367,10 +390,10 @@ experimental result is affected by any of it.
 
 ## 13. Still open
 
-* **The fraud bandwidth arm's surrogate verdict is from a sample of six.** It is the
-  strongest result in this record and it rests on the smallest evidence in it. The full
-  per-family run through `scripts/rbf_surrogate.py` is what would establish it, and until
-  that is done the verdict indicates rather than shows.
+* **The churn bandwidth arm has not had the equivalent full run under the current code.**
+  Its per-family analysis was run in week 4, before four of this week's defects were known.
+  None of the six touched `scripts/rbf_surrogate.py`, so the figures should stand, but
+  "should stand" is the reasoning this week has repeatedly punished.
 * **`grid adequacy against a shuffled null`** remains the one check that needs a re-run
   rather than an interface: the same pipeline on permuted labels with a widened grid.
 * **The pre-registration's section 1 rewrite**, for the turn toward the protocol. This is a
@@ -388,10 +411,10 @@ The protocol is now the deliverable and it has been exercised against real data 
 once, on one dataset, finding six defects in itself. The second dataset was done on revision and found a seventh, in the
 `selection` check.
 
-The next step is therefore the full per-family surrogate run on the fraud bandwidth arm,
-which is the one result in this record whose strength is out of proportion to its evidence.
+That run was done on second revision and the finding held: on fraud at tuned bandwidths the
+quantum kernels are Gaussian kernels the classical baseline had already searched.
 
-After that, the section 1 rewrite, which is the last thing standing between this project
+The next step is the section 1 rewrite, which is the last thing standing between this project
 and a registration that describes what it is actually doing.
 
 ---
