@@ -10,7 +10,9 @@ The protocol is the part worth reusing. It exists because every check in it was 
 
 ## Status
 
-Week 5 of 12. The classical and quantum arms are complete: 5,400 classical and 7,200 quantum records, two datasets, three training sizes, 15 configurations, 20 seeds. H1 has been tested under the registered rule. 341 tests.
+Week 5 of 12. The classical and quantum arms are complete: 5,400 classical and 7,200 quantum records, two datasets, three training sizes, 15 configurations, 20 seeds. H1 has been tested under the registered rule. 371 tests.
+
+The audit now reaches the kernels. Three of the four checks it had declared unrunnable were not: `tuning symmetry` needed nothing and is Tier 1, `kernel conditioning` and `classical surrogate equivalence` needed only an interface and run against any pipeline supplying `--hook`. Those are the checks that would have caught this project's two largest defects, and both were invisible from records alone.
 
 **The study's central question was largely answered elsewhere before we asked it.** [Flórez-Ablan, Roth & Schnabel (2025)](https://doi.org/10.1088/2058-9565/ade7ad) showed that bandwidth tuning cures the concentration that makes fidelity kernels fail, but only by turning them into classical kernels. We derived the same result independently and with the right mechanism, fourteen months later, because nobody ran a literature search until week 4. That is recorded in section 15 of [`docs/week-04-report.md`](docs/week-04-report.md) and it is why the project turned toward the protocol.
 
@@ -26,8 +28,11 @@ Audit a results file:
 ```bash
 PYTHONPATH=src python scripts/audit.py RESULTS.jsonl \
     --control RESULTS_shuffled.jsonl \
-    --compare CLASSICAL.jsonl
+    --compare CLASSICAL.jsonl \
+    --hook scripts/audit_hook_qbench.py
 ```
+
+`--hook` is optional and points at a three-function adapter for your own pipeline; without it the checks that need kernels say so and name what they needed.
 
 The record format is eight fields, none of them quantum-specific. Full specification in [`docs/audit-protocol.md`](docs/audit-protocol.md).
 
@@ -35,11 +40,13 @@ The record format is eight fields, none of them quantum-specific. Full specifica
 
 Reported as results, not as advantage claims.
 
+**One of eight arms produced a difference its own comparison could resolve.** Every other observed value here is smaller than that arm's minimum detectable effect, which is neither evidence of equivalence nor a measurement of a small effect. Power figures are regenerated from the records by `scripts/audit_sweep.py` rather than transcribed, and each is labelled with the comparison it describes: an exclusion bound on a primary test quotes the variance of the pair that test forms, not a median over every method pair in the cell.
+
 **H1, churn primary cell (PCA at 12 qubits, 250 per class): rejected, favouring the classical kernel.** normAP −0.0798 (95% CI −0.1229 to −0.0367, Wilcoxon p = 8.2e−05), ROC-AUC −0.0292 (p = 3.4e−04), both endpoints, intersection-union rule.
 
 **H1, fraud primary cell (SelectKBest at 8 qubits): not rejected.** An advantage larger than 0.0063 in normAP is excluded at 80% power, on a problem where both arms sit at 0.966 and only 0.034 of headroom exists.
 
-**The registered grid gave the classical arm eleven bandwidths and the quantum arm none.** Correcting that collapses the churn rejection to −0.0101 (p = 0.076). But 19 of 20 seeds then choose a bandwidth below 1.0, where an angle fidelity kernel is provably a Gaussian kernel with γ = (reps·b)²/4 — confirmed on real data to within 2%, with Spearman 0.999999 against the predicted RBF. The gap closes exactly as the kernel becomes classical.
+**The registered grid gave the classical arm eleven bandwidths and the quantum arm none.** Correcting that collapses the churn rejection to −0.0101 (p = 0.076), which is below the corrected arm's own resolution of 0.0233 — the rejection collapses, and what replaces it is not a measured near-zero. But 19 of 20 seeds then choose a bandwidth below 1.0, where an angle fidelity kernel is provably a Gaussian kernel with γ = (reps·b)²/4 — confirmed on real data to within 2%, with Spearman 0.999999 against the predicted RBF. The gap closes exactly as the kernel becomes classical.
 
 **A classical surrogate fitted to each quantum kernel, no labels, same pipeline, scores what the quantum kernel scores** at every tuned bandwidth. At the registered bandwidth `iqp-r1` beats its nearest RBF by +0.0852 while losing to the best classical kernel by −0.1011: genuinely non-classical and genuinely worse. All 160 fitted γ values fall inside the classical RBF grid searched since week 2.
 

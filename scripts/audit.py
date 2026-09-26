@@ -68,6 +68,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+from itertools import zip_longest
 import statistics as st
 import sys
 from collections import defaultdict
@@ -253,19 +254,46 @@ def check_chance_correction(recs, ctx):
 
 
 def check_negative_control(recs, ctx):
+    """A permuted-label run must sit at its null. The only evidence of no leak.
+
+    THE SPREAD IS MEASURED OVER SPLITS, NOT OVER RECORDS
+    ----------------------------------------------------
+    A control file holds several methods and settings scored on each seed's
+    split. Those records share the split, so they are not independent draws, and
+    a standard error over records divides by the square root of the record count
+    when the independent unit is the seed.
+
+    This check shipped with that error. On an 80-record control that was 20
+    seeds by 4 settings it reported +2.68 sigma and a FAIL. It is the fifth
+    instance of the unit-of-analysis mistake in this project, the second inside
+    the tool written to catch it, and it is why the warning about it is in the
+    report at all rather than in a document nobody reads.
+    """
     ctrl = ctx.get("control")
     if not ctrl:
         return Outcome("negative control", SKIP,
                        "no permuted-label control supplied (--control). Without one "
                        "there is no evidence the pipeline does not leak.")
-    roc = [float(r["test_roc_auc"]) for r in ctrl]
-    nap = [norm_ap(r) for r in ctrl]
     floor = ctx["floor"]
+    by_split = all("seed" in r for r in ctrl)
+
+    def units(fn):
+        if not by_split:
+            return [fn(r) for r in ctrl]
+        g = defaultdict(list)
+        for r in ctrl:
+            g[r["seed"]].append(fn(r))
+        return [float(np.mean(v)) for v in g.values()]
+
     out, bad = {}, []
-    for label, vals, null in (("ROC-AUC", roc, 0.5), ("normAP", nap, 0.0)):
-        m, se = float(np.mean(vals)), float(np.std(vals, ddof=1) / math.sqrt(len(vals)))
+    for label, fn, null in (("ROC-AUC", lambda r: float(r["test_roc_auc"]), 0.5),
+                            ("normAP", norm_ap, 0.0)):
+        vals = units(fn)
+        m = float(np.mean(vals))
+        se = (float(np.std(vals, ddof=1) / math.sqrt(len(vals)))
+              if len(vals) > 1 else 0.0)
         z = (m - null) / se if se > 0 else 0.0
-        out[label] = {"mean": m, "sigma": z, "se": se}
+        out[label] = {"mean": m, "sigma": z, "se": se, "n_units": len(vals)}
         # BOTH conditions, never the sigma alone. A control whose records are
         # near-identical has a standard error of order 1e-22, which is floating
         # point residue rather than a measured spread, and dividing by it turned
@@ -274,13 +302,16 @@ def check_negative_control(recs, ctx):
         # not a leak however many sigma the arithmetic produces.
         if abs(z) > 2 and abs(m - null) > floor:
             bad.append(f"{label} {m:.4f} ({z:+.2f} sigma from {null})")
+    n_units = out["ROC-AUC"]["n_units"]
+    unit = (f"{n_units} splits ({len(ctrl)} records)" if by_split
+            else f"{len(ctrl)} records, NO seed field so independence is ASSUMED")
     if bad:
         return Outcome("negative control", FAIL,
                        f"control deviates from its null by more than the {floor:g} "
-                       f"floor: {'; '.join(bad)}. Investigate before reading any result "
-                       f"in the main file.", numbers=out)
+                       f"floor over {unit}: {'; '.join(bad)}. Investigate before "
+                       f"reading any result in the main file.", numbers=out)
     return Outcome("negative control", PASS,
-                   f"{len(ctrl)} control records: ROC-AUC {out['ROC-AUC']['mean']:.4f} "
+                   f"{unit}: ROC-AUC {out['ROC-AUC']['mean']:.4f} "
                    f"({out['ROC-AUC']['sigma']:+.2f} sigma), normAP "
                    f"{out['normAP']['mean']:+.4f} ({out['normAP']['sigma']:+.2f} sigma).",
                    numbers=out)
@@ -327,10 +358,24 @@ def check_unit_of_analysis(recs, ctx):
     """
     cells = {cell_of(r, ctx["cell_fields"]) for r in recs}
     seeds = {r["seed"] for r in recs}
+    methods = {r.get("method") for r in recs}
     if len(cells) < 2:
-        return Outcome("unit of analysis", SKIP,
-                       "records carry no 'cell' field or only one configuration, so "
-                       "independent units cannot be identified.")
+        # A single-configuration file still has independent units: the split.
+        # This branch used to SKIP with "independent units cannot be identified",
+        # which is false and skipped the warning exactly where the over-count is
+        # easiest to make -- an 80-record file that is 20 splits scored by four
+        # methods reads as 80 observations unless something says otherwise.
+        if len(seeds) < 2 or len(recs) <= len(seeds):
+            return Outcome("unit of analysis", SKIP,
+                           "one configuration and at most one record per seed, so "
+                           "records and independent units are the same thing here.")
+        return Outcome("unit of analysis", WARN,
+                       f"{len(recs)} records in ONE configuration = ~{len(seeds)} "
+                       f"splits x {len(methods)} methods. Records sharing a split are "
+                       f"not independent observations of it, so any claim about this "
+                       f"configuration has n={len(seeds)}, not n={len(recs)}.",
+                       numbers={"n_cells": 1, "n_seeds": len(seeds),
+                                "n_methods": len(methods), "n_records": len(recs)})
     return Outcome("unit of analysis", WARN,
                    f"{len(recs)} records = {len(cells)} configurations x ~{len(seeds)} "
                    f"seeds. Across-configuration claims have n={len(cells)}, not "
@@ -415,6 +460,307 @@ def check_multiplicity(recs, ctx):
                    numbers={"comparisons": comparisons, "bonferroni": bonf})
 
 
+def check_tuning_symmetry(recs, ctx):
+    """Did both arms actually have something to tune?
+
+    This started as a Tier 2 check on the grounds that knowing whether a kernel
+    has a scale parameter needs the embedding. It does not. A method whose
+    SELECTED hyperparameters never vary across records had nothing to select
+    from; one whose parameters vary had a grid. The contrast is visible in the
+    records alone.
+
+    It is the check that would have caught this project's largest defect. The
+    registered design gave the classical arm eleven RBF bandwidths spanning five
+    decades and the quantum arm a fixed data scale, so one side was tuned and the
+    other was not, and the comparison measured that asymmetry as much as it
+    measured anything about quantum kernels. Nobody noticed for four weeks.
+
+    It warns rather than fails: a method that always selects the same value might
+    have a wide grid with one consistent winner, which is a different situation
+    and not visible from selections alone. The report says which it cannot
+    distinguish.
+    """
+    pool = list(recs) + list(ctx.get("compare") or [])
+    if not any("params" in r or "C" in r for r in pool):
+        return Outcome("tuning symmetry", SKIP,
+                       "no `params` or `C` field, so it cannot be seen whether each "
+                       "method had hyperparameters to select.")
+    seen = defaultdict(lambda: {"params": set(), "C": set(), "n": 0,
+                                "keys": set(), "had_dict": False})
+    for r in pool:
+        m = r.get("method", "?")
+        seen[m]["n"] += 1
+        if isinstance(r.get("params"), dict):
+            seen[m]["had_dict"] = True
+            seen[m]["keys"].update(r["params"].keys())
+            seen[m]["params"].add(json.dumps(r["params"], sort_keys=True, default=str))
+        if "C" in r:
+            seen[m]["C"].add(str(r["C"]))
+    # A method with NO structural parameters is not an untuned method, it is a
+    # method with nothing to tune, and a linear kernel is the canonical case.
+    # Without this distinction the check warned on every file containing a
+    # linear baseline, which is most of them, and a check that fires on
+    # everything carries no information. What is damning is a method that HAS
+    # parameters and never varied them.
+    table = {m: {"structural": len(v["params"]), "C": len(v["C"]), "records": v["n"],
+                 "parameters": sorted(v["keys"]),
+                 "has_parameters": bool(v["keys"])}
+             for m, v in sorted(seen.items())}
+    struct = {m: v["structural"] for m, v in table.items() if v["has_parameters"]}
+    if len(struct) < 2:
+        return Outcome("tuning symmetry", SKIP,
+                       "fewer than two methods record their selected parameters.",
+                       numbers={"per_method": table})
+    lo, hi = min(struct.values()), max(struct.values())
+    detail = "; ".join(f"{m} {v['structural']} structural / {v['C']} C"
+                       + ("" if v["has_parameters"] else " (no parameters)")
+                       for m, v in table.items())
+    if lo <= 1 and hi >= 3:
+        flat = {m: v["parameters"] for m, v in table.items()
+                if v["has_parameters"] and v["structural"] <= 1}
+        named = "; ".join(f"{m} (fixed: {', '.join(ps)})" for m, ps in flat.items())
+        return Outcome("tuning symmetry", WARN,
+                       f"methods differ sharply in what they were observed selecting: "
+                       f"{detail}. {named} record parameters that never varied, so on "
+                       f"this evidence those were fixed while other methods searched. "
+                       f"If one arm's kernel width is tuned and the other's is fixed, "
+                       f"the comparison measures that as much as it measures the "
+                       f"kernels. A wide grid with one consistent winner looks "
+                       f"identical here and is not the same thing; the records cannot "
+                       f"tell them apart. Methods with no parameters at all, such as a "
+                       f"linear kernel, are excluded rather than counted as untuned.",
+                       numbers={"per_method": table, "fixed": flat})
+    return Outcome("tuning symmetry", PASS,
+                   f"every method varied its selection: {detail}.",
+                   numbers={"per_method": table})
+
+
+def check_conditioning(recs, ctx):
+    """Tier 2: how ill-conditioned are the kernels, and what does that forbid?
+
+    Needs the Gram matrices, so it runs only with a hook exposing gram(record).
+    """
+    hook = ctx.get("hook")
+    fn = getattr(hook, "gram", None) if hook else None
+    if fn is None:
+        return Outcome("kernel conditioning", NOT_RUN,
+                       "needs the Gram matrices. Provide --hook with a module "
+                       "exposing gram(record) -> ndarray. An ill-conditioned kernel "
+                       "makes the SVM dual underdetermined, so decision scores move "
+                       "at machine precision and any threshold-based test is invalid.",
+                       tier=2)
+    sample = _sample(recs, ctx.get("hook_sample", 6), ctx.get("cell_fields"))
+    conds, failed, taken = [], 0, []
+    for r in sample:
+        try:
+            K = np.asarray(fn(r), dtype=float)
+            conds.append(float(np.linalg.cond(K)))
+            taken.append(r)
+        except Exception:
+            failed += 1
+    if not conds:
+        return Outcome("kernel conditioning", NOT_RUN,
+                       f"the hook's gram() raised on all {failed} sampled records.",
+                       tier=2)
+    worst = max(conds)
+    num = {"n_sampled": len(conds), "cond_min": min(conds), "cond_max": worst,
+           "gram_errors": failed, "coverage": _coverage(taken),
+           "methods_sampled": sorted({str(r.get("method")) for r in taken})}
+    if worst > 1e12:
+        return Outcome("kernel conditioning", WARN,
+                       f"condition number reaches {worst:.1e} over {len(conds)} sampled "
+                       f"kernels covering {_coverage(taken)}. The dual is underdetermined at that conditioning, so "
+                       f"decision scores are reproducible only to a floor you must "
+                       f"measure and quote, and threshold-based tests such as McNemar "
+                       f"are not usable. Rank statistics survive; check that yours are.",
+                       tier=2, numbers=num)
+    return Outcome("kernel conditioning", PASS,
+                   f"condition number stays below 1e12 (worst {worst:.1e} over "
+                   f"{len(conds)} sampled kernels covering {_coverage(taken)}), so the "
+                   f"dual is well determined.",
+                   tier=2, numbers=num)
+
+
+def _sort_key(r, fields):
+    """Configuration first, then seed as a NUMBER. Sorting seeds as strings puts
+    seed 10 next to seed 1, which quietly undoes the spread this exists for."""
+    try:
+        seed = (0, float(r.get("seed")))
+    except (TypeError, ValueError):
+        seed = (1, str(r.get("seed")))
+    return (str(cell_of(r, fields)), seed)
+
+
+def _sample(recs, k, fields=None):
+    """Choose k records that actually span the methods being compared.
+
+    A stride (recs[::len(recs)//k]) is the obvious way to spread a sample and it
+    is wrong, because it aliases with the order records were written in. This
+    project's files are written configuration-major, then seed, then setting, in
+    blocks of (settings x seeds); a stride of 200 against a block period of 80
+    lands on setting index 0 every single time. The first real run returned six
+    records that were all the same method on two seeds, and every hook-based
+    number in that report described one kernel family while the text called it a
+    sample of the file.
+
+    So the sample is stratified by method and spread across configurations and
+    seeds within each, deterministically. The methods it landed on are reported
+    with the result, because a sample that cannot be seen is a sample that can
+    quietly become one family again.
+    """
+    by_method = defaultdict(list)
+    for r in recs:
+        by_method[r.get("method")].append(r)
+    methods = sorted(by_method, key=str)
+    for v in by_method.values():
+        v.sort(key=lambda r: _sort_key(r, fields))
+    # Ceiling, not floor: with k=6 and four methods, floor division takes one
+    # each and returns four. The round robin below truncates the surplus, so
+    # every method appears before any method appears twice.
+    per = max(1, -(-k // max(1, len(methods))))
+    picks = []
+    for i, m in enumerate(methods):
+        v = by_method[m]
+        n = min(per, len(v))
+        if not n:
+            picks.append([])
+            continue
+        step = max(1, len(v) // n)
+        # Stagger each method's start. Without it every method is sampled at the
+        # same offsets, so the sample spans the methods but lands on the same
+        # two seeds for all of them -- half the aliasing, silently retained.
+        off = (i * step // max(1, len(methods))) % len(v)
+        picks.append([v[min(off + j * step, len(v) - 1)] for j in range(n)])
+    out = []
+    for row in zip_longest(*picks):          # round robin, so a small k still spans
+        for r in row:
+            if r is not None and len(out) < k:
+                out.append(r)
+    return out[:k]
+
+
+def _coverage(rows):
+    """What the sample actually covered, for the report."""
+    ms = sorted({str(r.get("method")) for r in rows})
+    ss = sorted({str(r.get("seed")) for r in rows})
+    return f"{len(ms)} method(s) ({', '.join(ms)}) on {len(ss)} seed(s)"
+
+
+def _fit_gamma(X, K):
+    """Least squares over a log-spaced gamma grid, then a local refine.
+
+    No label, no test point and no score enters this: the surrogate is fitted to
+    the kernel, not to the thing it is afterwards scored on. That is what makes
+    a match damning rather than circular.
+    """
+    sq = np.sum((X[:, None, :] - X[None, :, :]) ** 2, axis=-1)
+    best, err = None, np.inf
+    grid = np.logspace(-5, 3, 81)
+    for _ in range(2):
+        for g in grid:
+            e = float(np.mean((np.exp(-g * sq) - K) ** 2))
+            if e < err:
+                best, err = float(g), e
+        grid = np.linspace(max(best * 0.5, 1e-9), best * 1.5, 41)
+    return best, float(np.sqrt(err))
+
+
+def check_surrogate(recs, ctx):
+    """Tier 2: does the kernel do anything its nearest classical kernel cannot?
+
+    The question a benchmark exists to answer, and the one its results file
+    cannot. A quantum kernel that scores what a label-free RBF fitted to it
+    scores IS that RBF, whatever its distance in kernel space, and every figure
+    reported about it is a figure about a Gaussian kernel computed expensively.
+
+    Kernel-space distance does not settle it and no threshold on it can: nothing
+    says Spearman 0.998 is the same model and 0.99 is not. So this does not
+    measure distance. It fits the surrogate, runs it through the caller's own
+    pipeline on the caller's own split, and compares out-of-sample in the units
+    the endpoints are already in.
+    """
+    hook = ctx.get("hook")
+    need = [n for n in ("gram", "training_data", "refit")
+            if getattr(hook, n, None) is None]
+    if need:
+        return Outcome("classical surrogate equivalence", NOT_RUN,
+                       f"needs {', '.join(need)} in --hook. Fits the nearest "
+                       f"classical kernel with no labels and runs it through your "
+                       f"pipeline on your split; a kernel that scores what its "
+                       f"surrogate scores is that surrogate.", tier=2)
+    sample = _sample(recs, ctx.get("hook_sample", 6), ctx.get("cell_fields"))
+    rows, errors = [], 0
+    for r in sample:
+        try:
+            K = np.asarray(hook.gram(r), dtype=float)
+            X, _ = hook.training_data(r)
+            g, rmse = _fit_gamma(np.asarray(X, dtype=float), K)
+            sur = hook.refit(r, g)
+            rows.append({"method": r.get("method"), "seed": r.get("seed"),
+                         "gamma": g, "gram_rmse": rmse,
+                         "d_normap": norm_ap(r) - norm_ap(sur)})
+        except Exception as exc:
+            errors += 1
+            if "different split" in str(exc):
+                return Outcome("classical surrogate equivalence", FAIL,
+                               f"the hook rebuilt a different split than the "
+                               f"records were scored on, so nothing computed from "
+                               f"it is comparable: {exc}", tier=2)
+    if not rows:
+        return Outcome("classical surrogate equivalence", NOT_RUN,
+                       f"the hook raised on all {errors} sampled records.", tier=2)
+    d = np.array([r["d_normap"] for r in rows])
+    ad = np.abs(d)
+    med, lo_d, hi_d = float(np.median(ad)), float(ad.min()), float(ad.max())
+    below = int((ad < ctx["floor"]).sum())
+    cover = (f"{len({r['method'] for r in rows})} method(s) "
+             f"({', '.join(sorted({str(r['method']) for r in rows}))}) on "
+             f"{len({r['seed'] for r in rows})} seed(s)")
+    num = {"n_sampled": len(rows), "median_abs_d_normap": med,
+           "min_abs_d_normap": lo_d, "max_abs_d_normap": hi_d,
+           "n_below_floor": below, "coverage": cover,
+           "methods_sampled": sorted({str(r["method"]) for r in rows}),
+           "signed_median": float(np.median(d)), "hook_errors": errors,
+           "per_record": rows}
+    # A median clearing the floor while individual records sit under it is not a
+    # separation, it is a sample straddling the resolution limit. The first
+    # version of this check had a single threshold on the median and returned a
+    # confident PASS at 0.0012 against a floor of 0.0010 -- 1.2x the limit, on 6
+    # samples, with no spread reported. The full per-family analysis of the same
+    # arm concludes the kernel IS its surrogate. The measurement agreed with
+    # that analysis; only the verdict rule disagreed.
+    if below and med >= ctx["floor"]:
+        return Outcome("classical surrogate equivalence", WARN,
+                       f"too close to call: median difference from a label-free RBF "
+                       f"surrogate is {med:.2e} in normAP but {below} of {len(rows)} "
+                       f"sampled kernels fall below the {ctx['floor']:.0e} "
+                       f"reproducibility floor (range {lo_d:.2e} to {hi_d:.2e}). A "
+                       f"median above the floor with records beneath it is a sample "
+                       f"straddling the resolution limit, not a separation. The "
+                       f"sample covered {cover}; a spread that wide within one family "
+                       f"is a different situation from one between families, and only "
+                       f"the full per-family analysis distinguishes them.",
+                       tier=2, numbers=num)
+    if med < ctx["floor"]:
+        return Outcome("classical surrogate equivalence", WARN,
+                       f"over {len(rows)} sampled kernels the median difference "
+                       f"from a label-free RBF surrogate is {med:.2e} in normAP, "
+                       f"below this pipeline's reproducibility floor of "
+                       f"{ctx['floor']:.0e}, over {cover}. On this evidence the kernel is its "
+                       f"surrogate and the comparison is classical-versus-classical. "
+                       f"Sampled, so it indicates rather than establishes; run the "
+                       f"full set before reporting either way.", tier=2, numbers=num)
+    return Outcome("classical surrogate equivalence", PASS,
+                   f"every one of {len(rows)} sampled kernels separates from its "
+                   f"nearest classical surrogate, median {med:.4f} in normAP, range "
+                   f"{lo_d:.2e} to {hi_d:.2e}, all above the {ctx['floor']:.0e} floor, "
+                   f"covering {cover}. "
+                   f"That is the size of what the non-classical structure is worth "
+                   f"here, in endpoint units, and it carries no sign about the best "
+                   f"classical kernel: a kernel can separate from its surrogate and "
+                   f"still lose to it.", tier=2, numbers=num)
+
+
 def check_cross_arm(recs, ctx):
     """The comparison that is actually being made usually spans two files.
 
@@ -434,11 +780,40 @@ def check_cross_arm(recs, ctx):
                        "against another arm, pass it with --compare or the power and "
                        "multiplicity numbers describe the wrong comparison.")
     fields = ctx["cell_fields"]
-    a, b = defaultdict(dict), defaultdict(dict)
+    a, b = defaultdict(lambda: defaultdict(list)), defaultdict(lambda: defaultdict(list))
     for r in recs:
-        a[(r["seed"], cell_of(r, fields))][r["method"]] = r
+        a[(r["seed"], cell_of(r, fields))][r["method"]].append(r)
     for r in other:
-        b[(r["seed"], cell_of(r, ctx["compare_fields"]))][r["method"]] = r
+        b[(r["seed"], cell_of(r, ctx["compare_fields"]))][r["method"]].append(r)
+
+    # A (seed, configuration, method) key that holds more than one record means
+    # the configuration fields do not identify a single result, so there is no
+    # such thing as THE record to pair with and any pairing picks one
+    # arbitrarily. This mattered: handed a single-configuration quantum file and
+    # a fifteen-configuration classical file, the field intersection came out
+    # empty, all fifteen configurations collapsed onto one key, and the earlier
+    # version of this check kept whichever record it read last and reported a
+    # clean PASS with a plausible minimum detectable effect computed from the
+    # wrong pairs. That is D6's error, committed by the check written to catch
+    # D6's error. The label fingerprint did not save it, because configurations
+    # differ in the feature mapping and not in the labels.
+    dup = [(k, m, len(v)) for side in (a, b) for k, mm in side.items()
+           for m, v in mm.items() if len(v) > 1]
+    if dup:
+        worst = max(dup, key=lambda t: t[2])
+        return Outcome("cross-arm comparison", FAIL,
+                       f"{len(dup)} (seed, configuration, method) groups hold more "
+                       f"than one record, up to {worst[2]} for method "
+                       f"{worst[1]!r}. The configuration fields "
+                       f"{fields or '(none)'} do not identify a single result, so "
+                       f"pairs cannot be formed without choosing arbitrarily and no "
+                       f"power figure from this pairing would be meaningful. Pass "
+                       f"--cell-fields naming the fields that define a configuration "
+                       f"in BOTH files, or restrict the comparison file to the "
+                       f"configuration this one covers.",
+                       numbers={"ambiguous_groups": len(dup),
+                                "max_records_per_group": worst[2],
+                                "cell_fields": list(fields)})
 
     keys = sorted(set(a) & set(b), key=str)
     if not keys:
@@ -449,7 +824,8 @@ def check_cross_arm(recs, ctx):
 
     mismatched, unverifiable = [], 0
     for k in keys:
-        fps = {r.get("test_label_fingerprint") for r in list(a[k].values()) + list(b[k].values())}
+        fps = {r[0].get("test_label_fingerprint")
+               for r in list(a[k].values()) + list(b[k].values())}
         if None in fps:
             unverifiable += 1
         fps.discard(None)
@@ -473,7 +849,7 @@ def check_cross_arm(recs, ctx):
         k = (seed, cell)
         for ma, ra in a[k].items():
             for mb, rb in b[k].items():
-                diffs[(cell, ma, mb)].append(norm_ap(ra) - norm_ap(rb))
+                diffs[(cell, ma, mb)].append(norm_ap(ra[0]) - norm_ap(rb[0]))
     sds = [st.stdev(v) for v in diffs.values() if len(v) > 1]
     n = int(np.median([len(v) for v in diffs.values()]))
     if not sds or n < 2:
@@ -522,28 +898,41 @@ def check_selection_leak(recs, ctx):
 
 # ----------------------------------------------------------------- tier 2
 
+# Still not runnable from records, with the hook function each would need.
+# "bandwidth tuning" used to be here and is now the Tier 1 `tuning symmetry`
+# check: whether an arm had a parameter to tune is visible in what it selected.
 TIER2 = [
-    ("kernel conditioning", "needs the Gram matrices. An ill-conditioned kernel makes "
-     "the SVM dual underdetermined, so decision scores move at machine precision and "
-     "any threshold-based test (McNemar) is invalid."),
-    ("classical surrogate equivalence", "needs the kernels and training data. Fits the "
-     "nearest classical kernel and runs it through the same pipeline; a quantum kernel "
-     "that scores what its surrogate scores is that surrogate."),
-    ("grid adequacy against a shuffled null", "needs a re-run on permuted labels with a "
-     "widened grid. Widening raises the best inner score even when nothing is better, "
-     "so edge flags alone never justify it."),
-    ("bandwidth tuning", "needs the embedding. A fidelity kernel with a fixed data "
-     "scale is not a tuned model; the classical side almost always gets a bandwidth "
-     "grid and the quantum side almost never does."),
+    ("grid adequacy against a shuffled null",
+     "needs a re-run, not a hook: the same pipeline on permuted labels with a widened "
+     "grid. Widening raises the best inner score even when nothing is better, so "
+     "hyperparameter edge flags never justify it on their own."),
 ]
 
 CHECKS = [check_schema, check_chance_correction, check_negative_control, check_pairing,
           check_convergence, check_unit_of_analysis, check_power,
-          check_precision_floor, check_multiplicity, check_cross_arm,
+          check_precision_floor, check_multiplicity, check_tuning_symmetry,
+          check_cross_arm, check_conditioning, check_surrogate,
           check_selection_leak]
 
 
-def run(path, control, floor, cell_fields=None, compare=None):
+def load_hook(path):
+    """Import a user-supplied adapter so Tier 2 checks can reach the kernels.
+
+    The audit cannot import someone else's pipeline, so the pipeline hands it a
+    small module instead. Every function is optional; a check that needs one it
+    does not find reports NOT RUN and names the function, rather than guessing.
+    """
+    if not path:
+        return None
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("audit_hook", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def run(path, control, floor, cell_fields=None, compare=None, hook=None,
+        hook_sample=6):
     recs = load(path)
     if not recs:
         print(f"{path}: empty")
@@ -562,7 +951,8 @@ def run(path, control, floor, cell_fields=None, compare=None):
                   f"({fields} and {theirs}); using their intersection {shared}.")
         fields = shared
     ctx = {"control": load(control) if control else None, "floor": floor,
-           "cell_fields": fields, "compare": other, "compare_fields": fields}
+           "cell_fields": fields, "compare": other, "compare_fields": fields,
+           "hook": load_hook(hook), "hook_sample": hook_sample}
     outs = []
     for fn in CHECKS:
         try:
@@ -586,11 +976,19 @@ def main():
     ap.add_argument("--compare",
                     help="the other arm of the comparison, e.g. the classical results. "
                          "Without it every figure describes comparisons WITHIN one arm.")
+    ap.add_argument("--hook",
+                    help="path to a Python module exposing gram(record), "
+                         "training_data(record) and/or refit(record, K), which lets "
+                         "the Tier 2 checks reach your kernels. See "
+                         "scripts/audit_hook_qbench.py for a worked example.")
+    ap.add_argument("--hook-sample", type=int, default=6,
+                    help="records to sample for hook-based checks (they recompute "
+                         "kernels, so this is the cost knob)")
     ap.add_argument("--json", help="write the report here")
     args = ap.parse_args()
 
     fields, outs = run(args.results, args.control, args.floor, args.cell_fields,
-                       args.compare)
+                       args.compare, args.hook, args.hook_sample)
 
     print(f"\nAUDIT: {args.results}")
     print("This audits METHOD, not results. It never says which model won.")
@@ -606,12 +1004,14 @@ def main():
     for o in outs:
         print(f"  [{o.status:^7}] {o.name:<{width}}  {o.detail}")
 
-    print(f"\n  Not runnable from records alone:")
-    for name, why in TIER2:
-        print(f"  [{NOT_RUN:^7}] {name}")
-        print(f"            {why}")
+    if TIER2:
+        print(f"\n  Not runnable from records alone:")
+        for name, why in TIER2:
+            print(f"  [{NOT_RUN:^7}] {name}")
+            print(f"            {why}")
 
     counts = {s: sum(o.status == s for o in outs) for s in (PASS, WARN, FAIL, SKIP)}
+    counts[NOT_RUN] = sum(o.status == NOT_RUN for o in outs)
     print(f"\n  {counts[PASS]} passed, {counts[WARN]} warnings, {counts[FAIL]} failed, "
           f"{counts[SKIP]} skipped for missing fields.")
     if counts[FAIL]:

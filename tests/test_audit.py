@@ -18,6 +18,7 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -148,8 +149,16 @@ def test_unit_of_analysis_reports_cells_not_records():
     assert "not" in o.detail
 
 
-def test_unit_of_analysis_skips_with_one_configuration():
-    assert audit.check_unit_of_analysis(paired(), ctx()).status == audit.SKIP
+def test_unit_of_analysis_does_not_skip_a_one_configuration_comparison():
+    """This test previously asserted a SKIP, which was asserting the defect.
+
+    One configuration does not mean no independent units; it means the split is
+    the unit. `paired()` is 20 splits scored by two methods, so the answer is 20
+    and never 40, and the check has to say so.
+    """
+    o = audit.check_unit_of_analysis(paired(), ctx())
+    assert o.status == audit.WARN
+    assert o.numbers["n_seeds"] == 20 and o.numbers["n_records"] == 40
 
 
 def test_absent_cell_field_groups_into_one_cell_not_one_per_method():
@@ -216,7 +225,11 @@ def test_every_check_returns_an_outcome_on_a_minimal_file(tmp_path):
         for r in paired()))
     _, outs = audit.run(str(p), None, audit.DEFAULT_PRECISION_FLOOR)
     assert len(outs) == len(audit.CHECKS)
-    assert all(o.status in (audit.PASS, audit.WARN, audit.FAIL, audit.SKIP) for o in outs)
+    # NOT_RUN is a legitimate outcome now that hook-based checks live in CHECKS:
+    # without a --hook they report what they could not reach, which is the whole
+    # point of them being there rather than hidden in a static list.
+    assert all(o.status in (audit.PASS, audit.WARN, audit.FAIL, audit.SKIP,
+                            audit.NOT_RUN) for o in outs)
 
 
 def test_a_check_that_raises_is_reported_as_a_failure(tmp_path, monkeypatch):
@@ -233,9 +246,27 @@ def test_a_check_that_raises_is_reported_as_a_failure(tmp_path, monkeypatch):
 def test_tier2_checks_are_listed_as_not_runnable_with_reasons():
     """Claiming a check ran when it could not is the error this tool exists to
     catch, so the non-portable ones are named and explained rather than hidden."""
-    assert len(audit.TIER2) >= 4
+    assert len(audit.TIER2) >= 1
     assert all(len(reason) > 40 for _, reason in audit.TIER2)
-    assert any("bandwidth" in name for name, _ in audit.TIER2)
+    # Every remaining entry says what would make it runnable, so the list is a
+    # route rather than an excuse.
+    assert all("needs" in reason for _, reason in audit.TIER2)
+
+
+def test_three_checks_left_tier2_and_none_quietly_vanished():
+    """Week 5 moved three checks out of the unrunnable list, and a check that is
+    no longer advertised as unrunnable must actually be running instead. This
+    pins that: it is the exact shape of failure the tool exists to catch, and
+    there is no reason to think the tool is exempt from it."""
+    names = [n for n, _ in audit.TIER2]
+    assert not any("bandwidth" in n for n in names)
+    assert not any("conditioning" in n for n in names)
+    assert not any("surrogate" in n for n in names)
+    running = {o.name for o in
+               (c(paired(n_seeds=4), ctx()) for c in audit.CHECKS)}
+    assert "tuning symmetry" in running        # Tier 1, needs nothing
+    assert "kernel conditioning" in running    # Tier 2, reports NOT_RUN unaided
+    assert "classical surrogate equivalence" in running
 
 
 def test_a_degenerate_control_does_not_explode_into_a_false_failure():
@@ -455,3 +486,362 @@ def test_both_arms_are_grouped_by_the_same_fields(tmp_path):
     assert fields == ["mapping", "n_qubits"]
     cross = [o for o in outs if o.name == "cross-arm comparison"][0]
     assert cross.status == audit.PASS
+
+
+# ----------------------------------------------------- tuning symmetry (Tier 1)
+
+def tuned(method, values, key, n=6):
+    """Records whose selected parameter takes `values` in rotation."""
+    return [rec(seed=s, method=method, params={key: values[s % len(values)]},
+                C=[0.1, 1.0, 10.0][s % 3]) for s in range(n)]
+
+
+def test_tuning_symmetry_catches_one_arm_with_nothing_to_tune():
+    """The defect that cost this project four weeks, now visible from records.
+
+    The registered grid gave the classical arm eleven RBF bandwidths and the
+    quantum arm a fixed data scale. A method that never varies its selection had
+    nothing to select from, and the comparison then measures tuning.
+    """
+    quantum = [rec(seed=s, method="quantum-iqp-r1",
+                   params={"embedding": "iqp", "reps": 1}, C=1.0) for s in range(6)]
+    classical = tuned("rbf", [1e-3, 1e-2, 1e-1, 1.0], "gamma")
+    o = audit.check_tuning_symmetry(quantum, ctx(compare=classical))
+    assert o.status == audit.WARN
+    assert "quantum-iqp-r1" in o.detail
+    assert o.numbers["per_method"]["rbf"]["structural"] == 4
+    assert o.numbers["per_method"]["quantum-iqp-r1"]["structural"] == 1
+
+
+def test_tuning_symmetry_passes_when_both_arms_search():
+    q = tuned("quantum", [0.25, 0.5, 1.0, 2.0], "bandwidth")
+    c = tuned("rbf", [1e-3, 1e-2, 1e-1, 1.0], "gamma")
+    o = audit.check_tuning_symmetry(q, ctx(compare=c))
+    assert o.status == audit.PASS
+
+
+def test_tuning_symmetry_skips_without_selected_parameters():
+    """A pipeline that does not record what it selected makes the question
+    unanswerable, and the check must say so rather than assume symmetry."""
+    o = audit.check_tuning_symmetry(paired(n_seeds=4), ctx())
+    assert o.status == audit.SKIP
+    assert "params" in o.detail
+
+
+def test_tuning_symmetry_is_not_fooled_by_a_constant_winner():
+    """A wide grid whose best value never changes looks identical to no grid.
+    The check must warn without claiming to know which it saw."""
+    quantum = [rec(seed=s, method="quantum", params={"bandwidth": 1.0}, C=1.0)
+               for s in range(6)]
+    o = audit.check_tuning_symmetry(
+        quantum, ctx(compare=tuned("rbf", [1e-3, 1e-2, 1e-1], "gamma")))
+    assert o.status == audit.WARN
+    assert "cannot tell them apart" in o.detail
+
+
+# ------------------------------------------------------------- the Tier 2 hook
+
+class FakeHook:
+    """A hook standing in for a pipeline, so Tier 2 is tested without datasets."""
+
+    def __init__(self, cond=1e3, surrogate_gap=0.20, split_drift=False):
+        self.cond, self.gap, self.drift = cond, surrogate_gap, split_drift
+        self.gaps, self._i = None, 0
+        rng = np.random.default_rng(0)
+        self.X = rng.normal(size=(24, 3))
+
+    def gram(self, record):
+        sq = np.sum((self.X[:, None, :] - self.X[None, :, :]) ** 2, axis=-1)
+        K = np.exp(-0.5 * sq)
+        # push the spectrum to the requested conditioning
+        w, V = np.linalg.eigh(K)
+        w = np.linspace(1.0, 1.0 / self.cond, len(w))
+        return V @ np.diag(w) @ V.T
+
+    def training_data(self, record):
+        return self.X, np.array([0, 1] * 12)
+
+    def refit(self, record, gamma):
+        if self.drift:
+            raise RuntimeError("hook rebuilt a different split than record seed=0")
+        g = self.gap
+        if self.gaps:
+            g, self._i = self.gaps[self._i % len(self.gaps)], self._i + 1
+        return {**rec(), "test_average_precision":
+                record["test_average_precision"] - g}
+
+
+def test_conditioning_not_run_without_a_hook_and_names_the_function():
+    o = audit.check_conditioning(paired(n_seeds=4), ctx())
+    assert o.status == audit.NOT_RUN
+    assert "gram(record)" in o.detail
+
+
+def test_conditioning_warns_on_an_underdetermined_dual():
+    o = audit.check_conditioning(paired(n_seeds=4), ctx(hook=FakeHook(cond=1e15)))
+    assert o.status == audit.WARN
+    assert o.numbers["cond_max"] > 1e12
+    assert "McNemar" in o.detail
+
+
+def test_conditioning_passes_on_a_well_determined_kernel():
+    o = audit.check_conditioning(paired(n_seeds=4), ctx(hook=FakeHook(cond=1e3)))
+    assert o.status == audit.PASS
+
+
+def test_surrogate_warns_when_the_kernel_is_its_own_surrogate():
+    """A difference below the reproducibility floor is not a small effect. It is
+    the kernel being a Gaussian kernel computed expensively."""
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=FakeHook(surrogate_gap=0.0)))
+    assert o.status == audit.WARN
+    assert "classical-versus-classical" in o.detail
+
+
+def test_surrogate_passes_when_the_kernel_separates():
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=FakeHook(surrogate_gap=0.20)))
+    assert o.status == audit.PASS
+    assert "carries no sign about the best classical kernel" in o.detail
+
+
+def test_surrogate_fails_loudly_when_the_hook_rebuilds_a_different_split():
+    """The one way a hook does real damage: auditing a kernel the experiment
+    never used. It must stop, not report a number."""
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=FakeHook(split_drift=True)))
+    assert o.status == audit.FAIL
+    assert "nothing computed from it is comparable" in o.detail
+
+
+def test_surrogate_not_run_names_every_missing_hook_function():
+    class Partial:
+        def gram(self, record):
+            return np.eye(4)
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=Partial()))
+    assert o.status == audit.NOT_RUN
+    assert "training_data" in o.detail and "refit" in o.detail
+    assert "gram" not in o.detail.split("in --hook")[0].replace("training_data", "")
+
+
+def test_hook_loading_is_optional_and_returns_none():
+    assert audit.load_hook(None) is None
+
+
+# ------------------------------- defects found by reading real output, week 5
+#
+# Four checks below were wrong when first shipped, and the full suite passed on
+# all four. Every one was caught by reading an audit report on real records, not
+# by a test. These tests exist so that cannot recur silently; each fails on the
+# version of the check that shipped.
+
+def flat(**kw):
+    """A record carrying its configuration as top-level fields, with no nested
+    `cell` dict. This is what the pipeline actually writes, and the difference
+    matters: `cell_of` falls back to the nested dict, so a fixture that has one
+    cannot reproduce a collapsed grouping."""
+    r = rec(**{k: v for k, v in kw.items() if k not in ("mapping", "n_qubits")})
+    r.pop("cell", None)
+    for f in ("mapping", "n_qubits"):
+        if f in kw:
+            r[f] = kw[f]
+    return r
+
+
+def control_correlated_within_seed(mean, sd, n_seeds=20, n_settings=4):
+    """A control where the settings sharing a seed share its split.
+
+    The independent unit is the seed. Repeating each seed's value across four
+    settings leaves the standard deviation unchanged and multiplies the record
+    count by four, so a standard error taken over records is half what it should
+    be and every sigma doubles.
+    """
+    z = np.arange(n_seeds, dtype=float)
+    z = (z - z.mean()) / z.std(ddof=1)
+    out = []
+    for s, zi in enumerate(z):
+        for k in range(n_settings):
+            out.append(rec(seed=s, method=f"m{k}", roc=mean + sd * zi,
+                           ap=0.5154, shuffled=True))
+    return out
+
+
+def test_negative_control_measures_spread_over_splits_not_records():
+    """Shipped dividing by sqrt(80) on 20 seeds and reported +2.68 sigma.
+
+    The fifth instance of the unit-of-analysis error in this project, and the
+    second inside the tool written to catch it.
+    """
+    ctrl = control_correlated_within_seed(mean=0.5137, sd=0.0438)
+    o = audit.check_negative_control(paired(n_seeds=4), ctx(control=ctrl))
+    assert o.numbers["ROC-AUC"]["n_units"] == 20      # splits, not the 80 records
+    assert abs(o.numbers["ROC-AUC"]["sigma"]) < 2.0
+    assert o.status == audit.PASS
+    assert "80 records" in o.detail                   # both numbers stay visible
+
+
+def test_negative_control_still_fails_a_genuine_leak():
+    """Halving the sigma must not disarm the check."""
+    ctrl = control_correlated_within_seed(mean=0.60, sd=0.0438)
+    o = audit.check_negative_control(paired(n_seeds=4), ctx(control=ctrl))
+    assert o.status == audit.FAIL
+
+
+def test_negative_control_says_so_when_it_cannot_identify_splits():
+    ctrl = [{k: v for k, v in r.items() if k != "seed"}
+            for r in control_correlated_within_seed(0.5010, 0.0438)]
+    o = audit.check_negative_control(paired(n_seeds=4), ctx(control=ctrl))
+    assert "ASSUMED" in o.detail
+
+
+def test_cross_arm_refuses_a_grouping_that_does_not_identify_one_record():
+    """Shipped keeping whichever record it read last and reporting a clean PASS.
+
+    A one-configuration quantum file against a fifteen-configuration classical
+    file intersects to no configuration fields at all; every configuration then
+    collapses onto one key. The label fingerprint does not catch it, because
+    configurations differ in the feature mapping and not in the labels.
+    """
+    # No nested `cell` dict, top-level configuration fields instead: the shape
+    # this project's own pipeline emits, and the shape that collapses.
+    one_cell = [flat(seed=s, method="quantum", mapping="pca", n_qubits=12)
+                for s in range(20)]
+    many = [flat(seed=s, method="rbf", mapping=m, n_qubits=q)
+            for s in range(20) for m, q in (("pca", 8), ("pca", 12), ("kbest", 8))]
+    o = audit.check_cross_arm(one_cell, ctx(compare=many, cell_fields=[],
+                                            compare_fields=[]))
+    assert o.status == audit.FAIL
+    assert o.numbers["max_records_per_group"] == 3
+    assert "--cell-fields" in o.detail
+
+
+def test_cross_arm_still_pairs_a_well_specified_comparison():
+    fields = ["mapping", "n_qubits"]
+    q = [flat(seed=s, method="quantum", mapping=m, n_qubits=q_)
+         for s in range(20) for m, q_ in (("pca", 8), ("pca", 12))]
+    c = [flat(seed=s, method="rbf", mapping=m, n_qubits=q_, ap=0.66)
+         for s in range(20) for m, q_ in (("pca", 8), ("pca", 12))]
+    o = audit.check_cross_arm(q, ctx(compare=c, cell_fields=fields,
+                                     compare_fields=fields))
+    assert o.status == audit.PASS
+    assert o.numbers["n_seeds"] == 20
+
+
+def test_tuning_symmetry_excludes_methods_with_no_parameters_to_tune():
+    """Shipped warning on every file containing a linear baseline.
+
+    A linear kernel has no structural parameter, so it cannot be untuned. The
+    check must distinguish an empty parameter set from a fixed one, or it fires
+    on almost every comparison and carries no information.
+    """
+    linear = [rec(seed=s, method="linear", params={}, C=[0.1, 1.0][s % 2])
+              for s in range(6)]
+    q = tuned("quantum", [0.25, 0.5, 1.0, 2.0], "bandwidth")
+    c = tuned("rbf", [1e-3, 1e-2, 1e-1, 1.0], "gamma")
+    o = audit.check_tuning_symmetry(q, ctx(compare=linear + c))
+    assert o.status == audit.PASS
+    assert o.numbers["per_method"]["linear"]["has_parameters"] is False
+
+
+def test_tuning_symmetry_names_the_parameters_that_were_held_fixed():
+    """A reader has to be able to see it was `bandwidth` and not a label."""
+    q = [rec(seed=s, method="quantum", params={"embedding": "iqp", "reps": 1},
+             C=1.0) for s in range(6)]
+    o = audit.check_tuning_symmetry(
+        q, ctx(compare=tuned("rbf", [1e-3, 1e-2, 1e-1], "gamma")))
+    assert o.status == audit.WARN
+    assert "embedding, reps" in o.detail
+    assert o.numbers["fixed"]["quantum"] == ["embedding", "reps"]
+
+
+def test_surrogate_will_not_call_a_sample_straddling_the_floor_a_separation():
+    """Shipped returning PASS at a median of 0.0012 against a floor of 0.0010.
+
+    1.2x the resolution limit, on six samples, with no spread reported, while
+    the full per-family analysis of the same arm concludes the kernel IS its
+    surrogate. The measurement agreed with that analysis; the verdict rule did
+    not.
+    """
+    hook = FakeHook()
+    hook.gaps = [2e-4, 2e-4, 6e-4, 6e-4, 6e-4, 6e-4]
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=hook))
+    assert o.status == audit.WARN
+    assert "too close to call" in o.detail
+    assert o.numbers["n_below_floor"] == 2
+    assert o.numbers["min_abs_d_normap"] < o.numbers["median_abs_d_normap"]
+
+
+def test_surrogate_pass_requires_every_sampled_record_above_the_floor():
+    o = audit.check_surrogate(paired(n_seeds=4), ctx(hook=FakeHook(surrogate_gap=0.20)))
+    assert o.status == audit.PASS
+    assert o.numbers["n_below_floor"] == 0
+    assert "can separate from its surrogate and still lose to it" in o.detail
+
+
+def test_unit_of_analysis_warns_on_a_single_configuration_file():
+    """Shipped as a SKIP reading "independent units cannot be identified".
+
+    They can: the split is the unit. An 80-record file that is 20 splits scored
+    by four methods reads as 80 observations unless the report says otherwise,
+    and the skip fired exactly there.
+    """
+    recs = [flat(seed=s, method=f"m{k}", mapping="pca", n_qubits=12)
+            for s in range(20) for k in range(4)]
+    o = audit.check_unit_of_analysis(recs, ctx(cell_fields=["mapping", "n_qubits"]))
+    assert o.status == audit.WARN
+    assert o.numbers["n_seeds"] == 20 and o.numbers["n_records"] == 80
+    assert "n=20, not n=80" in o.detail
+
+
+def test_unit_of_analysis_skips_when_records_really_are_the_units():
+    recs = [flat(seed=s, method="only", mapping="pca", n_qubits=12)
+            for s in range(20)]
+    o = audit.check_unit_of_analysis(recs, ctx(cell_fields=["mapping", "n_qubits"]))
+    assert o.status == audit.SKIP
+    assert "the same thing here" in o.detail
+
+
+def qbench_ordered(n_cells=15, n_seeds=20, settings=("a1", "a2", "i1", "i2")):
+    """Records in the order the pipeline writes them: configuration, then seed,
+    then setting. The block structure is what a stride aliases against."""
+    out = []
+    for c in range(n_cells):
+        for s in range(n_seeds):
+            for st in settings:
+                out.append(flat(seed=s, method=f"quantum-{st}",
+                                mapping="pca", n_qubits=4 + 2 * (c % 5)))
+    return out
+
+
+def test_hook_sample_spans_methods_instead_of_aliasing_with_file_order():
+    """A stride returned six records that were all one method on two seeds.
+
+    1200 records written in blocks of 80 (4 settings x 20 seeds) against a
+    stride of 200: every pick lands on setting index 0. Every hook-based number
+    in that report described one kernel family while the text called it a sample
+    of the file.
+    """
+    recs = qbench_ordered()
+    assert len(recs) == 1200
+    stride = recs[::len(recs) // 6][:6]
+    assert len({r["method"] for r in stride}) == 1          # the defect
+    assert len({r["seed"] for r in stride}) == 2
+
+    picked = audit._sample(recs, 6)
+    assert len(picked) == 6
+    assert len({r["method"] for r in picked}) == 4          # every setting
+    assert len({r["seed"] for r in picked}) > 2
+
+
+def test_hook_sample_is_deterministic_and_handles_small_files():
+    recs = qbench_ordered(n_cells=1, n_seeds=2)
+    assert audit._sample(recs, 6) == audit._sample(recs, 6)
+    assert len(audit._sample(recs, 100)) <= len(recs)
+    assert audit._sample(recs, 1)
+
+
+def test_hook_checks_report_which_methods_they_sampled():
+    """A sample that cannot be seen is a sample that quietly becomes one family
+    again. Both hook checks name their coverage in the report text."""
+    recs = qbench_ordered(n_cells=2, n_seeds=4)
+    o = audit.check_conditioning(recs, ctx(hook=FakeHook(cond=1e15)))
+    assert "method(s)" in o.detail and o.numbers["methods_sampled"]
+    o2 = audit.check_surrogate(recs, ctx(hook=FakeHook(surrogate_gap=0.20)))
+    assert "covering" in o2.detail and len(o2.numbers["methods_sampled"]) > 1
