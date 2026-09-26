@@ -890,10 +890,30 @@ def check_selection_leak(recs, ctx):
                        "selection used training folds rather than the test score.")
     rho = stats.spearmanr([float(r["inner_score"]) for r in recs],
                           [norm_ap(r) for r in recs])
+    r = float(rho.statistic)
+    num = {"spearman_inner_vs_test": r}
+    # The sign is the boundary, and it is qualitative rather than a chosen
+    # threshold: a correlation that is not positive means the selection
+    # criterion carries no information about the quantity it selects for.
+    #
+    # This check used to compute that number, print it, and PASS regardless. It
+    # returned "Selection auditable" on an arm whose correlation was -0.367,
+    # which is the same failure as the two verdict-rule defects found earlier
+    # this week: a measurement taken correctly and then not used.
+    if r <= 0:
+        return Outcome("selection", WARN,
+                       f"selection used an inner score, but that score does not "
+                       f"predict out-of-sample performance here: rank correlation "
+                       f"{r:+.3f}. Tuning is then ranking noise. That is consistent "
+                       f"with candidates which are genuinely equivalent -- check the "
+                       f"surrogate and precision-floor results above before reading it "
+                       f"as a broken selection rule -- and either way it means the "
+                       f"tuning bought nothing. It does not invalidate the held-out "
+                       f"estimates.", numbers=num)
     return Outcome("selection", PASS,
                    f"inner scores recorded alongside test scores; their rank "
-                   f"correlation is {rho.statistic:+.3f}. Selection auditable.",
-                   numbers={"spearman_inner_vs_test": float(rho.statistic)})
+                   f"correlation is {r:+.3f}, so selection is auditable and the "
+                   f"criterion tracks the endpoint.", numbers=num)
 
 
 # ----------------------------------------------------------------- tier 2

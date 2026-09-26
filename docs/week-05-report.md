@@ -1,7 +1,10 @@
 # QML Benchmark Lab: Week 5 Record
 
 Written 26 September 2026. Covers work done 26 September 2026.
-Committed at `5f27bc7` and `e90409f`. 371 tests passing, 97% coverage on `src/qbench`.
+Committed at `5f27bc7`, `e90409f` and `8198a4e`. 373 tests passing, 97% coverage on `src/qbench`.
+**Revised the same day**, after the fraud arms were audited with the hook. Section 13 listed
+that as an open gap and it is now closed; sections 4, 9, 10, 11 and 13 are updated, and the
+fraud bandwidth arm produced the strongest single result in this record.
 
 **No deviation record was opened this week.** D6 was challenged twice, on two different
 grounds, and every one of its nine figures reproduced exactly. Both challenges were mine
@@ -101,6 +104,27 @@ median 0.0050 in normAP, range 1.35e-03 to 6.48e-02, all above D2's floor, cover
 four settings on six seeds. At **tuned** bandwidths, two of six sampled kernels fall below
 the floor, median 3.04e-03, range 0.00e+00 to 2.89e-02, and the check reports it as too
 close to call.
+
+**Fraud, both arms, added on revision.** The registered fraud arm reads too close to call:
+median 3.95e-03, one of six below the floor, range 6.54e-04 to 2.40e-02. That follows from
+both arms sitting at 0.966 average precision with 0.034 of headroom — a kernel with that
+little room to move has little room to separate from its surrogate.
+
+The fraud **bandwidth** arm is the first arm in this project to return the outright verdict:
+
+> over 6 sampled kernels the median difference from a label-free RBF surrogate is
+> **1.66e-04** in normAP, below this pipeline's reproducibility floor of 1e-03, over 4
+> methods on 6 seeds. On this evidence the kernel is its surrogate and the comparison is
+> classical-versus-classical.
+
+Six times below the floor, across all four settings. This is Flórez-Ablan, Roth and
+Schnabel (2025) reproduced inside this project's own pipeline, measured in endpoint units
+rather than kernel-space distance, with no labels used in fitting the surrogate. It is
+sampled and therefore indicative rather than established; the full per-family run is what
+would establish it.
+
+Conditioning on fraud reaches 1.1e+33 registered and 7.5e+26 tuned, worse than churn by
+thirteen orders and further evidence that nothing threshold-based was ever usable here.
 
 So the collapse into classicality is a property of the **tuned arm**, not of the angle
 family. An earlier reading in this session held that angle kernels sit at their classical
@@ -255,8 +279,8 @@ as a measured near-zero. It now says both.
 
 ## 9. Predictions made and scored
 
-Twenty-one explicit calls were written down before the runs that tested them, tagged
-Certain, Likely or Guessing. Sixteen held. Five failed:
+Twenty-five explicit calls were written down before the runs that tested them, tagged
+Certain, Likely or Guessing. Twenty held. Five failed:
 
 1. The bandwidth arm's `tuning symmetry` would PASS. It warned — because of defect three.
 2. The bandwidth arm's surrogate check would WARN. It passed — because of defect four.
@@ -270,6 +294,10 @@ Certain, Likely or Guessing. Sixteen held. Five failed:
 Two further calls were right in verdict and wrong in magnitude: the bandwidth arm's
 negative-control sigma was predicted to halve to 1.34 on the reasoning that four settings
 within a seed are perfectly correlated. They are not, and it is 1.65.
+
+The four calls made about the fraud arms on revision all held, including the [Guessing]
+one: that fraud's bandwidth arm would land either at "too close to call" or at a genuine
+below-floor reading, and that the second would be the stronger claim. It was the second.
 
 Failures one and two were useful: each exposed a defect. Failure three corrected a
 substantive claim about which arm the classicality collapse belongs to. Failures four and
@@ -298,13 +326,23 @@ section 5; these are the rest.
 4. **A test that held a defect in place.** `test_unit_of_analysis_skips_with_one_configuration`
    asserted the buggy behaviour. It was written to document a decision and became a lock
    on it.
+5. **A number computed, printed and ignored** (found on revision). The `selection` check
+   measured the rank correlation between inner score and test score, printed it, and
+   passed regardless. On the fraud bandwidth arm it printed **−0.367** under the heading
+   "Selection auditable". A non-positive correlation means the selection criterion carries
+   no information about the quantity it selects for, which on that arm corroborates the
+   surrogate verdict exactly: if every candidate is the same Gaussian kernel, inner-CV
+   selection among them is ranking noise. The check now warns on a non-positive
+   correlation. The boundary is the sign, not a chosen threshold. This is the same shape
+   as defects three and four in section 5 — a measurement taken correctly and then not
+   used — making it the third instance this week.
 
 ---
 
 ## 11. Tests and housekeeping
 
-371 tests, up from 357, all passing; coverage on `src/qbench` unchanged at 97%.
-`tests/test_audit.py` grew from 54 to 68 tests, fourteen of them regression tests for the
+373 tests, up from 357, all passing; coverage on `src/qbench` unchanged at 97%.
+`tests/test_audit.py` grew from 54 to 70 tests, fourteen of them regression tests for the
 six defects, each verified to fail against the version that shipped. Two pre-existing
 tests were rewritten because they asserted behaviour now known to be wrong.
 
@@ -329,10 +367,10 @@ experimental result is affected by any of it.
 
 ## 13. Still open
 
-* **The fraud arms have not been audited with the hook.** Every conditioning and surrogate
-  reading in this record is from churn. The sweep covers fraud for power, but the two
-  kernel-level checks have not been run on it, and there is no reason to assume the
-  readings transfer.
+* **The fraud bandwidth arm's surrogate verdict is from a sample of six.** It is the
+  strongest result in this record and it rests on the smallest evidence in it. The full
+  per-family run through `scripts/rbf_surrogate.py` is what would establish it, and until
+  that is done the verdict indicates rather than shows.
 * **`grid adequacy against a shuffled null`** remains the one check that needs a re-run
   rather than an interface: the same pipeline on permuted labels with a widened grid.
 * **The pre-registration's section 1 rewrite**, for the turn toward the protocol. This is a
@@ -347,8 +385,11 @@ experimental result is affected by any of it.
 ## 14. Week 6
 
 The protocol is now the deliverable and it has been exercised against real data exactly
-once, on one dataset, finding six defects in itself. The obvious next step is the second
-dataset, because the first found six.
+once, on one dataset, finding six defects in itself. The second dataset was done on revision and found a seventh, in the
+`selection` check.
+
+The next step is therefore the full per-family surrogate run on the fraud bandwidth arm,
+which is the one result in this record whose strength is out of proportion to its evidence.
 
 After that, the section 1 rewrite, which is the last thing standing between this project
 and a registration that describes what it is actually doing.

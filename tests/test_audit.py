@@ -845,3 +845,34 @@ def test_hook_checks_report_which_methods_they_sampled():
     assert "method(s)" in o.detail and o.numbers["methods_sampled"]
     o2 = audit.check_surrogate(recs, ctx(hook=FakeHook(surrogate_gap=0.20)))
     assert "covering" in o2.detail and len(o2.numbers["methods_sampled"]) > 1
+
+
+def with_inner(rho_sign):
+    """Records whose inner score tracks, or anti-tracks, the test score."""
+    out = []
+    for i in range(20):
+        ap = 0.70 + 0.002 * i
+        r = rec(seed=i, ap=ap)
+        r["inner_score"] = 0.6 + 0.002 * i * rho_sign
+        out.append(r)
+    return out
+
+
+def test_selection_warns_when_the_inner_score_does_not_predict_the_endpoint():
+    """The check computed this correlation, printed it, and passed regardless.
+
+    It returned "Selection auditable" on a real arm whose correlation was
+    -0.367: a measurement taken correctly and then not used, which is the same
+    failure as the two verdict-rule defects found earlier in week 5.
+    """
+    o = audit.check_selection_leak(with_inner(-1), ctx())
+    assert o.status == audit.WARN
+    assert o.numbers["spearman_inner_vs_test"] < 0
+    assert "ranking noise" in o.detail
+    assert "does not invalidate the held-out estimates" in o.detail
+
+
+def test_selection_passes_when_the_criterion_tracks_the_endpoint():
+    o = audit.check_selection_leak(with_inner(+1), ctx())
+    assert o.status == audit.PASS
+    assert o.numbers["spearman_inner_vs_test"] > 0
