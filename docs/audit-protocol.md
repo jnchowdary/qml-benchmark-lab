@@ -12,7 +12,19 @@ Implementation: `scripts/audit.py`. Tests: `tests/test_audit.py`.
 
 Each one exists because a specific reading went wrong in this project, usually after passing review. They are not a general statistics checklist. The date and the damage are given for each in section 4.
 
-Two published benchmarks in this area — [Flórez-Ablan, Roth & Schnabel (2025)](https://doi.org/10.1088/2058-9565/ade7ad) and [Kakavand, Strohmeyer & Schlotter (2026)](https://arxiv.org/abs/2604.18837) — between them perform none of: chance-corrected average precision, shuffled-label negative controls, grid adequacy adjudicated against a shuffled null, a numerical conditioning floor, or classical surrogate equivalence. The second, at 970 experiments across nine datasets with hardware validation, also appears to omit bandwidth tuning entirely and multiplicity correction across its 29 comparisons. The gap this protocol addresses is not another comparison.
+**What this protocol adds is narrower than an earlier version of this section claimed, and that earlier version is worth recording.** It asserted that two published benchmarks "between them perform none of" five checks listed here, and that one of them omitted bandwidth tuning and multiplicity correction. That paragraph was written from the manuscripts. On 27 September the deposit behind [Kakavand, Strohmeyer & Schlotter (2026)](https://doi.org/10.5281/zenodo.19197916) was read, and six of the seven claims in it were wrong or misleading. The details are in section 15 of `docs/week-04-report.md`.
+
+Published work in this area is statistically careful. Kakavand et al. apply paired Wilcoxon tests with an exact permutation fallback for small n — chosen because the two-sided Wilcoxon p-floor is 2/2^n, which is 0.0625 at n=5 — together with Friedman and post-hoc Nemenyi, and both Benjamini-Hochberg and Bonferroni correction. Their kernel diagnostics compute condition number, effective rank, PSD-ness and the full eigenspectrum. Their preprocessing rescales leakage-safely, fitting on train only, and their classical and quantum arms share one hyperparameter grid, which is a symmetry this project's own registered design did not have. That is more statistical care than this project had at the end of week 4.
+
+What is added here are **decision rules rather than diagnostics**, and one artefact:
+
+- A **measured reproducibility floor**, below which a difference is reported as unresolvable rather than as a small effect. Computing a condition number is ordinary; refusing a verdict on the strength of one is not.
+- **Classical surrogate equivalence in endpoint units** — the nearest classical kernel fitted with no labels and run through the same pipeline, rather than a distance in kernel space. This is the one check no benchmark examined here performs.
+- **Shuffled-label negative controls** adjudicated against both a sigma bar and that floor. Kakavand et al. address leakage instead through a dedicated validator, which is a different route to a related end.
+- **Cross-arm rather than within-arm power**, which differ by 2.3x to 3.9x in this project's own data (D6).
+- **A record format and a portable tool**, so that checking a comparison costs a reader minutes rather than a recomputation.
+
+The claim is not that a comparison lacking these is wrong. It is that a file which does not record enough to run them cannot be checked by anyone, and the format in section 2 is what makes checking cheap.
 
 ---
 

@@ -259,3 +259,49 @@ This is a substantially larger study than ours on the axis we chose to compete o
 Either the project continues as a study and accepts that its central question is largely answered, or it turns toward the thing neither competing paper has: the audit protocol a quantum kernel comparison must pass, with churn and fraud as the worked example and the published literature as the demonstration of what the protocol catches. The second reading is what the list under "what survives" actually describes. It would also mean conceding that what has been built so far is one rigorous study rather than a benchmark: there is no public entry point, no results schema, no way to add a kernel without editing `FROZEN_SETTINGS`, and the churn licence forbids redistributing the data.
 
 **Process change, effective immediately.** A literature check is the first task of any new research direction in this project, before a line of code, and its date and queries are recorded in the weekly record. Four weeks of work went past the point where one search would have changed the design.
+
+
+---
+
+### Correction, 27 September 2026: six of seven claims above about Kakavand et al. are wrong
+
+The paragraph above states that their study is "missing, on the evidence available, every check this
+project built", and lists seven. On 27 September their Zenodo deposit (10.5281/zenodo.19197916,
+CC BY 4.0) was downloaded and read. "The evidence available" had been the manuscript. It should have
+been the code, which was public and linked from the abstract page on the day this record was written.
+
+| claim in the paragraph above | verdict | evidence |
+| --- | --- | --- |
+| no multiplicity correction across 29 comparisons | **false** | `phase1_statistical_analysis.py` applies Benjamini-Hochberg **and** Bonferroni; `significant_005_bh` is the decision column |
+| features enter the circuits without rescaling to a fixed range | **false** | `preprocess/pipelines.py` offers `StandardScaler` and `MinMaxScaler(feature_range=(0,1))`, fit on train only |
+| no shuffled-label controls | **true but misleading** | no label permutation, but an exact paired permutation test is always computed, and `validate_leakage_free.py` addresses leakage directly |
+| no chance-corrected metric on datasets reaching 75/25 imbalance | **category error** | their endpoint is balanced accuracy, whose chance level is exactly 0.5 by construction. They are criticised for not fixing a problem their metric does not have |
+| no numerical conditioning floor | **overstated** | `diagnostics/kernel_analysis.py` computes condition number, minimum eigenvalue, effective rank, PSD-ness and the eigenspectrum. What this project adds is a decision rule built on that measurement, not the measurement |
+| no geometric difference | true, and neutral | |
+| no fitted classical surrogate | **true** | their `margin_surrogate` is an SVM-margin proxy, a different object. This is the only claim that survives cleanly |
+
+Two further things were found that make the original paragraph worse rather than merely inaccurate.
+Their `svm_C_range` is defined once and reused by anchor for every arm, so classical and quantum
+share one hyperparameter grid — the symmetry whose absence was **this project's** largest defect,
+recorded in D4. And their exact permutation fallback exists because they reasoned about the Wilcoxon
+two-sided p-floor of 2/2^n at small n, which is the same instinct as D2's precision floor, applied to
+the test rather than to the pipeline.
+
+**What this costs.** The "what survives, because neither paper does it" list above is now wrong in two
+entries: the conditioning floor is a decision rule rather than a measurement nobody takes, and the
+negative-control entry needs the qualification above. The positioning built on that list — that
+existing benchmarks do not check these things — does not hold. What holds is narrower: a record
+format and a portable tool that make method-checking cheap, and classical surrogate equivalence
+measured in endpoint units.
+
+**What has not been checked.** The claims in this section about Flórez-Ablan, Roth and Schnabel
+("no average precision, no chance-level correction, no negative controls") were made the same way,
+from the manuscript, and have not been tested against their code. They should be treated as
+unverified until they are.
+
+**The process failure.** Section 15 was written to record that four weeks passed without a literature
+search. The correction it now carries is that the literature search, once run, stopped at the
+manuscripts when the code was one click away — and the resulting claims were published, in a document
+whose entire subject is the difference between asserting and measuring. Naming a third party makes it
+worse, not better. The rule that follows: a claim in this project about what another group did not do
+must cite their code or their data, or it is not made.
