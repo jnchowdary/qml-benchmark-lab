@@ -2,9 +2,10 @@
 
 Written 26 September 2026. Covers work done 26 September 2026.
 Committed at `5f27bc7`, `e90409f` and `8198a4e`. 373 tests passing, 97% coverage on `src/qbench`.
-**Revised twice the same day**: after the fraud arms were audited with the hook, and again
+**Revised three times**: after the fraud arms were audited with the hook, again
 after the full per-family surrogate run on the fraud bandwidth arm established what the
-audit had only indicated. Section 13 listed
+audit had only indicated, and once more on 27 September after the churn equivalent came back
+a weaker result than fraud's rather than a matching one. Section 13 listed
 that as an open gap and it is now closed; sections 4, 9, 10, 11 and 13 are updated, and the
 fraud bandwidth arm produced the strongest single result in this record.
 
@@ -140,6 +141,15 @@ three-condition rule refuses to call that an effect, which is the machinery buil
 searched in week 2.** These are not exotic kernels found post hoc to match. The classical
 arm had already fitted kernels functionally indistinguishable from every tuned quantum
 kernel on this dataset, before the quantum arm existed.
+
+**Churn does not reproduce this, and the difference is the point.** Run under the same code,
+churn's tuned arm gives angle −0.0033 [−0.0076, +0.0010] and IQP +0.0045 [−0.0036, +0.0126].
+Neither clears the three-condition rule, so neither is a detected effect — but both point
+estimates sit three to four times *above* the precision floor, and what fails is the
+interval excluding zero, not the magnitude. That is an underpowered null. Fraud's is a
+sub-floor identity. Reporting both as "the kernel is its surrogate" would state the weaker
+result at the strength of the stronger one, which is the error D6 exists to prevent one
+level up. Churn's 80 of 80 gammas also fall inside the searched grid.
 
 The audit's six-sample median was 1.66e-04 against family effects of +0.0002 and −0.0008
 from eighty records. The stratified sample agreed with the full run in direction and
@@ -302,8 +312,8 @@ as a measured near-zero. It now says both.
 
 ## 9. Predictions made and scored
 
-Twenty-five explicit calls were written down before the runs that tested them, tagged
-Certain, Likely or Guessing. Twenty held. Five failed:
+Twenty-seven explicit calls were written down before the runs that tested them, tagged
+Certain, Likely or Guessing. Twenty-one held. Six failed:
 
 1. The bandwidth arm's `tuning symmetry` would PASS. It warned — because of defect three.
 2. The bandwidth arm's surrogate check would WARN. It passed — because of defect four.
@@ -313,6 +323,11 @@ Certain, Likely or Guessing. Twenty held. Five failed:
 4. D6's churn primary-cell row was the arm-level figure mislabelled. It was not.
 5. The H1-pair column would differ from both other columns on every row. On churn 250 it
    equals the arm-level figure, which is the documented coincidence.
+6. At least one churn family would clear the floor in the tuned arm. Neither did. The
+   reasoning conflated "exceeds the precision floor" with "clears the three-condition
+   rule": both point estimates *do* exceed the floor, and what fails is the interval
+   excluding zero. Predicting on one of three conditions, in a project whose own rule
+   requires all three, having built that rule.
 
 Two further calls were right in verdict and wrong in magnitude: the bandwidth arm's
 negative-control sigma was predicted to halve to 1.34 on the reasoning that four settings
@@ -390,10 +405,12 @@ experimental result is affected by any of it.
 
 ## 13. Still open
 
-* **The churn bandwidth arm has not had the equivalent full run under the current code.**
-  Its per-family analysis was run in week 4, before four of this week's defects were known.
-  None of the six touched `scripts/rbf_surrogate.py`, so the figures should stand, but
-  "should stand" is the reasoning this week has repeatedly punished.
+* **Churn's tuned arm is an underpowered null, not a demonstration of equivalence** (added
+  on third revision). Re-run under current code it gives angle −0.0033 [−0.0076, +0.0010]
+  and IQP +0.0045 [−0.0036, +0.0126]: both point estimates three to four times the
+  precision floor, both intervals spanning zero. It excludes an effect the size of the
+  registered arm's +0.0852 and cannot exclude an effect the size of its own point estimate.
+  Resolving it needs more seeds on that arm, not more analysis of these twenty.
 * **`grid adequacy against a shuffled null`** remains the one check that needs a re-run
   rather than an interface: the same pipeline on permuted labels with a widened grid.
 * **The pre-registration's section 1 rewrite**, for the turn toward the protocol. This is a
@@ -411,8 +428,10 @@ The protocol is now the deliverable and it has been exercised against real data 
 once, on one dataset, finding six defects in itself. The second dataset was done on revision and found a seventh, in the
 `selection` check.
 
-That run was done on second revision and the finding held: on fraud at tuned bandwidths the
-quantum kernels are Gaussian kernels the classical baseline had already searched.
+That run was done on second revision and the finding held on fraud: at tuned bandwidths the
+quantum kernels there are Gaussian kernels the classical baseline had already searched. The
+churn equivalent, run on third revision, is an underpowered null rather than the same
+result, and closing that gap needs seeds rather than analysis.
 
 The next step is the section 1 rewrite, which is the last thing standing between this project
 and a registration that describes what it is actually doing.

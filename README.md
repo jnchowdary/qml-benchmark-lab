@@ -52,6 +52,8 @@ Reported as results, not as advantage claims.
 
 **On fraud at tuned bandwidths the quantum kernels are Gaussian kernels the classical baseline had already searched.** All four settings, twenty seeds each: every interval spans zero, both families fall below the precision floor (angle +0.0002, IQP −0.0008), and 80 of 80 fitted γ values sit inside the 1e−3 to 1e2 grid `run_classical_baselines.py` searched in week 2 — before the quantum arm existed.
 
+**Churn's tuned arm is a weaker result and is reported as one.** Angle −0.0033 [−0.0076, +0.0010], IQP +0.0045 [−0.0036, +0.0126]: no detected effect, but both point estimates are three to four times the precision floor and what fails is the interval excluding zero, not the magnitude. That is an underpowered null, not the sub-floor identity fraud shows, and it needs more seeds rather than more analysis.
+
 **`angle-r2` collapses on every SelectKBest cell**, mean −0.1934, replicated at all five qubit counts. The most reproducible effect in the study, and it is quantum structure costing rather than earning.
 
 ## How the work is disciplined
