@@ -1,0 +1,127 @@
+{
+  "file": "results/audits/kakavand_hw.jsonl",
+  "control": null,
+  "floor": 0.001,
+  "checks": [
+    {
+      "name": "schema",
+      "status": "FAIL",
+      "detail": "required fields missing from some records: n_test, test_base_rate, test_average_precision, test_roc_auc. Discount the checks that name them below; the checks that do not need them still answer.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "chance correction",
+      "status": "SKIP",
+      "detail": "records do not carry n_test, test_base_rate, so this question cannot be answered from this file. That is a property of the records, not a failure of the check.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "negative control",
+      "status": "SKIP",
+      "detail": "no permuted-label control supplied (--control). Without one there is no evidence the pipeline does not leak.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "pairing integrity",
+      "status": "SKIP",
+      "detail": "no test_label_fingerprint. Paired tests across methods cannot be verified, only assumed, and a silent mismatch is invisible.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "solver health",
+      "status": "PASS",
+      "detail": "all 18 final fits converged.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "unit of analysis",
+      "status": "WARN",
+      "detail": "18 records = 6 configurations x ~1 seeds. Across-configuration claims have n=6, not n=18. State which n any reported p-value rests on.",
+      "tier": 1,
+      "numbers": {
+        "n_cells": 6,
+        "n_seeds": 1,
+        "n_records": 18
+      }
+    },
+    {
+      "name": "statistical power",
+      "status": "SKIP",
+      "detail": "records do not carry test_average_precision, n_test, test_base_rate, so this question cannot be answered from this file. That is a property of the records, not a failure of the check.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "precision floor",
+      "status": "SKIP",
+      "detail": "records do not carry test_average_precision, n_test, test_base_rate, so this question cannot be answered from this file. That is a property of the records, not a failure of the check.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "multiplicity",
+      "status": "WARN",
+      "detail": "this file supports 18 pairwise comparisons across 6 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.60. Declare which are confirmatory, or correct (Bonferroni would be 2.78e-03).",
+      "tier": 1,
+      "numbers": {
+        "comparisons": 18,
+        "bonferroni": 0.002777777777777778
+      }
+    },
+    {
+      "name": "tuning symmetry",
+      "status": "SKIP",
+      "detail": "no `params` or `C` field, so it cannot be seen whether each method had hyperparameters to select.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "cross-arm comparison",
+      "status": "SKIP",
+      "detail": "only one arm supplied. Every figure above describes comparisons WITHIN this file. If the claim being made is against another arm, pass it with --compare or the power and multiplicity numbers describe the wrong comparison.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "kernel conditioning",
+      "status": "PASS",
+      "detail": "condition number stays below 1e12 (worst 4.5e+05 over 6 sampled kernels covering 1 method(s) (hardware) on 1 seed(s)), so the dual is well determined.",
+      "tier": 2,
+      "numbers": {
+        "n_sampled": 6,
+        "cond_min": 10.565166570822727,
+        "cond_max": 453631.34235576633,
+        "gram_errors": 12,
+        "coverage": "1 method(s) (hardware) on 1 seed(s)",
+        "methods_sampled": [
+          "hardware"
+        ]
+      }
+    },
+    {
+      "name": "classical surrogate equivalence",
+      "status": "NOT RUN",
+      "detail": "needs training_data, refit in --hook. Fits the nearest classical kernel with no labels and runs it through your pipeline on your split; a kernel that scores what its surrogate scores is that surrogate.",
+      "tier": 2,
+      "numbers": {}
+    },
+    {
+      "name": "selection",
+      "status": "SKIP",
+      "detail": "no inner_score field, so it cannot be shown that model selection used training folds rather than the test score.",
+      "tier": 1,
+      "numbers": {}
+    }
+  ],
+  "not_runnable": [
+    {
+      "name": "grid adequacy against a shuffled null",
+      "reason": "needs a re-run, not a hook: the same pipeline on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so hyperparameter edge flags never justify it on their own."
+    }
+  ]
+}

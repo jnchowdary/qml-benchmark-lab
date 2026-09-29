@@ -207,13 +207,20 @@ def cell_of(r, fields=None):
 # ----------------------------------------------------------------- tier 1
 
 def check_schema(recs, ctx):
+    # This failure used to end "Nothing below can be trusted." On the first
+    # foreign audit -- the Kakavand hardware deposit, whose endpoint is balanced
+    # accuracy rather than average precision -- that line sat directly above a
+    # valid kernel-conditioning reading which needed none of the absent fields,
+    # and was the only measurement the report contained. The history belongs
+    # here; what a stranger reads should just be accurate.
     need = ("method", "seed", "n_train", "n_test", "test_base_rate",
             "test_average_precision", "test_roc_auc")
     missing = [f for f in need if not has(recs, f)]
     if missing:
         return Outcome("schema", FAIL,
-                       f"required fields missing from some records: {', '.join(missing)}. "
-                       f"Nothing below can be trusted.")
+                       f"required fields missing from some records: "
+                       f"{', '.join(missing)}. Discount the checks that name them "
+                       f"below; the checks that do not need them still answer.")
     opt = [f for f in ("test_label_fingerprint", "shuffled", "final_converged", "cell")
            if not has(recs, f)]
     if opt:
@@ -928,6 +935,29 @@ TIER2 = [
      "hyperparameter edge flags never justify it on their own."),
 ]
 
+# Fields a check cannot work without, declared rather than discovered.
+#
+# The first foreign audit this protocol ever ran -- against the Kakavand et al.
+# hardware deposit, whose endpoint is balanced accuracy rather than average
+# precision -- produced three checks reporting `check raised KeyError('n_test')`
+# as a FAIL. That reads to a stranger as a broken tool rather than as a file
+# that does not carry the field, and it is wrong twice over: the question was
+# unanswerable, not failed, and `check_schema` had already named every absent
+# field one line earlier. A check that needs a field it has not got must SKIP
+# and say which field, exactly as the checks with optional fields already do.
+REQUIRES = {
+    check_chance_correction: ("chance correction",
+                              ("n_test", "test_base_rate")),
+    check_power: ("statistical power",
+                  ("test_average_precision", "n_test", "test_base_rate")),
+    check_precision_floor: ("precision floor",
+                            ("test_average_precision", "n_test",
+                             "test_base_rate")),
+    check_unit_of_analysis: ("unit of analysis", ("seed",)),
+    check_multiplicity: ("multiplicity", ("method",)),
+    check_cross_arm: ("cross-arm comparison", ("seed", "method")),
+}
+
 CHECKS = [check_schema, check_chance_correction, check_negative_control, check_pairing,
           check_convergence, check_unit_of_analysis, check_power,
           check_precision_floor, check_multiplicity, check_tuning_symmetry,
@@ -975,6 +1005,17 @@ def run(path, control, floor, cell_fields=None, compare=None, hook=None,
            "hook": load_hook(hook), "hook_sample": hook_sample}
     outs = []
     for fn in CHECKS:
+        req = REQUIRES.get(fn)
+        if req:
+            name, needed = req
+            absent = [f for f in needed if not has(recs, f)]
+            if absent:
+                outs.append(Outcome(
+                    name, SKIP,
+                    f"records do not carry {', '.join(absent)}, so this "
+                    f"question cannot be answered from this file. That is a "
+                    f"property of the records, not a failure of the check."))
+                continue
         try:
             outs.append(fn(recs, ctx))
         except Exception as exc:                      # a broken check is a failure

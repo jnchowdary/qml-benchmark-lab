@@ -876,3 +876,56 @@ def test_selection_passes_when_the_criterion_tracks_the_endpoint():
     o = audit.check_selection_leak(with_inner(+1), ctx())
     assert o.status == audit.PASS
     assert o.numbers["spearman_inner_vs_test"] > 0
+
+
+def test_checks_skip_on_absent_required_fields_instead_of_raising(tmp_path):
+    """The first foreign audit reported `check raised KeyError('n_test')` as a
+    FAIL, three times, on a deposit whose endpoint was balanced accuracy rather
+    than average precision. Unanswerable is not failed, and a stranger reading
+    that output would conclude the tool was broken."""
+    recs = [{"method": m, "seed": 42, "n_train": 60, "final_converged": True,
+             "test_balanced_accuracy": 0.47}
+            for m in ("hardware", "ideal-sim", "noisy-sim")]
+    p = tmp_path / "foreign.jsonl"
+    p.write_text("".join(json.dumps(r) + "\n" for r in recs))
+    _, outs = audit.run(str(p), None, audit.DEFAULT_PRECISION_FLOOR)
+
+    raised = [o for o in outs if "raised" in o.detail]
+    assert not raised, f"checks still crashing: {[o.name for o in raised]}"
+    by_name = {o.name: o for o in outs}
+    for name in ("chance correction", "statistical power", "precision floor"):
+        assert by_name[name].status == audit.SKIP
+        assert "n_test" in by_name[name].detail
+    # the one thing this file CAN answer still answers
+    assert by_name["solver health"].status == audit.PASS
+
+
+def test_a_genuinely_broken_check_still_fails_loudly():
+    """The skip guard must not become a blanket exception swallow."""
+    def exploding(recs, ctx):
+        raise RuntimeError("boom")
+    saved = audit.CHECKS
+    try:
+        audit.CHECKS = [exploding]
+        import tempfile, os
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "x.jsonl")
+            open(p, "w").write(json.dumps(rec()) + "\n")
+            _, outs = audit.run(p, None, audit.DEFAULT_PRECISION_FLOOR)
+        assert outs[0].status == audit.FAIL and "boom" in outs[0].detail
+    finally:
+        audit.CHECKS = saved
+
+
+def test_schema_failure_does_not_invalidate_checks_that_still_answered():
+    """A blanket "nothing below can be trusted" is false whenever a check that
+    does not need the absent fields still produced a reading. On the first
+    foreign audit that line sat above the only measurement in the report."""
+    recs = [{k: v for k, v in rec().items()
+             if k not in ("n_test", "test_base_rate", "test_average_precision",
+                          "test_roc_auc")} for _ in range(3)]
+    o = audit.check_schema(recs, ctx())
+    assert o.status == audit.FAIL
+    assert "nothing below can be trusted" not in o.detail.lower()
+    assert "still answer" in o.detail and "Discount" in o.detail
+    assert len(o.detail) < 260, "a foreign reader should not get an essay here"
