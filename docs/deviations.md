@@ -796,3 +796,50 @@ to cover the past.
 Whether to seek a registration at all for the remainder of the project, given
 that weeks 8 to 12 are writing and hardware runs rather than new confirmatory
 tests, is a separate decision and is not taken here.
+
+### Amendment, 29 September 2026, 17:44: Software Heritage has never archived this repository
+
+The open item above is closed, in the unfavourable direction. Queried at
+
+    https://archive.softwareheritage.org/api/1/origin/https://github.com/jnchowdary/qml-benchmark-lab/visits/
+
+the response is **HTTP 404**:
+
+    {
+        "exception": "NotFoundExc",
+        "reason": "Origin with url https://github.com/jnchowdary/qml-benchmark-lab not found!"
+    }
+
+The origin is unknown to Software Heritage. There has been no crawl, so there is
+no visit date, no snapshot, and **no third-party timestamp of any kind for this
+repository or for anything in it.**
+
+**Consequence, stated plainly.** The ordering evidence for `pre-registration.md`
+and for D5, D7, D8 and D9 is commit sequence in a repository the author controls,
+and there is no external record against which to check it. No amendment
+strengthening those records is available, and none should be claimed. A reader
+weighing whether this study's analysis really was fixed before its data has
+exactly one thing to weigh: the internal consistency of the records themselves,
+including the specific pre-declarations D10 section 5 documents matching their
+outcomes.
+
+**What archiving now would and would not do, so the distinction is not blurred
+later.** Triggering a Save Code Now creates an immutable third-party copy of the
+repository as it stands today. That prevents any **future** rewriting of this
+history from passing unnoticed, and from that point the ordering of subsequent
+commits is witnessed by someone other than the author.
+
+It provides **essentially no evidence about the pre-registration's date.** The
+pre-registration, the g sweep, the H2/H3 result and every deviation record are
+all in the repository simultaneously as of today, so an archive taken now cannot
+distinguish a document written on 24 September from one written this afternoon
+and dated backwards. Nothing retrospective may be claimed from it, and if a
+Software Heritage snapshot is later cited anywhere in this project, it is cited
+for what it is: the earliest date on which an independent party is known to have
+held a copy, which is **after** every result reported here.
+
+The forward-looking value is real and is the reason to do it. Weeks 1, 2 and 3
+each asked for an external timestamp and it was never set up. Weeks 8 to 12 are
+writing and hardware runs; if the repository is archived at intervals from now,
+the ordering of that work is witnessed even though the ordering of weeks 1 to 7
+is not.
