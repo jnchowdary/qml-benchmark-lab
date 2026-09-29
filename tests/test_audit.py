@@ -878,6 +878,48 @@ def test_selection_passes_when_the_criterion_tracks_the_endpoint():
     assert o.numbers["spearman_inner_vs_test"] > 0
 
 
+def test_selection_skips_when_the_inner_score_is_constant():
+    """This returned PASS, and nothing in the suite noticed.
+
+    `with_inner(0)` gives every record the same inner score, which is what an
+    arm looks like when tuning had nothing to choose between. scipy then returns
+    NaN with a ConstantInputWarning, and `nan <= 0` is False, so the WARN branch
+    never fired and the audit reported "selection is auditable and the criterion
+    tracks the endpoint" about a correlation that does not exist.
+
+    The helper this check now uses supported the constant case from the start
+    and no test ever passed 0. The check was converted to SKIP -- the audit's
+    own rule is that a check which cannot answer its question says so and names
+    why, exactly as `test_selection_skips_without_inner_scores` requires for a
+    missing field. Absence is never read as a pass.
+    """
+    o = audit.check_selection_leak(with_inner(0), ctx())
+    assert o.status == audit.SKIP
+    assert o.status != audit.PASS, "the defect: an undefined rho read as a pass"
+    assert "constant" in o.detail
+    assert "spearman_inner_vs_test" not in (o.numbers or {}), (
+        "a number that does not exist must not be reported as one")
+
+
+def test_selection_skips_when_the_endpoint_is_constant():
+    """The other input. Every record scoring identically on the test set is
+    equally undefined, and equally not a pass."""
+    recs = []
+    for i in range(20):
+        r = rec(seed=i, ap=0.70)          # identical test score
+        r["inner_score"] = 0.6 + 0.002 * i
+        recs.append(r)
+    o = audit.check_selection_leak(recs, ctx())
+    assert o.status == audit.SKIP
+    assert "constant" in o.detail
+
+
+def test_selection_skip_names_the_record_count():
+    """A refusal that does not say how much data it had is not actionable."""
+    o = audit.check_selection_leak(with_inner(0), ctx())
+    assert o.numbers["n_records"] == 20
+
+
 def test_checks_skip_on_absent_required_fields_instead_of_raising(tmp_path):
     """The first foreign audit reported `check raised KeyError('n_test')` as a
     FAIL, three times, on a deposit whose endpoint was balanced accuracy rather

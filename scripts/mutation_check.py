@@ -123,8 +123,10 @@ MUTANTS = [
 
     M("no NaN guard on a constant input",
       "rejects = bool(nan < 0.05) = False, so an undefined rho reads NOT SUPPORTED",
-      "    if not np.isfinite(rho):",
-      "    if False:",
+      "    rc = rank_correlation(g, d)\n    rho, p = (rc.rho, rc.p) if rc.ok "
+      "else (None, None)\n    if not rc.ok:",
+      "    rc = rank_correlation(g, d)\n    rho, p = (rc.rho, rc.p) if rc.ok "
+      "else (None, None)\n    if False:",
       "TestH2::test_constant_input_is_not_estimable"),
 
     # ---- the nineteen that had no mutant until week 8 ---------------------

@@ -76,6 +76,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from qbench.data import balanced_subsample, load_dataset, make_split  # noqa: E402
+from qbench.stats import fmt_rho, rank_correlation  # noqa: E402
 from qbench.features import fit_mapping, scale_to_angles  # noqa: E402
 from qbench.kernels.classical import build_classical_kernel  # noqa: E402
 from qbench.kernels.geometric_difference import (  # noqa: E402
@@ -327,11 +328,12 @@ def main():
         c = [r["kq_conc"] for r in sub]
         g = [r["g"] for r in sub]
         rk = [r["kq_eff_rank"] for r in sub]
-        rho, p = stats.spearmanr(c, g)
-        rho2, _ = stats.spearmanr(rk, g)
+        rc1 = rank_correlation(c, g)
+        rc2 = rank_correlation(rk, g)
         ab = [r["align"] for r in sub if r["breaches"]]
         an = [r["align"] for r in sub if not r["breaches"]]
-        print(f"  {lam:>7.0e} {rho:+13.4f} {p:10.2e} {rho2:+13.4f} "
+        print(f"  {lam:>7.0e} {fmt_rho(rc1, 13)} "
+              f"{(f'{rc1.p:.2e}' if rc1.ok else 'n/a'):>10} {fmt_rho(rc2, 13)} "
               f"{(f'{np.median(ab):.4f}' if ab else 'n/a'):>14} "
               f"{(f'{np.median(an):.4f}' if an else 'n/a'):>11}")
         report["by_lambda"][f"{lam:g}"].update(

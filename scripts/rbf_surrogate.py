@@ -60,6 +60,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from qbench.data import balanced_subsample, load_dataset, make_split  # noqa: E402
+from qbench.stats import rank_correlation  # noqa: E402
 from qbench.features import fit_mapping, scale_to_angles  # noqa: E402
 from qbench.kernels.quantum import QuantumGramFactory  # noqa: E402
 from qbench.metrics import normalised_average_precision  # noqa: E402
@@ -396,10 +397,14 @@ def trend_stats(entries, rows):
     q = [x["cell"][1] for x in entries]
     g = [x["gamma_median"] for x in entries]
     d = [x["e"]["mean"] for x in entries]
+    # `g` was NOT in this guard, so rq was protected and rg was not: a constant
+    # gamma_median gave spearman_gamma = [nan, nan] in the report JSON and a
+    # ConstantInputWarning on every test run. The helper checks both inputs of
+    # both correlations, so the asymmetry cannot recur.
     if len(set(q)) < 2 or len(set(d)) < 2:
         return None
-    rq = stats.spearmanr(q, d)
-    rg = stats.spearmanr(g, d)
+    rq = rank_correlation(q, d)
+    rg = rank_correlation(g, d)
     by_q = {}
     for nq in sorted(set(q), reverse=True):
         sel = [r for r in rows if r["n_qubits"] == nq]
@@ -411,8 +416,10 @@ def trend_stats(entries, rows):
     small = [x["e"]["mean"] for x in entries if x["gamma_median"] < 0.2]
     big = [x["e"]["mean"] for x in entries if x["gamma_median"] >= 0.2]
     return {"n_cells": len(entries), "n_records": len(rows),
-            "spearman_qubits": [float(rq.statistic), float(rq.pvalue)],
-            "spearman_gamma": [float(rg.statistic), float(rg.pvalue)],
+            "spearman_qubits": ([rq.rho, rq.p] if rq.ok else None),
+            "spearman_qubits_why": (None if rq.ok else rq.why),
+            "spearman_gamma": ([rg.rho, rg.p] if rg.ok else None),
+            "spearman_gamma_why": (None if rg.ok else rg.why),
             "by_qubits": by_q,
             "gamma_below_0.2": {"n": len(small),
                                 "mean": float(np.mean(small)) if small else None},

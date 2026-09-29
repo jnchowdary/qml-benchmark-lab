@@ -82,6 +82,7 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from qbench.data import balanced_subsample, load_dataset, make_split  # noqa: E402
+from qbench.stats import rank_correlation  # noqa: E402
 from qbench.features import fit_mapping, scale_to_angles  # noqa: E402
 from qbench.kernels.classical import build_classical_kernel  # noqa: E402
 from qbench.kernels.geometric_difference import (  # noqa: E402
@@ -153,11 +154,13 @@ def one_seed(dataset, cell, seed, n_per_class, qrec, crec):
     K_rbf = rbf_kernel(Xa_tr, gamma=g_pred)
     g_fit, fit_rmse = fit_gamma(Xa_tr, K_sel)
 
-    rho = float(stats.spearmanr(offdiag(K_sel), offdiag(K_rbf)).statistic)
+    _rc = rank_correlation(offdiag(K_sel), offdiag(K_rbf))
+    rho = _rc.rho if _rc.ok else float("nan")
     # Against each row's OWN nearest RBF, which is the fair question for IQP:
     # "is this kernel some RBF", not "is it the angle-limit RBF".
     K_fit = rbf_kernel(Xa_tr, gamma=g_fit)
-    rho_fit = float(stats.spearmanr(offdiag(K_sel), offdiag(K_fit)).statistic)
+    _rcf = rank_correlation(offdiag(K_sel), offdiag(K_fit))
+    rho_fit = _rcf.rho if _rcf.ok else float("nan")
 
     # g against the classical kernel inner CV actually chose for this cell.
     cparams = {k: v for k, v in (crec.get("params") or {}).items()}

@@ -80,6 +80,8 @@ from scipy import stats
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+
+from qbench.stats import rank_correlation  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from qbench.metrics import chance_average_precision  # noqa: E402
@@ -895,9 +897,23 @@ def check_selection_leak(recs, ctx):
         return Outcome("selection", SKIP,
                        "no inner_score field, so it cannot be shown that model "
                        "selection used training folds rather than the test score.")
-    rho = stats.spearmanr([float(r["inner_score"]) for r in recs],
-                          [norm_ap(r) for r in recs])
-    r = float(rho.statistic)
+    rc = rank_correlation([float(x["inner_score"]) for x in recs],
+                          [norm_ap(x) for x in recs])
+    if not rc.ok:
+        # This check previously PASSED here. scipy returns NaN on a constant
+        # input, `nan <= 0` is False, so the WARN branch below never fired and
+        # the audit reported "selection is auditable" on a correlation that does
+        # not exist. That is the same failure the comment below describes having
+        # already fixed once: a measurement taken and then not used. A check
+        # that cannot answer its question SKIPs and names why, exactly as it
+        # does for a missing field -- it never reads absence as a pass.
+        return Outcome("selection", SKIP,
+                       f"selection cannot be audited from these records: "
+                       f"{rc.why} With {rc.n} records there is nothing to "
+                       f"correlate, so this says nothing about whether "
+                       f"selection used the inner score or the test score.",
+                       numbers={"n_records": rc.n})
+    r = rc.rho
     num = {"spearman_inner_vs_test": r}
     # The sign is the boundary, and it is qualitative rather than a chosen
     # threshold: a correlation that is not positive means the selection

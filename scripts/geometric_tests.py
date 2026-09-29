@@ -124,6 +124,7 @@ from qbench.kernels.geometric_difference import (  # noqa: E402
     lambda_from_svm_C, normalise_kernel)
 from qbench.kernels.quantum import QuantumGramFactory  # noqa: E402
 from primary_tests import best_by_inner, load, norm_ap  # noqa: E402
+from qbench.stats import rank_correlation  # noqa: E402
 
 LAMBDAS = (1e-1, 1e-2, 1e-3, 1e-4)          # D5, frozen. from-C added per seed.
 G_SPLIT = 2.0                                # H3 threshold, registered.
@@ -441,25 +442,25 @@ def h2(units, label="all units"):
                 "why": f"{len(units)} units, fewer than {MIN_UNITS}"}
     g = [u["g"] for u in units]
     d = [u["d"] for u in units]
-    rho, p = stats.spearmanr(g, d)
-    if not np.isfinite(rho):
+    rc = rank_correlation(g, d)
+    rho, p = (rc.rho, rc.p) if rc.ok else (None, None)
+    if not rc.ok:
         # A constant input makes Spearman undefined and scipy returns NaN with a
         # ConstantInputWarning. Without this guard `rejects` is bool(nan < 0.05)
         # = False and the verdict reads NOT SUPPORTED -- a substantive answer --
         # where the truth is that no correlation exists to test. Found by
         # tests/test_geometric_tests.py on its first run.
         return {"label": label, "n_units": len(units), "estimable": False,
-                "why": ("g or the observed difference is constant across units, "
-                        "so the rank correlation is undefined (scipy returns "
-                        "NaN). This is not a null result."),
+                "why": rc.why,
                 "constant_g": bool(len(set(g)) == 1),
                 "constant_d": bool(len(set(d)) == 1)}
     lo, hi = spearman_ci(rho, len(units))
     resolved = [u for u in units if abs(u["d"]) > FLOOR]
     sub = None
     if len(resolved) >= MIN_UNITS:                       # D8(b)
-        r2, p2 = stats.spearmanr([u["g"] for u in resolved],
-                                 [u["d"] for u in resolved])
+        rc2 = rank_correlation([u["g"] for u in resolved],
+                               [u["d"] for u in resolved])
+        r2, p2 = (rc2.rho, rc2.p) if rc2.ok else (float("nan"), float("nan"))
         # Same NaN guard as above: the subset can be constant even when the
         # full set is not, and a NaN rho here would make the D8(b) agreement
         # check silently pass by comparing nan * rho > 0, which is False.
@@ -681,11 +682,21 @@ def run_tests(units_path, json_out=None):
                  if g_at(r, col) <= float(r["ceiling"])]
         if len(pairs) < MIN_UNITS:
             continue
-        rho, p = stats.spearmanr([a for a, _ in pairs], [b for _, b in pairs])
-        print(f"    lambda {col:>7}: {len(pairs):5d} rows, rho {rho:+.4f}, "
-              f"p {fmt_p(p)}")
+        # The third call site in this file. The NaN guard went into the other
+        # two and not this one, which is the same partial fix rbf_surrogate made
+        # when it guarded q and d but not g.
+        rcs = rank_correlation([a for a, _ in pairs], [b for _, b in pairs])
+        if not rcs.ok:
+            print(f"    lambda {col:>7}: {len(pairs):5d} rows, not estimable "
+                  f"({rcs.why})")
+            report["per_seed_sensitivity"][col] = {"n_rows": len(pairs),
+                                                  "rho": None, "p": None,
+                                                  "why": rcs.why}
+            continue
+        print(f"    lambda {col:>7}: {len(pairs):5d} rows, rho {rcs.rho:+.4f}, "
+              f"p {fmt_p(rcs.p)}")
         report["per_seed_sensitivity"][col] = {"n_rows": len(pairs),
-                                              "rho": float(rho), "p": float(p)}
+                                              "rho": rcs.rho, "p": rcs.p}
 
     # A too-small arm gets a listing, not a silence. The bandwidth arm covers one
     # cell per dataset -- 4 units each, 8 in all -- which is below MIN_UNITS, so
