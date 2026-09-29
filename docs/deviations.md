@@ -498,3 +498,189 @@ project as a defect, not a formatting choice.**
 **What is NOT done.** D5 above is not edited, and neither is week-04-report.md
 section 9. Both stand as published with their wrong column, and this is the
 correction, which is the same rule D6 set for itself.
+
+---
+
+## D10 — what H2 and H3 returned, and three wrong explanations of it
+
+**Date:** 29 September 2026
+**Status:** **POST-HOC.** Every observation below was made *after* the H2/H3
+result was on screen. Nothing here changes the verdict recorded above it, and
+nothing here may be used to re-derive one.
+**Affects:** how D5's decision rule can be read; what a ceiling breach means;
+what the confirmatory verdict is and is not.
+
+### 1. The verdict, which stands
+
+H2 and H3 were executed on 29 September 2026 across all 360 registered units,
+7,200 per-seed rows, both datasets, 1,800 (cell, seed) combinations in 55.6
+minutes. The analysis was committed at `fd2eae0` and `db30825` before the data
+existed; the data was committed before either result was read.
+
+**Both hypotheses return NOT ESTABLISHED.** D5 requires the conclusion to hold at
+every lambda at which no unit breaches its sqrt(n) ceiling, and **no lambda
+column is breach-free**. The registered decision procedure therefore returns no
+verdict, in either direction, at any lambda.
+
+The per-lambda figures, for the record:
+
+| lambda | units | breaches | rho | p | 95% CI | H2 | H3 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1e-1 | 360 | 4/7200 | +0.1712 | 1.11e-03 | [+0.069, +0.270] | rejects | rejects |
+| 1e-2 | 350 | 657/7200 | -0.0245 | 6.48e-01 | [-0.129, +0.081] | no | NOT ESTIMABLE |
+| 1e-3 | 90 | 4574/7200 | -0.3814 | 2.09e-04 | [-0.545, -0.189] | rejects | no |
+| 1e-4 | 61 | 4972/7200 | -0.2938 | 2.16e-02 | [-0.508, -0.045] | rejects | no |
+| from C | 289 | 2893/7200 | -0.0145 | 8.06e-01 | [-0.130, +0.101] | no | rejects on \|d\| only |
+
+D8(b)'s above-floor subset agreed in sign and significance at every lambda except
+from-C, where it flipped to +0.0024 on 279 units.
+
+### 2. Four breaches, one seed, and the only complete column
+
+At lambda = 0.1 there are exactly four breaching observations in 7,200. All four
+are the same cell and seed -- **churn, n=100, selectk, 4 qubits, seed 7** --
+appearing once per quantum setting, with g of 12.72 to 12.94 against a ceiling of
+sqrt(140) = 11.83. Its selected classical kernel is poly at C = 1e-04.
+
+That one seed voids the only lambda column in which **all 360 registered units
+survive**. Under the strict reading of D5 the confirmatory verdict at lambda =
+0.1 is unavailable because of 0.056% of the observations.
+
+**D5's text admits two readings and the code resolved it silently.** "Every
+lambda at which no unit breaches its ceiling" can mean every lambda where nothing
+had to be excluded, which is what `scripts/geometric_tests.py` implements and
+which nothing satisfies; or it can be read as vacuous after exclusions, reducing
+the rule to agreement across all five lambdas. **Under the second reading the
+conclusion also fails**, because the sign of rho differs: +0.17 at lambda = 0.1
+against -0.38 at 1e-3 and -0.29 at 1e-4. Both readings land on the outcome D5
+pre-declared for disagreement, that g's relationship to observed performance
+depends on the regularisation chosen, which is a result about the metric and not
+a failure of the test. The ambiguity was not disambiguated in advance and is
+recorded here rather than resolved, because resolving it now would be choosing a
+decision rule with the answer in view.
+
+### 3. The two negative figures are not the same kind of estimate as the positive one
+
+lambda = 1e-3 excludes 270 of 360 units and lambda = 1e-4 excludes 299, in both
+cases for exceeding the ceiling. The surviving g range is truncated from above,
+so those correlations are computed on a restricted range of the predictor. The
+only column with a complete, unselected population is lambda = 0.1, where
+rho = +0.1712 gives rho^2 of about 0.03: **g accounts for roughly three percent of
+the rank variance in observed difference.** As a pre-training screen that is close
+to worthless even taken at face value.
+
+### 4. What a ceiling breach actually measures, and three wrong answers
+
+This section exists because the answer took three attempts and the record of the
+failures is more useful than the conclusion.
+
+**The algebra.** With A = sqrt(K_C) (K_C + lam I)^-2 sqrt(K_C), A's eigenvalues
+are mu/(mu+lam)^2 over K_C's spectrum, maximised at mu = lam where the value is
+1/(4 lam). So the classical contribution to g is **capped at 1/(4 lam) for any
+kernel whatsoever**, giving g <= sqrt(||K_Q||_inf / (4 lam)), and since the
+ceiling is sqrt(n) with K_Q normalised to trace n, a breach requires
+
+    ||K_Q||_inf / n  >  4 lam
+
+more than 40% of the quantum Gram's trace in one eigenvalue at lambda = 0.1, 4%
+at 1e-2, 0.4% at 1e-3. Verified across 960 sampled observations: the bound is
+violated 0 times and the necessary condition has 0 false negatives at every
+lambda.
+
+**Wrong answer one: the classical kernel is near rank-deficient and that drives
+g.** Refuted by its own diagnostic. The lambda = 0.1 amplification is 2.491 in
+the breaching cell and 2.487 in a non-breaching cell at the same dataset, size,
+qubit count and seed. Identical to three decimals, and both at the 2.5 cap. The
+breaching cell has the *lower* effective rank, 6 against 10.
+
+**Wrong answer two: ||K_Q|| is larger in the breaching cell.** It is not. For
+angle-r1 it is 65.0 there against 72.7 in the contrast, while g is 12.72 against
+2.96. What differed was quantum effective rank, 1 to 6 out of 140 against 54 to
+137, which suggested that g is largest where the quantum kernel has collapsed.
+
+**Wrong answer three: therefore D5 names the wrong side, and excluding on the
+ceiling selects on the arm under test.** This was written and then withdrawn
+before it reached this document, on the evidence of a stratified sample of 60
+cells (`scripts/sample_ceiling_mechanism.py`, seed 20260929, sampled on design
+factors only with g never consulted, 960 observations):
+
+| lambda | breaches | AUC: quantum concentration | AUC: classical factor | AUC: alignment |
+| --- | --- | --- | --- | --- |
+| 1e-2 | 11 | 0.723 | 0.526 | 0.668 |
+| 1e-3 | 127 | **0.394** | **0.815** | 0.681 |
+| 1e-4 | 137 | **0.346** | **0.825** | 0.612 |
+
+**At the lambdas where breaches occur in bulk, the classical amplification factor
+predicts a breach with AUC 0.82 and quantum concentration is ANTI-predictive.**
+The variance decomposition of log g^2 agrees: `var log a_max` rises from 0.16 at
+lambda = 0.1 to 8.08 at 1e-4 while `var log ||K_Q||` is fixed at 1.67, and the
+correlation with log g^2 moves from ||K_Q|| dominating at lambda = 0.1
+(r = +0.54 against +0.17) to the classical factor dominating at 1e-4 (r = +0.64
+against -0.11).
+
+**So D5's description is correct and the objection to it is withdrawn.** "A g
+above the ceiling means the classical kernel is under-regularised in the g
+computation" is right at the lambdas that matter. The warning text in
+`src/qbench/kernels/geometric_difference.py` stands. The reason the classical
+factor looked inert at lambda = 0.1 is that its cap there is only 2.5 and most
+kernels sit against it, leaving little variance; at 1e-4 the cap is 2,500 and
+kernels differ enormously in how near they get.
+
+It follows that the exclusion at small lambda selects mainly on the **classical**
+kernel's conditioning relative to lambda, not on a property of the quantum arm.
+That is what a regularisation safeguard is meant to do, and the claim in section 3
+above is a range-restriction problem rather than selection on the outcome.
+
+What survives of the three attempts: the bound holds in 960/960, and its
+looseness is the alignment term, with median g/bound from 0.43 to 0.28 and
+rho(g/bound, alignment) from +0.773 to +0.885 at p between 6e-49 and 4e-81.
+
+**One further caveat on the falsifier, which was badly designed.** At lambda =
+1e-3 and 1e-4 the necessary condition is satisfied by all 240 sampled
+observations, so zero false negatives is guaranteed by the test rather than
+earned. At 1e-2 the condition holds for 195 of 240, so catching all 11 breaches
+carries p of about 0.11 under random assignment. At 1e-1 the sample contained no
+breaches at all. The condition is verified as algebra and is **not** corroborated
+as an explanation by that count.
+
+### 5. Two pre-declared warnings that fired exactly as written
+
+D8's degenerate-partition clause: at lambda = 1e-2, H3 put 349 units above the
+g = 2 split and **1** below, so it is reported NOT ESTIMABLE rather than as a null.
+A fixed threshold that stops partitioning the data has stopped being a test.
+
+D7's aggregation check: per-seed rho at lambda = 1e-3 is -0.0233 at p = 0.23
+against the unit-level -0.3814 at p = 2.09e-04. Part of that gap is a population
+difference rather than aggregation, because the per-seed version retains
+surviving seeds from units the unit-level version discarded whole. Both are
+reported; the 360-unit version remains the confirmatory one.
+
+### 6. H3's direction, and what it says about the hypothesis being tested
+
+At lambda = 0.1, median |observed difference| is **0.0235 above** the g = 2 split
+and **0.0777 below** it, a gap of -0.0542 with CI [-0.1056, -0.0191],
+rank-biserial -0.387, p = 7.93e-07, and the signed secondary rejects at
+p = 2.17e-06. **High g goes with smaller differences.** The prediction under test
+is that a large geometric difference is what permits a large quantum advantage.
+
+At lambda-from-C, the rule section 6 actually registered, rho = -0.0145 at
+p = 0.81 with 2,893 of 7,200 observations breaching and D8(b)'s subset flipping
+sign. The registered lambda rule yields no relationship in either direction,
+which is the case D5 made in advance.
+
+### 7. What this does not change
+
+The verdict in section 1. H2's statistic, alpha, two-sidedness and single-test
+status. H3's threshold of g = 2. D5's frozen lambda sweep and ceiling rule, whose
+description of what a breach means is confirmed here rather than corrected. D7's
+median aggregation and its sensitivity check. D8's three fixes. D9's confound,
+which stands over every correlation above: the observed difference comes from the
+arm where the quantum side was frozen at bandwidth 1.0 while the classical side
+tuned freely.
+
+No breach-tolerance threshold is introduced. D5's rule is recorded as
+unsatisfiable under its strict reading and as ambiguous between two readings, and
+that is all. Choosing a tolerance now, with the result in view, is the error D5
+itself warned against when it refused to pick the lambda that made g behave. If a
+future study wants a breach-tolerant rule it registers one before its data
+exists.
