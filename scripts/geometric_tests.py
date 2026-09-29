@@ -442,14 +442,31 @@ def h2(units, label="all units"):
     g = [u["g"] for u in units]
     d = [u["d"] for u in units]
     rho, p = stats.spearmanr(g, d)
+    if not np.isfinite(rho):
+        # A constant input makes Spearman undefined and scipy returns NaN with a
+        # ConstantInputWarning. Without this guard `rejects` is bool(nan < 0.05)
+        # = False and the verdict reads NOT SUPPORTED -- a substantive answer --
+        # where the truth is that no correlation exists to test. Found by
+        # tests/test_geometric_tests.py on its first run.
+        return {"label": label, "n_units": len(units), "estimable": False,
+                "why": ("g or the observed difference is constant across units, "
+                        "so the rank correlation is undefined (scipy returns "
+                        "NaN). This is not a null result."),
+                "constant_g": bool(len(set(g)) == 1),
+                "constant_d": bool(len(set(d)) == 1)}
     lo, hi = spearman_ci(rho, len(units))
     resolved = [u for u in units if abs(u["d"]) > FLOOR]
     sub = None
     if len(resolved) >= MIN_UNITS:                       # D8(b)
         r2, p2 = stats.spearmanr([u["g"] for u in resolved],
                                  [u["d"] for u in resolved])
-        sub = {"n_units": len(resolved), "rho": float(r2), "p": float(p2),
-               "rejects": bool(p2 < ALPHA)}
+        # Same NaN guard as above: the subset can be constant even when the
+        # full set is not, and a NaN rho here would make the D8(b) agreement
+        # check silently pass by comparing nan * rho > 0, which is False.
+        sub = ({"n_units": len(resolved), "rho": float(r2), "p": float(p2),
+                "rejects": bool(p2 < ALPHA)} if np.isfinite(r2) else
+               {"n_units": len(resolved), "rho": None, "p": None,
+                "rejects": False, "why": "constant input; rho undefined"})
     return {"label": label, "n_units": len(units), "estimable": True,
             "rho": float(rho), "p": float(p), "ci": [lo, hi],
             "rejects": bool(p < ALPHA),
@@ -612,7 +629,8 @@ def run_tests(units_path, json_out=None):
         v = verdict(r, ("rejects", "ci_excludes_zero"))
         if v == "SUPPORTED" and r.get("resolved_subset"):      # D8(b)
             s = r["resolved_subset"]
-            if not (s["rejects"] and s["rho"] * r["rho"] > 0):
+            if s["rho"] is None or not (s["rejects"]
+                                        and s["rho"] * r["rho"] > 0):
                 v = "NOT SUPPORTED"
         ci = ("-" if not r.get("ci") or r["ci"][0] is None
               else f"[{r['ci'][0]:+.3f}, {r['ci'][1]:+.3f}]")
@@ -753,7 +771,18 @@ def check_inputs(datasets, sizes, q_dir, c_dir, arm):
     return ok
 
 
-def main():
+def build_parser():
+    """The CLI, as a value rather than a side effect.
+
+    Extracted from main() so a test can inspect the option strings directly.
+    The previous test scraped --help output and asserted `"--test" in text`,
+    which stayed true when the flag was renamed to --test-GONE because the help
+    string for --units reads "sweep output to test (with --test)". The
+    assertion was satisfied by prose in another argument's help text, and the
+    mutation survived twice: once on the substring, once on the word boundary.
+    Text scraping cannot distinguish a flag that exists from a flag that is
+    merely mentioned.
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--controls-only", action="store_true")
     ap.add_argument("--test", action="store_true",
@@ -780,7 +809,11 @@ def main():
                          "mapping-major and reaches 12 qubits only after 80 cells.")
     ap.add_argument("--quantum-dir", default=str(ROOT / "results" / "runs" / "quantum"))
     ap.add_argument("--classical-dir", default=str(ROOT / "results" / "runs" / "classical"))
-    args = ap.parse_args()
+    return ap
+
+
+def main():
+    args = build_parser().parse_args()
     if not args.out:
         args.out = ("results/audits/g_units.jsonl" if args.arm == "registered"
                     else "results/audits/g_units_bw.jsonl")
