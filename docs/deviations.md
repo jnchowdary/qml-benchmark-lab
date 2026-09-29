@@ -1108,3 +1108,89 @@ D9 imply, and the reader should weigh those records accordingly.
 which has an audit protocol, a mutation harness and 426 tests. By a diff run on a
 backup folder because deleting 311 MB on an unverified assurance seemed like the
 kind of unchecked claim the day had already been about, twice.
+
+---
+
+## D13 — H3 was ungated from H2, and the departure was never declared
+
+**Date of the departure:** 25 September 2026, recorded in the week-4 record.
+**Date of this declaration:** 29 September 2026, **after** H3's result was
+computed, read and published in the week-7 record and in D10.
+**Affects:** Section 9 (the confirmatory set), and what H3's result may be used
+for.
+
+### What section 9 registers
+
+> The confirmatory set is exactly three tests: H1 on churn, H1 on fraud, H2. **H3
+> is confirmatory but subordinate to H2 and is reported only if H2 is rejected.**
+
+H2 was not rejected. It returned NOT ESTABLISHED at every lambda, because no
+lambda column is free of ceiling breaches. Under section 9 as written, **H3's
+result should not have been reported at all.**
+
+It was reported in full: five lambda columns in `docs/week-07-report.md` section
+2, its own section 3 headed "H3 points away from the hypothesis under test", and
+section 6 of D10. Its lambda = 0.1 result was described as the strongest signal
+in the data: median |observed difference| 0.0235 above the g = 2 split against
+0.0777 below, p = 7.93e-07, with the signed secondary rejecting at 2.17e-06.
+
+### The departure was decided in advance, and never written down
+
+The week-4 record contains it twice, both before any g had been computed across
+the 360 units:
+
+> "...it makes H3 the test that matters rather than one gated behind H2."
+
+> "If the project continues as registered: settle D5, compute g across all 360
+> units under whatever lambda rule survives with the sweep as the reported
+> quantity, and **test H2 and H3 with H3 ungated**."
+
+The reason is stated there too, and it is a good one: on the eight-seed
+diagnostic, g was largest where the quantum kernel performed worst, which points
+opposite to Huang's prediction and makes H3 the informative test rather than one
+conditional on H2 rejecting.
+
+Section 11 requires that any departure be recorded **in this file**, with its
+date, its reason, and whether it was made before or after the affected results
+were seen. It was recorded in a weekly narrative instead, and no deviation record
+was ever opened. Between 25 and 29 September the project ran, reported and
+headlined a confirmatory test that its own registration gates shut, with the
+gate's removal documented nowhere a reader of `deviations.md` would find it.
+
+### What this costs, stated without softening
+
+**The multiplicity changes.** Section 9's confirmatory set is three tests.
+Ungating H3 makes it four unconditionally, and section 9's statement that no
+correction is applied across the H1 pair was written for a three-test family with
+H3 conditional. No correction has been applied to the four. Since H2 and H3 both
+return NOT ESTABLISHED under D5's rule, no positive confirmatory claim currently
+rests on this, but the family is not what section 9 describes and the paper must
+say so.
+
+**The "decided in advance" defence rests on evidence D11 just weakened.** The
+week-4 record is committed, and its commit precedes the sweep. That is the whole
+of the evidence that the ungating was not chosen after seeing H3's numbers. D11's
+third amendment establishes that this project's history was rewritten on 25
+September, that its ordering evidence is author-controlled, and that no external
+timestamp exists. So the claim "this departure predates the data" is supported by
+exactly the class of evidence this project has just finished documenting as
+weak.
+
+**Therefore, two readings, and the reader picks.** A reader who accepts the
+commit ordering may read H3's result as confirmatory under a departure declared
+late but decided early. A reader who does not should read H3 as **exploratory**,
+per section 11's rule for departures made after results are seen, because from
+their position the declaration and the result arrived together. This record does
+not choose for them, and the paper states both readings.
+
+### What is not done
+
+H3 is not re-gated. Re-imposing the gate now, with the result known, would be
+choosing a reporting rule from the answer -- the same error D5 refused when it
+declined to pick the lambda that made g behave, and the same one D10 refused when
+it declined to set a breach tolerance. The gate's removal stands as decided in
+week 4; what changes is that it is finally recorded where section 11 says it
+belongs, and labelled with the doubt its late declaration earns.
+
+No number changes. No threshold moves. H3's five lambda columns stand exactly as
+computed.
