@@ -1,0 +1,2188 @@
+{
+  "dataset": "churn",
+  "cell": [
+    "pca",
+    12
+  ],
+  "bandwidths": [
+    0.02,
+    0.0278782,
+    0.0388598,
+    0.0541672,
+    0.0755043,
+    0.105246,
+    0.146704,
+    0.204493,
+    0.285045,
+    0.397328,
+    0.553841,
+    0.772005,
+    1.07611,
+    1.5
+  ],
+  "summary": {
+    "angle-r1": {
+      "per_bandwidth": [
+        {
+          "bandwidth": 0.02,
+          "gamma": 0.0001,
+          "ratio": 0.25,
+          "spread": 0.0,
+          "rmse": 5.835536064637258e-08
+        },
+        {
+          "bandwidth": 0.0278782,
+          "gamma": 0.00019440676574102725,
+          "ratio": 0.2501392920250524,
+          "spread": 0.0,
+          "rmse": 9.063798347770965e-07
+        },
+        {
+          "bandwidth": 0.0388598,
+          "gamma": 0.00037793990565886744,
+          "ratio": 0.2502773962463824,
+          "spread": 0.0,
+          "rmse": 3.5177842924135153e-06
+        },
+        {
+          "bandwidth": 0.0541672,
+          "gamma": 0.000732911438554269,
+          "ratio": 0.24979211567143403,
+          "spread": 0.0,
+          "rmse": 9.169752447317846e-06
+        },
+        {
+          "bandwidth": 0.0755043,
+          "gamma": 0.001424829423439392,
+          "ratio": 0.24993064143725086,
+          "spread": 0.0,
+          "rmse": 1.5438193689761448e-05
+        },
+        {
+          "bandwidth": 0.105246,
+          "gamma": 0.00276996479943505,
+          "ratio": 0.2500708395985902,
+          "spread": 0.0,
+          "rmse": 3.618884267996893e-05
+        },
+        {
+          "bandwidth": 0.146704,
+          "gamma": 0.005384998978746618,
+          "ratio": 0.25020830134259453,
+          "spread": 0.0,
+          "rmse": 0.000119462396345224
+        },
+        {
+          "bandwidth": 0.204493,
+          "gamma": 0.010533610359548352,
+          "ratio": 0.25189546987250716,
+          "spread": 0.0,
+          "rmse": 0.0002873336871706572
+        },
+        {
+          "bandwidth": 0.285045,
+          "gamma": 0.020478051215759806,
+          "ratio": 0.2520355308589883,
+          "spread": 0.0,
+          "rmse": 0.0008188611843391477
+        },
+        {
+          "bandwidth": 0.397328,
+          "gamma": 0.04015714926984955,
+          "ratio": 0.2543692049502845,
+          "spread": 0.0,
+          "rmse": 0.0023545771207252484
+        },
+        {
+          "bandwidth": 0.553841,
+          "gamma": 0.07943282347242822,
+          "ratio": 0.2589582756292869,
+          "spread": 0.0,
+          "rmse": 0.006078809987397354
+        },
+        {
+          "bandwidth": 0.772005,
+          "gamma": 0.15848931924611143,
+          "ratio": 0.26592537097572977,
+          "spread": 0.0,
+          "rmse": 0.012151874155095404
+        },
+        {
+          "bandwidth": 1.07611,
+          "gamma": 0.3162277660168379,
+          "ratio": 0.2730779699143499,
+          "spread": 0.008626912537338103,
+          "rmse": 0.012939325063544109
+        },
+        {
+          "bandwidth": 1.5,
+          "gamma": 0.6147681722884395,
+          "ratio": 0.273230298794862,
+          "spread": 1.8059214426999606e-16,
+          "rmse": 0.008428115455008644
+        }
+      ],
+      "plateau": {
+        "found": true,
+        "lo": 0.02,
+        "hi": 0.553841,
+        "n_bandwidths": 11,
+        "n_usable": 14,
+        "tol": 0.05,
+        "ratio": 0.25020830134259453
+      },
+      "exponent": {
+        "n": 33,
+        "n_bandwidths": 11,
+        "slope": 2.0077187748274885,
+        "slope_stderr": 0.0011517062745847937,
+        "intercept": -1.362564356149762,
+        "r2": 0.9999897991827065,
+        "ratio_median": 0.25020830134259453,
+        "ratio_iqr": 0.002035530858988277
+      },
+      "predicted_ratio": 0.25
+    },
+    "iqp-r1": {
+      "per_bandwidth": [
+        {
+          "bandwidth": 0.02,
+          "gamma": 0.00010087019837903996,
+          "ratio": 0.2521754959475999,
+          "spread": 0.0,
+          "rmse": 3.974761747370058e-06
+        },
+        {
+          "bandwidth": 0.0278782,
+          "gamma": 0.00019952623149688788,
+          "ratio": 0.256726406083744,
+          "spread": 0.008626912537337328,
+          "rmse": 1.1047869474955995e-05
+        },
+        {
+          "bandwidth": 0.0388598,
+          "gamma": 0.00039467273481264513,
+          "ratio": 0.2613581232342942,
+          "spread": 9.61482075902874e-16,
+          "rmse": 3.0602037322463475e-05
+        },
+        {
+          "bandwidth": 0.0541672,
+          "gamma": 0.0007943282347242824,
+          "ratio": 0.2707242919836651,
+          "spread": 0.008701983790398719,
+          "rmse": 0.0001184443734693877
+        },
+        {
+          "bandwidth": 0.0755043,
+          "gamma": 0.0016694647350886053,
+          "ratio": 0.29284234676342213,
+          "spread": 0.0086269125373375,
+          "rmse": 0.00042526640789739445
+        },
+        {
+          "bandwidth": 0.105246,
+          "gamma": 0.003673258563827988,
+          "ratio": 0.33161968459184943,
+          "spread": 0.008626912537337664,
+          "rmse": 0.0015297037954034615
+        },
+        {
+          "bandwidth": 0.146704,
+          "gamma": 0.008683831245965286,
+          "ratio": 0.4034850654148947,
+          "spread": 0.017179401454747546,
+          "rmse": 0.00518661625237617
+        },
+        {
+          "bandwidth": 0.204493,
+          "gamma": 0.022002612493836404,
+          "ratio": 0.5261594290445405,
+          "spread": 0.017179401454748177,
+          "rmse": 0.015230441100185716
+        },
+        {
+          "bandwidth": 0.285045,
+          "gamma": 0.057217087841129284,
+          "ratio": 0.7042046607025895,
+          "spread": 0.017179401454748562,
+          "rmse": 0.03414793995810852
+        },
+        {
+          "bandwidth": 0.397328,
+          "gamma": 0.14003517067695886,
+          "ratio": 0.8870309690264742,
+          "spread": 0.025881385245148294,
+          "rmse": 0.05849259791272057
+        },
+        {
+          "bandwidth": 0.553841,
+          "gamma": 0.3368392954766444,
+          "ratio": 1.0981269367957567,
+          "spread": 0.054417744110409165,
+          "rmse": 0.060723682473850876
+        },
+        {
+          "bandwidth": 0.772005,
+          "gamma": 1.0,
+          "ratio": 1.6778756590075663,
+          "spread": 0.03465909355743513,
+          "rmse": 0.03440074545649344
+        },
+        {
+          "bandwidth": 1.07611,
+          "gamma": 4.1214638960377314,
+          "ratio": 3.5590834036545154,
+          "spread": 0.20077817906983447,
+          "rmse": 0.013320437672493619
+        },
+        {
+          "bandwidth": 1.5,
+          "gamma": 30.31433133020796,
+          "ratio": 13.473036146759092,
+          "spread": 0.053361035954836065,
+          "rmse": 0.004567429451232791
+        }
+      ],
+      "plateau": {
+        "found": true,
+        "lo": 0.02,
+        "hi": 0.0541672,
+        "n_bandwidths": 4,
+        "n_usable": 13,
+        "tol": 0.05,
+        "ratio": 0.2590422646590191
+      },
+      "exponent": {
+        "n": 12,
+        "n_bandwidths": 4,
+        "slope": 2.0729748855359644,
+        "slope_stderr": 0.005607964984209869,
+        "intercept": -1.0973476395824875,
+        "r2": 0.9999268202835031,
+        "ratio_median": 0.2590422646590191,
+        "ratio_iqr": 0.009772054060411262
+      },
+      "predicted_ratio": null
+    },
+    "angle-r2": {
+      "per_bandwidth": [
+        {
+          "bandwidth": 0.02,
+          "gamma": 0.0004015714926984955,
+          "ratio": 1.0039287317462386,
+          "spread": 0.0,
+          "rmse": 1.5175759052642855e-05
+        },
+        {
+          "bandwidth": 0.0278782,
+          "gamma": 0.0007806821510931118,
+          "ratio": 1.0044880888104535,
+          "spread": 0.0,
+          "rmse": 3.220382155869264e-05
+        },
+        {
+          "bandwidth": 0.0388598,
+          "gamma": 0.0015176989206575969,
+          "ratio": 1.0050426759935245,
+          "spread": 0.0,
+          "rmse": 6.466126523531854e-05
+        },
+        {
+          "bandwidth": 0.0541672,
+          "gamma": 0.002943163403960392,
+          "ratio": 1.003093927544929,
+          "spread": 0.0,
+          "rmse": 4.8119468573018566e-05
+        },
+        {
+          "bandwidth": 0.0755043,
+          "gamma": 0.005721708784112927,
+          "ratio": 1.0036502075304918,
+          "spread": 0.0,
+          "rmse": 7.387426826637957e-05
+        },
+        {
+          "bandwidth": 0.105246,
+          "gamma": 0.011123388992314227,
+          "ratio": 1.00421320337972,
+          "spread": 0.0,
+          "rmse": 0.00028143176318388264
+        },
+        {
+          "bandwidth": 0.146704,
+          "gamma": 0.02181279788025915,
+          "ratio": 1.01350866113243,
+          "spread": 0.0,
+          "rmse": 0.0008810705760628082
+        },
+        {
+          "bandwidth": 0.204493,
+          "gamma": 0.04277456732779863,
+          "ratio": 1.0228895286469486,
+          "spread": 0.0,
+          "rmse": 0.002426659934447482
+        },
+        {
+          "bandwidth": 0.285045,
+          "gamma": 0.08461020559070304,
+          "ratio": 1.0413480197632057,
+          "spread": 0.0,
+          "rmse": 0.006456395665886558
+        },
+        {
+          "bandwidth": 0.397328,
+          "gamma": 0.16881955467689894,
+          "ratio": 1.0693611644257224,
+          "spread": 1.644097194116515e-16,
+          "rmse": 0.012571853866873987
+        },
+        {
+          "bandwidth": 0.553841,
+          "gamma": 0.33310200720917976,
+          "ratio": 1.0859430349405226,
+          "spread": 0.002495947512339416,
+          "rmse": 0.01238872684607152
+        },
+        {
+          "bandwidth": 0.772005,
+          "gamma": 0.6532080071804461,
+          "ratio": 1.0960018155169102,
+          "spread": 0.008626912537337855,
+          "rmse": 0.008830814470964897
+        },
+        {
+          "bandwidth": 1.07611,
+          "gamma": 1.2698805603209231,
+          "ratio": 1.0966032800158048,
+          "spread": 0.0,
+          "rmse": 0.010915737375032313
+        },
+        {
+          "bandwidth": 1.5,
+          "gamma": 2.4687337260939426,
+          "ratio": 1.0972149893750855,
+          "spread": 0.01717940145474895,
+          "rmse": 0.005992520314645353
+        }
+      ],
+      "plateau": {
+        "found": true,
+        "lo": 0.02,
+        "hi": 0.285045,
+        "n_bandwidths": 9,
+        "n_usable": 14,
+        "tol": 0.05,
+        "ratio": 1.0044880888104535
+      },
+      "exponent": {
+        "n": 27,
+        "n_bandwidths": 9,
+        "slope": 2.0109767479380425,
+        "slope_stderr": 0.0017482780738368204,
+        "intercept": 0.03957381412155314,
+        "r2": 0.9999811053554472,
+        "ratio_median": 1.0044880888104535,
+        "ratio_iqr": 0.009579929386191344
+      },
+      "predicted_ratio": 1.0
+    },
+    "iqp-r2": {
+      "per_bandwidth": [
+        {
+          "bandwidth": 0.02,
+          "gamma": 0.00010174796921026867,
+          "ratio": 0.2543699230256717,
+          "spread": 0.008626912537337597,
+          "rmse": 4.793110803548059e-06
+        },
+        {
+          "bandwidth": 0.0278782,
+          "gamma": 0.00019952623149688788,
+          "ratio": 0.256726406083744,
+          "spread": 0.0,
+          "rmse": 9.483745149549356e-06
+        },
+        {
+          "bandwidth": 0.0388598,
+          "gamma": 0.00039810717055349735,
+          "ratio": 0.2636324573861682,
+          "spread": 0.0,
+          "rmse": 3.780168668096397e-05
+        },
+        {
+          "bandwidth": 0.0541672,
+          "gamma": 0.0008152459027955744,
+          "ratio": 0.2778534869826513,
+          "spread": 0.0,
+          "rmse": 0.00015404632256848751
+        },
+        {
+          "bandwidth": 0.0755043,
+          "gamma": 0.001747729634155149,
+          "ratio": 0.3065708647908679,
+          "spread": 0.008701983790398764,
+          "rmse": 0.0006693251293703089
+        },
+        {
+          "bandwidth": 0.105246,
+          "gamma": 0.004193505815952806,
+          "ratio": 0.3785873092938843,
+          "spread": 0.0,
+          "rmse": 0.003149907610008762
+        },
+        {
+          "bandwidth": 0.146704,
+          "gamma": 0.011951509205511811,
+          "ratio": 0.5553142774202554,
+          "spread": 0.0024897332687818336,
+          "rmse": 0.015750961028396775
+        },
+        {
+          "bandwidth": 0.204493,
+          "gamma": 0.040506596131864414,
+          "ratio": 0.9686544040736057,
+          "spread": 0.0,
+          "rmse": 0.0653778219396613
+        },
+        {
+          "bandwidth": 0.285045,
+          "gamma": 0.1352650586840658,
+          "ratio": 1.664787362474902,
+          "spread": 0.017179401454748267,
+          "rmse": 0.12534399590344045
+        },
+        {
+          "bandwidth": 0.397328,
+          "gamma": 0.39126792764854507,
+          "ratio": 2.478425722147351,
+          "spread": 0.026333783890424418,
+          "rmse": 0.0955677012810546
+        },
+        {
+          "bandwidth": 0.553841,
+          "gamma": 1.4003517067695888,
+          "ratio": 4.565274749240838,
+          "spread": 0.22495251058527294,
+          "rmse": 0.03577452087250921
+        },
+        {
+          "bandwidth": 0.772005,
+          "gamma": 6.0420682305509406,
+          "ratio": 10.13783921410434,
+          "spread": 0.21674880860752155,
+          "rmse": 0.010524230093402885
+        },
+        {
+          "bandwidth": 1.07611,
+          "gamma": 28.2842712474619,
+          "ratio": 24.424836155445156,
+          "spread": 0.4329667311125094,
+          "rmse": 0.003214281593708617
+        },
+        {
+          "bandwidth": 1.5,
+          "gamma": 36.68016172818684,
+          "ratio": 16.302294101416372,
+          "spread": 0.0,
+          "rmse": 0.003944413869859507
+        }
+      ],
+      "plateau": {
+        "found": true,
+        "lo": 0.02,
+        "hi": 0.0388598,
+        "n_bandwidths": 3,
+        "n_usable": 11,
+        "tol": 0.05,
+        "ratio": 0.256726406083744
+      },
+      "exponent": {
+        "error": "only 3 distinct bandwidths in range; 4 needed for a slope to mean anything"
+      },
+      "predicted_ratio": null
+    }
+  },
+  "records": [
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.02,
+      "gamma": 0.0001,
+      "gram_rmse": 5.835536064637258e-08,
+      "ratio": 0.25
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019440676574102725,
+      "gram_rmse": 9.063798347770965e-07,
+      "ratio": 0.2501392920250524
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00037793990565886744,
+      "gram_rmse": 3.5177842924135153e-06,
+      "ratio": 0.2502773962463824
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0541672,
+      "gamma": 0.000732911438554269,
+      "gram_rmse": 9.169752447317846e-06,
+      "ratio": 0.24979211567143403
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0755043,
+      "gamma": 0.001424829423439392,
+      "gram_rmse": 1.5438193689761448e-05,
+      "ratio": 0.24993064143725086
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.105246,
+      "gamma": 0.00276996479943505,
+      "gram_rmse": 3.618884267996893e-05,
+      "ratio": 0.2500708395985902
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.146704,
+      "gamma": 0.005384998978746618,
+      "gram_rmse": 0.000119462396345224,
+      "ratio": 0.25020830134259453
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.204493,
+      "gamma": 0.010533610359548352,
+      "gram_rmse": 0.0002873336871706572,
+      "ratio": 0.25189546987250716
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.285045,
+      "gamma": 0.020478051215759806,
+      "gram_rmse": 0.0008379246234624703,
+      "ratio": 0.2520355308589883
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.397328,
+      "gamma": 0.04015714926984955,
+      "gram_rmse": 0.00243503922428236,
+      "ratio": 0.2543692049502845
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.553841,
+      "gamma": 0.07943282347242822,
+      "gram_rmse": 0.006305762903158375,
+      "ratio": 0.2589582756292869
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.772005,
+      "gamma": 0.15848931924611143,
+      "gram_rmse": 0.012390843842594267,
+      "ratio": 0.26592537097572977
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 1.07611,
+      "gamma": 0.3162277660168379,
+      "gram_rmse": 0.012939325063544109,
+      "ratio": 0.2730779699143499
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 1.5,
+      "gamma": 0.6147681722884395,
+      "gram_rmse": 0.00918409423114106,
+      "ratio": 0.273230298794862
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.02,
+      "gamma": 0.0001,
+      "gram_rmse": 5.189726514932734e-08,
+      "ratio": 0.25
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019440676574102725,
+      "gram_rmse": 8.866075706940519e-07,
+      "ratio": 0.2501392920250524
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00037793990565886744,
+      "gram_rmse": 3.4398387771639047e-06,
+      "ratio": 0.2502773962463824
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0541672,
+      "gamma": 0.000732911438554269,
+      "gram_rmse": 8.608788807592996e-06,
+      "ratio": 0.24979211567143403
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0755043,
+      "gamma": 0.001424829423439392,
+      "gram_rmse": 1.4022976593497711e-05,
+      "ratio": 0.24993064143725086
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.105246,
+      "gamma": 0.00276996479943505,
+      "gram_rmse": 3.1725285477860974e-05,
+      "ratio": 0.2500708395985902
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.146704,
+      "gamma": 0.005384998978746618,
+      "gram_rmse": 0.00010384057764259476,
+      "ratio": 0.25020830134259453
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.204493,
+      "gamma": 0.010533610359548352,
+      "gram_rmse": 0.0002939083893071235,
+      "ratio": 0.25189546987250716
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.285045,
+      "gamma": 0.020478051215759806,
+      "gram_rmse": 0.0007082560339964599,
+      "ratio": 0.2520355308589883
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.397328,
+      "gamma": 0.04015714926984955,
+      "gram_rmse": 0.0021171322653307767,
+      "ratio": 0.2543692049502845
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.553841,
+      "gamma": 0.07943282347242822,
+      "gram_rmse": 0.005694573538313607,
+      "ratio": 0.2589582756292869
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.772005,
+      "gamma": 0.15848931924611143,
+      "gram_rmse": 0.01151817357774461,
+      "ratio": 0.26592537097572977
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 1.07611,
+      "gamma": 0.31349969673753286,
+      "gram_rmse": 0.012665888511918556,
+      "ratio": 0.270722150152025
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 1.5,
+      "gamma": 0.6147681722884394,
+      "gram_rmse": 0.007992162191906495,
+      "ratio": 0.27323029879486194
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.02,
+      "gamma": 0.0001,
+      "gram_rmse": 5.901038307278419e-08,
+      "ratio": 0.25
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019440676574102725,
+      "gram_rmse": 9.103387005721318e-07,
+      "ratio": 0.2501392920250524
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00037793990565886744,
+      "gram_rmse": 3.53346751409457e-06,
+      "ratio": 0.2502773962463824
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0541672,
+      "gamma": 0.000732911438554269,
+      "gram_rmse": 9.271360557893332e-06,
+      "ratio": 0.24979211567143403
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0755043,
+      "gamma": 0.001424829423439392,
+      "gram_rmse": 1.5625224699423805e-05,
+      "ratio": 0.24993064143725086
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.105246,
+      "gamma": 0.00276996479943505,
+      "gram_rmse": 3.652380186178513e-05,
+      "ratio": 0.2500708395985902
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.146704,
+      "gamma": 0.005384998978746618,
+      "gram_rmse": 0.0001203458162539746,
+      "ratio": 0.25020830134259453
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.204493,
+      "gamma": 0.010533610359548352,
+      "gram_rmse": 0.00027451406463322727,
+      "ratio": 0.25189546987250716
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.285045,
+      "gamma": 0.020478051215759806,
+      "gram_rmse": 0.0008188611843391477,
+      "ratio": 0.2520355308589883
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.397328,
+      "gamma": 0.04015714926984955,
+      "gram_rmse": 0.0023545771207252484,
+      "ratio": 0.2543692049502845
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.553841,
+      "gamma": 0.07943282347242822,
+      "gram_rmse": 0.006078809987397354,
+      "ratio": 0.2589582756292869
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.772005,
+      "gamma": 0.15848931924611143,
+      "gram_rmse": 0.012151874155095404,
+      "ratio": 0.26592537097572977
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 1.07611,
+      "gamma": 0.31622776601683794,
+      "gram_rmse": 0.013297729616995425,
+      "ratio": 0.27307796991434996
+    },
+    {
+      "setting": "angle-r1",
+      "embedding": "angle",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 1.5,
+      "gamma": 0.6147681722884395,
+      "gram_rmse": 0.008428115455008644,
+      "ratio": 0.273230298794862
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.02,
+      "gamma": 0.00010087019837903996,
+      "gram_rmse": 4.1382733367855795e-06,
+      "ratio": 0.2521754959475999
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019952623149688788,
+      "gram_rmse": 1.087671389747768e-05,
+      "ratio": 0.256726406083744
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0388598,
+      "gamma": 0.0003946727348126455,
+      "gram_rmse": 3.184436064492944e-05,
+      "ratio": 0.26135812323429447
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0008012404661471091,
+      "gram_rmse": 0.0001229010704794236,
+      "ratio": 0.2730801303841741
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.0755043,
+      "gamma": 0.0016694647350886053,
+      "gram_rmse": 0.0004402272710345551,
+      "ratio": 0.29284234676342213
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.105246,
+      "gamma": 0.003673258563827988,
+      "gram_rmse": 0.0015837620247421845,
+      "ratio": 0.33161968459184943
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.146704,
+      "gamma": 0.008683831245965295,
+      "gram_rmse": 0.005336290793502801,
+      "ratio": 0.4034850654148951
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.204493,
+      "gamma": 0.022002612493836404,
+      "gram_rmse": 0.015349376392547973,
+      "ratio": 0.5261594290445405
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.285045,
+      "gamma": 0.057217087841129284,
+      "gram_rmse": 0.03414793995810852,
+      "ratio": 0.7042046607025895
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.397328,
+      "gamma": 0.14003517067695886,
+      "gram_rmse": 0.05849259791272057,
+      "ratio": 0.8870309690264742
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.553841,
+      "gamma": 0.3368392954766444,
+      "gram_rmse": 0.060723682473850876,
+      "ratio": 1.0981269367957567
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 0.772005,
+      "gamma": 0.9828205985452512,
+      "gram_rmse": 0.03440074545649344,
+      "ratio": 1.649050759470324
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 1.07611,
+      "gamma": 3.4871790757841232,
+      "gram_rmse": 0.013320437672493619,
+      "ratio": 3.011347784976676
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 0,
+      "bandwidth": 1.5,
+      "gamma": 31.931935454266,
+      "gram_rmse": 0.00453399501109296,
+      "ratio": 14.19197131300711
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.02,
+      "gamma": 0.00010087019837903996,
+      "gram_rmse": 3.4691759102715255e-06,
+      "ratio": 0.2521754959475999
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0278782,
+      "gamma": 0.0001978049361488597,
+      "gram_rmse": 1.1350054503700682e-05,
+      "ratio": 0.25451164983243457
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00039467273481264513,
+      "gram_rmse": 2.9400836677734812e-05,
+      "ratio": 0.2613581232342942
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0007943282347242824,
+      "gram_rmse": 0.00010733840082131372,
+      "ratio": 0.2707242919836651
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.0755043,
+      "gamma": 0.0016550624088348266,
+      "gram_rmse": 0.00039577333362472673,
+      "ratio": 0.29031602145066543
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.105246,
+      "gamma": 0.0036415696834708176,
+      "gram_rmse": 0.001426610795642292,
+      "ratio": 0.32875883057721605
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.146704,
+      "gamma": 0.008534648222825576,
+      "gram_rmse": 0.004830387189214146,
+      "ratio": 0.39655343349513755
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.204493,
+      "gamma": 0.02162462078075153,
+      "gram_rmse": 0.014092577345432724,
+      "ratio": 0.5171203249837832
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.285045,
+      "gamma": 0.05623413251903491,
+      "gram_rmse": 0.03237296062969376,
+      "ratio": 0.6921068461300747
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.397328,
+      "gamma": 0.13762945026211507,
+      "gram_rmse": 0.05807813505548905,
+      "ratio": 0.8717923079067732
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.553841,
+      "gamma": 0.32737951410195054,
+      "gram_rmse": 0.06324343926820579,
+      "ratio": 1.0672871835862907
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 0.772005,
+      "gamma": 1.0,
+      "gram_rmse": 0.037028844895445424,
+      "ratio": 1.6778756590075663
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 1.07611,
+      "gamma": 4.1214638960377314,
+      "gram_rmse": 0.013839716250927126,
+      "ratio": 3.5590834036545154
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 1,
+      "bandwidth": 1.5,
+      "gamma": 30.31433133020796,
+      "gram_rmse": 0.004778818325893079,
+      "ratio": 13.473036146759092
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.02,
+      "gamma": 0.00010087019837903996,
+      "gram_rmse": 3.974761747370058e-06,
+      "ratio": 0.2521754959475999
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019952623149688788,
+      "gram_rmse": 1.1047869474955995e-05,
+      "ratio": 0.256726406083744
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00039467273481264513,
+      "gram_rmse": 3.0602037322463475e-05,
+      "ratio": 0.2613581232342942
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0007943282347242824,
+      "gram_rmse": 0.0001184443734693877,
+      "ratio": 0.2707242919836651
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.0755043,
+      "gamma": 0.0016694647350886053,
+      "gram_rmse": 0.00042526640789739445,
+      "ratio": 0.29284234676342213
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.105246,
+      "gamma": 0.003673258563827988,
+      "gram_rmse": 0.0015297037954034615,
+      "ratio": 0.33161968459184943
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.146704,
+      "gamma": 0.008683831245965286,
+      "gram_rmse": 0.00518661625237617,
+      "ratio": 0.4034850654148947
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.204493,
+      "gamma": 0.022002612493836404,
+      "gram_rmse": 0.015230441100185716,
+      "ratio": 0.5261594290445405
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.285045,
+      "gamma": 0.057217087841129284,
+      "gram_rmse": 0.03547034768007473,
+      "ratio": 0.7042046607025895
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.397328,
+      "gamma": 0.14125375446227553,
+      "gram_rmse": 0.060840402365235864,
+      "ratio": 0.8947498981405246
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.553841,
+      "gamma": 0.3457095486895291,
+      "gram_rmse": 0.06039733736414588,
+      "ratio": 1.1270447742335896
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 0.772005,
+      "gamma": 1.0174796921026863,
+      "gram_rmse": 0.03375189147157949,
+      "ratio": 1.7072044089136105
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 1.07611,
+      "gamma": 4.3146790919326445,
+      "gram_rmse": 0.013025425845019834,
+      "ratio": 3.7259340699200982
+    },
+    {
+      "setting": "iqp-r1",
+      "embedding": "iqp",
+      "reps": 1,
+      "seed": 2,
+      "bandwidth": 1.5,
+      "gamma": 30.31433133020796,
+      "gram_rmse": 0.004567429451232791,
+      "ratio": 13.473036146759092
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.02,
+      "gamma": 0.0004015714926984955,
+      "gram_rmse": 1.5175759052642855e-05,
+      "ratio": 1.0039287317462386
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0278782,
+      "gamma": 0.0007806821510931118,
+      "gram_rmse": 3.220382155869264e-05,
+      "ratio": 1.0044880888104535
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0388598,
+      "gamma": 0.0015176989206575969,
+      "gram_rmse": 6.466126523531854e-05,
+      "ratio": 1.0050426759935245
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0541672,
+      "gamma": 0.002943163403960392,
+      "gram_rmse": 4.8119468573018566e-05,
+      "ratio": 1.003093927544929
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0755043,
+      "gamma": 0.005721708784112927,
+      "gram_rmse": 7.428426486979219e-05,
+      "ratio": 1.0036502075304918
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.105246,
+      "gamma": 0.011123388992314227,
+      "gram_rmse": 0.0002865018464418886,
+      "ratio": 1.00421320337972
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.146704,
+      "gamma": 0.02181279788025915,
+      "gram_rmse": 0.0008928714842130108,
+      "ratio": 1.01350866113243
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.204493,
+      "gamma": 0.04277456732779863,
+      "gram_rmse": 0.002564256094087165,
+      "ratio": 1.0228895286469486
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.285045,
+      "gamma": 0.08461020559070304,
+      "gram_rmse": 0.0067450399646768544,
+      "ratio": 1.0413480197632057
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.397328,
+      "gamma": 0.16881955467689894,
+      "gram_rmse": 0.012823552887070919,
+      "ratio": 1.0693611644257224
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.553841,
+      "gamma": 0.33310200720917976,
+      "gram_rmse": 0.01238872684607152,
+      "ratio": 1.0859430349405226
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.772005,
+      "gamma": 0.6475728388338117,
+      "gram_rmse": 0.009660711723520872,
+      "ratio": 1.0865467037136822
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 1.07611,
+      "gamma": 1.2698805603209231,
+      "gram_rmse": 0.010779597740544438,
+      "ratio": 1.0966032800158048
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 1.5,
+      "gamma": 2.4687337260939426,
+      "gram_rmse": 0.005992520314645353,
+      "ratio": 1.0972149893750855
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.02,
+      "gamma": 0.0004015714926984955,
+      "gram_rmse": 1.4669532508921247e-05,
+      "ratio": 1.0039287317462386
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0278782,
+      "gamma": 0.0007806821510931118,
+      "gram_rmse": 3.123656303042762e-05,
+      "ratio": 1.0044880888104535
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0388598,
+      "gamma": 0.0015176989206575969,
+      "gram_rmse": 6.313431692597896e-05,
+      "ratio": 1.0050426759935245
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0541672,
+      "gamma": 0.002943163403960392,
+      "gram_rmse": 4.89731841963329e-05,
+      "ratio": 1.003093927544929
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0755043,
+      "gamma": 0.005721708784112927,
+      "gram_rmse": 7.387426826637957e-05,
+      "ratio": 1.0036502075304918
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.105246,
+      "gamma": 0.011123388992314227,
+      "gram_rmse": 0.00023978076629461412,
+      "ratio": 1.00421320337972
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.146704,
+      "gamma": 0.02181279788025915,
+      "gram_rmse": 0.0008810705760628082,
+      "ratio": 1.01350866113243
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.204493,
+      "gamma": 0.04277456732779863,
+      "gram_rmse": 0.002396451456642365,
+      "ratio": 1.0228895286469486
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.285045,
+      "gamma": 0.08461020559070304,
+      "gram_rmse": 0.006249712087173164,
+      "ratio": 1.0413480197632057
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.397328,
+      "gamma": 0.16881955467689894,
+      "gram_rmse": 0.012024354443057566,
+      "ratio": 1.0693611644257224
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.553841,
+      "gamma": 0.33310200720917976,
+      "gram_rmse": 0.012189400738366564,
+      "ratio": 1.0859430349405226
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.772005,
+      "gamma": 0.6532080071804461,
+      "gram_rmse": 0.008264549088003647,
+      "ratio": 1.0960018155169102
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 1.07611,
+      "gamma": 1.2698805603209231,
+      "gram_rmse": 0.010915737375032313,
+      "ratio": 1.0966032800158048
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 1.5,
+      "gamma": 2.4687337260939426,
+      "gram_rmse": 0.005869254017409785,
+      "ratio": 1.0972149893750855
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.02,
+      "gamma": 0.0004015714926984955,
+      "gram_rmse": 1.5282913109544272e-05,
+      "ratio": 1.0039287317462386
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0278782,
+      "gamma": 0.0007806821510931118,
+      "gram_rmse": 3.240837965137854e-05,
+      "ratio": 1.0044880888104535
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0388598,
+      "gamma": 0.0015176989206575969,
+      "gram_rmse": 6.497374481964804e-05,
+      "ratio": 1.0050426759935245
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0541672,
+      "gamma": 0.002943163403960392,
+      "gram_rmse": 4.749137092796848e-05,
+      "ratio": 1.003093927544929
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0755043,
+      "gamma": 0.005721708784112927,
+      "gram_rmse": 7.006386461602355e-05,
+      "ratio": 1.0036502075304918
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.105246,
+      "gamma": 0.011123388992314227,
+      "gram_rmse": 0.00028143176318388264,
+      "ratio": 1.00421320337972
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.146704,
+      "gamma": 0.02181279788025915,
+      "gram_rmse": 0.0008417662828085811,
+      "ratio": 1.01350866113243
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.204493,
+      "gamma": 0.04277456732779863,
+      "gram_rmse": 0.002426659934447482,
+      "ratio": 1.0228895286469486
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.285045,
+      "gamma": 0.08461020559070304,
+      "gram_rmse": 0.006456395665886558,
+      "ratio": 1.0413480197632057
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.397328,
+      "gamma": 0.1688195546768989,
+      "gram_rmse": 0.012571853866873987,
+      "ratio": 1.0693611644257222
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.553841,
+      "gamma": 0.3339334123354288,
+      "gram_rmse": 0.012827005225610187,
+      "ratio": 1.0886534917571247
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.772005,
+      "gamma": 0.6532080071804461,
+      "gram_rmse": 0.008830814470964897,
+      "ratio": 1.0960018155169102
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 1.07611,
+      "gamma": 1.2698805603209231,
+      "gram_rmse": 0.01266452133566693,
+      "ratio": 1.0966032800158048
+    },
+    {
+      "setting": "angle-r2",
+      "embedding": "angle",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 1.5,
+      "gamma": 2.4263223583284965,
+      "gram_rmse": 0.007117608601489762,
+      "ratio": 1.078365492590443
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.02,
+      "gamma": 0.00010174796921026867,
+      "gram_rmse": 4.793110803548059e-06,
+      "ratio": 0.2543699230256717
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019952623149688788,
+      "gram_rmse": 9.549325680541307e-06,
+      "ratio": 0.256726406083744
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00039810717055349735,
+      "gram_rmse": 3.780168668096397e-05,
+      "ratio": 0.2636324573861682
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0008152459027955744,
+      "gram_rmse": 0.00015404632256848751,
+      "ratio": 0.2778534869826513
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.0755043,
+      "gamma": 0.0017629383491015666,
+      "gram_rmse": 0.0006693251293703089,
+      "ratio": 0.3092386394868866
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.105246,
+      "gamma": 0.004193505815952806,
+      "gram_rmse": 0.003149907610008762,
+      "ratio": 0.3785873092938843
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.146704,
+      "gamma": 0.011951509205511811,
+      "gram_rmse": 0.015750961028396775,
+      "ratio": 0.5553142774202554
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.204493,
+      "gamma": 0.040506596131864414,
+      "gram_rmse": 0.06638878525889216,
+      "ratio": 0.9686544040736057
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.285045,
+      "gamma": 0.1329412859381322,
+      "gram_rmse": 0.12534399590344045,
+      "ratio": 1.636187312038155
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.397328,
+      "gamma": 0.3912679276485449,
+      "gram_rmse": 0.09495310651614496,
+      "ratio": 2.47842572214735
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.553841,
+      "gamma": 1.4003517067695888,
+      "gram_rmse": 0.03577452087250921,
+      "ratio": 4.565274749240838
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 0.772005,
+      "gamma": 6.0420682305509406,
+      "gram_rmse": 0.010524230093402885,
+      "ratio": 10.13783921410434
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 1.07611,
+      "gamma": 28.2842712474619,
+      "gram_rmse": 0.003186281489521808,
+      "ratio": 24.424836155445156
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 0,
+      "bandwidth": 1.5,
+      "gamma": 36.68016172818684,
+      "gram_rmse": 0.0040614483225875336,
+      "ratio": 16.302294101416372
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.02,
+      "gamma": 0.00010087019837903996,
+      "gram_rmse": 4.790091097390392e-06,
+      "ratio": 0.2521754959475999
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019952623149688788,
+      "gram_rmse": 8.642224039752722e-06,
+      "ratio": 0.256726406083744
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00039810717055349735,
+      "gram_rmse": 3.429063643266007e-05,
+      "ratio": 0.2636324573861682
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0008152459027955744,
+      "gram_rmse": 0.00013792540516466926,
+      "ratio": 0.2778534869826513
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.0755043,
+      "gamma": 0.001747729634155149,
+      "gram_rmse": 0.0005790265453995108,
+      "ratio": 0.3065708647908679
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.105246,
+      "gamma": 0.004193505815952806,
+      "gram_rmse": 0.002710931452946471,
+      "ratio": 0.3785873092938843
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.146704,
+      "gamma": 0.011921753135430696,
+      "gram_rmse": 0.013314591649587013,
+      "ratio": 0.5539316929891327
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.204493,
+      "gamma": 0.040506596131864414,
+      "gram_rmse": 0.05583522439710949,
+      "ratio": 0.9686544040736057
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.285045,
+      "gamma": 0.13526505868406585,
+      "gram_rmse": 0.11900441292619891,
+      "ratio": 1.6647873624749028
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.397328,
+      "gamma": 0.39126792764854507,
+      "gram_rmse": 0.09641198282807488,
+      "ratio": 2.478425722147351
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.553841,
+      "gamma": 1.584893192461114,
+      "gram_rmse": 0.03857217555055994,
+      "ratio": 5.166896885124399
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 0.772005,
+      "gamma": 6.588922126706893,
+      "gram_rmse": 0.01122260945465287,
+      "ratio": 11.055392055497864
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 1.07611,
+      "gamma": 32.77282414172159,
+      "gram_rmse": 0.003450632908597898,
+      "ratio": 28.300918662862774
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 1,
+      "bandwidth": 1.5,
+      "gamma": 36.68016172818684,
+      "gram_rmse": 0.0037961362883388444,
+      "ratio": 16.302294101416372
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.02,
+      "gamma": 0.00010174796921026867,
+      "gram_rmse": 4.911527793627699e-06,
+      "ratio": 0.2543699230256717
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0278782,
+      "gamma": 0.00019952623149688788,
+      "gram_rmse": 9.483745149549356e-06,
+      "ratio": 0.256726406083744
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0388598,
+      "gamma": 0.00039810717055349735,
+      "gram_rmse": 3.791129992336072e-05,
+      "ratio": 0.2636324573861682
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0541672,
+      "gamma": 0.0008152459027955744,
+      "gram_rmse": 0.00015597306472702304,
+      "ratio": 0.2778534869826513
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.0755043,
+      "gamma": 0.001747729634155149,
+      "gram_rmse": 0.0006842309147792881,
+      "ratio": 0.3065708647908679
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.105246,
+      "gamma": 0.004193505815952806,
+      "gram_rmse": 0.0032439625644922598,
+      "ratio": 0.3785873092938843
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.146704,
+      "gamma": 0.011951509205511811,
+      "gram_rmse": 0.01602667557568031,
+      "ratio": 0.5553142774202554
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.204493,
+      "gamma": 0.040506596131864414,
+      "gram_rmse": 0.0653778219396613,
+      "ratio": 0.9686544040736057
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.285045,
+      "gamma": 0.1352650586840658,
+      "gram_rmse": 0.13026170024087064,
+      "ratio": 1.664787362474902
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.397328,
+      "gamma": 0.4015714926984959,
+      "gram_rmse": 0.0955677012810546,
+      "ratio": 2.543692049502847
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.553841,
+      "gamma": 1.2698805603209231,
+      "gram_rmse": 0.034913733649914666,
+      "ratio": 4.13992686877112
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 0.772005,
+      "gamma": 5.279311036209621,
+      "gram_rmse": 0.010474753472422063,
+      "ratio": 8.858027483986135
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 1.07611,
+      "gamma": 20.526675677808477,
+      "gram_rmse": 0.003214281593708617,
+      "ratio": 17.725777194681054
+    },
+    {
+      "setting": "iqp-r2",
+      "embedding": "iqp",
+      "reps": 2,
+      "seed": 2,
+      "bandwidth": 1.5,
+      "gamma": 36.68016172818684,
+      "gram_rmse": 0.003944413869859507,
+      "ratio": 16.302294101416372
+    }
+  ]
+}
