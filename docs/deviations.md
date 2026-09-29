@@ -262,3 +262,100 @@ at which no unit breaches its ceiling. None of those is touched.
 is silent. The pre-registration is never edited -- D6 states that plainly -- so a
 silence is filled here, in advance, in the open, where the date is visible and
 the choice can be argued with.
+
+---
+
+## D8 — three further silences in H2 and H3, found by writing the test code
+
+**Date:** 29 September 2026
+**Status:** In force. Declared before any sweep output existed on disk.
+**Affects:** Section 6 (H2, H3), and D7, which fixed the seed aggregation but
+not these.
+
+D7 fixed how twenty seeds become one number for g. Writing the code that
+actually performs H2 and H3 turned up three more things neither section 6 nor D7
+says, each of which changes a reported result. They are recorded here before the
+sweep has produced a single row, which is the only reason this record is worth
+anything.
+
+### (a) The observed difference must use the same seeds as the g it is paired with
+
+D7 says a unit's g is the median over the seeds that survive the ceiling rule at
+that lambda. It does not say which seeds the observed difference is averaged
+over. The obvious reading — all twenty — pairs a median computed on one set of
+seeds against a mean computed on another. At lambda = 1e-4 that is not a corner
+case: g grows as lambda shrinks, so ceiling exclusions cluster there, and a unit
+can easily contribute a g from eleven seeds and a difference from twenty.
+
+**Fixed:** the observed difference is the mean over exactly the surviving seeds
+that produced the median g, at each lambda separately. The surviving seed count
+is written into every unit record so the pairing can be checked afterwards.
+
+### (b) H2 is also computed on units whose difference exceeds the precision floor
+
+D2 sets the precision floor at roughly 1e-3 in AP. Week 4 established that most
+of this project's observed differences sit close to it. A rank correlation across
+units whose differences are all smaller than the resolution of the comparison
+that produced them is a correlation among noise, and it would reject just as
+readily as a real one.
+
+**Fixed:** H2 is computed twice at every lambda, once across all surviving units
+as registered and once across the subset whose |observed difference| exceeds the
+floor. **The confirmatory verdict requires the subset to agree in sign and also
+reject.** The count of units above the floor is reported at every lambda whether
+or not the subset changes the verdict.
+
+This is a strengthening, not a loosening: it can only turn a SUPPORTED into a NOT
+SUPPORTED, never the reverse. That direction is stated here so the choice cannot
+later be read as having been made to rescue a result.
+
+### (c) H3's absolute value cannot tell the two directions apart
+
+Section 6 registers H3 on the distribution of |observed difference| above and
+below g = 2. A unit where the classical kernel wins by 0.05 and one where the
+quantum kernel wins by 0.05 are identical to that test. If the relationship
+between g and performance is directional — and H2 as registered assumes it is,
+since it uses the signed difference — then H3 as registered is measuring spread
+and is capable of returning a significant result driven entirely by units in
+which the quantum kernel loses badly.
+
+**Fixed:** H3 runs exactly as registered, on |observed difference|, and that is
+the confirmatory result. The signed version runs alongside as a secondary,
+**pre-declared here** rather than selected afterwards from whichever of the two
+is more favourable. Both p-values are printed in the same table so neither can be
+quoted without the other.
+
+### What this does not change
+
+H2's statistic, alpha, two-sidedness and single-test status. H3's threshold of
+g = 2, which stays fixed and untuned. D5's frozen lambda sweep, its ceiling rule
+and its requirement that the conclusion hold at every breach-free lambda. D7's
+median aggregation, IQR reporting, 10-seed minimum, and the per-seed version's
+status as a declared sensitivity check rather than a confirmatory one.
+
+### Two things the code refuses to do, which are also declared here
+
+A confidence interval on a Spearman rho is not in section 6, but this project's
+own three-condition verdict rule requires an interval that excludes zero. One is
+computed by Fisher z transform and labelled as an addition rather than as
+registered. rho is clamped to 1 - 1/(2n) before the transform; without the clamp
+a perfect correlation gives arctanh(1) = infinity, no interval, and a verdict rule
+that reports the strongest possible result as NOT SUPPORTED. A control covers it.
+
+H3 is reported as NOT ESTIMABLE, never as a null result, when the fixed threshold
+of g = 2 puts fewer than three units on one side. This is expected to happen at
+small lambda, where g grows and every unit may sit above the split. A fixed
+threshold that stops partitioning the data has not found no effect; it has
+stopped being a test, and saying so is different from reporting p > 0.05.
+
+### Five controls, because eight defects in week 6 were all caught by controls
+and none by a test
+
+D, a monotone synthetic table, must give rho exactly +1 and a SUPPORTED verdict.
+E, ten seeds at g = 1 and one at 15, must give median 1.0 where the mean gives
+2.27 — the specific behaviour D7 chose the median for, checked rather than
+assumed. F, a unit with nine survivors, must leave the table and appear in the
+excluded list with its breach count. G, three against three with complete
+separation, must reproduce U = 9 and two-sided p = 0.1 exactly. H, g uncorrelated
+with the difference, must return NOT SUPPORTED on both tests: a stage that finds
+a result in noise is worse than one that finds nothing.
