@@ -328,3 +328,100 @@ Half the evidence breaching is not most of it.
 The section above is not edited. `docs/deviations.md` D5 carries the full
 correction, and `classical_limit.py` now prints both counts with their
 denominators.
+
+---
+
+## Correction, 29 September 2026: the Flórez-Ablan claims, scored
+
+Section 15 asserted of Flórez-Ablan, Roth and Schnabel (2025): **"no average
+precision, no chance-level correction, no negative controls."** The correction
+above flagged those as made from the manuscript, untested against their code, and
+to be treated as unverified. It also set the rule this project now operates
+under:
+
+> a claim in this project about what another group did not do must cite their
+> code or their data, or it is not made.
+
+This is the first application of that rule, and the three claims do not survive
+it intact.
+
+**What was read.** arXiv:2503.05602v2, PDF and HTML renderings. Verbatim coverage
+runs from the title page through Section III C, including the full experimental
+setup and the Figures 3 to 5 captions. The Discussion, Conclusion and Appendices
+A to D came back as model extraction rather than verbatim text, and every
+statement below is labelled with which of the two it rests on. Their code was
+**not** read — see claim three.
+
+### Claim one: "no average precision" — STANDS
+
+Verbatim, Section III C: *"yielding the highest receiver operating characteristic
+curve (ROC-AUC) scores on each of the samples"*, and the Figure 5 caption:
+*"Panels (A) – (C) depict ROC-AUC score, optimal bandwidth c\*, and largest
+eigenvalue η_max"*. Average precision, area under the precision-recall curve and
+F1 do not appear in the verbatim half, and a keyword audit of the extracted tail
+reported them absent. The claim is correct.
+
+Its significance is smaller than the sentence implies. ROC-AUC is a legitimate
+choice, and the criticism only carries weight against a base rate that makes it
+misleading — see the class-balance note below.
+
+### Claim two: "no chance-level correction" — WITHDRAWN, it is a category error
+
+**ROC-AUC has a fixed chance value of 0.5 regardless of base rate.** Chance
+correction matters for average precision precisely *because* AP's chance level is
+the positive rate, which is the whole reason this project built normalised
+average precision and computed its exact chance value. Asking why a paper
+reporting ROC-AUC did not correct it for chance is asking why it omitted
+something that has no meaning for the metric it used.
+
+**This project has now made this exact error twice, about two different named
+groups, in the same document.** Week 6 recorded that its published claim about
+chance correction in Kakavand et al. was a category error of the same shape. That
+correction was written on 27 September; this claim about Flórez-Ablan sat
+uncorrected in section 15 throughout, and was not caught by the process that
+caught the other one, because section 15 was never re-read against it.
+
+### Claim three: "no negative controls" — WITHDRAWN as unverified
+
+No label-shuffled, permuted-label or randomised-label experiment appears in the
+verbatim half, and a keyword audit of the extracted tail reported "shuffl",
+"permut" and "random label" all absent. The only randomisation the paper
+describes is over data splits: *"each experiment is repeated six times using
+different seeds for randomly splitting the data into train and test subsets"*
+(verbatim).
+
+That is **absence from a manuscript, which is not evidence of absence from the
+work**, and it is exactly the distinction the rule above exists to enforce. The
+paper states, verbatim in Section III: *"The code to reproduce all of the
+simulation results of this study is available via GitHub [54]."* So the code
+exists, the claim remains untested against it, and reference [54] carries no
+resolvable URL in the extracted bibliography text. **The check this correction
+was supposed to complete is therefore still open**, and the claim is withdrawn
+rather than restated, because the rule does not permit it to stand unverified.
+
+### Two things that change how section 15 should be read
+
+**Their datasets' class balance is unstated.** They use plasticc, kMNIST28
+(digits 2 and 8) and a hidden manifold, sampling N = 400 points split 320/80,
+with no mention of class balance, stratification or imbalance anywhere the audit
+could reach. This project's endpoint choices are motivated by imbalance; theirs
+may simply not face it. The imbalanced-data framing does not transfer, and
+criticising their metric choice without establishing their base rates repeats the
+same error as claim two one level up.
+
+**What stands unchanged.** They do compute the geometric difference (their
+Equation 6), which is what section 15's statement at line 217 relies on. Their
+stated conclusion — that optimal bandwidth tuning produces quantum kernels
+closely resembling RBF kernels, collapsing further onto low-order polynomial
+approximations, leaving no advantage — matches what section 15 says it does, and
+is the result this project derived independently fourteen months later.
+
+### Score
+
+One of three claims stands, one is withdrawn as a category error, one is
+withdrawn as unverifiable without their code. Combined with week 6, where six of
+seven published claims about Kakavand et al. were wrong, **this project has now
+published nine claims about two other groups' work and had seven of them fail
+when checked.** The pattern in both cases is the same: claims made from reading a
+manuscript, asserted in a document whose subject is the difference between
+asserting and measuring.
