@@ -1022,3 +1022,89 @@ carries that correction.
 Commits before `a1e7b57` stand as written, in both spellings. History is not
 rewritten here, and the inconsistency in the log is part of the record rather
 than something to tidy away.
+
+### Amendment, 29 September 2026: the history was rewritten, and it destroyed the pre-registration's own citation
+
+The two amendments above understate this. They say commit dates are author-set
+and that history *can* be rewritten by a force-push. **It was rewritten**, on 25
+September 2026 at around 22:22, and the rewrite invalidated the two commit hashes
+this pre-registration cites as its anchor.
+
+### What was found, and how
+
+While diffing a 311 MB backup folder before deleting it, the backup's HEAD
+commit `b5bf0431` turned out not to exist in the live repository at all --
+`git cat-file` could not find the object. The two hashes named in
+`pre-registration.md` line 5 were then checked:
+
+    $ git cat-file -t a8bafbb
+    fatal: Not a valid object name a8bafbb
+    $ git cat-file -t 61f7db9
+    fatal: Not a valid object name 61f7db9
+
+Both are absent. The line reading **"both are on `main` and public"** was false
+from 25 September until this record, in the same document and the same paragraph
+as the OSF claim the first amendment corrects. That is **three false provenance
+statements** in a document whose purpose is to establish provenance.
+
+### What the rewrite actually was
+
+Every sha differs between the two histories, including the root commit, while
+messages, order, author, author dates and committer dates are all identical to
+the second. For a root commit with an identical tree that is only possible if the
+message body differs, and it does:
+
+* pre-rewrite root `ef997fa` ends with `Co-Authored-By: Claude Opus 5` and a
+  `Claude-Session:` line;
+* current root `aada1c3` ends with `Author: Nagesh Jonnalagadda` and
+  `Repository:` instead.
+
+**The rewrite stripped the AI co-authorship trailers from every commit in the
+history.** Nothing else changed: the root trees are byte-identical, no blob over
+200 KB exists in the old history, no credential-shaped path was ever committed,
+and `data/raw` was never in version control. The content of this project is
+provably unaltered by the rewrite.
+
+So a commit-message edit -- cosmetic in intent -- invalidated every hash in the
+project, including the two the pre-registration depends on, and nobody noticed
+for four days.
+
+### What the assistant did, which made it worse
+
+Commits from 26 to 29 September carry `Co-Authored-By: Claude Opus 5` again. The
+assistant reinstated by default the exact trailers the rewrite had removed,
+across roughly thirty commits, without either party noticing. The repository ran
+two attribution conventions either side of 25 September and nobody chose that.
+
+Resolved 29 September: **prose only**. The README's AI-use section is the
+declaration; no trailers from this point. The 26 to 29 September stretch is left
+as it stands and documented rather than rewritten, because rewriting is what
+caused this record to be necessary.
+
+### What is preserved, and what is not claimed
+
+The pre-rewrite history survives as the local branch `prerewrite-20260925`, 25
+commits, fetched from the backup. Both cited hashes resolve there. It is **not
+published**: pushing it would restore to the public repository the trailers the
+rewrite deliberately removed. So the pre-registration now cites hashes that exist
+on one machine, in a branch recovered by accident from a folder that had been
+moved to `_to_delete` the same evening.
+
+**That is the weakest possible form of the claim and it is stated plainly rather
+than dressed up.** Combined with the first two amendments -- no external
+registration, and no Software Heritage snapshot -- the position is: this
+project's ordering evidence rests entirely on an author-controlled history that
+has already been rewritten once, whose original form was nearly deleted tonight
+and now exists in a single local copy.
+
+### What this does not change
+
+No hypothesis, threshold, decision rule, power figure or result. The content is
+provably identical across the rewrite. What changes is what may be claimed about
+when things were written, and the honest answer is now: less than D5, D7, D8 and
+D9 imply, and the reader should weigh those records accordingly.
+
+**How it was found is the part worth keeping.** Not by any check in this project,
+which has an audit protocol, a mutation harness and 426 tests. By a diff run on a
+backup folder because deleting 311 MB on an unverified assurance seemed like the
+kind of unchecked claim the day had already been about, twice.

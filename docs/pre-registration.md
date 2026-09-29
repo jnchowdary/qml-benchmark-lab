@@ -3,12 +3,17 @@
 **Version 1.0. Written 24 September 2026. NOT externally registered — see D11 in [`deviations.md`](deviations.md).**
 Repository: `github.com/jnchowdary/qml-benchmark-lab`.
 Code state this design rests on: commit `a8bafbb`. This document added at commit `61f7db9`.
-The two differ because a document cannot contain its own commit hash; both are on `main` and public.
+The two differ because a document cannot contain its own commit hash.
+**Neither hash exists on `main`.** The project's history was rewritten on 25 September 2026,
+which changed every commit hash from the root onward, and until 29 September this line read
+"both are on `main` and public" while both were absent from the public repository entirely.
+They survive only on the local branch `prerewrite-20260925`, recovered from a backup folder
+that was queued for deletion. See the third amendment to D11 in [`deviations.md`](deviations.md).
 Author: Nagesh Kumar Jonnalagadda, Diarka Quantum Ltd.
 
 This document was written **before any quantum kernel had been evaluated on real data**. Section 12 states exactly what was already observed at the time of writing, because a pre-registration that hides its starting point is worse than none.
 
-**What the timestamp on that claim actually is.** This document was committed to a public repository at `61f7db9` on 24 September 2026 and has not been edited since, apart from the provenance corrections recorded in D11. It carries **no external registration**. Git commit dates are set by the author and the history can be rewritten by a force-push, so the ordering evidence here is author-controlled and a reader should weigh it as such. Weeks 1, 2 and 3 of this project each recorded that an OSF registration or a published hash was needed and that commit dates were insufficient; it was not done. D11 records what this costs the deviation records that rest on the same ordering.
+**What the timestamp on that claim actually is.** This document was committed to a public repository at `61f7db9` on 24 September 2026 and has not been edited since, apart from the provenance corrections recorded in D11. It carries **no external registration**. Git commit dates are set by the author and the history **was in fact rewritten**, on 25 September 2026, so the ordering evidence here is author-controlled in the strongest sense and a reader should weigh it as such. Weeks 1, 2 and 3 of this project each recorded that an OSF registration or a published hash was needed and that commit dates were insufficient; it was not done. D11 records what this costs the deviation records that rest on the same ordering.
 
 ---
 
