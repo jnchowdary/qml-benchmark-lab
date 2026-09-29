@@ -1,12 +1,14 @@
 # Pre-registration: quantum kernel methods on business tabular data, and the predictive value of the geometric difference
 
-**Version 1.0. Registered 24 September 2026.**
+**Version 1.0. Written 24 September 2026. NOT externally registered — see D11 in [`deviations.md`](deviations.md).**
 Repository: `github.com/jnchowdary/qml-benchmark-lab`.
 Code state this design rests on: commit `a8bafbb`. This document added at commit `61f7db9`.
 The two differ because a document cannot contain its own commit hash; both are on `main` and public.
 Author: Nagesh Chowdary, Diarka Quantum Ltd.
 
-This document is registered **before any quantum kernel has been evaluated on real data**. Section 12 states exactly what was already observed at registration time, because a pre-registration that hides its starting point is worse than none.
+This document was written **before any quantum kernel had been evaluated on real data**. Section 12 states exactly what was already observed at the time of writing, because a pre-registration that hides its starting point is worse than none.
+
+**What the timestamp on that claim actually is.** This document was committed to a public repository at `61f7db9` on 24 September 2026 and has not been edited since, apart from the provenance corrections recorded in D11. It carries **no external registration**. Git commit dates are set by the author and the history can be rewritten by a force-push, so the ordering evidence here is author-controlled and a reader should weigh it as such. Weeks 1, 2 and 3 of this project each recorded that an OSF registration or a published hash was needed and that commit dates were insufficient; it was not done. D11 records what this costs the deviation records that rest on the same ordering.
 
 ---
 
@@ -186,4 +188,4 @@ Week 4: build the quantum kernel path and run the four settings across the match
 
 ---
 
-*Registered at OSF. Any version of this document other than the registered one is a draft.*
+*This document is **not** registered at OSF and never has been. From 24 to 29 September 2026 this line read "Registered at OSF" and the header read "Registered 24 September 2026"; both were false and are corrected here, with the full record in D11 of `docs/deviations.md`. Any version of this document other than the one on `main` is a draft.*

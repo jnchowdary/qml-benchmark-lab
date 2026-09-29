@@ -684,3 +684,115 @@ that is all. Choosing a tolerance now, with the result in view, is the error D5
 itself warned against when it refused to pick the lambda that made g behave. If a
 future study wants a breach-tolerant rule it registers one before its data
 exists.
+
+---
+
+## D11 — the pre-registration was never registered, and said it was for five days
+
+**Date:** 29 September 2026
+**Status:** Correction to a **false factual claim about this document's own
+provenance**, not to its design. No hypothesis, threshold, decision rule or power
+figure is touched.
+**Affects:** `docs/pre-registration.md` header and closing line, `README.md`, and
+the standing of every record in this file that rests on commit ordering.
+
+### What it said, and for how long
+
+Three statements were live on a public GitHub repository from 24 September to 29
+September 2026:
+
+1. Header: **"Version 1.0. Registered 24 September 2026."**
+2. Section preamble: "This document **is registered** before any quantum kernel
+   has been evaluated on real data."
+3. Closing line: **"Registered at OSF. Any version of this document other than
+   the registered one is a draft."**
+
+**None of it was true.** There is no OSF registration. There is no OSF
+identifier, DOI or external record of any kind anywhere in this repository, and
+none was ever created. The document was written, committed at `61f7db9`, pushed,
+and never registered anywhere.
+
+Those five days covered five weekly records, ten deviation records, the
+publication of `docs/audit-protocol.md`, and contact with three named researchers
+about a protocol for auditing other people's methodology.
+
+### How it was allowed to stand
+
+This was not overlooked. It was tracked and then lost.
+
+* **Week 1, section on open items:** "If the paper is going to claim the
+  predicted direction was fixed before the results came in, GitHub commit dates
+  are weak evidence because they are author-controlled. An OSF registration or a
+  published hash is the credible version. **Needs deciding before week 6, not
+  after.**"
+* **Week 2:** repeated verbatim.
+* **Week 3:** "The pre-registration mechanism, OSF or a published hash, is still
+  unchosen."
+* **Week 4:** "**Hold this until section 15 is resolved**: registering a design
+  whose central question has been answered elsewhere would be worse than not
+  registering." That hold was correct at the time.
+* **Week 5:** "OSF registration, on hold pending that rewrite." The rewrite meant
+  is the pre-registration section 1 rewrite. **D6 states the pre-registration is
+  never edited, and week 6 records that rewrite being proposed four times by the
+  assistant and never actually being required by anything.**
+
+So from week 6 onward the hold rested on a premise that had already been
+withdrawn, while the document went on asserting that the registration existed.
+The claim was written on 24 September in the expectation that registration would
+follow within days, and nothing in the project's own process caught the gap
+between the assertion and the act.
+
+### What the timestamp evidence actually is
+
+`61f7db9`, on a public repository, pushed 24 September 2026, unedited since apart
+from this correction. **Git commit dates are set by the author and the history can
+be rewritten with a force-push.** That is the whole of it.
+
+This matters beyond the pre-registration, and the cost falls on this file. D5, D7,
+D8 and D9 each turn on having been written **before** particular data existed, and
+D8, D9 and the sweep commits say so explicitly. The evidence for every one of
+those orderings is commit sequence in a repository the author controls. That is
+weaker than these records have implied, and it is now stated plainly here rather
+than left for a reader to notice.
+
+The internal ordering is still not worthless. Some of it is self-witnessing: D8
+predicted that H3 would become NOT ESTIMABLE at some lambda because a fixed
+threshold would stop partitioning the data, and lambda = 1e-2 then produced 349
+units above the split and 1 below. D7 predicted that a mean over seeds would let
+one heavy-tailed seed carry a unit, and D10 records the per-seed and unit-level
+results diverging exactly where it said they would. A prediction that specific,
+written into a file and then matched by output, is hard to construct after the
+fact. But "hard to construct" is not "timestamped by a third party," and the
+difference is the point of registering in the first place.
+
+### What is NOT done, and why
+
+**No OSF registration is being created now.** An OSF record dated 29 September
+2026, attached to a document whose header claimed 24 September, with the study's
+results already computed and committed, would be checkable by anyone and would
+read as backdating. It would convert an honest absence into an apparent
+misrepresentation. The absence is reported instead.
+
+**The design text is unchanged.** D6 established that the pre-registration is
+never edited and that errors in it are corrected by records here, so that the
+design cannot be retrofitted to results. That rule protects the design. It does
+not require a repository to keep asserting a fact that is untrue, and the three
+statements corrected above say nothing about hypotheses, thresholds, power or
+decision rules. The corrected text states what the old text said and for how
+long, so the edit is self-documenting on the page rather than only in this file.
+
+### Open
+
+Whether **Software Heritage** crawled `github.com/jnchowdary/qml-benchmark-lab`
+between 24 and 29 September 2026. It archives public repositories and records its
+own visit dates, which the author does not control, so a successful visit in that
+window would be genuine third-party evidence that the pre-registration existed in
+its current form before the H2/H3 results did. To be checked at
+`archive.softwareheritage.org`; if a visit exists it is recorded here as an
+amendment with the date and snapshot id, and if it does not, a save can be
+triggered which timestamps everything from that point forward without pretending
+to cover the past.
+
+Whether to seek a registration at all for the remainder of the project, given
+that weeks 8 to 12 are writing and hardware runs rather than new confirmatory
+tests, is a separate decision and is not taken here.

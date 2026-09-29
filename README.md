@@ -4,13 +4,13 @@ Two things live here.
 
 **An audit protocol** for quantum-classical kernel comparisons: a set of checks that tell you whether a comparison was set up so its answer could mean anything. It audits method, not results, and it runs against any pipeline that can emit a documented record format. See [`docs/audit-protocol.md`](docs/audit-protocol.md).
 
-**The pre-registered study it came out of**: quantum kernel SVMs against tuned classical kernel SVMs on imbalanced business tabular data (customer churn, credit-card fraud), with the geometric difference g(K_C‖K_Q) of Huang et al. as a pre-training screen. See [`docs/pre-registration.md`](docs/pre-registration.md).
+**The study it came out of**, written as a pre-registration but never externally registered (see D11): quantum kernel SVMs against tuned classical kernel SVMs on imbalanced business tabular data (customer churn, credit-card fraud), with the geometric difference g(K_C‖K_Q) of Huang et al. as a pre-training screen. See [`docs/pre-registration.md`](docs/pre-registration.md).
 
 The protocol is the part worth reusing. It exists because every check in it was written after a specific reading went wrong here, usually one that had already passed review.
 
 ## Status
 
-Week 5 of 12. The classical and quantum arms are complete: 5,400 classical and 7,200 quantum records, two datasets, three training sizes, 15 configurations, 20 seeds. H1 has been tested under the registered rule. 371 tests.
+Week 7 of 12. The classical and quantum arms are complete: 5,400 classical and 7,200 quantum records, two datasets, three training sizes, 15 configurations, 20 seeds. **All three registered confirmatory hypotheses have now been tested.** H1 rejects on churn in the classical kernel's favour and does not reject on fraud. **H2 and H3 return no verdict**: no lambda in the frozen sweep is free of ceiling breaches, so D5's decision rule does not resolve, at any lambda. 15 test files; `scripts/geometric_tests.py`, which produced the H2 and H3 result, has none.
 
 The audit now reaches the kernels. Three of the four checks it had declared unrunnable were not: `tuning symmetry` needed nothing and is Tier 1, `kernel conditioning` and `classical surrogate equivalence` needed only an interface and run against any pipeline supplying `--hook`. Those are the checks that would have caught this project's two largest defects, and both were invisible from records alone.
 
@@ -61,7 +61,7 @@ Reported as results, not as advantage claims.
 | document | what it holds |
 | --- | --- |
 | [`docs/pre-registration.md`](docs/pre-registration.md) | v1.0, frozen. Hypotheses, design, declared power, decision rule. Never edited; errors in it are corrected by deviation records. |
-| [`docs/deviations.md`](docs/deviations.md) | Six records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3 and D6 record defects in the registered document itself. |
+| [`docs/deviations.md`](docs/deviations.md) | Eleven records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
 | [`docs/predictions.md`](docs/predictions.md) | Exploratory claims written down with falsification conditions **before** the run that tests them. Outcomes are appended, never edited, including a withdrawn bound. |
 | `docs/week-0N-report.md` | Weekly records. Week 4 logs twelve errors and names the pattern behind four of them. |
 
