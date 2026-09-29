@@ -305,3 +305,26 @@ manuscripts when the code was one click away — and the resulting claims were p
 whose entire subject is the difference between asserting and measuring. Naming a third party makes it
 worse, not better. The rule that follows: a claim in this project about what another group did not do
 must cite their code or their data, or it is not made.
+
+---
+
+## Correction, 29 September 2026: section 9's ceiling-breach column
+
+Section 9's lambda table gives fraud **9/8** breaches at 1e-4. Eight seeds cannot
+produce nine breaches.
+
+`scripts/classical_limit.py` pooled the g values at the registered bandwidth with
+those at the selected bandwidth into one count and printed it with no
+denominator. The real denominator is 16, not 8, so every sweep row in that column
+overstates the breach rate by two: 1e-2 is 0/16 churn and 2/16 fraud, 1e-3 is
+6/16 and 8/16, 1e-4 is 7/16 and 9/16. The from-C row uses a different convention
+again — registered bandwidth only, out of 8 — and drops the selected-bandwidth
+breaches, which were 1/8 on each dataset.
+
+Section 9's argument is unaffected: breaches are real at 1e-3 and 1e-4, lambda
+from C is unusable, and D5's frozen sweep follows. The **severity** is withdrawn.
+Half the evidence breaching is not most of it.
+
+The section above is not edited. `docs/deviations.md` D5 carries the full
+correction, and `classical_limit.py` now prints both counts with their
+denominators.

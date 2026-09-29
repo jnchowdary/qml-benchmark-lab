@@ -359,3 +359,142 @@ excluded list with its breach count. G, three against three with complete
 separation, must reproduce U = 9 and two-sided p = 0.1 exactly. H, g uncorrelated
 with the difference, must return NOT SUPPORTED on both tests: a stage that finds
 a result in noise is worse than one that finds nothing.
+
+---
+
+## D9 — H2 and H3 can only be computed on the arm week 6 showed is confounded
+
+**Date:** 29 September 2026
+**Status:** In force. Declared before any sweep output existed on disk.
+**Affects:** Section 6 (H2, H3), and how their result may be stated.
+
+This is a larger problem than any of D8's three and it was found the same way,
+by reading which files the sweep actually opens rather than by any test.
+
+### The arm H2 runs on
+
+The registered arm's quantum records carry no bandwidth key at all. Their
+`params` are `{"embedding": "angle", "reps": 1}` and the kernel default applies,
+which is a bandwidth of 1.0. The classical arm in the same comparison tunes its
+kernel by inner cross-validation over a full grid. **Week 6 established that this
+asymmetry is the largest single effect in the comparison**: when the quantum side
+is given the same bandwidth freedom, the exploratory arm selects 0.0625 to 0.25,
+eight to sixteen times smaller than the registered 1.0, and the observed
+difference moves accordingly.
+
+H2 asks whether g predicts observed advantage. On the registered arm, the
+observed advantage is known to be partly a measure of which side was allowed to
+tune. **So H2 as registered tests whether g predicts a quantity that this project
+has already shown to be confounded.** That is what will be reported, and it will
+be reported in those words. A correlation found there is not evidence that g
+predicts kernel quality; it is evidence that g predicts a number containing a
+known tuning artefact.
+
+### Why the confound cannot simply be removed
+
+The obvious repair is to recompute H2 on the bandwidth-matched arm. That is not
+available. The exploratory bandwidth arm covers **one cell per dataset**: churn
+at pca with 12 qubits, and fraud at selectk with 8 qubits. Eighty records each,
+being four settings by twenty seeds. That is 4 units per dataset and 8 in total,
+against an estimability floor of 12 and a registered universe of 360.
+
+**H2 therefore cannot be recomputed on the unconfounded arm, at any lambda.** The
+script reports it as NOT ESTIMABLE rather than as a null result, and prints the 8
+units with their g, their per-seed selected bandwidth and their observed
+difference, labelled descriptive and not to be quoted as a test. If the sign of
+the relation there differs from the registered arm's, that is recorded as a
+limitation on H2's headline result.
+
+Extending the bandwidth arm to all 60 cells would make H2 answerable on an
+unconfounded comparison. It is not being done inside week 7 and no claim is made
+that it will be; the cost is the reason the arm was one cell in the first place.
+What is declared here is that the limitation is structural and known in advance,
+not discovered afterwards in response to whatever the registered arm returns.
+
+### The defect this uncovered
+
+The sweep built every quantum Gram from a hardcoded `bandwidth: 1.0`. For the
+registered arm that is correct, because its params carry no bandwidth and the
+default is 1.0 — but correct by coincidence rather than by construction, and
+flatly wrong for the bandwidth arm, where the selected bandwidth varies by seed.
+It now builds from **the record's own `params`**, so the kernel g is computed for
+is the kernel the experiment ran, by construction. Control I proves the two paths
+are bit-identical where both apply, which is what shows the earlier hardcode had
+not already corrupted anything.
+
+`--arm` now selects the arm, each arm writes to its own file, and the arm is part
+of both every row and the resume key. Without that, a resumed run against the
+other arm would find the (dataset, size, cell, seed) key already present and skip
+silently, producing a file that looks complete and holds two arms' g under one
+label. That is the filename-collision failure this project already had once,
+one level deeper.
+
+### What this does not change
+
+H2's statistic, alpha, two-sidedness and single-test status. H3's threshold of
+g = 2. D5's frozen lambda sweep and ceiling rule. D7's median aggregation. D8's
+three fixes. The registered arm remains the confirmatory one, because that is
+what section 6 registers, and the confound is reported alongside the result
+rather than used as grounds to substitute a different arm after the fact.
+
+---
+
+## D5 — correction, 29 September 2026: the ceiling-breach column was wrong in every row
+
+**Date of correction:** 29 September 2026. **Found by reading the record back,
+four days after it was published**, not by any test and not by the audit.
+**Affects:** D5's lambda table above, and the identical table in
+`docs/week-04-report.md` section 9.
+
+**What gave it away.** The fraud entry at lambda = 1e-4 reads **9/8**. Eight
+seeds cannot produce nine breaches. An impossible fraction sat in a published
+record for four days, in a document whose subject is the auditing of other
+people's numbers.
+
+**The cause.** `scripts/classical_limit.py` line 279 read
+
+    br = sum(1 for v in gr + gs if v > ceil)
+
+which pools the g values at the registered bandwidth with those at the selected
+bandwidth into one count. With 8 seeds the denominator is **16, not 8**. The
+script printed the count bare, with no denominator; the transcription into both
+documents supplied "/8" from the seed count. So every sweep row overstates the
+breach rate by a factor of two:
+
+| lambda | as published | actual |
+| --- | --- | --- |
+| 1e-1 | 0 | 0/16 churn, 0/16 fraud |
+| 1e-2 | 0 churn, 2/8 fraud | 0/16 churn, **2/16** fraud |
+| 1e-3 | 6/8, 8/8 | **6/16**, **8/16** |
+| 1e-4 | 7/8, 9/8 | **7/16**, **9/16** |
+
+**A second error in the same column.** The from-C row reads "2/8 churn, 4/8
+fraud". Those figures come from a different line of the script, which reports the
+two bandwidths separately, and they are the **registered-bandwidth counts only**.
+The selected-bandwidth breaches at from-C — 1/8 on churn and 1/8 on fraud — were
+dropped in transcription. So the from-C row and the sweep rows use two different
+conventions under one column heading, and the from-C row also understates.
+
+**What this does and does not change.** D5's argument is unaffected in substance:
+breaches are real at 1e-3 and 1e-4 on both datasets, lambda-from-C is unusable,
+and the case for a frozen sweep with a per-lambda ceiling rule stands exactly as
+written. What is withdrawn is the **severity**. "6/8 and 8/8 breaching at 1e-3"
+reads as most or all of the evidence being unusable; 6/16 and 8/16 is half. Any
+statement of this project's breach rates quotes the corrected table.
+
+**What it is an instance of.** Pooling two different kernels' g into a single
+count is the unit-of-analysis conflation D6 records, one level down, and D7 says
+this project had got that wrong five times. This is the sixth. It is also the
+second time a figure has been damaged by hand-transcription out of a log, which
+`scripts/audit_sweep.py` exists to prevent for D6's table and did not cover here.
+
+**Fixed at the source.** `classical_limit.py` now reports the two bandwidth
+columns separately, each with its own denominator printed. `geometric_tests.py`
+had shipped the same defect in its own breach column — a bare count with no
+denominator — and now prints `breaches/total` everywhere, including inside
+control F. **A count printed without what it is a count of is treated in this
+project as a defect, not a formatting choice.**
+
+**What is NOT done.** D5 above is not edited, and neither is week-04-report.md
+section 9. Both stand as published with their wrong column, and this is the
+correction, which is the same rule D6 set for itself.

@@ -271,13 +271,24 @@ def report(dataset, n_per_class, q_dir, c_dir, seeds):
           f"bandwidth")
     print(f"      ceiling breaches: {br_r}/{len(rows)} registered, {br_s}/{len(rows)} selected"
           f"{'   <- these values are not usable' if br_r or br_s else ''}")
-    print(f"    {'lam':>10} {'g (bw 1.0)':>12} {'g (selected)':>14} {'breaches':>10}")
+    # Two columns, two counts, each with its own denominator. The previous
+    # version pooled registered and selected g into ONE bare count and printed
+    # it with no denominator at all. Transcribing that into week-04-report.md
+    # section 9 and deviations.md D5 supplied "/8" from the seed count, but the
+    # pooled denominator was 16, so every breach figure in both documents was
+    # overstated by a factor of two -- and fraud at 1e-4 was published as the
+    # impossible "9/8". Pooling two different kernels' g into one count is also
+    # the unit-of-analysis conflation D6 records; this is its sixth instance.
+    print(f"    {'lam':>10} {'g (bw 1.0)':>12} {'g (selected)':>14} "
+          f"{'breach bw1.0':>14} {'breach sel':>12}")
     for l in LAMBDA_SWEEP:
         k = f"{l:g}"
         gr = [r["g_lambda_sweep"][k]["registered"] for r in rows]
         gs = [r["g_lambda_sweep"][k]["selected"] for r in rows]
-        br = sum(1 for v in gr + gs if v > ceil)
-        print(f"    {l:>10.0e} {np.median(gr):>12.3f} {np.median(gs):>14.3f} {br:>10}")
+        b_r = sum(1 for v in gr if v > ceil)
+        b_s = sum(1 for v in gs if v > ceil)
+        print(f"    {l:>10.0e} {np.median(gr):>12.3f} {np.median(gs):>14.3f} "
+              f"{f'{b_r}/{len(gr)}':>14} {f'{b_s}/{len(gs)}':>12}")
 
     print(f"\n  READING, one line per embedding family, because they do NOT behave")
     print(f"  the same way and a single verdict across them would be wrong:")

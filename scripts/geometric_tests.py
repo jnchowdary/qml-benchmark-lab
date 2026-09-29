@@ -199,6 +199,20 @@ def controls(verbose=True):
     v = gc["angle"][1e-1]
     ok["C g(RBF, angle@b=0.02) ~ 1"] = (abs(v - 1.0) < 0.05, f"g = {v:.4f}")
 
+    # I: the registered arm's params carry NO bandwidth key. The sweep now
+    # builds every quantum Gram from the record's own params, so nothing is
+    # assumed -- but the hardcoded bandwidth=1.0 it replaced has to be shown to
+    # have been right where it applied, otherwise every g in an earlier run of
+    # this script would have been for a kernel the experiment never used. These
+    # must be bit-identical, and if the factory's default ever moves off 1.0
+    # this is what catches it.
+    bare = f.gram_fn({"embedding": "angle", "reps": 1})(Xa)
+    one = f.gram_fn({"embedding": "angle", "reps": 1, "bandwidth": 1.0})(Xa)
+    worst_b = float(np.max(np.abs(np.asarray(bare) - np.asarray(one))))
+    ok["I record params == bandwidth 1.0"] = (
+        worst_b == 0.0,
+        f"max |diff| {worst_b:.2e} (registered params carry no bandwidth key)")
+
     if verbose:
         for k, (passed, detail) in ok.items():
             print(f"  [{'PASS' if passed else 'FAIL'}] {k:<32} {detail}")
@@ -207,7 +221,7 @@ def controls(verbose=True):
 
 # ------------------------------------------------------------------ the sweep
 
-def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by):
+def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by, arm):
     """g for one (cell, seed): four settings against that seed's best classical."""
     key = (mapping, nq, seed)
     crecs = c_by.get(key, [])
@@ -227,16 +241,26 @@ def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by):
     lam_c = lambda_from_svm_C(float(best_c["C"]), Xa.shape[0])
     lams = tuple(LAMBDAS) + (lam_c,)
 
+    # Built from the RECORD'S OWN params, never from a hardcoded bandwidth.
+    # The first version of this function passed bandwidth=1.0 for every setting.
+    # That happens to be right for the registered arm, whose params carry no
+    # bandwidth key at all, but it is right by coincidence rather than by
+    # construction, and it is flatly wrong for the bandwidth arm, where the
+    # selected bandwidth varies by seed between 0.0625 and 1.0. A g computed for
+    # a kernel the experiment never ran is the same defect class as every other
+    # one this project has found: the analysis substituting its own parameter
+    # for the measurement's. Control I proves the two paths agree where both
+    # apply.
     fac = QuantumGramFactory(nq)
-    K_qs = {s: fac.gram_fn({"embedding": s.split("-")[0],
-                            "reps": int(s[-1]), "bandwidth": 1.0})(Xa)
-            for s in SETTINGS}
+    K_qs = {s: fac.gram_fn(dict(qrecs[s]["params"]))(Xa) for s in SETTINGS}
     gs, ceiling = g_for_settings(K_c, K_qs, lams)
     fac.clear()
 
     c_nap = norm_ap(best_c)
     return [{"dataset": dataset, "n_per_class": n_per_class, "mapping": mapping,
-             "n_qubits": nq, "setting": s, "seed": seed,
+             "n_qubits": nq, "setting": s, "seed": seed, "arm": arm,
+             "quantum_params": dict(qrecs[s]["params"]),
+             "quantum_bandwidth": float(qrecs[s]["params"].get("bandwidth", 1.0)),
              "classical_method": best_c["method"], "classical_C": float(best_c["C"]),
              "lambda_from_C": lam_c, "ceiling": ceiling,
              "g": {f"{l:g}": gs[s][l] for l in lams},
@@ -251,26 +275,46 @@ def index(recs, extra=()):
     return out
 
 
-def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None):
+def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None, arm="registered"):
+    """One arm per output file, never mixed.
+
+    `arm` is part of the resume key AND of every row. Without it a resumed run
+    against a different arm would find the (dataset, size, cell, seed) key
+    already present and skip silently, leaving a file that looks complete and
+    holds two arms' g under one label. That is the filename-collision failure
+    this project already had once, one level deeper.
+    """
     done = set()
     p = Path(out_path)
     if p.exists():
+        seen_arms = set()
         for line in p.read_text().splitlines():
             r = json.loads(line)
-            done.add((r["dataset"], r["n_per_class"], r["mapping"],
-                      r["n_qubits"], r["seed"]))
+            seen_arms.add(r.get("arm", "registered"))
+            done.add((r.get("arm", "registered"), r["dataset"], r["n_per_class"],
+                      r["mapping"], r["n_qubits"], r["seed"]))
+        if seen_arms - {arm}:
+            raise SystemExit(
+                f"\n  {p} already holds arm(s) {sorted(seen_arms)} and this run "
+                f"is arm '{arm}'.\n  One arm per file. Write this run somewhere "
+                f"else rather than mixing them.")
         print(f"  resuming: {len(done)} (cell, seed) combinations already done")
     p.parent.mkdir(parents=True, exist_ok=True)
+    suffix = "_bw" if arm == "bandwidth" else ""
     t0, n = time.perf_counter(), 0
     for dataset, npc in itertools.product(datasets, sizes):
-        q = load(str(Path(q_dir) / f"{dataset}_matched_n{npc}.jsonl"))
+        qf = Path(q_dir) / f"{dataset}_matched_n{npc}{suffix}.jsonl"
+        if not qf.exists():
+            print(f"  {qf.name} does not exist; {arm} arm has no {dataset} n={npc}")
+            continue
+        q = load(str(qf))
         c = load(str(Path(c_dir) / f"{dataset}_matched_n{npc}.jsonl"))
         q_by, c_by = index(q), index(c)
         seeds = sorted({int(r["seed"]) for r in q})
         for mapping, nq, seed in itertools.product(MAPPINGS, QUBITS, seeds):
-            if (dataset, npc, mapping, nq, seed) in done:
+            if (arm, dataset, npc, mapping, nq, seed) in done:
                 continue
-            rows = cell_seeds(dataset, npc, mapping, nq, seed, q_by, c_by)
+            rows = cell_seeds(dataset, npc, mapping, nq, seed, q_by, c_by, arm)
             if rows is None:
                 continue
             with p.open("a") as f:
@@ -313,11 +357,12 @@ def units_at(rows, col):
     by = {}
     for r in rows:
         by.setdefault(tuple(r[f] for f in UNIT_FIELDS), []).append(r)
-    units, excluded, breaches = [], [], 0
+    units, excluded, breaches, total = [], [], 0, 0
     for key, rs in sorted(by.items(), key=str):
         kept = []
         for r in rs:
             g = g_at(r, col)
+            total += 1
             if g > float(r["ceiling"]):
                 breaches += 1
             else:
@@ -332,7 +377,13 @@ def units_at(rows, col):
         q1, q3 = np.percentile(gs, [25, 75])
         units.append({**base, "g": float(np.median(gs)), "g_iqr": float(q3 - q1),
                       "d": float(ds.mean()), "seeds": len(kept)})
-    return units, excluded, breaches
+    # `total` is returned with `breaches` and never without it. A bare breach
+    # count is how docs/deviations.md D5 came to publish "9/8": the source log
+    # printed 9 with no denominator, the transcription supplied "/8" from the
+    # seed count, and the real denominator was 16 because the counter pooled two
+    # bandwidth columns. An impossible fraction sat in a published record for
+    # four days. A count printed without what it is a count OF is a defect.
+    return units, excluded, breaches, total
 
 
 # ------------------------------------------------------------- the two tests
@@ -407,10 +458,20 @@ def h3(units, label="all units"):
     above = [u for u in units if u["g"] > G_SPLIT]
     below = [u for u in units if u["g"] <= G_SPLIT]
     out = {"label": label, "n_above": len(above), "n_below": len(below),
-           "split": G_SPLIT}
+           "split": G_SPLIT, "n_units": len(units)}
+    if len(units) < MIN_UNITS:
+        # Same floor as H2. Without this, eight units gave H3 a verdict of NOT
+        # SUPPORTED on a 5-versus-3 comparison while H2 on the identical eight
+        # correctly refused. Two different answers about the same data is not a
+        # finding, it is an inconsistent guard.
+        out.update(estimable=False,
+                   why=f"{len(units)} units, fewer than {MIN_UNITS}")
+        return out
     if min(len(above), len(below)) < 3:
         out.update(estimable=False,
-                   why=f"{len(above)} above and {len(below)} below the split")
+                   why=f"{len(above)} above and {len(below)} below the split; "
+                       f"a fixed threshold that stops partitioning the data has "
+                       f"stopped being a test")
         return out
     aa = [abs(u["d"]) for u in above]
     bb = [abs(u["d"]) for u in below]
@@ -455,7 +516,7 @@ def test_controls(verbose=True):
     for i in range(MIN_UNITS + 4):
         rows += unit("synth", "pca", 4 + i, f"s{i}", [1.0 + i] * 12,
                      [0.01 * (i + 1)] * 12)
-    u, ex, br = units_at(rows, "0.1")
+    u, ex, br, tot = units_at(rows, "0.1")
     r = h2(u)
     v = verdict(r, ("rejects", "ci_excludes_zero"))
     ok["D monotone -> rho == +1, SUPPORTED"] = (
@@ -467,7 +528,7 @@ def test_controls(verbose=True):
     # E: the median must resist one wild seed where the mean does not.
     gs = [1.0] * 10 + [15.0]
     rows = unit("synth", "pca", 4, "s", gs, [0.0] * 11, ceil=18.71)
-    u, _, br = units_at(rows, "0.1")
+    u, _, br, tot = units_at(rows, "0.1")
     ok["E median resists one wild seed"] = (
         len(u) == 1 and abs(u[0]["g"] - 1.0) < 1e-12 and br == 0,
         f"median {u[0]['g']:.4f} vs mean {np.mean(gs):.4f}, "
@@ -476,11 +537,11 @@ def test_controls(verbose=True):
     # F: ceiling breach and the 10-seed minimum must exclude AND count.
     rows = unit("synth", "pca", 4, "s", [1.0] * 9 + [99.0, 99.0], [0.0] * 11,
                 ceil=18.71)
-    u, ex, br = units_at(rows, "0.1")
+    u, ex, br, tot = units_at(rows, "0.1")
     ok["F ceiling + MIN_SEEDS exclude and count"] = (
         u == [] and len(ex) == 1 and ex[0]["surviving_seeds"] == 9 and br == 2,
         f"{len(u)} units kept, 1 excluded at {ex[0]['surviving_seeds']}/11 "
-        f"survivors, {br} breaches counted")
+        f"survivors, {br}/{tot} breaches (denominator always printed)")
 
     # G: Mann-Whitney against an exact hand value: 3v3 separated, U=9, p=0.1.
     U, p = stats.mannwhitneyu([4, 5, 6], [1, 2, 3], alternative="two-sided")
@@ -498,7 +559,7 @@ def test_controls(verbose=True):
         rows += unit("synth", "pca", 4 + i % 5, f"s{i}",
                      [base + r2.normal(0, 0.15) for _ in range(20)],
                      [float(r2.normal(0, 0.003)) for _ in range(20)])
-    u, _, _ = units_at(rows, "0.1")
+    u, _, _, _ = units_at(rows, "0.1")
     n2, n3 = h2(u), h3(u)
     v2 = verdict(n2, ("rejects", "ci_excludes_zero"))
     v3 = verdict(n3, ("rejects", "ci_excludes_zero", "exceeds_floor"))
@@ -526,10 +587,10 @@ def run_tests(units_path, json_out=None):
     report = {"units_file": str(units_path), "lambda_columns": list(LAM_COLS),
               "registered_units": REGISTERED_UNITS, "by_lambda": {}}
     print(f"\n  H2 -- Spearman(g, observed difference), two-sided, alpha {ALPHA}")
-    print(f"  {'lambda':>8} {'units':>7} {'breach':>7} {'excl':>5} "
+    print(f"  {'lambda':>8} {'units':>7} {'breach':>11} {'excl':>5} "
           f"{'rho':>8} {'p':>9} {'95% CI':>18} {'>floor':>7} {'verdict':>14}")
     for col in LAM_COLS:
-        u, ex, br = units_at(rows, col)
+        u, ex, br, tot = units_at(rows, col)
         r = h2(u)
         v = verdict(r, ("rejects", "ci_excludes_zero"))
         if v == "SUPPORTED" and r.get("resolved_subset"):      # D8(b)
@@ -541,15 +602,17 @@ def run_tests(units_path, json_out=None):
         body = (f"{r['rho']:+.4f} {fmt_p(r['p']):>9} {ci:>18} "
                 f"{r['n_above_floor']:7d}" if r.get("estimable")
                 else f"{'-':>8} {'-':>9} {'-':>18} {'-':>7}")
-        print(f"  {col:>8} {len(u):7d} {br:7d} {len(ex):5d} {body} {v:>14}")
+        print(f"  {col:>8} {len(u):7d} {f'{br}/{tot}':>11} {len(ex):5d} "
+              f"{body} {v:>14}")
         report["by_lambda"][col] = {"h2": r, "excluded": ex, "breaches": br,
+                                   "breach_denominator": tot,
                                    "h2_verdict": v, "n_units": len(u)}
 
     print(f"\n  H3 -- Mann-Whitney U on |difference| above vs below g = {G_SPLIT}")
     print(f"  {'lambda':>8} {'above':>6} {'below':>6} {'med above':>10} "
           f"{'med below':>10} {'p':>9} {'signed p':>9} {'verdict':>14}")
     for col in LAM_COLS:
-        u, _, _ = units_at(rows, col)
+        u, _, _, _ = units_at(rows, col)
         r = h3(u)
         v = verdict(r, ("rejects", "ci_excludes_zero", "exceeds_floor"))
         body = (f"{r['median_above']:10.4f} {r['median_below']:10.4f} "
@@ -589,13 +652,53 @@ def run_tests(units_path, json_out=None):
         report["per_seed_sensitivity"][col] = {"n_rows": len(pairs),
                                               "rho": float(rho), "p": float(p)}
 
+    # A too-small arm gets a listing, not a silence. The bandwidth arm covers one
+    # cell per dataset -- 4 units each, 8 in all -- which is below MIN_UNITS, so
+    # H2 there is genuinely not estimable (D9). Printing the units is what makes
+    # it useful anyway: if the sign of the g-to-difference relation differs in
+    # the one cell where the bandwidth confound is removed, that is a limitation
+    # on H2's headline result and it should be readable rather than inferred.
+    first = report["by_lambda"][LAM_COLS[0]]
+    if 0 < first["n_units"] < MIN_UNITS:
+        print(f"\n  Fewer than {MIN_UNITS} units, so neither test is estimable. "
+              f"The units themselves:")
+        print(f"  {'dataset':>8} {'n':>4} {'mapping':>9} {'q':>3} {'setting':>9} "
+              f"{'bw':>7} {'seeds':>6} " + " ".join(f"{'g@'+c:>10}" for c in LAM_COLS)
+              + f" {'mean d':>9}")
+        bws = {}
+        for r in rows:
+            bws.setdefault(tuple(r[f] for f in UNIT_FIELDS), []).append(
+                float(r.get("quantum_bandwidth", 1.0)))
+        per_lam = {c: {tuple(u[f] for f in UNIT_FIELDS): u
+                       for u in units_at(rows, c)[0]} for c in LAM_COLS}
+        for u in units_at(rows, LAM_COLS[0])[0]:
+            k = tuple(u[f] for f in UNIT_FIELDS)
+            b = bws.get(k, [1.0])
+            gtxt = " ".join(
+                (f"{per_lam[c][k]['g']:10.4f}" if k in per_lam[c] else f"{'-':>10}")
+                for c in LAM_COLS)
+            print(f"  {u['dataset']:>8} {u['n_per_class']:4d} {u['mapping']:>9} "
+                  f"{u['n_qubits']:3d} {u['setting']:>9} "
+                  f"{np.median(b):7.4f} {u['seeds']:6d} {gtxt} {u['d']:+9.4f}")
+        print("  Descriptive only. Not a test, and not to be quoted as one.")
+
     n_present = len({tuple(r[f] for f in UNIT_FIELDS) for r in rows})
-    print(f"\n  {n_present} of {REGISTERED_UNITS} registered units are present "
-          f"in this file.")
-    if n_present < REGISTERED_UNITS:
-        print(f"  The sweep is incomplete. Every number above is computed on "
-              f"what is\n  present and is not the registered test until it is "
-              f"{REGISTERED_UNITS}.")
+    arms = sorted({r.get("arm", "registered") for r in rows})
+    report["arms"] = arms
+    if arms == ["registered"]:
+        print(f"\n  {n_present} of {REGISTERED_UNITS} registered units are "
+              f"present in this file.")
+        if n_present < REGISTERED_UNITS:
+            print(f"  The sweep is incomplete. Every number above is computed on "
+                  f"what is\n  present and is not the registered test until it "
+                  f"is {REGISTERED_UNITS}.")
+    else:
+        # The bandwidth arm's universe is one cell per dataset, not 360, so
+        # quoting 8 of 360 would read as a 98% shortfall rather than a complete
+        # arm that is simply too small to test (D9).
+        print(f"\n  arm(s) {arms}: {n_present} units. This is NOT the registered "
+              f"universe of {REGISTERED_UNITS};\n  the bandwidth arm covers one "
+              f"cell per dataset by design and cannot support H2.")
     if json_out:
         p = Path(json_out)
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -613,11 +716,20 @@ def main():
     ap.add_argument("--report", help="write the H2/H3 report JSON here")
     ap.add_argument("--datasets", nargs="*", default=["churn", "fraud"])
     ap.add_argument("--sizes", nargs="*", type=int, default=list(SIZES))
-    ap.add_argument("--out", default="results/audits/g_units.jsonl")
+    ap.add_argument("--arm", choices=("registered", "bandwidth"),
+                    default="registered",
+                    help="registered: the pre-registered kernels. bandwidth: the "
+                         "exploratory bandwidth-matched arm, which exists for one "
+                         "cell per dataset and cannot support H2 (see D9).")
+    ap.add_argument("--out", help="sweep output; defaults per arm so the two "
+                                  "cannot share a file")
     ap.add_argument("--limit", type=int, help="stop after N cells (smoke test)")
     ap.add_argument("--quantum-dir", default=str(ROOT / "results" / "runs" / "quantum"))
     ap.add_argument("--classical-dir", default=str(ROOT / "results" / "runs" / "classical"))
     args = ap.parse_args()
+    if not args.out:
+        args.out = ("results/audits/g_units.jsonl" if args.arm == "registered"
+                    else "results/audits/g_units_bw.jsonl")
 
     print("\nH2 and H3: g against observed difference, as section 6 registers them.")
     print("D5 freezes the lambda sweep; D7 fixes the seed aggregation.\n")
@@ -639,8 +751,9 @@ def main():
         run_tests(args.units, args.report)
         return
     print()
+    print(f"  arm: {args.arm}")
     sweep(args.datasets, args.sizes, args.out,
-          args.quantum_dir, args.classical_dir, args.limit)
+          args.quantum_dir, args.classical_dir, args.limit, args.arm)
     print(f"\n-> {args.out}\n  Run with --test once the sweep is complete.")
 
 
