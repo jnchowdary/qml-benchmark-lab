@@ -112,7 +112,7 @@ Powers of two bracketing the registered value **on both sides**, so the register
 
 **Date:** 25 September 2026. **Made after the registered sweep and after H1, but before H2 has been tested at all.** Unlike D1 to D4 this changes how a REGISTERED HYPOTHESIS is tested rather than adding an exploratory arm, so it was drafted and held rather than applied.
 
-**Approval.** Drafted and presented in full, with the problem, the proposal, the frozen sweep and the three licensed outcomes, on 25 September 2026. Approved by Nagesh Chowdary the same day in conversation, after the alternative (keeping the registered lambda-from-C rule) had been shown to return g = 57.3 for a kernel provably equal to an RBF. The approval was given as assent to proceed rather than as a line-by-line review, which is recorded here plainly; if that was not the intent, this record reverts to DRAFT and no week-5 result computed under it stands.
+**Approval.** Drafted and presented in full, with the problem, the proposal, the frozen sweep and the three licensed outcomes, on 25 September 2026. Approved by Nagesh Kumar Jonnalagadda the same day in conversation, after the alternative (keeping the registered lambda-from-C rule) had been shown to return g = 57.3 for a kernel provably equal to an RBF. The approval was given as assent to proceed rather than as a line-by-line review, which is recorded here plainly; if that was not the intent, this record reverts to DRAFT and no week-5 result computed under it stands.
 
 **The problem, measured.** Section 6 sets lambda from the classical model being compared against: `lambda_from_svm_C(C, n) = 1/(2*C*n)`. The point of that rule was to remove a free parameter. It does not survive contact with the data, because the classical arm's inner CV reaches the top of the C grid: C = 1e2 on churn and 1e3 on fraud in the primary cells, giving lambda near 1.4e-6, at which g diverges. Measured on the primary cells, 8 seeds each:
 
@@ -989,3 +989,36 @@ that nobody established this for seven weeks despite three weekly records asking
 The gap in the protocol's evidence base named above is unchanged and now
 permanent for this project: the audit protocol has been exercised against another
 group's hardware records and never against its own.
+
+### Amendment, 29 September 2026: the author's name, and a second edit to the pre-registration
+
+`docs/pre-registration.md` has now been edited twice since it was written on 24
+September. D11 records the first. This records the second, because a document
+this project describes as frozen does not get edited silently even for something
+this small.
+
+**What changed.** The author line read `Author: Nagesh Chowdary, Diarka Quantum
+Ltd.` and now reads `Author: Nagesh Kumar Jonnalagadda, Diarka Quantum Ltd.`,
+which is the author's name, confirmed by him on 29 September 2026. The same
+correction was applied to `README.md`'s maintainer line and to D5's approval
+line above.
+
+**Why this is not a deviation.** Nothing about the design, hypotheses,
+thresholds, decision rules or power figures is touched. An author's own name is a
+factual attribute of the document in the same category as the OSF claim D11
+corrected, and leaving a document asserting the wrong one is not a form of
+rigour.
+
+**The part worth recording.** Commits in this session and the previous one used
+`Nagesh Jonnalagadda` while the documents said `Nagesh Chowdary`. Week 7 section
+8 recorded that discrepancy as an error introduced into the git history and
+"corrected" the commits to Chowdary from `5390514` onward. **That correction was
+itself wrong**: neither spelling was the full name, including the one adopted as
+the fix. A discrepancy was noticed, one side was assumed authoritative without
+asking, and the assumption was written up as a finding — in a weekly record whose
+own section 8 is about claims asserted rather than checked. Week 7 section 8 now
+carries that correction.
+
+Commits before `a1e7b57` stand as written, in both spellings. History is not
+rewritten here, and the inconsistency in the log is part of the record rather
+than something to tidy away.

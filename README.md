@@ -106,4 +106,4 @@ g is unstable if computed carelessly. Deviation D5 records why: λ set from the 
 
 ## Contact
 
-Maintainer: Nagesh Chowdary, Diarka Quantum Ltd. Licence: see `LICENSE`.
+Maintainer: Nagesh Kumar Jonnalagadda, Diarka Quantum Ltd. Licence: see `LICENSE`.

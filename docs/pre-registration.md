@@ -4,7 +4,7 @@
 Repository: `github.com/jnchowdary/qml-benchmark-lab`.
 Code state this design rests on: commit `a8bafbb`. This document added at commit `61f7db9`.
 The two differ because a document cannot contain its own commit hash; both are on `main` and public.
-Author: Nagesh Chowdary, Diarka Quantum Ltd.
+Author: Nagesh Kumar Jonnalagadda, Diarka Quantum Ltd.
 
 This document was written **before any quantum kernel had been evaluated on real data**. Section 12 states exactly what was already observed at the time of writing, because a pre-registration that hides its starting point is worse than none.
 

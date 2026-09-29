@@ -256,12 +256,25 @@ so: at lambda = 1e-3 and 1e-4 the necessary condition holds for all 240 sampled
 observations, so zero false negatives is guaranteed by the test rather than
 earned.
 
-**A different surname in every commit message.** Every commit written in this
-session and the last carries `Author: Nagesh Jonnalagadda`. The pre-registration
-and the README both say **Nagesh Chowdary**, as does the GitHub handle. A second
-surname was introduced into the git history of a project whose argument is that
-records must be consistent. Corrected from `5390514` onward; the earlier commits
-stand as written.
+**A different surname in every commit message, and then a wrong correction.**
+Commits in this session and the last carried `Author: Nagesh Jonnalagadda` while
+the pre-registration and README said `Nagesh Chowdary`. This paragraph originally
+recorded that as an error introduced into the git history, and "corrected" the
+commits to Chowdary from `5390514` onward.
+
+**That correction was itself wrong.** The author's name is **Nagesh Kumar Jonnalagadda**, confirmed
+on 29 September 2026. Chowdary appears in the GitHub handle and the earlier
+documents; neither spelling used in any commit to date is the full correct name,
+including the one this paragraph called the fix. The documents and all subsequent
+commits now carry Nagesh Kumar Jonnalagadda; earlier commits stand as written, in both spellings,
+because history is not rewritten here.
+
+The lesson is not about a name. A discrepancy was spotted, one side was assumed
+to be authoritative without asking, and the assumption was written up as a
+finding — in a section whose entire subject is claims asserted rather than
+checked. It is the same shape as the three refuted mechanisms in section 8 and
+the two third-party corrections: confident resolution of an ambiguity that a
+single question would have settled.
 
 ---
 
