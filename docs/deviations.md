@@ -936,3 +936,56 @@ of this record, because the answer belongs in the project either way: if the
 allocation does not exist, that is a fact about what was ever feasible here, and
 if it does, the cost of not using it is known rather than assumed. The result is
 appended here when it is known.
+
+### Amendment, 29 September 2026: the allocation was never sufficient, and the number was in every record
+
+The open item above is closed. The IBM Quantum Platform dashboard for this
+account (org "Diarka Quantum", region us-east) shows:
+
+* instance `open-instance`, plan **open**, **10m 0s (100%) remain** — ten minutes
+  of QPU time per month, which is the Open Plan after the March 2026 change that
+  week 1 flagged as unchecked;
+* **"Your trial account expires in 1 day"**;
+* no workloads ever submitted.
+
+**What the registered run would have cost.** Section 13 asks for hardware runs on
+the primary cells. Every quantum record in this project already reports the
+hardware-equivalent figure, because D1 required it: `circuit_evaluations` =
+113,575 per record, being 61,075 training pairs (n(n-1)/2 at n_train = 350) plus
+52,500 test pairs (150 x 350). Across the registered scope — 4 settings, 20
+seeds, 2 datasets — that is
+
+    18,172,000 circuit executions
+
+against an allocation of 600 seconds per month. At 1 ms of QPU time per circuit
+that is **5 hours, or 30x the monthly budget**; at 5 ms it is 25 hours and 150x;
+and at an implausibly optimistic 0.1 ms it is still 3x over. **The registered
+timeline allocated two weeks to a run the available hardware could never have
+delivered, at any of those rates.**
+
+This was knowable on 17 September from a single page load, which weeks 1, 2 and 3
+each said needed doing. It was also knowable from this project's own output: the
+number that makes the timeline impossible has been printed in every quantum
+record since week 4, in a field that exists specifically so hardware cost would
+not be misreported.
+
+**What was feasible, and is being declined.** One (setting, seed) Gram is 113,575
+circuits, roughly two minutes at 1 ms, and fits inside the 600 seconds. That
+would have given `docs/audit-protocol.md` its own hardware records rather than
+the borrowed `ibm_fez` Grams it audited in week 6. It is not taken: no hardware
+code exists, the trial lapses tomorrow, and writing a Qiskit Runtime path to a
+deadline would produce untested code carrying a single exploratory artefact —
+which is the exact failure mode week 8 spent its day repairing elsewhere in this
+repository. **The finding is worth more than the artefact would have been**, and
+this is the finding.
+
+**What it changes in the record.** D12's reasoning above gave the confound and
+the remaining schedule as the grounds for dropping hardware. Both stand, but they
+are now secondary: the primary ground is that the registered run was never
+possible within the allocation this project had. Any statement that hardware was
+"dropped" should say instead that it was **never feasible as registered**, and
+that nobody established this for seven weeks despite three weekly records asking.
+
+The gap in the protocol's evidence base named above is unchanged and now
+permanent for this project: the audit protocol has been exercised against another
+group's hardware records and never against its own.
