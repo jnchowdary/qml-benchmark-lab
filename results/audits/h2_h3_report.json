@@ -1,0 +1,6806 @@
+{
+  "units_file": "results/audits/g_units.jsonl",
+  "lambda_columns": [
+    "0.1",
+    "0.01",
+    "0.001",
+    "0.0001",
+    "from_C"
+  ],
+  "registered_units": 360,
+  "by_lambda": {
+    "0.1": {
+      "h2": {
+        "label": "all units",
+        "n_units": 360,
+        "estimable": true,
+        "rho": 0.1711890781050265,
+        "p": 0.0011106232807361431,
+        "ci": [
+          0.06904903839845226,
+          0.26977734779725554
+        ],
+        "rejects": true,
+        "ci_excludes_zero": true,
+        "n_above_floor": 346,
+        "resolved_subset": {
+          "n_units": 346,
+          "rho": 0.17766429373809042,
+          "p": 0.0009026535482635332,
+          "rejects": true
+        }
+      },
+      "excluded": [],
+      "breaches": 4,
+      "breach_denominator": 7200,
+      "h2_verdict": "SUPPORTED",
+      "n_units": 360,
+      "h3": {
+        "label": "all units",
+        "n_above": 293,
+        "n_below": 67,
+        "split": 2.0,
+        "n_units": 360,
+        "estimable": true,
+        "U": 6021.0,
+        "p": 7.933342540492372e-07,
+        "median_above": 0.02352376391635187,
+        "median_below": 0.07773152370988015,
+        "median_diff": -0.05420775979352828,
+        "ci": [
+          -0.10563728821448676,
+          -0.019071962889801182
+        ],
+        "rank_biserial": -0.38658244613111914,
+        "rejects": true,
+        "ci_excludes_zero": true,
+        "exceeds_floor": true,
+        "signed_secondary": {
+          "U": 13456.0,
+          "p": 2.173278717142394e-06,
+          "median_above": -0.01952191028888722,
+          "median_below": -0.07773152370988015
+        }
+      },
+      "h3_verdict": "SUPPORTED"
+    },
+    "0.01": {
+      "h2": {
+        "label": "all units",
+        "n_units": 350,
+        "estimable": true,
+        "rho": -0.02446298686986366,
+        "p": 0.6483240770720204,
+        "ci": [
+          -0.12896209558173255,
+          0.08057346544731502
+        ],
+        "rejects": false,
+        "ci_excludes_zero": false,
+        "n_above_floor": 335,
+        "resolved_subset": {
+          "n_units": 335,
+          "rho": -0.02404402282854334,
+          "p": 0.6610265021778727,
+          "rejects": false
+        }
+      },
+      "excluded": [
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        }
+      ],
+      "breaches": 657,
+      "breach_denominator": 7200,
+      "h2_verdict": "NOT SUPPORTED",
+      "n_units": 350,
+      "h3": {
+        "label": "all units",
+        "n_above": 349,
+        "n_below": 1,
+        "split": 2.0,
+        "n_units": 350,
+        "estimable": false,
+        "why": "349 above and 1 below the split; a fixed threshold that stops partitioning the data has stopped being a test"
+      },
+      "h3_verdict": "NOT ESTIMABLE"
+    },
+    "0.001": {
+      "h2": {
+        "label": "all units",
+        "n_units": 90,
+        "estimable": true,
+        "rho": -0.38135572292875664,
+        "p": 0.0002085206012097791,
+        "ci": [
+          -0.545375592259695,
+          -0.1892073289966527
+        ],
+        "rejects": true,
+        "ci_excludes_zero": true,
+        "n_above_floor": 87,
+        "resolved_subset": {
+          "n_units": 87,
+          "rho": -0.38794926004228325,
+          "p": 0.00020503386403702436,
+          "rejects": true
+        }
+      },
+      "excluded": [
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        }
+      ],
+      "breaches": 4574,
+      "breach_denominator": 7200,
+      "h2_verdict": "SUPPORTED",
+      "n_units": 90,
+      "h3": {
+        "label": "all units",
+        "n_above": 80,
+        "n_below": 10,
+        "split": 2.0,
+        "n_units": 90,
+        "estimable": true,
+        "U": 523.0,
+        "p": 0.11577560311573958,
+        "median_above": 0.012377020545353964,
+        "median_below": 0.006627429551169529,
+        "median_diff": 0.005749590994184435,
+        "ci": [
+          -0.01667538035814499,
+          0.013426844713618945
+        ],
+        "rank_biserial": 0.3075000000000001,
+        "rejects": false,
+        "ci_excludes_zero": false,
+        "exceeds_floor": true,
+        "signed_secondary": {
+          "U": 279.0,
+          "p": 0.12184463581047399,
+          "median_above": -0.0034196101130983354,
+          "median_below": -0.00030907930306373066
+        }
+      },
+      "h3_verdict": "NOT SUPPORTED"
+    },
+    "0.0001": {
+      "h2": {
+        "label": "all units",
+        "n_units": 61,
+        "estimable": true,
+        "rho": -0.2937599153886832,
+        "p": 0.021571690745556486,
+        "ci": [
+          -0.5080013372607107,
+          -0.04528945665409029
+        ],
+        "rejects": true,
+        "ci_excludes_zero": true,
+        "n_above_floor": 59,
+        "resolved_subset": {
+          "n_units": 59,
+          "rho": -0.3012857977790766,
+          "p": 0.02040202124143019,
+          "rejects": true
+        }
+      },
+      "excluded": [
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 0,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 1,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 2,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        }
+      ],
+      "breaches": 4972,
+      "breach_denominator": 7200,
+      "h2_verdict": "SUPPORTED",
+      "n_units": 61,
+      "h3": {
+        "label": "all units",
+        "n_above": 49,
+        "n_below": 12,
+        "split": 2.0,
+        "n_units": 61,
+        "estimable": true,
+        "U": 381.0,
+        "p": 0.1165643788293171,
+        "median_above": 0.010153684956033056,
+        "median_below": 0.005385615108547896,
+        "median_diff": 0.00476806984748516,
+        "ci": [
+          -0.002511740015843725,
+          0.009459885431152903
+        ],
+        "rank_biserial": 0.29591836734693877,
+        "rejects": false,
+        "ci_excludes_zero": false,
+        "exceeds_floor": true,
+        "signed_secondary": {
+          "U": 236.0,
+          "p": 0.29684857551639754,
+          "median_above": -0.0022614293980968265,
+          "median_below": -0.0012257620320582454
+        }
+      },
+      "h3_verdict": "NOT SUPPORTED"
+    },
+    "from_C": {
+      "h2": {
+        "label": "all units",
+        "n_units": 289,
+        "estimable": true,
+        "rho": -0.014536352066181443,
+        "p": 0.8056357831203604,
+        "ci": [
+          -0.12969780856748334,
+          0.10101204859362256
+        ],
+        "rejects": false,
+        "ci_excludes_zero": false,
+        "n_above_floor": 279,
+        "resolved_subset": {
+          "n_units": 279,
+          "rho": 0.002356087480246218,
+          "p": 0.9687486408164523,
+          "rejects": false
+        }
+      },
+      "excluded": [
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "churn",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 3,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 10,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 100,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 4,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 12,
+          "setting": "iqp-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 6,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 5,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "randproj",
+          "n_qubits": 8,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "angle-r2",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 12,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 250,
+          "mapping": "selectk",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "pca",
+          "n_qubits": 8,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r1",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 4,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "angle-r2",
+          "surviving_seeds": 9,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r1",
+          "surviving_seeds": 8,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        },
+        {
+          "dataset": "fraud",
+          "n_per_class": 50,
+          "mapping": "randproj",
+          "n_qubits": 6,
+          "setting": "iqp-r2",
+          "surviving_seeds": 7,
+          "of_seeds": 20,
+          "reason": "below MIN_SEEDS"
+        }
+      ],
+      "breaches": 2893,
+      "breach_denominator": 7200,
+      "h2_verdict": "NOT SUPPORTED",
+      "n_units": 289,
+      "h3": {
+        "label": "all units",
+        "n_above": 164,
+        "n_below": 125,
+        "split": 2.0,
+        "n_units": 289,
+        "estimable": true,
+        "U": 8661.0,
+        "p": 0.02401770331621479,
+        "median_above": 0.022429409233593253,
+        "median_below": 0.037321252520958886,
+        "median_diff": -0.014891843287365633,
+        "ci": [
+          -0.0258270826750066,
+          -0.0035241607954386335
+        ],
+        "rank_biserial": -0.15502439024390247,
+        "rejects": true,
+        "ci_excludes_zero": true,
+        "exceeds_floor": true,
+        "signed_secondary": {
+          "U": 10475.0,
+          "p": 0.7497597320864513,
+          "median_above": -0.01708099236979191,
+          "median_below": -0.027214087624327348
+        }
+      },
+      "h3_verdict": "SUPPORTED"
+    }
+  },
+  "h2_confirmatory": "NOT ESTABLISHED (no breach-free lambda)",
+  "h3_confirmatory": "NOT ESTABLISHED (no breach-free lambda)",
+  "per_seed_sensitivity": {
+    "0.1": {
+      "n_rows": 7196,
+      "rho": 0.08339677976223255,
+      "p": 1.3844132203492204e-12
+    },
+    "0.01": {
+      "n_rows": 6543,
+      "rho": 0.010773847910520683,
+      "p": 0.38356714700029937
+    },
+    "0.001": {
+      "n_rows": 2626,
+      "rho": -0.02333206396422607,
+      "p": 0.23199574810802012
+    },
+    "0.0001": {
+      "n_rows": 2228,
+      "rho": 0.050676330100407944,
+      "p": 0.016747559726281724
+    },
+    "from_C": {
+      "n_rows": 4307,
+      "rho": 0.010458429016151953,
+      "p": 0.4925979827815205
+    }
+  },
+  "arms": [
+    "registered"
+  ]
+}
