@@ -843,3 +843,96 @@ each asked for an external timestamp and it was never set up. Weeks 8 to 12 are
 writing and hardware runs; if the repository is archived at intervals from now,
 the ordering of that work is witnessed even though the ordering of weeks 1 to 7
 is not.
+
+---
+
+## D12 — the IBM hardware runs are dropped, one week after the timeline called for them
+
+**Date:** 29 September 2026
+**Status:** In force. A departure from the registered **timeline**, not from any
+hypothesis, endpoint or decision rule. **No registered claim depends on it.**
+**Affects:** Section 13 (timeline). Section 7's backend paragraph is unchanged.
+
+### What was registered
+
+Section 13: *"Weeks 4 ... Week 5 ... Week 6: primary tests. **Weeks 7 to 8: IBM
+hardware runs on the primary cells.** Week 9: statistics and the exploratory
+sweep. Weeks 10 to 12: writing."*
+
+Section 7 is the only other mention: *"Qiskit is used only as a single-setting
+cross-check and **as the route to IBM hardware**; framework wall-clock is never
+compared across frameworks."*
+
+**That is the whole of it.** No hypothesis, endpoint, decision rule, power
+calculation or "what counts as a result" clause refers to hardware anywhere in
+the document. H1, H2 and H3 are simulator-based, all three have now been tested,
+and their verdicts stand without a hardware run: H1 disadvantage on churn, H1 not
+rejected on fraud, H2 and H3 NOT ESTABLISHED.
+
+### What actually happened
+
+Week 7 ended with no hardware runs and **no hardware code**: nothing in
+`scripts/` references IBM, Qiskit Runtime or a hardware backend. The IBM Quantum
+allocation was recorded as unconfirmed in week 1, again in week 2, and again in
+week 3 — *"The IBM Quantum Open Plan allocation is still unconfirmed"* — and was
+never checked. Week 1 also noted that IBM changed the Open Plan in March 2026 and
+that *"nobody has checked it."*
+
+So this was not deferred by a decision. It was carried as an open item for seven
+weeks without being decided in either direction, and is being decided now, **one
+week after the registered window for it opened and closed**. Whether it was even
+possible is unknown, because the allocation was never verified.
+
+### Why it is dropped rather than attempted
+
+**The comparison it would measure is confounded.** D9 records that the registered
+arm fixes the quantum kernels at bandwidth 1.0 while the classical arm tunes
+freely, and that week 6 established this asymmetry is the largest single effect
+in the whole comparison. Week 6 further showed that when the quantum side is
+given the same freedom, the selected kernels are Gaussian kernels reached
+expensively. Putting that on noisy hardware measures a known artefact through a
+second source of error and would demonstrate that noise makes a losing kernel
+lose more.
+
+**Four weeks remain and two are already allocated.** Week 9 is statistics and the
+exploratory sweep; weeks 10 to 12 are writing. Building a Qiskit hardware path
+from nothing, against an allocation nobody has confirmed, with unknown queue
+times, would consume the last clear execution week to produce a result no
+registered claim requires.
+
+### What is being given up, stated so it is not glossed
+
+There is one real argument for running it and it is being declined. The audit
+protocol in `docs/audit-protocol.md` was exercised in week 6 against a foreign
+pipeline's hardware records — Kakavand et al.'s six `ibm_fez` Grams, condition
+number 4.5e+05 — and **has never been run against this project's own hardware
+records, because there are none.** That is a gap in the protocol's evidence base,
+not in the study's, and it is recorded here as forgone rather than as
+unimportant.
+
+Nothing here claims a hardware run would have been uninformative. It claims only
+that it was not done, why, and that no registered claim rests on it.
+
+### What this does not change
+
+Section 7's backend paragraph stands: all quantum kernels run on
+`lightning.qubit`, a test asserts `default.qubit` agreement to 1e-8, and Qiskit
+remains a single-setting cross-check. Reported cost stays hardware-equivalent
+per D1 — `QuantumGramFactory.evaluations()` reports n(n-1)/2, which is what a
+quantum computer would need, and `simulator_executions()` reports the shortcut
+separately. **The paper must not claim quantum kernels are cheap on the strength
+of something no quantum computer can do**, and dropping the hardware runs makes
+that constraint more load-bearing rather than less.
+
+If a hardware run happens in weeks 9 to 12 it is post-result and exploratory in
+the same sense as D4, is labelled as such, and no p-value from it enters the
+confirmatory family.
+
+### Open
+
+The IBM Quantum Open Plan allocation has never been checked, across seven weeks
+and three weekly records that each flagged it. It is being checked now regardless
+of this record, because the answer belongs in the project either way: if the
+allocation does not exist, that is a fact about what was ever feasible here, and
+if it does, the cost of not using it is known rather than assumed. The result is
+appended here when it is known.
