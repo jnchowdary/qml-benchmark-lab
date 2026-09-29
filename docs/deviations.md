@@ -191,3 +191,74 @@ Two figures are needed, not one, and the first version of this record mixed them
 **Corrections to this record, same day, in the order they were made.** First: the original gave fraud's observed figure as 0.0095 → 0.0063 and called the dataset "barely affected" at 1.1x. That compared an arm-level registered number against a primary-cell observed one. Measured the same way as the registered figure, fraud is 0.0209 → 0.0138, a factor of 2.3. The conflation survived review because churn's two figures are identical to four decimal places by coincidence. Both quantities are now tabulated separately and neither is described as the other. Second: the original covered two arms of six. An audit sweep across all six found every one wrong by between 2.3 and 3.9 times, so this is a table-wide correction and not a two-dataset one.
 
 **What it says about the project.** The registered design was powered on the only data that existed when it was written, which was reasonable, and nobody checked the assumption once the other arm existed. The check that caught it is nine lines long and had been sitting unwritten for a month. That is the argument for the audit protocol in one sentence. That the correction itself then needed correcting, for mixing two units of the same quantity, is the argument for measuring rather than inferring.
+
+---
+
+## D7. How twenty seeds become one g per unit — the aggregation H2 does not specify
+
+**Date:** 29 September 2026. **Made before g has been computed on any unit beyond
+the eight-seed diagnostic in week-4 section 9, and before H2 or H3 has been run
+at all.** Like D5 this concerns how a REGISTERED hypothesis is tested, so it is
+written down and fixed in advance rather than settled while looking at output.
+
+**The gap.** Section 6 defines H2 as a Spearman correlation between `g_λ` and the
+observed mean paired difference in normAP "across all 360 units (2 datasets x 3
+mappings x 5 qubit counts x 3 training sizes x 4 quantum settings)". A unit so
+defined does not include the seed. Each unit contains **20 seeds**, and two
+quantities inside it vary by seed:
+
+* **g itself.** Every seed has its own train/test split, so its own Gram
+  matrices and its own g.
+* **The classical kernel g is measured against.** Section 6 says lambda comes
+  from "the classical model actually being compared against, using the C that
+  inner-CV selected for that cell". Inner CV selects per seed, and it does not
+  always select the same classical family, let alone the same C.
+
+The observed difference is specified — section 6 says "mean paired difference" —
+so only g's aggregation is open. Twenty numbers have to become one and the
+registration does not say how.
+
+**The rule, fixed here.**
+
+* g is computed **per seed**, on that seed's own training Gram matrices, against
+  **that seed's** inner-CV-selected best classical kernel. That is the pairing
+  section 6 describes; anything else would compare a quantum kernel against a
+  classical model that was not the one it was benchmarked against.
+* A unit's g at a given lambda is the **median across its seeds**. The median
+  rather than the mean because week-4 section 9 shows g's distribution is
+  heavy-tailed at small lambda: a single under-regularised seed returned 57.3
+  against a ceiling of 18.71, and a mean would let one such seed carry a unit.
+* The **interquartile range across seeds is reported with every unit**, never
+  suppressed. A unit whose seeds disagree widely about g is evidence about g.
+* D5's ceiling rule applies per seed before aggregation: a seed breaching its
+  own sqrt(n) ceiling at a given lambda is excluded at that lambda, the count is
+  reported, and a unit with fewer than 10 surviving seeds at a lambda is
+  excluded at that lambda and reported as excluded.
+
+**Sensitivity, declared in advance so it cannot become a choice made afterwards.**
+H2 and H3 are also computed with the seed as the unit — 7,200 rows rather than
+360 — and both results are reported side by side. If they disagree, the reported
+finding is that g's relationship to observed performance depends on the level of
+aggregation, which is a fact about g and not a defect in the test. **The 360-unit
+version as registered is the confirmatory one**; the per-seed version is a
+sensitivity check and is labelled as such wherever it appears.
+
+Note that the per-seed version is not independent within a unit, and the
+unit-level version is what section 6 registers precisely because of that. This
+is the same unit-of-analysis distinction that this project has now got wrong
+five times; stating it before the test rather than after is the whole reason
+this record exists.
+
+**Seeds used.** All 20 per unit, matching the sweep. No subsetting for compute.
+If the full computation proves infeasible the reduction will be recorded here as
+a further amendment **before** it is run, with the seed count and the reason.
+
+**What this does not change.** H2's statistic, alpha, two-sidedness and single-
+test status; H3's threshold of g = 2 and its Mann-Whitney U; D5's frozen lambda
+sweep and its requirement that sign and significance agree across every lambda
+at which no unit breaches its ceiling. None of those is touched.
+
+**Why this is a deviation record and not an edit.** Section 6 is not wrong, it
+is silent. The pre-registration is never edited -- D6 states that plainly -- so a
+silence is filled here, in advance, in the open, where the date is visible and
+the choice can be argued with.
