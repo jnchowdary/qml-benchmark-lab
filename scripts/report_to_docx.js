@@ -61,11 +61,34 @@ function runs(text, base = {}) {
 }
 
 function cells(row) {
-  return row.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+  // Split on UNESCAPED pipes only, then unescape. A cell containing \| -- which
+  // is how |d| is written inside a markdown table -- previously split into extra
+  // cells, widths[i] came back undefined, and the docx library threw
+  // "Cannot read properties of undefined (reading 'slice')" from inside
+  // createTableWidthElement. Nothing in that message names the row, the file or
+  // the escaped pipe.
+  return row.trim()
+    .replace(/^\s*\|/, '').replace(/\|\s*$/, '')
+    .split(/(?<!\\)\|/)
+    .map(c => c.trim().replace(/\\\|/g, '|'));
 }
 
-function buildTable(header, rows) {
+function buildTable(header, rows, lineNo) {
   const n = header.length;
+  // A row whose cell count differs from the header's is a defect in the record,
+  // and it must be named here rather than surfacing as a TypeError from inside
+  // the docx package. Same principle as the audit reporting a missing field by
+  // name instead of letting a KeyError read as a failed experiment.
+  rows.forEach((r, k) => {
+    if (r.length !== n) {
+      console.error(
+        `\n  TABLE ERROR in ${process.argv[2]}: the table whose header is on ` +
+        `line ${lineNo ?? '?'} has ${n} columns,\n  but data row ${k + 1} has ` +
+        `${r.length}. An unescaped | inside a cell is the usual cause.\n` +
+        `  row: ${r.join(' | ')}\n`);
+      process.exit(2);
+    }
+  });
   const w = Math.floor(CONTENT_WIDTH / n);
   const widths = Array(n).fill(w);
   widths[n - 1] = CONTENT_WIDTH - w * (n - 1);          // must sum to the table width
@@ -110,11 +133,12 @@ function convert(md) {
 
     // tables
     if (/^\s*\|/.test(line) && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1] || '')) {
+      const headerLine = i + 1;          // 1-indexed, for the error message
       const header = cells(line);
       i += 2;
       const rows = [];
       while (i < lines.length && /^\s*\|/.test(lines[i])) { rows.push(cells(lines[i])); i++; }
-      body.push(buildTable(header, rows));
+      body.push(buildTable(header, rows, headerLine));
       body.push(new Paragraph({ spacing: { after: 160 }, children: [] }));
       continue;
     }
