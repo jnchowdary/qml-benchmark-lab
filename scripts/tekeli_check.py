@@ -76,6 +76,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from qbench.data import balanced_subsample, load_dataset, make_split  # noqa: E402
 from qbench.features import fit_mapping, scale_to_angles  # noqa: E402
 from qbench.kernels.quantum import QuantumGramFactory  # noqa: E402
+from qbench.stats import fmt_pm  # noqa: E402
 from primary_tests import PRIMARY_CELL  # noqa: E402
 from rbf_surrogate import fit_gamma  # noqa: E402
 
@@ -334,7 +335,8 @@ def main():
         if "error" in exp:
             print(f"    exponent NOT ESTIMABLE: {exp['error']}")
         else:
-            print(f"    exponent {exp['slope']:.3f} +/- {exp['slope_stderr']:.3f} "
+            print(f"    exponent {exp['slope']:.3f} +/- "
+                  f"{fmt_pm(exp['slope_stderr'])} "
                   f"over {exp['n_bandwidths']} bandwidths (predicted 2.000), "
                   f"R2 {exp['r2']:.5f}")
         if pred is not None and pl["found"]:

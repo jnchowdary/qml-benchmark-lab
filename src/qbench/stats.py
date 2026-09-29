@@ -104,6 +104,26 @@ def fmt_rho(rc: RankCorr, width: int = 8) -> str:
     return f"{rc.rho:+.4f}".rjust(width) if rc.ok else "n/a".rjust(width)
 
 
+def fmt_pm(x: float | None, sig: int = 2) -> str:
+    """An uncertainty that never renders as zero when it is not zero.
+
+    `f"{x:.3f}"` prints 3.168e-04 as `0.000`, which claims a measurement is
+    exact when it is merely small. tekeli_check.py printed exactly that for two
+    of the four settings in `results/audits/tekeli_churn_small.json`, so a
+    reader could not tell a standard error of 1e-4 from one of 1e-7 -- or from a
+    fit that had not resolved anything at all.
+
+    Significant figures rather than decimal places, so the magnitude survives
+    at any scale. A true zero still prints as "0", because an exactly-zero
+    uncertainty is a real and different statement.
+    """
+    if x is None:
+        return "n/a"
+    if x == 0:
+        return "0"
+    return f"{x:.{sig}g}"
+
+
 def fmt_p(p: float | None) -> str:
     """A p-value that underflows to zero is a display artefact, not a result.
 

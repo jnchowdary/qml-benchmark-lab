@@ -30,7 +30,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from qbench.stats import RankCorr, fmt_p, fmt_rho, rank_correlation  # noqa: E402
+from qbench.stats import (  # noqa: E402
+    RankCorr, fmt_p, fmt_pm, fmt_rho, rank_correlation)
 
 
 class TestRefusal:
@@ -141,6 +142,33 @@ class TestFormatting:
         assert fmt_p(0.0) == "<1e-300"
         assert fmt_p(None) == "n/a"
         assert fmt_p(0.05) == "5.00e-02"
+
+    def test_small_uncertainty_never_renders_as_zero(self):
+        """The defect, with the real numbers that exposed it.
+
+        tekeli_check.py printed `+/- 0.000` for standard errors of 3.168e-04 and
+        3.099e-04 in results/audits/tekeli_churn_small.json. A reader could not
+        tell those from 1e-7, or from a fit that had resolved nothing.
+        """
+        for v in (3.168e-04, 3.099e-04, 1e-7, 1.152e-03):
+            out = fmt_pm(v)
+            assert out != "0", f"{v:g} printed as a bare zero"
+            assert float(out) != 0.0, f"{v:g} printed as {out!r}, which is zero"
+            assert float(out) == pytest.approx(v, rel=0.05)
+
+    def test_exact_zero_still_prints_as_zero(self):
+        """An exactly-zero uncertainty is a real and different statement."""
+        assert fmt_pm(0) == "0"
+        assert fmt_pm(0.0) == "0"
+
+    def test_ordinary_values_stay_readable(self):
+        assert fmt_pm(0.0234) == "0.023"
+        assert fmt_pm(2.0) == "2"
+        assert fmt_pm(None) == "n/a"
+
+    def test_magnitude_survives_at_any_scale(self):
+        """Two standard errors three decades apart must not print the same."""
+        assert fmt_pm(1e-4) != fmt_pm(1e-7)
 
     def test_namedtuple_fields_are_stable(self):
         """Callers unpack this; the field order is part of the contract."""
