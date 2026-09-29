@@ -205,7 +205,7 @@ real data.
 
 ---
 
-## 7. Three wrong readings of my own
+## 7. Four wrong readings of my own
 
 Separate from the code, because the code was fixed and these were not caught by
 fixing anything.
@@ -220,6 +220,12 @@ fixing anything.
    sharp boundary at 0.054 to 0.0755 bracketing Tekeli's 0.072, then as an
    absence of any flat regime at all. Both were artefacts of the detectors in
    section 6. The third reading, after the detectors were fixed, is section 4.
+4. **"Rewrite the pre-registration's section 1" was proposed four times** as the
+   next major task, and as the thing blocking OSF. The pre-registration is never
+   edited -- D6 states it in terms -- so the proposal contradicted the discipline
+   this project exists to demonstrate, and nothing was blocking OSF in any case.
+   Four weeks of "next week's spine" pointed at a task that should not be done,
+   while two registered confirmatory hypotheses sat unexecuted and unmentioned.
 
 ---
 
@@ -256,11 +262,29 @@ because of an identical failure in week 5.
 
 ## 10. Still open
 
-* **The pre-registration's section 1 rewrite, with its own deviation record.**
-  Deferred three weeks running. It is the only thing blocking OSF registration
-  and it should be week 7's spine.
+* **H2 and H3 have never been tested.** Section 2 of the pre-registration
+  registers three confirmatory hypotheses and says of the second: "H2 is the
+  reason this project exists." H1 was tested in week 4. H2 and H3 were not, D5
+  specified how and has been in force since 25 September, and the computation
+  was never run. Week-4 section 14 says exactly what to do. The project turned
+  toward the protocol and did not come back. **Two of three registered
+  confirmatory tests are unexecuted**, and this is the largest open item in the
+  project by a wide margin. It is week 7's spine.
+* **A live result is waiting inside it.** Week-4 section 9, on eight seeds: at
+  every lambda, g is larger at the registered bandwidth than at the selected
+  one, and the registered bandwidth is where the quantum kernel performed
+  *worse*. g was highest exactly where the kernel did least well, the opposite
+  of what Huang et al. predict. If that survives all 360 units it is a
+  substantive negative result about the geometric difference as a pre-training
+  screen -- and unlike everything else this project has produced recently it
+  would be **confirmatory**, because it was registered before the data existed.
 * **The Flórez-Ablan code check.** Leaving one third party corrected and another
   flagged-but-unchecked is worse than doing both or neither.
+* **OSF registration is not blocked by anything.** It was recorded through this
+  week as waiting on a rewrite of the pre-registration's section 1. That was
+  wrong twice over. v1.0 plus D1 to D6 can be registered exactly as they stand;
+  git already timestamps the document publicly from 24 September and OSF adds an
+  independent immutable record and a DOI, requiring no edit to anything.
 * **The exponent field prints `± 0.000`**, hiding whether the standard error is
   1e-4 or 1e-7. After this week a reader of this repository has specific reason
   to distrust that.
@@ -287,3 +311,11 @@ The consolation is structural rather than moral. The protocol's first foreign
 run produced one measurement, eight accurate refusals and two defects in itself.
 That is what it is supposed to do, and it is a better argument for the record
 format than the paragraph it replaced ever was.
+
+**A second thing this week says, found on its last day.** While all of the above
+was happening, two of the project's three registered confirmatory hypotheses had
+never been run, and no weekly record had said so. The attention went to the
+protocol, to correcting claims about other people's work, and to a task that
+should not have been done at all. A pre-registration is worth nothing if the
+tests it registers are not executed, and this one has been sitting half-executed
+since week 4 while five weeks of records discussed everything else.

@@ -1,0 +1,271 @@
+{
+  "file": "results/runs/quantum/churn_matched_n250_bw.jsonl",
+  "control": "results/runs/quantum/churn_matched_n250_bw_shuffled.jsonl",
+  "floor": 0.001,
+  "checks": [
+    {
+      "name": "schema",
+      "status": "WARN",
+      "detail": "80 records readable; missing recommended fields cell, so some checks below will skip.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "chance correction",
+      "status": "PASS",
+      "detail": "one test-set shape (n=150, p=75); chance AP is 0.5154, which exceeds the base rate 0.5000 by 0.0154. Constant here, so raw AP is comparable WITHIN this file and nowhere else.",
+      "tier": 1,
+      "numbers": {
+        "chance_ap": 0.5154066462705761,
+        "base_rate": 0.5
+      }
+    },
+    {
+      "name": "negative control",
+      "status": "PASS",
+      "detail": "20 splits (80 records): ROC-AUC 0.5137 (+1.65 sigma), normAP +0.0095 (+0.67 sigma).",
+      "tier": 1,
+      "numbers": {
+        "ROC-AUC": {
+          "mean": 0.5137044444444445,
+          "sigma": 1.6545141746662528,
+          "se": 0.008283062577695333,
+          "n_units": 20
+        },
+        "normAP": {
+          "mean": 0.009501986665792633,
+          "sigma": 0.666598434196332,
+          "se": 0.01425443892206028,
+          "n_units": 20
+        }
+      }
+    },
+    {
+      "name": "pairing integrity",
+      "status": "PASS",
+      "detail": "all 20 (seed, cell) groups share one test-label fingerprint, so paired tests over them are valid.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "solver health",
+      "status": "PASS",
+      "detail": "all 80 final fits converged.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "unit of analysis",
+      "status": "SKIP",
+      "detail": "records carry no 'cell' field or only one configuration, so independent units cannot be identified.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "statistical power",
+      "status": "WARN",
+      "detail": "median paired sd 0.0344 over 20 seeds gives a minimum detectable effect near 0.0227 in normAP. A null result here excludes effects LARGER than that and nothing smaller. That is coarse relative to effects this literature reports.",
+      "tier": 1,
+      "numbers": {
+        "paired_sd": 0.03443431909452385,
+        "n_seeds": 20,
+        "mde": 0.022744859538731423
+      }
+    },
+    {
+      "name": "precision floor",
+      "status": "PASS",
+      "detail": "all 6 method-pair differences exceed the declared floor of 0.001.",
+      "tier": 1,
+      "numbers": {}
+    },
+    {
+      "name": "multiplicity",
+      "status": "WARN",
+      "detail": "this file supports 6 pairwise comparisons across 1 configurations. Uncorrected, the chance of at least one spurious rejection at alpha 0.05 is about 0.26. Declare which are confirmatory, or correct (Bonferroni would be 8.33e-03).",
+      "tier": 1,
+      "numbers": {
+        "comparisons": 6,
+        "bonferroni": 0.008333333333333333
+      }
+    },
+    {
+      "name": "tuning symmetry",
+      "status": "PASS",
+      "detail": "every method varied its selection: linear 1 structural / 9 C (no parameters); poly 99 structural / 9 C; quantum-angle-r1 5 structural / 7 C; quantum-angle-r2 4 structural / 6 C; quantum-iqp-r1 4 structural / 5 C; quantum-iqp-r2 3 structural / 5 C; rbf 10 structural / 7 C.",
+      "tier": 1,
+      "numbers": {
+        "per_method": {
+          "linear": {
+            "structural": 1,
+            "C": 9,
+            "records": 300,
+            "parameters": [],
+            "has_parameters": false
+          },
+          "poly": {
+            "structural": 99,
+            "C": 9,
+            "records": 300,
+            "parameters": [
+              "coef0",
+              "degree",
+              "gamma"
+            ],
+            "has_parameters": true
+          },
+          "quantum-angle-r1": {
+            "structural": 5,
+            "C": 7,
+            "records": 20,
+            "parameters": [
+              "bandwidth",
+              "embedding",
+              "reps"
+            ],
+            "has_parameters": true
+          },
+          "quantum-angle-r2": {
+            "structural": 4,
+            "C": 6,
+            "records": 20,
+            "parameters": [
+              "bandwidth",
+              "embedding",
+              "reps"
+            ],
+            "has_parameters": true
+          },
+          "quantum-iqp-r1": {
+            "structural": 4,
+            "C": 5,
+            "records": 20,
+            "parameters": [
+              "bandwidth",
+              "embedding",
+              "reps"
+            ],
+            "has_parameters": true
+          },
+          "quantum-iqp-r2": {
+            "structural": 3,
+            "C": 5,
+            "records": 20,
+            "parameters": [
+              "bandwidth",
+              "embedding",
+              "reps"
+            ],
+            "has_parameters": true
+          },
+          "rbf": {
+            "structural": 10,
+            "C": 7,
+            "records": 300,
+            "parameters": [
+              "gamma"
+            ],
+            "has_parameters": true
+          }
+        }
+      }
+    },
+    {
+      "name": "cross-arm comparison",
+      "status": "FAIL",
+      "detail": "60 (seed, configuration, method) groups hold more than one record, up to 15 for method 'linear'. The configuration fields (none) do not identify a single result, so pairs cannot be formed without choosing arbitrarily and no power figure from this pairing would be meaningful. Pass --cell-fields naming the fields that define a configuration in BOTH files, or restrict the comparison file to the configuration this one covers.",
+      "tier": 1,
+      "numbers": {
+        "ambiguous_groups": 60,
+        "max_records_per_group": 15,
+        "cell_fields": []
+      }
+    },
+    {
+      "name": "kernel conditioning",
+      "status": "WARN",
+      "detail": "condition number reaches 9.9e+21 over 6 sampled kernels. The dual is underdetermined at that conditioning, so decision scores are reproducible only to a floor you must measure and quote, and threshold-based tests such as McNemar are not usable. Rank statistics survive; check that yours are.",
+      "tier": 2,
+      "numbers": {
+        "n_sampled": 6,
+        "cond_min": 435033680334.2305,
+        "cond_max": 9.881371052509112e+21,
+        "gram_errors": 0
+      }
+    },
+    {
+      "name": "classical surrogate equivalence",
+      "status": "WARN",
+      "detail": "too close to call: median difference from a label-free RBF surrogate is 1.17e-03 in normAP but 3 of 6 sampled kernels fall below the 1e-03 reproducibility floor (range 6.42e-04 to 7.69e-03). A median above the floor with records beneath it is a sample straddling the resolution limit, not a separation. Run the full analysis per kernel family before concluding either way.",
+      "tier": 2,
+      "numbers": {
+        "n_sampled": 6,
+        "median_abs_d_normap": 0.0011656468361924688,
+        "min_abs_d_normap": 0.0006419765037433134,
+        "max_abs_d_normap": 0.00768818827839024,
+        "n_below_floor": 3,
+        "signed_median": -0.0008463299952682912,
+        "hook_errors": 0,
+        "per_record": [
+          {
+            "method": "quantum-angle-r1",
+            "seed": 0,
+            "gamma": 0.0038815449128965993,
+            "gram_rmse": 0.0003219850596245857,
+            "d_normap": -0.001433539522908145
+          },
+          {
+            "method": "quantum-angle-r2",
+            "seed": 3,
+            "gamma": 0.01584893192461114,
+            "gram_rmse": 0.0009108074897936821,
+            "d_normap": -0.0007949058410597898
+          },
+          {
+            "method": "quantum-iqp-r1",
+            "seed": 6,
+            "gamma": 0.005262465953086361,
+            "gram_rmse": 0.0029152021351356904,
+            "d_normap": -0.00768818827839024
+          },
+          {
+            "method": "quantum-iqp-r2",
+            "seed": 9,
+            "gamma": 0.07744700288561751,
+            "gram_rmse": 0.10863987359831721,
+            "d_normap": 0.0014525777126398465
+          },
+          {
+            "method": "quantum-angle-r1",
+            "seed": 13,
+            "gamma": 0.06467312780921984,
+            "gram_rmse": 0.004584206127222562,
+            "d_normap": -0.0006419765037433134
+          },
+          {
+            "method": "quantum-angle-r2",
+            "seed": 16,
+            "gamma": 0.0038815449128965993,
+            "gram_rmse": 0.0003316925517104437,
+            "d_normap": -0.0008977541494767927
+          }
+        ]
+      }
+    },
+    {
+      "name": "selection",
+      "status": "PASS",
+      "detail": "inner scores recorded alongside test scores; their rank correlation is +0.146. Selection auditable.",
+      "tier": 1,
+      "numbers": {
+        "spearman_inner_vs_test": 0.14551315866596332
+      }
+    }
+  ],
+  "not_runnable": [
+    {
+      "name": "grid adequacy against a shuffled null",
+      "reason": "needs a re-run, not a hook: the same pipeline on permuted labels with a widened grid. Widening raises the best inner score even when nothing is better, so hyperparameter edge flags never justify it on their own."
+    }
+  ]
+}
