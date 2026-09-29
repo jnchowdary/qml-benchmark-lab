@@ -275,7 +275,8 @@ def index(recs, extra=()):
     return out
 
 
-def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None, arm="registered"):
+def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None, arm="registered",
+          mappings=MAPPINGS, qubits=QUBITS):
     """One arm per output file, never mixed.
 
     `arm` is part of the resume key AND of every row. Without it a resumed run
@@ -304,14 +305,22 @@ def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None, arm="registered")
     t0, n = time.perf_counter(), 0
     for dataset, npc in itertools.product(datasets, sizes):
         qf = Path(q_dir) / f"{dataset}_matched_n{npc}{suffix}.jsonl"
-        if not qf.exists():
-            print(f"  {qf.name} does not exist; {arm} arm has no {dataset} n={npc}")
+        cf = Path(c_dir) / f"{dataset}_matched_n{npc}.jsonl"
+        # primary_tests.load takes a Path and returns None for a missing file;
+        # audit.load takes a str. Passing str here raised AttributeError on the
+        # first line of the first real sweep, after three commits had described
+        # this analysis as fixed in advance of its data. None is checked
+        # explicitly rather than trusted, because a loader that returns None
+        # instead of raising turns a missing file into a silent skip.
+        q, c = load(qf), load(cf)
+        if not q or not c:
+            missing = [f.name for f, v in ((qf, q), (cf, c)) if not v]
+            print(f"  skipping {dataset} n={npc} [{arm}]: missing or empty "
+                  f"{', '.join(missing)}")
             continue
-        q = load(str(qf))
-        c = load(str(Path(c_dir) / f"{dataset}_matched_n{npc}.jsonl"))
         q_by, c_by = index(q), index(c)
         seeds = sorted({int(r["seed"]) for r in q})
-        for mapping, nq, seed in itertools.product(MAPPINGS, QUBITS, seeds):
+        for mapping, nq, seed in itertools.product(mappings, qubits, seeds):
             if (arm, dataset, npc, mapping, nq, seed) in done:
                 continue
             rows = cell_seeds(dataset, npc, mapping, nq, seed, q_by, c_by, arm)
@@ -325,10 +334,18 @@ def sweep(datasets, sizes, out_path, q_dir, c_dir, limit=None, arm="registered")
                 el = time.perf_counter() - t0
                 print(f"  {n} cells, {el/60:.1f} min, {el/n:.1f} s/cell")
             if limit and n >= limit:
-                print(f"  stopped at --limit {limit}")
+                el = time.perf_counter() - t0
+                print(f"  stopped at --limit {limit}: {n} cells in {el:.1f} s, "
+                      f"{el/max(n,1):.1f} s/cell")
+                print(f"  These were whatever the loop reached first: "
+                      f"the loop runs mapping-major, so a small --limit samples "
+                      f"only\n  the lowest qubit count. Cost rises steeply with "
+                      f"qubits, so do NOT multiply\n  this figure by the full "
+                      f"cell count. Use --qubits to time the expensive end.")
                 return
-    print(f"  {n} new (cell, seed) combinations in "
-          f"{(time.perf_counter()-t0)/60:.1f} min")
+    el = time.perf_counter() - t0
+    print(f"  {n} new (cell, seed) combinations in {el/60:.1f} min"
+          + (f", {el/n:.1f} s/cell" if n else ""))
 
 
 # ------------------------------------------------ aggregation (D7 and D8a)
@@ -706,6 +723,36 @@ def run_tests(units_path, json_out=None):
         print(f"\n-> {p}")
 
 
+def check_inputs(datasets, sizes, q_dir, c_dir, arm):
+    """Resolve and load every input file BEFORE any g is computed.
+
+    Not a control -- it has no known answer -- but a precondition. The nine
+    controls all exercise arithmetic; none of them opens a results file, which
+    is why a str-versus-Path error in `sweep` survived three commits and only
+    appeared on the first line of the first real run. This reads record counts
+    and nothing else: no Gram matrix, no g, no metric.
+    """
+    suffix = "_bw" if arm == "bandwidth" else ""
+    ok, rows = True, []
+    for dataset, npc in itertools.product(datasets, sizes):
+        qf = Path(q_dir) / f"{dataset}_matched_n{npc}{suffix}.jsonl"
+        cf = Path(c_dir) / f"{dataset}_matched_n{npc}.jsonl"
+        for f, side in ((qf, "quantum"), (cf, "classical")):
+            recs = load(f)
+            if not recs:
+                rows.append((f.name, side, "MISSING OR EMPTY", "", ""))
+                ok = False
+                continue
+            sets = sorted({r.get("setting") or r.get("method") for r in recs})
+            seeds = len({r["seed"] for r in recs})
+            rows.append((f.name, side, f"{len(recs)} recs",
+                         f"{seeds} seeds", f"{len(sets)} settings/methods"))
+    w = max(len(r[0]) for r in rows) if rows else 10
+    for name, side, a1, a2, a3 in rows:
+        print(f"  {name:<{w}}  {side:<9} {a1:>16} {a2:>9} {a3:>20}")
+    return ok
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--controls-only", action="store_true")
@@ -724,6 +771,13 @@ def main():
     ap.add_argument("--out", help="sweep output; defaults per arm so the two "
                                   "cannot share a file")
     ap.add_argument("--limit", type=int, help="stop after N cells (smoke test)")
+    ap.add_argument("--mappings", nargs="*", default=list(MAPPINGS),
+                    help="restrict the sweep to these mappings")
+    ap.add_argument("--qubits", nargs="*", type=int, default=list(QUBITS),
+                    help="restrict the sweep to these qubit counts. Use this to "
+                         "time the EXPENSIVE end: a small --limit otherwise "
+                         "samples only the cheapest cells, because the loop runs "
+                         "mapping-major and reaches 12 qubits only after 80 cells.")
     ap.add_argument("--quantum-dir", default=str(ROOT / "results" / "runs" / "quantum"))
     ap.add_argument("--classical-dir", default=str(ROOT / "results" / "runs" / "classical"))
     args = ap.parse_args()
@@ -751,9 +805,16 @@ def main():
         run_tests(args.units, args.report)
         return
     print()
-    print(f"  arm: {args.arm}")
+    print(f"\nInput check, arm: {args.arm} (no g computed here):")
+    if not check_inputs(args.datasets, args.sizes, args.quantum_dir,
+                        args.classical_dir, args.arm):
+        raise SystemExit("\n  An input file is missing or empty. Fix that before "
+                         "the sweep;\n  a sweep that silently skips a file "
+                         "produces a table that looks complete.")
+    print()
     sweep(args.datasets, args.sizes, args.out,
-          args.quantum_dir, args.classical_dir, args.limit, args.arm)
+          args.quantum_dir, args.classical_dir, args.limit, args.arm,
+          tuple(args.mappings), tuple(args.qubits))
     print(f"\n-> {args.out}\n  Run with --test once the sweep is complete.")
 
 
