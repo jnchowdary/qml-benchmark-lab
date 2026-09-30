@@ -425,3 +425,43 @@ published nine claims about two other groups' work and had seven of them fail
 when checked.** The pattern in both cases is the same: claims made from reading a
 manuscript, asserted in a document whose subject is the difference between
 asserting and measuring.
+
+---
+
+## Resolution of the OPEN code check, 30 September 2026
+
+The correction above left one item OPEN: the claim "no negative controls",
+withdrawn as unverified because nothing in the manuscript showed one and absence
+from a manuscript is not absence from the work.
+
+**That check is now done, against the authors' code, and the claim is upheld.**
+
+The accompanying repository was cloned at commit
+`431908d153e4ad0d65de52910fe810bcde4f5378` and searched in full: 26 Python
+modules totalling 5,226 lines, 13 notebooks, 3 bash drivers. `permut`,
+`randomi`, `scrambl`, `surrogate`, `negative control` and `null model` occur
+zero times. The single occurrence of `shuffle` shuffles MNIST example ordering
+before batching, in a function its own docstring marks superseded. Every other
+use of randomness applies the same index vector to features and labels together,
+so none can act as an accidental label randomisation. The experiment registry in
+`experiment_inputs.py` enumerates the whole study grid and contains no control
+arm, which closes the possibility of a control hidden as an extra configuration
+rather than as a keyword.
+
+**Scope.** This establishes that no negative control appears in the code the
+paper offers as its reproduction route. It does not establish that the authors
+never ran one, since unreleased code is outside what any external check can
+see. Only the narrow statement is made.
+
+**The withdrawal was still correct.** The claim happened to be true, but when it
+was made it rested on the manuscript alone and would have been published false
+had the code contained a control. A claim that was not checked is not improved
+by later turning out to be right.
+
+Three further findings arose that were not being looked for, including one
+concerning how ROC-AUC is computed in that pipeline and two open questions about
+the orientation and scaling of the geometric difference. All are recorded in
+[`florez-ablan-code-check.md`](florez-ablan-code-check.md). The two open
+questions are carried into week 9 as questions, not findings, and do not appear
+in any outward-facing text until the preprint's printed equations have been
+read.
