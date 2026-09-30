@@ -1194,3 +1194,198 @@ belongs, and labelled with the doubt its late declaration earns.
 
 No number changes. No threshold moves. H3's five lambda columns stand exactly as
 computed.
+
+---
+
+## D14 — DRAFT, NOT ADOPTED. The lambda-from-C rule is unsourced and wrong by a factor of n; the orientation of g is settled from source
+
+**Date drafted:** 30 September 2026.
+**Status:** **DRAFT. Requires the author's adoption before it takes effect, and
+before any recomputed g is read.** Nothing in this record has been acted on. No
+number has been recomputed, no file in `src/` or `scripts/` has been changed, and
+no verdict has moved.
+**Affects:** `lambda_from_svm_C`; the `from_C` column of D5's sweep; what this
+project may state about Huang's geometric difference and about Flórez Ablan et
+al.'s use of it.
+
+### 1. Why this is a draft and not a deviation in force
+
+The correction below is justified. It is also, in two of its three possible
+forms, **capable of turning a NOT ESTABLISHED verdict into a substantive one**,
+and it is being written after that verdict is known.
+
+`scripts/geometric_tests.py` line 663 computes
+`clean = [c for c in LAM_COLS if report["by_lambda"][c]["breaches"] == 0]`, and
+`from_C` is a member of `LAM_COLS`. A monotonicity bound on the existing data
+(g is decreasing in lambda, so g(lam_alt) <= g(lam_grid) for any grid lam not
+exceeding lam_alt) shows that under lambda = 1/(2C) at least **5,710 of 7,200**
+rows in that column become provably breach-free, with 1,158 inconclusive and 332
+unbounded. If the recomputed column reaches zero breaches, `clean` becomes
+`['from_C']` and H2's and H3's verdicts become whatever that column reports.
+
+So this is the configuration D5 and D10 both refused: a rule change, contemplated
+with the current answer in view, that could manufacture a result. **The
+difference from those two cases is that this change is compelled by primary
+source rather than chosen for convenience. That is a reason to make it, not a
+reason to skip the safeguard.** The safeguard is that the rule, the procedure and
+the mapping from outcome to verdict are all fixed, committed and pushed before
+any recomputed g exists.
+
+### 2. What is now established, from primary source
+
+Retrieved from the arXiv e-print source of Huang et al., *Power of data in
+quantum machine learning*, not from a PDF rendering or any model's transcription
+of one.
+
+    source archive SHA-256  b510654c662888d0189b22b7a561b50dcbe28e5b53950b38f7860797c5bc17ad
+    maintext.tex SHA-256    ceded212c4b0dec2c7b7b641d1b67cf0dde9e44288cd16d92d2c24c5383ec463
+
+**Equation F19, as in the source:**
+
+    g_gen = sqrt( || sqrt(K^1) sqrt(K^2) (K^2 + lambda I)^-2 sqrt(K^2) sqrt(K^1) ||_inf )
+
+The regularised inverse is on `K^2`. The outermost roots are `K^1`.
+
+**Main-text Eq. (5):**
+
+    g(K^1 || K^2) = sqrt( || sqrt(K^2) (K^1)^-1 sqrt(K^2) ||_inf )     with  s_{K^1} <= g(K^1||K^2)^2 s_{K^2}
+
+**These do not contradict each other.** Appendix F asks the reverse operational
+question -- given a function represented by kernel 1, what complexity results
+when kernel 2 is trained to reproduce it -- and derives
+`s_{K^2} <= g_gen^2 s_{K^1}`. Hence at lambda = 0,
+`g_gen = sqrt(|| sqrt(K^1) (K^2)^-1 sqrt(K^1) ||) = g(K^2 || K^1)`. It is an
+implicit reversal of the ordered comparison between the main text and the
+appendix, not an algebraic inconsistency.
+
+**The claim "Huang's appendix contradicts his main text" is withdrawn before it
+was ever published.** It was raised in this session on the strength of two model
+transcriptions that agreed with each other, and it did not survive the source.
+The transcriptions were right about the indices and wrong about what they meant,
+which is the failure mode of reading an equation without its surrounding prose.
+The paper could have signposted the transition, since the main text directs the
+reader to Appendix F as the detailed derivation, but that is a presentation
+remark and this project makes no more of it than that.
+
+**Appendix D's training objective, as in the source:**
+
+    min_w [ lambda <w,w> + SUM_{i=1..N} (residual_i)^2 ]
+
+A plain sum, not `(1/N) * SUM`.
+
+**Huang's own lambda procedure**, which is not derived from any SVM's C: search
+the declared grid `{1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1}` and report g_gen
+at the largest lambda satisfying the training-error condition on g_tra. **The
+source is internally inconsistent on the boundary**: one passage writes
+`g_tra <= 0.045` and the numerical-details passage writes `g_tra < 0.045`. Exact
+equality is unlikely to bind in floating point, and this record notes the
+discrepancy rather than silently choosing a side.
+
+### 3. This project's orientation is correct. No change is required to it
+
+`geometric_difference_regularised(K_classical, K_quantum, lam=...)` computes
+
+    sqrt( || sqrt(K_Q) sqrt(K_C) (K_C + lam I)^-2 sqrt(K_C) sqrt(K_Q) ||_inf )
+
+which is F19 with `K^1 = K_Q` and `K^2 = K_C`, hence `g(K^2 || K^1)` with those
+assignments, hence **g(K_C || K_Q)** -- the quantity whose largeness is Huang's
+necessary condition for potential quantum advantage. The orientation used
+throughout weeks 4 to 8, and every g in `results/audits/g_units.jsonl`, is the
+screen it is claimed to be.
+
+Flórez Ablan et al. implement F19 equally faithfully but pass
+`geometric_difference(K_train_poly, K_train_quantum, ...)`, i.e. `K^1 = K_C` and
+`K^2 = K_Q`, so their computed quantity is **g(K_Q || K_C)**, the reverse
+comparison. Both codebases are source-faithful to F19; they differ in argument
+order, and only one order gives the advantage screen.
+
+**What may and may not be said about their paper.** That their code computes
+g(K_Q‖K_C) is established from their code and Huang's source. That their paper's
+*interpretation* is mismatched to it is **[Likely] and not yet citable**: the
+quotes suggesting the mismatch -- a figure caption describing g as "how much
+better a CK generalizes than a QK", against a results sentence making large
+g(K_C, K_Q) the necessary condition for quantum advantage -- come from a
+truncated retrieval of their paper, not from source. Under this project's own
+rule, no statement about their interpretation appears in any outward-facing text
+until their e-print source has been read the same way Huang's was. Their preprint
+is arXiv:2503.05602 and the method is now proven.
+
+### 4. The defect in this project
+
+`src/qbench/kernels/geometric_difference.py`:
+
+```python
+def lambda_from_svm_C(C: float, n: int) -> float:
+    """...An SVM with penalty C corresponds to regularisation strength
+    ~1/(2*C*n) in the kernel-ridge sense. ..."""
+    return 1.0 / (2.0 * C * n)
+```
+
+**That docstring's claim is withdrawn.** It cited nothing, and against Appendix
+D's summed objective it is wrong. Normalising the SVC primal
+`(1/2)||w||^2 + C * SUM_i loss_i` so the per-sample loss carries coefficient 1
+gives `(1/(2C))||w||^2 + SUM_i loss_i`, so the regulariser-to-loss ratio matching
+Appendix D is
+
+    lambda = 1/(2C)
+
+with no factor of n. The argument uses only the ratio of the two coefficients, so
+it is unaffected by Appendix D using squared residuals where an SVM uses a hinge
+loss; **it establishes the regularisation scaling only, and does not claim the two
+objectives are otherwise equivalent.**
+
+Every value in the `lambda_from_C` field of `results/audits/g_units.jsonl` is
+therefore smaller than the Appendix-D-consistent value by a factor of n_train,
+which is 100, 200 or 350 depending on the arm. The field currently spans 1.43e-07
+to 7.14e+01 with median 1.43e-03.
+
+**Neither 1/(2C) nor 1/(2Cn) is Huang's procedure.** Huang does not derive lambda
+from C at all. This project and Flórez Ablan et al. both substituted a C-derived
+lambda for Huang's g_tra grid search, independently, and neither said so.
+
+### 5. Three candidate responses, and what each risks
+
+| | procedure | source status | effect on `clean` |
+|---|---|---|---|
+| (a) | recompute `from_C` at lambda = 1/(2C) | consistent with Appendix D and with Flórez Ablan et al. | **can flip.** >=5,710/7,200 rows become breach-free |
+| (b) | implement Huang's rule: g_tra over the declared grid, largest admissible lambda | **the only option Huang prints** | **can flip.** A new column, breach status unknown |
+| (c) | retire the `from_C` column as unsourced | removes an unsourced quantity | **cannot flip.** lambda=0.1 still breaches, `clean` stays empty |
+
+The asymmetry is the point and is stated plainly: **(c) provably preserves the
+current verdict and (a) and (b) can overturn it.** A reader is entitled to notice
+that the conservative-looking option is also the one that protects the existing
+answer, and that choosing it for that reason would be its own form of selecting
+on the outcome. Neither direction is safe by default; what makes the choice
+defensible is declaring it in advance.
+
+This project's frozen sweep `{1e-1, 1e-2, 1e-3, 1e-4}` is a **subset** of Huang's
+declared grid, so (b) requires adding `1e-5`, `0.025` and `0.05` and computing
+g_tra, not rebuilding the analysis.
+
+### 6. Recommendation, which is a recommendation and not a decision
+
+**(b) as the primary correction, with (a) reported alongside it as a secondary,
+and nothing retired.**
+
+The reasoning, so it can be disagreed with. (b) replaces an unsourced rule with
+the one the source prints, which is the only change that removes rather than
+relocates the defect. It is also the thing neither other party did: Flórez Ablan
+et al. compute `g_tra` and never compare it to anything, and this project did not
+compute it at all. For a project whose contribution is an audit protocol, doing
+the source's own procedure -- and documenting that two independent groups skipped
+it -- is worth more than either C-derived variant. (a) is worth reporting beside
+it because it is what makes a number of this project's comparable to a number of
+theirs.
+
+**Adopting this is the author's decision, not the assistant's**, because it amends
+a pre-registered analysis. What must be true before any recomputed g is read: the
+chosen option is written into this file, the verdict implied by each possible
+outcome is written down here in advance, and the commit is pushed.
+
+### 7. What this draft does not decide
+
+No hypothesis, threshold, aggregation rule, ceiling rule, or verdict changes.
+H2 and H3 remain NOT ESTABLISHED on the record as it stands. The 360-unit frozen
+sweep is untouched and its four columns remain valid under the orientation
+confirmed in section 3. D5's account of what a ceiling breach measures, and its
+three recorded wrong answers, are unaffected.
