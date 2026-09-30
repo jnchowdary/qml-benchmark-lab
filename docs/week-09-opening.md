@@ -232,3 +232,162 @@ been checked and is the first code task of week 9.
 No hypothesis, threshold or decision rule changes in this document. No result is
 recomputed. Two of the three items that blocked a cross-reference to Flórez Ablan
 et al. are now closed, and the third is a single page of a PDF.
+
+---
+
+# Correction to section 4, 30 September 2026
+
+Section 4 above flagged one item as unverified: whether `units_at` counts rows or
+cells, and it guessed that the unit-level breach figure at λ = 0.1 might be
+"overstated by a factor of four". **The flag was right to be there and the guess
+inside it was wrong.** The accounting is correct as it stands. What the check
+found instead is more serious than the thing it was looking for.
+
+---
+
+## C1. The breach count is correct. The multiplicity claim was wrong
+
+`UNIT_FIELDS = ("dataset", "n_per_class", "mapping", "n_qubits", "setting")`.
+**`setting` is a unit field.** The four breaching rows differ in exactly that
+field, so they are four *distinct units*, not one unit counted four times:
+
+    ('churn', 100, 'selectk', 4, 'angle-r1')  ->  1 breaching seed of 20
+    ('churn', 100, 'selectk', 4, 'angle-r2')  ->  1 breaching seed of 20
+    ('churn', 100, 'selectk', 4, 'iqp-r1')    ->  1 breaching seed of 20
+    ('churn', 100, 'selectk', 4, 'iqp-r2')    ->  1 breaching seed of 20
+
+`units_at` counts a breach per seed-row and returns `total` as a row count, so
+`breaches = 4` of `total = 7200` is exactly right and nothing is inflated.
+
+Section 4's statement that this is "one failure with multiplicity four" is
+**correct about the cause and wrong about the accounting**, and the document
+should not have used the word "cell". The four units share one classical kernel,
+because they share `(dataset, n_per_class, mapping, n_qubits, seed)` and differ
+only in the quantum setting, and the ceiling breach is driven by the classical
+side. So there is one underlying pathology. But it lands in four units, and the
+unit table is entitled to count it four times.
+
+Also established, by replicating `units_at` against the registered data:
+
+| λ | units in table | excluded | breaching seeds | of | breach-free? |
+|---|---|---|---|---|---|
+| 0.1 | **360** | **0** | 4 | 7200 | no |
+| 0.01 | 350 | 10 | 657 | 7200 | no |
+| 0.001 | 90 | 270 | 4574 | 7200 | no |
+| 0.0001 | 61 | 299 | 4972 | 7200 | no |
+| from_C | 289 | 71 | 2893 | 7200 | no |
+
+Each of the four affected units retains 19 of 20 seeds against `MIN_SEEDS = 10`,
+so **no unit is excluded at λ = 0.1.** The unit table at that column is complete
+at 360 of 360.
+
+---
+
+## C2. The finding this check actually produced
+
+`scripts/geometric_tests.py`, line 662:
+
+```python
+# D5: the conclusion must hold at every lambda with no ceiling breach.
+clean = [c for c in LAM_COLS if report["by_lambda"][c]["breaches"] == 0]
+...
+if not clean:
+    out = "NOT ESTABLISHED (no breach-free lambda)"
+```
+
+The gate is `breaches == 0`. **One breaching seed anywhere in a λ column
+disqualifies that entire column**, regardless of how many units survive or how
+complete the table is.
+
+At λ = 0.1 the column is otherwise pristine: all 360 units present, none
+excluded, and the largest g/ceiling ratio among the remaining 7,196 rows is
+**0.9150**. Four seed-rows breach, at ratios 1.0934, 1.0791, 1.0791 and 1.0750.
+Nothing in the data sits between 0.92 and 1.07.
+
+Those four rows are 0.056% of the registered observations.
+
+**Therefore: both H2's and H3's NOT ESTABLISHED verdicts rest entirely on four
+seed-rows out of 7,200.** `clean` is empty only because λ = 0.1 fails by four
+rows; every other column fails by hundreds or thousands. Had those four not
+breached, `clean` would be `['0.1']` and the script would report a substantive
+verdict at a column with a complete 360-unit table.
+
+This was not stated anywhere in the week-7 record, in D10, or in section 4 above.
+It is the most important structural fact about the project's headline result and
+it went unremarked for five days.
+
+---
+
+## C3. What must not happen now, stated before the temptation arrives
+
+An isolated four-row outlier cluster, a clean gap of 0.15 beneath it, a single
+shared classical kernel as the cause, and two headline verdicts that would become
+substantive if those rows were excluded. That is the most favourable-looking
+exclusion case this project will ever be offered.
+
+**No tolerance is introduced. No seed is excluded. No unit is dropped. The rule
+at line 663 stands exactly as pre-registered, and H2 and H3 remain NOT
+ESTABLISHED.**
+
+D5 refused to choose the λ that made g behave. D10 refused to set a breach
+tolerance. Both refusals were made before this dependency was visible, and they
+are worth more now than when they were made, because a rule that only binds when
+it costs nothing is not a rule. The strict gate is currently doing precisely the
+job it was written for: declining to certify a result from a column with a known
+and undiagnosed pathology in it.
+
+What changes is disclosure, not the verdict. Three things must appear wherever H2
+or H3 is reported:
+
+1. The NOT ESTABLISHED verdict is produced by `clean` being empty, and λ = 0.1
+   fails that test by **four seed-rows of 7,200**, with all 360 units present.
+2. The four rows share one classical kernel configuration: churn, seed 7,
+   n_per_class = 100, n_qubits = 4, selectk. The cause is one, the accounting is
+   four.
+3. The next-largest g/ceiling ratio in the entire dataset is 0.9150, so the
+   verdict is not marginal in the usual sense of sitting near a threshold. It is
+   **discontinuously** dependent on four observations.
+
+A reader told "NOT ESTABLISHED at every λ" and a reader told those three
+sentences hold different beliefs about how much this project has established. The
+second reader is correctly informed.
+
+---
+
+## C4. The diagnostic question that is legitimate
+
+Asking *why* that one classical kernel breaches at λ = 0.1 is science, not
+rule-shopping, and it is the right next task. The configuration is the
+second-smallest training size (n_train = 140, ceiling = 11.832) at the smallest
+feature count (n_qubits = 4) under `selectk`, with the classical arm's selected
+`C = 1e-4`, the bottom of the grid.
+
+A kernel built from four `selectk` features on 140 training points is the most
+rank-deficient classical kernel in the study, and D5's own result is that the
+classical factor of g is capped at 1/(4λ), so a breach at λ = 0.1 requires
+‖K_Q‖/n > 0.4. Whether that cell's K_C is degenerate enough to explain a 7.5% to
+9.3% excess is checkable directly from the kernel matrices, and checking it is
+what would turn "four rows breach" into an explanation.
+
+**This is recorded as the question, not the answer.** Three mechanisms for a
+ceiling breach have already been proposed in this project and refuted this month,
+the third of them one message from the permanent record. No mechanism is asserted
+here.
+
+---
+
+## C5. Net change
+
+| Item | Status |
+|---|---|
+| `units_at` counts rows, not cells | **Verified.** `breaches = 4 / 7200` is correct |
+| Section 4's "overstated by a factor of four" | **Withdrawn.** The count was never inflated |
+| Section 4's "one cell, multiplicity four" | **Corrected.** Four distinct units, one shared cause |
+| Units excluded at λ = 0.1 | **Zero.** Table complete at 360 of 360 |
+| H2 and H3 NOT ESTABLISHED depends on | **Four seed-rows of 7,200**, newly stated |
+| The breach rule at line 663 | **Unchanged**, and not to be changed |
+| H2, H3 verdicts | **Unchanged** |
+
+No threshold moves, no rule is relaxed, and no number is recomputed. One wrong
+claim of mine is withdrawn, and one fact about the fragility of the project's
+headline result is placed on the record for the first time.
