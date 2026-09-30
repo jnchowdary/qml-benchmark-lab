@@ -391,3 +391,173 @@ here.
 No threshold moves, no rule is relaxed, and no number is recomputed. One wrong
 claim of mine is withdrawn, and one fact about the fragility of the project's
 headline result is placed on the record for the first time.
+
+---
+
+# Second correction, 30 September 2026: C2 and C4 were already in the record
+
+Committed at `708120e`. Corrected here the same evening, and this is the third
+correction in one session.
+
+**C2 claimed novelty it did not have and C4 proposed work that was already done
+and a hypothesis that was already refuted.** Both errors come from writing about
+what the record does not contain without reading the record. That is the same
+failure as the two earlier corrections today, and it is now a pattern rather than
+an incident, so it is named at the end.
+
+---
+
+## C1 of this document stands
+
+`units_at` counts breaches per seed-row, `UNIT_FIELDS` includes `setting`, the
+four breaching rows are four distinct units each losing one of twenty seeds, and
+none is excluded. That accounting is correct and was not stated in those terms
+elsewhere. It is also a modest contribution, because D5's correction already
+recorded the substance.
+
+---
+
+## C2 is retracted. `docs/deviations.md` said it first, and said more
+
+C2 asserted that the dependency of H2 and H3 on four seed-rows "was not stated
+anywhere in the week-7 record, in D10, or in section 4 above" and "went
+unremarked for five days".
+
+**It is the titled subject of a section of the D5 correction, dated 29 September
+2026, one day before I wrote that it was unremarked.** `docs/deviations.md`,
+section 2 of that correction, is headed **"Four breaches, one seed, and the only
+complete column"** and reads:
+
+> At lambda = 0.1 there are exactly four breaching observations in 7,200. All
+> four are the same cell and seed -- **churn, n=100, selectk, 4 qubits, seed 7**
+> -- appearing once per quantum setting, with g of 12.72 to 12.94 against a
+> ceiling of sqrt(140) = 11.83. Its selected classical kernel is poly at
+> C = 1e-04.
+>
+> That one seed voids the only lambda column in which **all 360 registered units
+> survive**. Under the strict reading of D5 the confirmatory verdict at
+> lambda = 0.1 is unavailable because of 0.056% of the observations.
+
+It reaches the same figure, 0.056%, by the same route. Nothing in C2 was new.
+
+### And C2's framing is worse than redundant, it is overstated
+
+C2 said the two verdicts "rest entirely on four seed-rows". The same D5 section
+records that they do not, because D5's text admits two readings and **both fail**:
+
+> "Every lambda at which no unit breaches its ceiling" can mean every lambda
+> where nothing had to be excluded, which is what `scripts/geometric_tests.py`
+> implements and which nothing satisfies; or it can be read as vacuous after
+> exclusions, reducing the rule to agreement across all five lambdas. **Under the
+> second reading the conclusion also fails**, because the sign of rho differs:
+> +0.17 at lambda = 0.1 against -0.38 at 1e-3 and -0.29 at 1e-4.
+
+So the four rows gate the *code path*. They do not carry the *conclusion*, which
+has an independent second reason to be NOT ESTABLISHED: the sign of the
+correlation reverses across the sweep. **C2 presented a fragility that is real
+for the implementation as though it were the whole basis of the finding, and it
+is not.** Anyone reading C2 alone would overestimate how much turns on those four
+observations.
+
+The same section also records what C2 omitted and what matters more than the
+breach count: at lambda = 0.1, the only column with a complete unselected
+population, rho = +0.1712 gives rho² of about 0.03, so **g accounts for roughly
+three percent of the rank variance in observed difference**, which as a
+pre-training screen is close to worthless taken at face value. That is the
+substantive result. The four-row gate is a footnote to it.
+
+---
+
+## C4 is retracted. The diagnostic exists, has been run, and the hypothesis C4 proposed was refuted
+
+C4 offered "why that one classical kernel breaches" as "the right next task", and
+suggested checking whether that cell's K_C "is degenerate enough to explain a
+7.5% to 9.3% excess".
+
+Section 4 of the same D5 correction is headed **"What a ceiling breach actually
+measures, and three wrong answers"**, and **wrong answer one is the hypothesis C4
+proposed**:
+
+> **Wrong answer one: the classical kernel is near rank-deficient and that drives
+> g.** Refuted by its own diagnostic. The lambda = 0.1 amplification is 2.491 in
+> the breaching cell and 2.487 in a non-breaching cell at the same dataset, size,
+> qubit count and seed. Identical to three decimals, and both at the 2.5 cap. The
+> breaching cell has the *lower* effective rank, 6 against 10.
+
+`scripts/diagnose_ceiling_breach.py` already hardcodes
+`CELL = dict(dataset="churn", n_per_class=100, mapping="selectk", n_qubits=4, seed=7)`
+with a `pca` control at the same size, qubit count and seed, and has been run;
+the 2.491 and 2.487 figures are its output. Wrong answers two and three were also
+worked through, the third withdrawn on a stratified 60-cell sample
+(`scripts/sample_ceiling_mechanism.py`, seed 20260929, 960 observations) which
+established that at the lambdas where breaches occur in bulk the classical
+amplification predicts a breach with AUC 0.82 while quantum concentration is
+anti-predictive, and that **D5's description is correct**.
+
+**Nothing about the breach mechanism is outstanding.** C4 re-opened a settled
+question and nominated a refuted answer, in a document whose own section C3 warns
+against rule-shopping. Proposing a refuted hypothesis is a different error from
+rule-shopping, and a worse-looking one in context.
+
+---
+
+## What of today's work is actually new
+
+Stated plainly, so this document does not leave an inflated impression of it:
+
+| Claim | Status |
+|---|---|
+| Huang Eq. (5) inverts the first argument, verbatim | **New** |
+| `g(K_C‖K_Q)` large is the advantage condition, verbatim | **New** |
+| This project's orientation matches Huang; Flórez Ablan's does not | **New** |
+| `lambda_from_svm_C` = 1/(2Cn) has no citation | **New** |
+| Derivation of 1/(2C) versus 1/(2Cn) from the SVC primal | **New** |
+| λ-convention exposure: 5710 proven breach-free, 1158 inconclusive, 332 unbounded | **New** |
+| Flórez Ablan: ROC-AUC computed on hard labels | **New** |
+| Flórez Ablan: `g_tra` computed and never checked | **New** |
+| Flórez Ablan: no negative control in released code | **New**, resolves week-4 OPEN |
+| `units_at` counts rows; four distinct units; none excluded | New, minor |
+| H2/H3 depend on four seed-rows at λ = 0.1 | **Already in D5's correction, 29 Sep** |
+| Why that classical kernel breaches | **Already answered, three wrong answers recorded** |
+
+---
+
+## The pattern, named
+
+Three false-absence claims in one session, plus a fourth adjacent error:
+
+1. **Dropped a co-author.** Wrote "Flórez-Ablan and Schnabel" in a criticism of a
+   three-author paper, never having checked the author list.
+2. **"Two datasets".** Described the experiment registry from a grepped region of
+   one file; it contains three.
+3. **"Not stated anywhere ... unremarked for five days".** It was the titled
+   subject of a `deviations.md` section committed the previous day.
+4. **Proposed a refuted hypothesis as the next task.** Wrong answer one, already
+   refuted by a diagnostic already in the repository.
+
+All four are the same failure: **asserting what a body of text does not contain
+without reading that body of text.** It is the failure the week-4 correction
+exists to prevent, applied to this project's own records instead of someone
+else's paper, and today it happened three times while that correction was being
+resolved.
+
+**Operational rule, in force from now.** Before writing "not recorded", "newly
+stated", "not previously noted", "unremarked", or nominating any task as
+outstanding, grep `docs/deviations.md` and the weekly reports for the subject and
+quote what is found. The check is mechanical, takes one command, and would have
+caught all four:
+
+    grep -n -i 'breach\|0.056\|selectk' docs/deviations.md
+
+Three of today's four errors were caught by me, late, and after the claims had
+been committed and pushed. That is better than not catching them and worse than
+checking first.
+
+---
+
+## Net change
+
+No hypothesis, threshold, decision rule, verdict or number changes. C1 stands.
+C2 and C4 are withdrawn. Sections 1 to 3 of this document, and the Flórez Ablan
+findings in `florez-ablan-code-check.md`, are unaffected and are where today's
+actual contribution sits.
