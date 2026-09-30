@@ -315,3 +315,258 @@ not have permitted.
 The clone was made into a scratch directory and is not committed to this
 repository, in line with the rule that third-party data and code are not
 redistributed here.
+
+---
+
+# Correction, 30 September 2026, same day
+
+This document was committed at `065cbfa` and is corrected here within the hour.
+The correction is appended rather than folded into the body above, so that what
+was published and what was wrong with it both remain visible.
+
+The prompt for the correction was reading the paper itself, which the body above
+had not done. **Section 7 above is retracted.** Two bibliographic facts and one
+factual description are wrong. One new finding replaces the retracted one, and
+the finding in section 5 survives and strengthens.
+
+---
+
+## C1. Bibliographic corrections
+
+The header of this document is wrong in three ways.
+
+| | as published above | correct |
+|---|---|---|
+| Authors | Flórez-Ablan and Schnabel | Roberto Flórez Ablan, **Marco Roth**, Jan Schnabel |
+| Title | not stated | "On the similarity of bandwidth-tuned quantum kernels and classical kernels" |
+| Status | "the preprint" | **peer-reviewed and published**, Quantum Sci. Technol., DOI 10.1088/2058-9565/ade7ad |
+
+arXiv:2503.05602, v1 7 March 2025, v3 28 July 2025. The repository commit is
+12 April 2025, so **the released code predates v3 of the paper by three and a
+half months.** Anything the code shows is evidence about the code as of April,
+not necessarily about the version of record.
+
+Dropping a co-author from a criticism is not a clerical slip. It is the same
+category of error as the surname episode recorded in D11's second amendment:
+a name asserted without being checked. That it happened again, in a document
+whose subject is the difference between asserting and checking, is the part worth
+keeping.
+
+**The status correction raises the bar on everything here.** Criticising a
+published, peer-reviewed paper is not the same act as criticising a preprint, and
+this document was written in the belief that it was doing the latter.
+
+---
+
+## C2. Factual correction: three datasets, not two
+
+Section 2 states the registry enumerates "two datasets (`plasticc`,
+`kMNIST28`)". It enumerates **three**. `experiment_inputs.py` line 308 and line
+338 assign `dataset_name_list = ["pennylane_hidden-manifold"]`, and ten
+hidden-manifold experiments appear in the master list at indices 55 to 64. The
+paper's own text names three datasets, and the registry matches the paper.
+
+This was a reading error on my part: I grepped a bounded region of the file and
+described the whole. **It does not change the control finding.** No control arm
+exists for any of the three, and the hidden-manifold experiments are ordinary
+FQK and PQK runs across the same five encoding circuits. But the description was
+wrong and the method that produced it was the one this project exists to
+criticise: a partial look reported as a complete one.
+
+---
+
+## C3. Section 7 is RETRACTED. Their code is faithful to their paper
+
+Section 7 flagged, as an open question, that their code inverts the quantum
+kernel while their docstring cites Huang's F19. It framed this as a possible
+discrepancy between their code and their cited source.
+
+**The paper's Eq. (6) is printed exactly as their code implements it:**
+
+    g(K_1, K_2) = sqrt( || sqrt(K_1) sqrt(K_2) (K_2 + lambda*1)^-2 sqrt(K_2) sqrt(K_1) ||_inf )
+
+with the paper stating verbatim that "K_1 = K_C and K_2 = K_Q are classical and
+quantum kernel matrices". The regularised inverse falls on K_2, the quantum
+kernel, in the paper as in the code. The outer factors are the classical kernel.
+The call site passes `(K_poly, K_quantum)` in exactly that order.
+
+**There is no implementation error in their work, and this project came within
+one document of implying there was.** The only reason it did not is that section
+7 was written as a flagged question rather than a finding. That decision is the
+single thing that stopped this from being the fourth wrong mechanism of the
+month.
+
+What actually remains is narrower and turns the question inward:
+
+**This project's implementation inverts the classical kernel. Theirs inverts the
+quantum one. Both cite Huang. At most one convention can match Huang, and
+nothing yet establishes that it is this project's.** The open question is no
+longer "did they misread Huang" but "which of us did", and the burden falls
+equally on `scripts/geometric_tests.py`.
+
+The numeric consequence stated in section 7 stands unchanged and is the only part
+of that section still load-bearing: a g from their pipeline and a g from this
+project's, on the same kernel pair, are reciprocal-direction quantities and are
+not the same number. Their function reproduces this project's value exactly when
+its arguments are exchanged.
+
+**A further tension is visible in the quoted paper text and is NOT asserted
+here.** Their Fig. 2 caption describes g as indicating "how much better a CK
+generalizes than a QK", while their results text states that "only if
+g(K_C, K_Q) ∝ sqrt(N) holds, the necessary condition for potential quantum
+advantage is fulfilled". Those two readings of a large g point in opposite
+directions. This project does not claim an inconsistency in a published paper on
+the strength of two quotations lifted from a **truncated** retrieval: the fetch
+returned 39,425 of 79,058 characters and stopped mid-Section III C, so the
+appendices were summarised rather than read. Resolving this requires the full
+paper, read directly.
+
+---
+
+## C4. Section 8 correction: the lambda convention is theirs by design
+
+Section 8 recorded that their `obtain_C_value` returns `1/(2C)` against this
+project's `1/(2*C*n)`, and left which is correct unsettled.
+
+The paper's Appendix A states λ = 1/(2C), with no factor of N. Their code again
+matches their paper. The factor-of-320 gap is therefore a difference of
+convention between their published definition and this project's
+`lambda_from_svm_C`, not a coding error on their side, and the open question is
+again symmetric.
+
+Caveat on evidence quality: the λ = 1/(2C) text sits in Appendix A, inside the
+portion of the paper that came back only as a summary rather than verbatim. It is
+consistent with their code, which is direct evidence, but the paper-side half of
+this rests on a summary and is marked accordingly.
+
+---
+
+## C5. Finding in section 5 survives, and the paper strengthens it
+
+Section 5 found that ROC-AUC is computed on hard predicted labels. The paper
+does not contradict this. It states in Section III C that it selects
+"optimal regularization parameters yielding the highest receiver operating
+characteristic curve (ROC-AUC) scores", and **nowhere states how the input to
+that score is obtained.** No decision function, margin, or probability is
+mentioned anywhere in the retrieved text.
+
+Two further code checks were run after reading the paper, and both hold:
+`probability` is never passed to `SVC` anywhere in the repository, so no
+probability estimate exists to score; and the only two `roc_auc_score` call sites
+in the simulation path both receive `svm_classifier.predict(...)`.
+
+So the position is: **the paper reports a ranking metric, the code computes a
+threshold-dependent one, and a reader of the paper alone cannot tell.** That is
+the finding, it is about the code as released in April 2025, and it is the one
+substantive criticism in this document that survived contact with the paper.
+
+---
+
+## C6. New finding: g_tra is computed and never checked
+
+Their own docstring states the condition under which g is meaningful:
+
+> `g_tra = lambda_reg*sqrt(inf_norm(sqrt(K1)(K2+lambda_reg)^-2 sqrt(K1)))`
+> `In the power of data: g_gen is reported given in Equation (F19) with the`
+> `largest λ such that the training error g_tra ≤ 0.045.`
+> `lambda_reg should be chosen such that g_tra is small`
+
+The function computes `g12_tra` and returns it. It is written into the
+dataframes as `g_tra_train` and carried through `all_difference_calculations`.
+
+**Nothing anywhere compares it to anything.** Across all Python modules and all
+13 notebooks there is no comparison operator, filter, query, mask or conditional
+applied to `g_tra`. The string `0.045` occurs exactly once in the repository, in
+the docstring above, and is never used. The only other occurrences of
+`g_tra_train` are `<th>g_tra_train</th>` table headers in one notebook's saved
+HTML output, which is display, not filtering.
+
+λ is instead fixed at 1/(2C) from the SVM hyperparameter grid
+(`C = [32, 64, 128, 512, 1024]`), and the retrieved paper text contains no
+threshold criterion on a training-error quantity.
+
+This is stated as a property of the code, which is checkable, and not as a claim
+that their g values are therefore wrong, which would require knowing what g_tra
+actually evaluated to on their runs. The observation is that **the diagnostic
+their own docstring names as the condition for the quantity being meaningful is
+computed, stored, and never consulted.**
+
+---
+
+## C7. The same check, run on this project
+
+Having found a metric defect in someone else's pipeline, the obvious question is
+whether this project has it. It does not.
+
+    src/qbench/tuning.py:180   average_precision_score(y_val, model.decision_function(K_val))
+    src/qbench/tuning.py:330   scores = model.decision_function(K_te)
+    src/qbench/tuning.py:333   average_precision_score(y_te, scores)
+    src/qbench/tuning.py:334   roc_auc_score(y_te, scores)
+    scripts/run_quick_benchmark.py:124  scores = model.decision_function(K_te)
+    scripts/run_quick_benchmark.py:136  average_precision_score(y_te, scores)
+    scripts/run_quick_benchmark.py:137  roc_auc_score(y_te, scores)
+    scripts/diagnose_representation.py:53  average_precision_score(y_te, model.decision_function(X_te))
+
+Every ranking metric in this project takes a continuous margin. `predict_proba`
+occurs zero times. `.predict()` occurs twice, both feeding `f1_score`, which
+requires hard labels and is the correct use.
+
+**This is recorded because the check should have been run before the criticism
+was written, not after.** Finding a defect in another group's code and only then
+asking whether one's own has it is the wrong order, and the answer coming back
+clean does not make the order right.
+
+---
+
+## C8. Their training-set size, and what it means for the ceiling
+
+Confirmed from code, matching the paper: `num_datapoints_list = [(400, 0.8, s)]`
+for seeds 1 to 6, so N = 400 sampled, **320 train and 80 test** per seed.
+
+The paper defines N in Eq. (6) as the number of training samples, but the text
+does not disambiguate whether the √N reference line drawn in its Figs. 3 and 5
+uses 320 or 400. √320 = 17.89 and √400 = 20.00. This project uses √n_train
+throughout and its ceilings vary by arm, so any comparison of a ceiling breach
+across the two bodies of work must fix this as well as the direction and the λ
+scale. Three reconciliations, not one, and getting two right would still give a
+wrong answer that looked right.
+
+---
+
+## C9. A process note on my own tooling
+
+While running the section C7 check I counted occurrences with the pattern
+`\.predict(`, which contains an unclosed group in extended regex, and it returned
+zero for a term that occurs twice. The correct count came from `grep -F`.
+
+This is the third time this month that a counting regex of mine has produced a
+wrong number in this project, after the `test_[a-z_]+` pattern that truncated at
+capitals and under-reported mutation coverage as 6 of 30 instead of 11. The
+pattern is consistent: hand-written patterns used to count things, trusted
+without a control. **Any count in this project that came from a regex and was not
+checked against a second method should be treated as unverified.**
+
+---
+
+## C10. Net position after the correction
+
+| Item | Status |
+|---|---|
+| No negative control in released code | **Upheld**, unchanged |
+| ROC-AUC computed on hard labels | **Upheld and strengthened** |
+| g_tra computed but never checked | **New, upheld** |
+| No chance correction | Upheld, and weak against them as already noted |
+| g direction is a discrepancy in their work | **RETRACTED.** Their code matches their Eq. (6) |
+| λ omits n as an error on their side | **RETRACTED.** Their code matches their Appendix A |
+| Which convention matches Huang | **Open, and now a question about this project too** |
+| Their Fig. 2 caption against their √N statement | **Open, not asserted, needs the full paper** |
+
+No hypothesis, threshold, decision rule or result in this project changes. H2 and
+H3 stand exactly as computed.
+
+**What week 9 must do before any cross-reference to their results:** read the
+full paper directly, including the appendices, resolve the g orientation against
+Huang's F19 as printed in Huang rather than as cited by anyone, and settle
+whether this project's `lambda_from_svm_C` or their `1/(2C)` follows from the
+SVM-to-KRR correspondence. Until all three are settled, this project states no
+number of theirs alongside a number of its own.
