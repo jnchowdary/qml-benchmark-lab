@@ -1389,3 +1389,141 @@ H2 and H3 remain NOT ESTABLISHED on the record as it stands. The 360-unit frozen
 sweep is untouched and its four columns remain valid under the orientation
 confirmed in section 3. D5's account of what a ceiling breach measures, and its
 three recorded wrong answers, are unaffected.
+
+---
+
+### Amendment to D14, 1 October 2026: the Fraunhofer source is verified, and the claim against their interpretation is withdrawn
+
+D14 section 3 forbade any outward statement about Flórez Ablan et al.'s
+interpretation *"until their e-print source has been read the same way Huang's
+was"*. That condition is now discharged. Three of the four open items are
+settled, one claim of this project's is withdrawn, and what remains is stated
+with its evidence class.
+
+**Provenance.** arXiv:2503.05602, raw e-print source, not a PDF rendering or any
+model's transcription of one.
+
+    source archive SHA-256  7ce99d754ecca3c97d3203b1a0ea3796156a36e00a6168ebb91d7a6e6172dbc0
+    main.tex SHA-256        1903926fe4b5e28a194a67524fc572812d7ce9143b94210db23035f319fde5b8
+
+Retrieved and read by the author. The assistant's own attempt was refused:
+`arxiv.org:443` returned a gateway 403 to CONNECT under this session's egress
+policy, logged 2026-10-01T22:09:06Z, and the proxy documentation forbids
+retrying or rerouting a policy denial. That is recorded because it is the reason
+the primary-source read is the author's and not the assistant's.
+
+#### 1. Their equation, from source, lines 209 to 211
+
+```
+g(K_1, K_2) = sqrt( || sqrt(K_1) sqrt(K_2) (K_2 + lambda*1)^-2 sqrt(K_2) sqrt(K_1) ||_inf )
+```
+
+labelled `eq:geo_diff_reg`, cited to `\cite{Huang.2021}`. The regularised inverse
+is on **K_2**; the outermost roots are **K_1**. This is structurally identical to
+Huang's F19.
+
+Line 213 assigns the arguments: *"we are usually interested in the case where
+$\mathbf{K}_1=\mathbf{K}_{\mathrm{C}}$ and $\mathbf{K}_2=\mathbf{K}_{\mathrm{Q}}$
+are classical and quantum kernel matrices with
+$\mathrm{tr}(\mathbf{K}_{\mathrm{C}}) = \mathrm{tr}(\mathbf{K}_{\mathrm{Q}}) = N$"*.
+
+**Their code matches their equation**, and their equation matches their prose's
+argument assignment. Paper, equation and implementation are mutually consistent.
+The suggestion in `docs/florez-ablan-code-check.md` section 7 that their code
+might diverge from their cited source was retracted in that document's C3 and is
+now additionally refuted from their own source.
+
+#### 2. Their lambda, from source, line 393
+
+> *"For the geometric difference, we used $\lambda = \nicefrac{1}{2C}$ and for the
+> Gram matrix diagonalization, we normalized by the number of data points, i.e.
+> $\text{eig}(\nicefrac{\mathbf{K}}{N})$."*
+
+with `C=[32.0, 64.0, 128.0, 512.0, 1024.0]`, so their lambda lies in
+[4.88e-04, 1.56e-02]. **No g_tra threshold appears anywhere in the source.** This
+confirms from their paper, not only from their code, that they substituted a
+C-derived lambda for Huang's declared selection procedure, and it stands up the
+finding in `florez-ablan-code-check.md` C6 that `g_tra` is computed in their
+pipeline and never consulted.
+
+#### 3. WITHDRAWN: that their paper's interpretation is mismatched to its computation
+
+D14 section 3 recorded this as **[Likely]** on the strength of a truncated
+retrieval. The source does not support it, and it is withdrawn.
+
+Their operative prose is faithful to Huang's main text. Line 213: *"only if
+$g(\mathbf{K}_{\mathrm{C}},\mathbf{K}_{\mathrm{Q}})\propto\sqrt{N}$ holds, the
+necessary condition for potential quantum advantage is fulfilled"*. Line 347:
+*"Since the median $g$ values of all models are below the size required for
+quantum advantage ... we are guaranteed that the classical model provides similar
+or better performance"*. Both are Huang's semantics exactly.
+
+The suspicion rested entirely on one clause in the Fig. 2 caption, line 162:
+*"the geometrical difference $g(\mathbf{K}_{\mathrm{C}},\mathbf{K}_{\mathrm{Q}})$,
+which indicates how much better a CK generalizes than a QK"*. That clause is
+inverted relative to their own lines 213 and 347. **It is one imprecise sentence
+in a figure caption, contradicted by the paper's precise statements, and a loose
+caption is not a methodological error.** This project does not publish it as one.
+
+#### 4. What does follow, and where the fault lies
+
+Huang's F19 satisfies `s_{K^2} <= g_gen^2 s_{K^1}`, so `g_gen = g(K^2 || K^1)` in
+Eq. (5)'s ordering. Their Eq. (4) is F19 with `K^1 = K_C` and `K^2 = K_Q`.
+**Therefore the quantity they report as g(K_C, K_Q) is Huang's g(K_Q || K_C), and
+the sqrt(N) advantage criterion is applied to the reversed ordered comparison.**
+
+**This is recorded as a notation hazard originating in Huang, not as an error by
+Flórez Ablan, Roth and Schnabel.** Huang's appendix presents F19 as the
+regularised geometric difference without relabelling it as the reversed
+comparison, while the main text directs the reader to that appendix for the
+detailed derivation. Any reader treating F19 as "the regularised Eq. (5)" and
+substituting K_1 = K_C, K_2 = K_Q lands precisely where they landed. Their
+reading is the natural reading of an ambiguous source, in a peer-reviewed and
+published paper (Quantum Sci. Technol., DOI 10.1088/2058-9565/ade7ad), and this
+project says so rather than implying carelessness.
+
+**This project escapes the hazard by argument order, not by insight.**
+`geometric_difference_regularised` feeds F19's template with `K^1 = K_Q` and
+`K^2 = K_C`, which yields g(K_C || K_Q), the screen. Nothing in the function's
+docstring or in any week 4 to 8 record shows that the reversal in Huang's
+appendix was identified at the time. The orientation is correct; the reasoning
+for it was not written down, and claiming foresight here would be the same
+category of error as D13's late declaration.
+
+#### 5. Evidence classes, stated separately as required
+
+- **Exact source statements:** their Eq. (4) index placement; the K_1 = K_C,
+  K_2 = K_Q assignment; lambda = 1/(2C); the C grid; the absence of any g_tra
+  rule; lines 213 and 347 on the sqrt(N) criterion; the line 162 caption clause.
+- **Code behaviour:** `geometric_difference(K_train_poly, K_train_quantum, 1/(2*C_quantum))`,
+  faithful to their Eq. (4).
+- **Supported inference:** their reported g(K_C, K_Q) equals Huang's
+  g(K_Q || K_C).
+- **Unresolved, and its provenance stated:** the `s_{K^2} <= g_gen^2 s_{K^1}`
+  bound that licenses the inference above was read from Huang's raw LaTeX **by
+  the author**, and the assistant has not independently verified it, having been
+  blocked from the source by egress policy. It is the strongest evidence class
+  available and is treated as established; a reader who wants it checked should
+  read Huang's Appendix F directly.
+
+#### 6. Consequence for this project
+
+**A g from this project and a g from theirs are reciprocal-direction quantities
+and must never be placed side by side without naming which each computes.** Three
+reconciliations are required and getting two right still gives a wrong answer
+that looks right: the orientation above; the lambda convention, theirs 1/(2C)
+against this project's 1/(2Cn), which D14 section 4 already records as this
+project's unsourced defect; and their training-set size, which their line 219
+fixes at *"$N=400$ points ... split them into 320 training and 80 test"*, against
+this project's three arms.
+
+D14 section 3's prohibition is lifted only to the extent set out here: this
+project may state that their reported quantity is the reversed comparison, must
+attribute the ambiguity to Huang's appendix, and may not state or imply that
+their paper misinterprets its own computation.
+
+#### 7. What this amendment does not change
+
+No hypothesis, threshold, aggregation rule, ceiling rule or verdict. H2 and H3
+remain NOT ESTABLISHED. D14 remains a **DRAFT** and no option among (a), (b) and
+(c) is adopted by this amendment. No g has been recomputed.
