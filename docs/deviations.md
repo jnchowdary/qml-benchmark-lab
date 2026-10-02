@@ -1527,3 +1527,103 @@ their paper misinterprets its own computation.
 No hypothesis, threshold, aggregation rule, ceiling rule or verdict. H2 and H3
 remain NOT ESTABLISHED. D14 remains a **DRAFT** and no option among (a), (b) and
 (c) is adopted by this amendment. No g has been recomputed.
+
+---
+
+### Amendment, 2 October 2026: the rewrite invalidated the provenance of every measurement, not only the two cited hashes
+
+The third amendment above records that the 25 September rewrite destroyed the two
+commit hashes `pre-registration.md` cites. That understates it. **Every result
+record in this project stores a `git_commit` that does not exist on `main`.**
+
+#### 1. The scope, measured
+
+Section 10 commits that *"every result record stores its git commit"*. Three
+distinct hashes appear across all 15,120 records:
+
+| stored `git_commit` | records | files |
+| --- | --- | --- |
+| `0b796a3` | 7,520 | every quantum run and bandwidth arm |
+| `2cf7ec7` | 7,440 | every classical run, matched and unconstrained, including shuffled |
+| `0b2aef4` | 160 | the quantum label-shuffled negative control |
+
+All three resolve to `git cat-file -t`, and **none is an ancestor of `main`**:
+
+    $ git merge-base --is-ancestor 0b796a3 main || echo "NOT AN ANCESTOR"
+    NOT AN ANCESTOR OF MAIN
+    $ git branch --contains 0b796a3
+      prerewrite-20260925
+
+Identically for `2cf7ec7` and `0b2aef4`. All three are reachable only from the
+local branch recovered from a backup folder that had been moved to `_to_delete`
+on the evening of 29 September.
+
+So section 10's reproducibility commitment is satisfied in form and
+unverifiable in practice: a reader who clones the public repository can resolve
+the provenance of **no measurement this project has made**.
+
+#### 2. The mapping, and exactly how far it goes
+
+The rewrite changed commit messages only, so each pre-rewrite commit has a
+counterpart on `main` with a byte-identical tree. Those counterparts exist and
+are unique:
+
+| stored hash | tree | counterpart on `main` |
+| --- | --- | --- |
+| `0b796a3` | `9cd7769c11d7b83b72b78ea5e1760ec076b3aebf` | `17c92c2560dbb115e6572c881d500176711d8a3c` |
+| `2cf7ec7` | `ef4cbc75d14cc209f173d0dd081df98856a8f336` | `60d67715f1a5230c1b19ec92acf80aa28a4bf69c` |
+| `0b2aef4` | `36490798e8c0e6e86a7315b970cfae85f41b7fed` | `fbbf166405845a6450d600fb4120354a5120afbf` |
+
+**What a reader with only the public repository can check:** that each
+counterpart exists and carries the stated tree.
+
+    git rev-parse 17c92c2560dbb115e6572c881d500176711d8a3c^{tree}
+    # expect 9cd7769c11d7b83b72b78ea5e1760ec076b3aebf
+
+**What that reader cannot check, and this is stated rather than glossed:** that
+the hash stored in the records ever had that tree. `0b796a3` does not exist
+publicly, so its tree cannot be computed by anyone outside this machine. **The
+mapping reduces what must be taken on the author's word; it does not remove
+it.** An earlier draft of this amendment claimed the mapping was verifiable
+without trusting the author. That was wrong and is corrected here.
+
+Full public provenance has exactly one route: publishing
+`prerewrite-20260925`. D11's third amendment records the reason against it —
+pushing it restores to the public repository the AI co-authorship trailers the
+rewrite deliberately removed. **That is a genuine trade-off between attribution
+hygiene and public traceability of every measurement in the project, and it is
+recorded here as an open decision rather than settled in passing.** Until it is
+taken, the honest statement in the paper is that result provenance rests on a
+tree-identity mapping to public commits, with the pre-rewrite objects held in a
+single local copy.
+
+#### 3. An observation, not a finding
+
+The negative-control records carry `0b2aef4` while the runs they are the control
+for carry `0b796a3`, and the two have different trees. So the control was
+executed from a different tree state than the experiment. That is unremarkable
+if the intervening change touched nothing in the measurement path, and it is the
+kind of thing a referee asks about. `git log --oneline 0b796a3..0b2aef4` on the
+recovered branch answers it. Not run here, and no claim is made either way.
+
+#### 4. What does not change
+
+No record, no measurement, no verdict, no threshold. The 15,120 records are
+intact, the data is intact, and the code at each stored commit is recoverable
+from the local branch. H1's rejection on churn, H1's null on fraud, H2 and H3's
+NOT ESTABLISHED, and every exploratory family stand exactly as computed. What
+changes is solely what may be claimed about whether a stranger can trace them.
+
+#### 5. How this was found, which is the part worth keeping
+
+From a housekeeping line in `docs/week-09-report.md` suggesting someone run
+`git cat-file -t 0b796a3`, filed among four loose ends. The first answer was
+`commit`, which reads as an all-clear and would have closed the item. The check
+that mattered was the second one, and the only reason to run it was that D11's
+third amendment had already documented this precise trap for different hashes
+four days earlier.
+
+**A record of a past failure prevented a present one, and only because it was
+written down in enough detail to recognise the shape again.** That is the
+argument for `deviations.md` existing, and it is a better argument than any of
+the individual records in it.
