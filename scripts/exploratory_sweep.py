@@ -65,6 +65,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from primary_tests import (  # noqa: E402
     ALPHA, CLASSICAL_KERNELS, CONFIRMATORY_N, PRIMARY_CELL,
     best_by_inner, endpoint_test, fmt_p, holm, integrity, load, norm_ap)
+from geometric_tests import FLOOR  # noqa: E402  D2's precision floor, in AP
 
 SIZES = (50, 100, 250)
 QUBITS = (4, 6, 8, 10, 12)
@@ -146,7 +147,13 @@ def tested_family(label, levels, series_by_level, note):
         rows.append({"level": lv, "n": e["n"], "estimable": True,
                      "mean": e["mean"], "median": e["median"],
                      "ci": list(e["ci"]), "p_wilcoxon": e["p_wilcoxon"],
-                     "p_t": e["p_t"]})
+                     "p_t": e["p_t"],
+                     # D2: "Any quantum-minus-classical difference smaller
+                     # than 1e-3 is below the arithmetic resolution of the
+                     # pipeline and will be reported as such, not as a
+                     # measurement." A rank test can reject on consistently
+                     # signed differences that are all below resolution.
+                     "below_d2_floor": bool(abs(e["mean"]) < FLOOR)})
         praw.append(e["p_wilcoxon"])
     adj = holm(praw) if praw else []
     it = iter(adj)
@@ -154,7 +161,10 @@ def tested_family(label, levels, series_by_level, note):
         if r.get("estimable"):
             r["p_holm"] = next(it)
             r["rejects_after_holm"] = bool(r["p_holm"] < ALPHA)
-    return {"family": label, "caption": f"{EXPL}: {label} "
+    return {"family": label, "d2_floor": FLOOR,
+            "n_levels_below_floor": sum(1 for r in rows
+                                        if r.get("below_d2_floor")),
+            "caption": f"{EXPL}: {label} "
             f"(Holm-corrected within this family of {len(praw)}; "
             f"bears on no confirmatory hypothesis)",
             "aggregation": note, "rows": rows}
@@ -169,8 +179,9 @@ def print_tested(fam):
             print(f"    {str(r['level']):<12}{r['n']:>4}   not estimable: {r['why']}")
             continue
         star = "  *" if r["rejects_after_holm"] else ""
+        sub = "   BELOW D2 FLOOR, not a measurement" if r["below_d2_floor"] else ""
         print(f"    {str(r['level']):<12}{r['n']:>4}{r['mean']:>+15.4f}"
-              f"{fmt_p(r['p_wilcoxon']):>12}{fmt_p(r['p_holm']):>12}{star}")
+              f"{fmt_p(r['p_wilcoxon']):>12}{fmt_p(r['p_holm']):>12}{star}{sub}")
 
 
 # --------------------------------------------------------------- families
@@ -239,12 +250,23 @@ def family_training_size(by_size, seeds_by_size):
 
 
 def family_learning_curve(raw_by_size):
-    """Family 4: the learning curve. Descriptive, in week 3 section 9's form.
+    """Family 4: the learning curve. Descriptive; shape only from week 3.
 
-    Week 3 section 9 reports "best cell per training size, corrected normAP".
-    That form is kept so the quantum arm is directly comparable to the
-    classical table already published, and no p-value is attached to it. The
-    testable version of the same question is family 3.
+    Week 3 section 9 reports "best cell per training size, corrected normAP",
+    and that SHAPE is kept. The FIGURES here are not comparable to that table.
+    It was computed on 10 seeds, before the per-size files existed: the records
+    in `results/runs/classical/archive-week3-10seeds` carry n_per_class=None.
+    It also names a method per cell ("pca/12, linear"), implying the best
+    (cell, method) pair chosen post hoc, whereas the classical arm here is
+    selected by inner CV via `best_by_inner`, which is the registered rule.
+
+    Measured differences against week 3 run in BOTH directions -- churn at 250
+    is 0.6137 here against 0.6268 there, churn at 100 is 0.6044 here against
+    0.6021 there -- so no single cause is asserted and the two tables are not
+    placed side by side.
+
+    No p-value is attached. The testable version of the same question is
+    family 3, the training-size comparison.
     """
     rows = []
     for n in SIZES:
@@ -280,10 +302,18 @@ def family_learning_curve(raw_by_size):
         })
     return {"family": "the learning curve",
             "caption": f"{EXPL}: the learning curve, best cell per training "
-                       f"size, corrected normAP. Descriptive, in week 3 "
-                       f"section 9's form; no p-value is attached. The "
-                       f"testable form of this question is the training-size "
-                       f"comparison.",
+                       f"size, corrected normAP. Descriptive; no p-value is "
+                       f"attached, and the testable form of this question is "
+                       f"the training-size comparison. The SHAPE follows week "
+                       f"3 section 9, but the FIGURES are not comparable to "
+                       f"that table: it was computed on 10 seeds, before the "
+                       f"per-size files existed (see "
+                       f"results/runs/classical/archive-week3-10seeds, whose "
+                       f"records carry n_per_class=None), and it names a "
+                       f"method per cell, implying best-(cell, method) "
+                       f"selection rather than selection by inner CV as used "
+                       f"here. Differences against that table run in both "
+                       f"directions, so no single cause is asserted.",
             "aggregation": "best cell by mean normAP over seeds, each arm "
                            "selected independently",
             "rows": rows}
