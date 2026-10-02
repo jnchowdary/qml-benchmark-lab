@@ -1,0 +1,506 @@
+{
+  "declared": "post-hoc, 1 October 2026; form fixed after the data existed; exploratory by section 9",
+  "alpha": 0.05,
+  "datasets": {
+    "churn": {
+      "the qubit-count trend": {
+        "family": "the qubit-count trend",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 0,
+        "caption": "EXPLORATORY: the qubit-count trend (Holm-corrected within this family of 5; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: the three mappings averaged within each seed, then Wilcoxon over seeds. Cells at one seed share a split.",
+        "rows": [
+          {
+            "level": 4,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.020253853943579675,
+            "median": -0.037606598526744306,
+            "ci": [
+              -0.047398981820362646,
+              0.006891273933203296
+            ],
+            "p_wilcoxon": 0.039989471435546875,
+            "p_t": 0.13486754782752114,
+            "below_d2_floor": false,
+            "p_holm": 0.11996841430664062,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 6,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.017998558367737984,
+            "median": -0.008935296035199491,
+            "ci": [
+              -0.045274979684856415,
+              0.009277862949380444
+            ],
+            "p_wilcoxon": 0.20244979858398438,
+            "p_t": 0.18327792155453307,
+            "below_d2_floor": false,
+            "p_holm": 0.20244979858398438,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 8,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.019503966845837946,
+            "median": -0.021287408422840944,
+            "ci": [
+              -0.042048108039512186,
+              0.0030401743478362976
+            ],
+            "p_wilcoxon": 0.08969497680664062,
+            "p_t": 0.0860190414661122,
+            "below_d2_floor": false,
+            "p_holm": 0.17938995361328125,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 10,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.034157142423654877,
+            "median": -0.025645125123463213,
+            "ci": [
+              -0.06312178723070919,
+              -0.00519249761660057
+            ],
+            "p_wilcoxon": 0.023950576782226562,
+            "p_t": 0.02324257306283978,
+            "below_d2_floor": false,
+            "p_holm": 0.09580230712890625,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 12,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.06589288803512869,
+            "median": -0.0570202310052631,
+            "ci": [
+              -0.08748147921417383,
+              -0.044304296856083544
+            ],
+            "p_wilcoxon": 9.5367431640625e-06,
+            "p_t": 3.975629881555275e-06,
+            "below_d2_floor": false,
+            "p_holm": 4.76837158203125e-05,
+            "rejects_after_holm": true
+          }
+        ],
+        "cell_level_trend": {
+          "unit": "cell",
+          "n_cells": 15,
+          "spearman_rho": -0.46916846400738366,
+          "p": 0.07768330561393003,
+          "note": "unit is the cell, not the record. Week 4 item 10 voided every row-level trend figure."
+        }
+      },
+      "per-mapping breakdowns": {
+        "family": "per-mapping breakdowns",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 0,
+        "caption": "EXPLORATORY: per-mapping breakdowns (Holm-corrected within this family of 3; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: the five qubit counts averaged within each seed, then Wilcoxon over seeds.",
+        "rows": [
+          {
+            "level": "pca",
+            "n": 20,
+            "estimable": true,
+            "mean": -0.03850812739673955,
+            "median": -0.04380421654341607,
+            "ci": [
+              -0.06582576521722225,
+              -0.011190489576256846
+            ],
+            "p_wilcoxon": 0.009435653686523438,
+            "p_t": 0.008214315458156221,
+            "below_d2_floor": false,
+            "p_holm": 0.018871307373046875,
+            "rejects_after_holm": true
+          },
+          {
+            "level": "randproj",
+            "n": 20,
+            "estimable": true,
+            "mean": -0.008358884307586316,
+            "median": -0.00786523490808289,
+            "ci": [
+              -0.025223520266291766,
+              0.008505751651119135
+            ],
+            "p_wilcoxon": 0.38837623596191406,
+            "p_t": 0.3125734016775509,
+            "below_d2_floor": false,
+            "p_holm": 0.38837623596191406,
+            "rejects_after_holm": false
+          },
+          {
+            "level": "selectk",
+            "n": 20,
+            "estimable": true,
+            "mean": -0.04781683406523764,
+            "median": -0.04304616038851103,
+            "ci": [
+              -0.07651636969943912,
+              -0.01911729843103616
+            ],
+            "p_wilcoxon": 0.0019855499267578125,
+            "p_t": 0.0024657830757305404,
+            "below_d2_floor": false,
+            "p_holm": 0.0059566497802734375,
+            "rejects_after_holm": true
+          }
+        ]
+      },
+      "the training-size comparison": {
+        "family": "the training-size comparison",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 0,
+        "caption": "EXPLORATORY: the training-size comparison (Holm-corrected within this family of 2; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: all 15 cells averaged within each seed, then Wilcoxon over seeds. The 50-per-class arm is EXCLUDED from testing by pre-registration line 104 and is reported descriptively below.",
+        "rows": [
+          {
+            "level": 100,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.02682278968164446,
+            "median": -0.030474284346628043,
+            "ci": [
+              -0.04467345338691465,
+              -0.00897212597637427
+            ],
+            "p_wilcoxon": 0.006389617919921875,
+            "p_t": 0.005331520562101757,
+            "below_d2_floor": false,
+            "p_holm": 0.006389617919921875,
+            "rejects_after_holm": true
+          },
+          {
+            "level": 250,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.03156128192318784,
+            "median": -0.02858799817583632,
+            "ci": [
+              -0.04866141462227338,
+              -0.014461149224102306
+            ],
+            "p_wilcoxon": 0.000850677490234375,
+            "p_t": 0.0010476043241038743,
+            "below_d2_floor": false,
+            "p_holm": 0.00170135498046875,
+            "rejects_after_holm": true
+          }
+        ],
+        "descriptive_only": [
+          {
+            "level": 50,
+            "n_seeds": 20,
+            "mean_d_normap": -0.03154160464129234,
+            "why_not_tested": "pre-registration line 104: run for the shape of the learning curve, not for hypothesis testing"
+          }
+        ]
+      },
+      "the learning curve": {
+        "family": "the learning curve",
+        "caption": "EXPLORATORY: the learning curve, best cell per training size, corrected normAP. Descriptive; no p-value is attached, and the testable form of this question is the training-size comparison. The SHAPE follows week 3 section 9, but the FIGURES are not comparable to that table: it was computed on 10 seeds, before the per-size files existed (see results/runs/classical/archive-week3-10seeds, whose records carry n_per_class=None), and it names a method per cell, implying best-(cell, method) selection rather than selection by inner CV as used here. Differences against that table run in both directions, so no single cause is asserted.",
+        "aggregation": "best cell by mean normAP over seeds, each arm selected independently",
+        "rows": [
+          {
+            "n_per_class": 50,
+            "best_quantum_cell": [
+              "pca",
+              4
+            ],
+            "best_quantum_normap": 0.4631038502926346,
+            "best_classical_cell": [
+              "pca",
+              6
+            ],
+            "best_classical_normap": 0.46094366597303027
+          },
+          {
+            "n_per_class": 100,
+            "best_quantum_cell": [
+              "pca",
+              10
+            ],
+            "best_quantum_normap": 0.5534485693701525,
+            "best_classical_cell": [
+              "pca",
+              10
+            ],
+            "best_classical_normap": 0.6043568480946078
+          },
+          {
+            "n_per_class": 250,
+            "best_quantum_cell": [
+              "pca",
+              4
+            ],
+            "best_quantum_normap": 0.5853179046144371,
+            "best_classical_cell": [
+              "pca",
+              12
+            ],
+            "best_classical_normap": 0.613725962174599
+          }
+        ]
+      }
+    },
+    "fraud": {
+      "the qubit-count trend": {
+        "family": "the qubit-count trend",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 1,
+        "caption": "EXPLORATORY: the qubit-count trend (Holm-corrected within this family of 5; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: the three mappings averaged within each seed, then Wilcoxon over seeds. Cells at one seed share a split.",
+        "rows": [
+          {
+            "level": 4,
+            "n": 20,
+            "estimable": true,
+            "mean": 0.004474037986365301,
+            "median": 0.002031875543650604,
+            "ci": [
+              -0.0018316025211267753,
+              0.010779678493857378
+            ],
+            "p_wilcoxon": 0.20244979858398438,
+            "p_t": 0.15393033269849868,
+            "below_d2_floor": false,
+            "p_holm": 0.8097991943359375,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 6,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.001513062840899465,
+            "median": -0.0012450445771079823,
+            "ci": [
+              -0.0069373305616798765,
+              0.003911204879880946
+            ],
+            "p_wilcoxon": 0.6742229461669922,
+            "p_t": 0.5661988076236433,
+            "below_d2_floor": false,
+            "p_holm": 1.0,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 8,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.003310873503094439,
+            "median": -0.0008865031052891863,
+            "ci": [
+              -0.006259411298334368,
+              -0.00036233570785451034
+            ],
+            "p_wilcoxon": 0.04405403137207031,
+            "p_t": 0.029717641103957686,
+            "below_d2_floor": false,
+            "p_holm": 0.22027015686035156,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 10,
+            "n": 20,
+            "estimable": true,
+            "mean": -0.0007728952250210884,
+            "median": -0.0016432363494607491,
+            "ci": [
+              -0.004294625902352094,
+              0.0027488354523099176
+            ],
+            "p_wilcoxon": 0.5958194732666016,
+            "p_t": 0.6511987175889975,
+            "below_d2_floor": true,
+            "p_holm": 1.0,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 12,
+            "n": 20,
+            "estimable": true,
+            "mean": 0.001094598674773021,
+            "median": 0.0016297115700666758,
+            "ci": [
+              -0.002809242509649191,
+              0.0049984398591952335
+            ],
+            "p_wilcoxon": 0.6476554870605469,
+            "p_t": 0.5642043404702306,
+            "below_d2_floor": false,
+            "p_holm": 1.0,
+            "rejects_after_holm": false
+          }
+        ],
+        "cell_level_trend": {
+          "unit": "cell",
+          "n_cells": 15,
+          "spearman_rho": -0.1527525231651947,
+          "p": 0.5867922463877787,
+          "note": "unit is the cell, not the record. Week 4 item 10 voided every row-level trend figure."
+        }
+      },
+      "per-mapping breakdowns": {
+        "family": "per-mapping breakdowns",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 1,
+        "caption": "EXPLORATORY: per-mapping breakdowns (Holm-corrected within this family of 3; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: the five qubit counts averaged within each seed, then Wilcoxon over seeds.",
+        "rows": [
+          {
+            "level": "pca",
+            "n": 20,
+            "estimable": true,
+            "mean": 0.0011205695763421798,
+            "median": 0.0008058828896532976,
+            "ci": [
+              -0.0018674251243460827,
+              0.004108564277030442
+            ],
+            "p_wilcoxon": 0.3117942810058594,
+            "p_t": 0.4421701609871274,
+            "below_d2_floor": false,
+            "p_holm": 0.9353828430175781,
+            "rejects_after_holm": false
+          },
+          {
+            "level": "randproj",
+            "n": 20,
+            "estimable": true,
+            "mean": 0.00030090960593361126,
+            "median": 0.0004325514972703615,
+            "ci": [
+              -0.004107305548592847,
+              0.0047091247604600685
+            ],
+            "p_wilcoxon": 0.9272785186767578,
+            "p_t": 0.8878954503489351,
+            "below_d2_floor": true,
+            "p_holm": 0.9353828430175781,
+            "rejects_after_holm": false
+          },
+          {
+            "level": "selectk",
+            "n": 20,
+            "estimable": true,
+            "mean": -0.001438396127001793,
+            "median": -0.0006740954839778545,
+            "ci": [
+              -0.005386274870170722,
+              0.0025094826161671355
+            ],
+            "p_wilcoxon": 0.38837623596191406,
+            "p_t": 0.45507420995945636,
+            "below_d2_floor": false,
+            "p_holm": 0.9353828430175781,
+            "rejects_after_holm": false
+          }
+        ]
+      },
+      "the training-size comparison": {
+        "family": "the training-size comparison",
+        "d2_floor": 0.001,
+        "n_levels_below_floor": 1,
+        "caption": "EXPLORATORY: the training-size comparison (Holm-corrected within this family of 2; bears on no confirmatory hypothesis)",
+        "aggregation": "per level: all 15 cells averaged within each seed, then Wilcoxon over seeds. The 50-per-class arm is EXCLUDED from testing by pre-registration line 104 and is reported descriptively below.",
+        "rows": [
+          {
+            "level": 100,
+            "n": 20,
+            "estimable": true,
+            "mean": 0.0027950918076015867,
+            "median": 0.003059934244179796,
+            "ci": [
+              -0.002485495605766134,
+              0.008075679220969308
+            ],
+            "p_wilcoxon": 0.09730720520019531,
+            "p_t": 0.2817470292147742,
+            "below_d2_floor": false,
+            "p_holm": 0.19461441040039062,
+            "rejects_after_holm": false
+          },
+          {
+            "level": 250,
+            "n": 20,
+            "estimable": true,
+            "mean": -5.638981575333815e-06,
+            "median": -0.0011182305711917584,
+            "ci": [
+              -0.0026591004296593456,
+              0.0026478224665086782
+            ],
+            "p_wilcoxon": 0.6742229461669922,
+            "p_t": 0.9964974132899104,
+            "below_d2_floor": true,
+            "p_holm": 0.6742229461669922,
+            "rejects_after_holm": false
+          }
+        ],
+        "descriptive_only": [
+          {
+            "level": 50,
+            "n_seeds": 20,
+            "mean_d_normap": -0.010001038647970879,
+            "why_not_tested": "pre-registration line 104: run for the shape of the learning curve, not for hypothesis testing"
+          }
+        ]
+      },
+      "the learning curve": {
+        "family": "the learning curve",
+        "caption": "EXPLORATORY: the learning curve, best cell per training size, corrected normAP. Descriptive; no p-value is attached, and the testable form of this question is the training-size comparison. The SHAPE follows week 3 section 9, but the FIGURES are not comparable to that table: it was computed on 10 seeds, before the per-size files existed (see results/runs/classical/archive-week3-10seeds, whose records carry n_per_class=None), and it names a method per cell, implying best-(cell, method) selection rather than selection by inner CV as used here. Differences against that table run in both directions, so no single cause is asserted.",
+        "aggregation": "best cell by mean normAP over seeds, each arm selected independently",
+        "rows": [
+          {
+            "n_per_class": 50,
+            "best_quantum_cell": [
+              "selectk",
+              8
+            ],
+            "best_quantum_normap": 0.9434259805158522,
+            "best_classical_cell": [
+              "selectk",
+              8
+            ],
+            "best_classical_normap": 0.9564175197607028
+          },
+          {
+            "n_per_class": 100,
+            "best_quantum_cell": [
+              "selectk",
+              10
+            ],
+            "best_quantum_normap": 0.953254019124118,
+            "best_classical_cell": [
+              "selectk",
+              12
+            ],
+            "best_classical_normap": 0.9596630843271694
+          },
+          {
+            "n_per_class": 250,
+            "best_quantum_cell": [
+              "selectk",
+              8
+            ],
+            "best_quantum_normap": 0.9631664238404701,
+            "best_classical_cell": [
+              "selectk",
+              10
+            ],
+            "best_classical_normap": 0.9675782490951835
+          }
+        ]
+      }
+    }
+  }
+}

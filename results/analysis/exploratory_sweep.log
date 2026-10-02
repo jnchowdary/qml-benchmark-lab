@@ -1,0 +1,72 @@
+
+==========================================================================
+churn
+==========================================================================
+
+  EXPLORATORY: the qubit-count trend (Holm-corrected within this family of 5; bears on no confirmatory hypothesis)
+    per level: the three mappings averaged within each seed, then Wilcoxon over seeds. Cells at one seed share a split.
+    level          n   mean dNormAP           p        Holm
+    4             20        -0.0203      0.0400      0.1200
+    6             20        -0.0180      0.2024      0.2024
+    8             20        -0.0195      0.0897      0.1794
+    10            20        -0.0342      0.0240      0.0958
+    12            20        -0.0659    9.54e-06    4.77e-05  *
+    cell-level trend (n=15 cells): rho -0.4692  p 0.0777
+
+  EXPLORATORY: per-mapping breakdowns (Holm-corrected within this family of 3; bears on no confirmatory hypothesis)
+    per level: the five qubit counts averaged within each seed, then Wilcoxon over seeds.
+    level          n   mean dNormAP           p        Holm
+    pca           20        -0.0385      0.0094      0.0189  *
+    randproj      20        -0.0084      0.3884      0.3884
+    selectk       20        -0.0478      0.0020      0.0060  *
+
+  EXPLORATORY: the training-size comparison (Holm-corrected within this family of 2; bears on no confirmatory hypothesis)
+    per level: all 15 cells averaged within each seed, then Wilcoxon over seeds. The 50-per-class arm is EXCLUDED from testing by pre-registration line 104 and is reported descriptively below.
+    level          n   mean dNormAP           p        Holm
+    100           20        -0.0268      0.0064      0.0064  *
+    250           20        -0.0316    8.51e-04      0.0017  *
+    n=50 reported not tested: mean dNormAP -0.0315 over 20 seeds
+
+  EXPLORATORY: the learning curve, best cell per training size, corrected normAP. Descriptive; no p-value is attached, and the testable form of this question is the training-size comparison. The SHAPE follows week 3 section 9, but the FIGURES are not comparable to that table: it was computed on 10 seeds, before the per-size files existed (see results/runs/classical/archive-week3-10seeds, whose records carry n_per_class=None), and it names a method per cell, implying best-(cell, method) selection rather than selection by inner CV as used here. Differences against that table run in both directions, so no single cause is asserted.
+    n/class            best quantum          best classical
+    50            ('pca', 4) 0.4631       ('pca', 6) 0.4609
+    100          ('pca', 10) 0.5534      ('pca', 10) 0.6044
+    250           ('pca', 4) 0.5853      ('pca', 12) 0.6137
+
+==========================================================================
+fraud
+==========================================================================
+
+  EXPLORATORY: the qubit-count trend (Holm-corrected within this family of 5; bears on no confirmatory hypothesis)
+    per level: the three mappings averaged within each seed, then Wilcoxon over seeds. Cells at one seed share a split.
+    level          n   mean dNormAP           p        Holm
+    4             20        +0.0045      0.2024      0.8098
+    6             20        -0.0015      0.6742      1.0000
+    8             20        -0.0033      0.0441      0.2203
+    10            20        -0.0008      0.5958      1.0000   BELOW D2 FLOOR, not a measurement
+    12            20        +0.0011      0.6477      1.0000
+    cell-level trend (n=15 cells): rho -0.1528  p 0.5868
+
+  EXPLORATORY: per-mapping breakdowns (Holm-corrected within this family of 3; bears on no confirmatory hypothesis)
+    per level: the five qubit counts averaged within each seed, then Wilcoxon over seeds.
+    level          n   mean dNormAP           p        Holm
+    pca           20        +0.0011      0.3118      0.9354
+    randproj      20        +0.0003      0.9273      0.9354   BELOW D2 FLOOR, not a measurement
+    selectk       20        -0.0014      0.3884      0.9354
+
+  EXPLORATORY: the training-size comparison (Holm-corrected within this family of 2; bears on no confirmatory hypothesis)
+    per level: all 15 cells averaged within each seed, then Wilcoxon over seeds. The 50-per-class arm is EXCLUDED from testing by pre-registration line 104 and is reported descriptively below.
+    level          n   mean dNormAP           p        Holm
+    100           20        +0.0028      0.0973      0.1946
+    250           20        -0.0000      0.6742      0.6742   BELOW D2 FLOOR, not a measurement
+    n=50 reported not tested: mean dNormAP -0.0100 over 20 seeds
+
+  EXPLORATORY: the learning curve, best cell per training size, corrected normAP. Descriptive; no p-value is attached, and the testable form of this question is the training-size comparison. The SHAPE follows week 3 section 9, but the FIGURES are not comparable to that table: it was computed on 10 seeds, before the per-size files existed (see results/runs/classical/archive-week3-10seeds, whose records carry n_per_class=None), and it names a method per cell, implying best-(cell, method) selection rather than selection by inner CV as used here. Differences against that table run in both directions, so no single cause is asserted.
+    n/class            best quantum          best classical
+    50        ('selectk', 8) 0.9434   ('selectk', 8) 0.9564
+    100      ('selectk', 10) 0.9533  ('selectk', 12) 0.9597
+    250       ('selectk', 8) 0.9632  ('selectk', 10) 0.9676
+
+-> results/analysis/exploratory_sweep.json
+
+Every table above is exploratory. Section 9: no exploratory finding is evidence for or against H1 or H2.
