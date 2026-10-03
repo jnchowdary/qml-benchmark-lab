@@ -1627,3 +1627,144 @@ four days earlier.
 written down in enough detail to recognise the shape again.** That is the
 argument for `deviations.md` existing, and it is a better argument than any of
 the individual records in it.
+
+---
+
+## D15 — the paper's organising contribution changes from the kernel comparison to the audit protocol
+
+**Date the change was decided:** 25 September 2026, recorded in
+`docs/week-04-report.md` sections 14 and 15.
+**Date of this declaration:** 3 October 2026. **Nine days late.**
+**Affects:** section 8 of the pre-registration, and what the paper leads with.
+**Does not affect:** any hypothesis, threshold, decision rule, aggregation rule,
+ceiling rule, exclusion, verdict or number.
+
+### 1. The failure this record repeats
+
+Section 11 requires any departure to be recorded **in this file**. The turn was
+decided on 25 September and written into a weekly narrative instead:
+
+> **The direction question in section 15 was decided on 25 September: the
+> project turns toward the audit protocol.** Reasoning in section 14.
+> — `docs/week-04-report.md` section 16
+
+**This is the second time.** D13 records the same failure for H3's ungating:
+decided in week 4, reasoned well, written into the weekly record, and never
+opened as a deviation until 29 September — after the affected result was
+published. The lateness cost H3 its unambiguous confirmatory reading.
+
+Twice now a real decision has been documented in the place that reads like a
+diary and not in the place a reader checks. The weekly records are where the
+reasoning belongs; `deviations.md` is where the fact that a decision was taken
+belongs, and the two are not substitutes.
+
+### 2. The reasoning, as recorded on 25 September
+
+Week 4 section 15, headed "Prior art, found late", records that a literature
+search was run for the first time in the project on 25 September and found two
+papers that materially overlap. Section 14 then states the consequence:
+
+> Note that Flórez-Ablan et al. already compute g against the √N threshold and
+> report it staying below the advantage line at every bandwidth, **so H2 is no
+> longer an open question in the form it was registered.**
+
+and
+
+> Either way, three things stand independent of the outcome, because neither
+> competing paper does them: average precision with an exact chance-level
+> correction on imbalanced data, shuffled-label negative controls, and grid
+> adequacy adjudicated against a shuffled null rather than argued from edge
+> flags.
+
+So the turn was driven by discovering that the registered question had been
+answered by a peer-reviewed paper fourteen months earlier, and by Kakavand et
+al. having run a substantially larger study on the same axis. It was not driven
+by a result.
+
+### 3. The question a referee will ask, answered directly
+
+**Was the audit-protocol framing chosen because the confirmatory result came
+back null?**
+
+**No, on the record, and the dates are checkable.** The turn was decided on 25
+September. **H2 and H3 were not executed until 29 September**, four days later,
+and the paper's registered lead under section 8 is the H2 result. That result
+was not known when the direction changed.
+
+**What was known:** H1 had been tested in week 4, so the churn deficit and the
+fraud null were in hand. The framing decision was therefore taken with H1 known
+and H2 unknown, and this record says so rather than implying the whole
+confirmatory set was blind.
+
+**The caveat that applies to every ordering claim in this project.** The
+evidence for "25 September precedes 29 September" is an author-controlled commit
+history that was itself rewritten on 25 September. D11's third and fourth
+amendments establish that no external timestamp exists, that every
+pre-registration hash was invalidated, and that every result record stores a
+commit absent from `main`. A reader who does not accept this project's own
+history as evidence of ordering should read this declaration as what it is: a
+claim about dates, supported by the same class of evidence the project has
+documented as weak.
+
+### 4. A material update to the turn's stated premise
+
+The reasoning in section 2 above rests partly on Flórez-Ablan et al. having
+settled H2. **What this project verified from source on 1 October weakens that
+premise**, and leaving it unstated would be presenting a decision's rationale as
+stronger than it is.
+
+Their Eq. (4) is Huang's F19, which the fourth amendment to D11 and the
+amendment to D14 establish is the **reversed** ordered comparison:
+`g_gen = g(K² ‖ K¹)`. They set K¹ = K_C and K² = K_Q, so the quantity they
+report as g(K_C, K_Q) and compare against √N is Huang's g(K_Q ‖ K_C). Whether
+their √N comparison is therefore the advantage screen they take it for is a
+live question, not a settled one.
+
+**That does not reverse the turn.** Kakavand et al.'s 970 experiments stand
+untouched, the three things section 14 names as this project's own stand, and a
+null H2 on 360 pre-registered units remains worth reporting whatever the prior
+art says. But the specific sentence "H2 is no longer an open question in the
+form it was registered" is weaker than it looked on 25 September, and the paper
+must not repeat it without this qualification.
+
+**It also makes the case for the new framing stronger rather than weaker.** The
+check that found it — read the source, compare the printed equation to the
+implementation, establish the ordered arguments — is precisely what the protocol
+specifies, applied to the paper that prompted the turn.
+
+### 5. What changes
+
+The paper's organising contribution becomes the protocol: checking equation
+ordering against source, checking implementation fidelity against a paper's own
+claims, establishing what provenance supports, and stating the limits of the
+resulting evidence. The churn and fraud comparison becomes the worked example
+that produced it.
+
+Section 8's text — *"All four outcomes are publishable and the paper is written
+the same way in each case"* — no longer describes the paper. Section 8 is **not
+edited**; version 1.0 stands as registered and this record is the correction, as
+with D6.
+
+### 6. What does not change, enumerated
+
+No hypothesis. No threshold. No decision rule. No aggregation rule. No ceiling
+rule. No exclusion. No power figure. No verdict. No number.
+
+H1 rejects on churn and does not reject on fraud. H2 and H3 return NOT
+ESTABLISHED. The negative control is clean on both datasets. The frozen λ sweep,
+D5's ceiling rule, D7's median aggregation and D8's conditions are untouched.
+Every exploratory family stays exploratory and bears on no confirmatory
+hypothesis. Nothing is recomputed by this record.
+
+### 7. What this record does not authorize
+
+**D14 remains a DRAFT.** No option among (a), (b) and (c) is adopted here. Its
+declaration and its complete outcome-to-verdict mapping must be committed and
+pushed before any recomputed g is examined.
+
+**`prerewrite-20260925` remains unpublished.** The trade-off in D11's fourth
+amendment is untouched and undecided.
+
+**Writing background or framing text authorizes neither.** A change in what the
+paper is about does not license recomputation, publication of the recovered
+branch, or revisiting any frozen analysis.
