@@ -85,6 +85,8 @@ Paired per-seed differences at the pre-registered primary cells, 250 per class,
 20 seeds, intersection-union across both endpoints at alpha = 0.05.
 *(`results/analysis/primary_tests.json`)*
 
+**Figure 2** shows both datasets on one shared scale.
+
 **Churn, PCA at 12 qubits — rejects, against the quantum kernel.**
 
 | endpoint | mean | median | 95% CI | Wilcoxon p |
@@ -138,6 +140,10 @@ and is not leakage.
 
 *(`results/audits/h2_h3_report.json`, 360 units, 7,200 per-seed rows)*
 
+**Figure 1** plots this table: rho with its interval above, units retained
+below, because a rho from 61 units with 299 excluded is not the same evidence as
+one from all 360.
+
 | lambda | units | excluded | breaches | rho | p | 95% CI | rho² |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1e-1 | **360** | **0** | 4/7200 | +0.1712 | 1.11e-03 | [+0.069, +0.270] | 0.0293 |
@@ -189,7 +195,7 @@ each seed** before testing, because cells at one seed share a train/test split;
 levels carry 20 paired observations, not pooled rows.
 *(`results/analysis/exploratory_sweep.json`, `results/analysis/primary_tests.log`)*
 
-**Churn.** The deficit survives correction under PCA (−0.0385, Holm 0.0189) and
+**Figure 3** shows the churn families. **Churn.** The deficit survives correction under PCA (−0.0385, Holm 0.0189) and
 SelectKBest (−0.0478, Holm 0.0060) and **not** under random projection (−0.0084,
 Holm 0.3884). It survives at both tested training sizes (−0.0268 at 100,
 −0.0316 at 250; the 50-per-class arm is registered as not for hypothesis
@@ -261,10 +267,33 @@ that already disqualified it from hypothesis testing.
 
 ---
 
-## 5. What this draft does not yet contain
+## 5. Figures
 
-* **Figures.** `results/figures/` is empty. Nothing here has been plotted.
-* **Sections 1, 2, 5, 6, 7.** Only the results and limitations are drafted.
+| file | shows |
+| --- | --- |
+| `results/figures/fig1_h2_lambda.{png,svg}` | H2 across the sweep: rho with 95% CI, and units retained beneath it |
+| `results/figures/fig2_h1_paired.{png,svg}` | H1's twenty paired seeds at each primary cell, one shared scale |
+| `results/figures/fig3_churn_exploratory.{png,svg}` | the churn exploratory families, Holm-significant levels in the accent |
+
+**These files are not in the repository.** `.gitignore` line 7 excludes
+`results/figures/*`, consistent with `results/runs` and `results/kernels`:
+outputs are regenerated, not versioned. Run
+`PYTHONPATH=src python scripts/make_figures.py` to produce them from the
+committed artefacts. Regeneration is deterministic — figure 2's jitter is
+seeded at 0 and the other two draw nothing random — so a reader gets the same
+figures the paper describes.
+
+Each figure stamps its own source artefact into the image. The palette was
+validated before use rather than chosen by eye, and the layout was checked by
+rendering and looking at the output, which caught a label collision in figures
+2 and 3 and a near-clipped interval in figure 1.
+
+---
+
+## 6. What this draft does not yet contain
+
+* **Sections 1, 2, 5, 6, 7 of the outline.** Only the results, figures and
+  limitations are drafted.
 * **Two tables are stdout only.** The 15-cell sweep and the per-setting
   comparison exist in `results/analysis/primary_tests.log` and nowhere
   structured; the figures quoted in 3.5 were read from that log.
