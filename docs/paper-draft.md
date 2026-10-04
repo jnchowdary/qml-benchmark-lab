@@ -1,66 +1,62 @@
 # Paper draft
 
-**Status, 3 October 2026.** DRAFT. The results section below is written and every
-figure is cited to the artefact it comes from. The framing is **not decided** and
-is not decided here; section 1 sets out the fork and what each branch costs.
-Nothing in section 3 changes between the two branches, which is why it could be
-written first.
+**Status, 4 October 2026.** DRAFT. The framing is **decided** and recorded as
+D15: the paper's contribution is the audit protocol, with the churn and fraud
+comparison as the worked example. Drafted so far: the background
+(`docs/paper-background.md`), the results and limitations below, the figures,
+and the protocol (`docs/paper-protocol.md`). Still unwritten: the introduction,
+the design section, and the discussion.
 
 ---
 
-## 1. The one decision that blocks everything else
+## 1. The framing, decided
 
-Section 8 of the pre-registration describes a kernel-comparison paper and
-commits that *"the paper is written the same way in each case"*. Since week 4
-this project's centre of gravity has moved to an audit protocol, with churn and
-fraud as the worked example. **No deviation record declares that**, and
-`docs/audit-protocol.md` is referenced throughout `deviations.md` only
-incidentally.
+**Recorded as D15 on 3 October 2026.** The paper's organising contribution is
+the audit protocol; the churn and fraud comparison is the worked example that
+produced it. Section 8 of the pre-registration, which describes a
+kernel-comparison paper and commits that *"the paper is written the same way in
+each case"*, no longer describes this paper. Section 8 is not edited; D15 is the
+correction, as D6 was for the power table.
 
-**Branch A — the registered paper.** A pre-registered comparison of quantum
-kernel SVMs against tuned classical kernel SVMs on imbalanced business tabular
-data, leading with section 8's registered lead: *"g not validated. H2 not
-rejected. Given 360 units, this would be a meaningfully powered negative result
-about a metric the field currently takes on trust, and the paper leads with
-it."* The audit protocol appears as a methods contribution.
+**The decision was taken on 25 September 2026** and declared nine days late,
+which D15 records as the second instance of D13's failure: a real decision
+written into a weekly narrative rather than opened as a deviation.
 
-**Branch B — the audit-protocol paper.** The protocol is the contribution; the
-churn and fraud comparison is the worked example that produced it, and the
-deviations record is evidence that the checks catch real defects.
+**Why, on the record.** The turn followed the project's first literature search,
+run on 25 September, which found that Flórez Ablan et al. had covered this
+study's central sections fourteen months earlier in a peer-reviewed paper, and
+that Kakavand et al. had run a substantially larger study on the same axis. H2
+and H3 were not executed until 29 September, so the paper's registered lead was
+unknown when the direction changed. H1 was known.
 
-**What it costs to choose B.** A departure from section 8 that section 11
-requires be recorded with its date and whether it was decided before or after
-the results were seen. D13 is the precedent and the warning: H3 was ungated in
-week 4 for a good reason, the reason was never written into `deviations.md`, and
-when it was finally declared on 29 September the lateness cost it a confirmatory
-reading. **Declaring the framing before the writing costs one short record;
-declaring it after a referee notices costs the same credibility D13 lost.**
+**One qualification D15 carries forward.** Part of that reasoning was that
+Flórez Ablan et al. had settled H2. Section 2 establishes from source that the
+quantity they compare against √N is the reversed ordered comparison, so whether
+their result answers H2 as registered is now a live question. The turn stands on
+the rest, and the sentence "no longer an open question in the form it was
+registered" is not repeatable without this.
 
-**What it costs to choose A.** The strongest thing this project has produced is
-arguably the protocol and the record of what it caught, and A subordinates that
-to a null result.
-
-This section is replaced by the decision once taken, and the deviation record
-carries the reasoning.
-
----
+**What the chosen branch has to carry.** Section 5.6 of the protocol argues
+against its own contribution: every records-level and kernel-level check was
+written after the defect it catches, the prospective evidence is one foreign
+pipeline, and the protocol has failed its own standard four times in public. A
+paper that leads with the protocol leads with that section too.
 
 ## 2. Outline
 
-Sections 3 to 5 are common to both branches. Only the ordering and the framing
-of 2 and 6 differ.
+| # | section | status | where |
+| --- | --- | --- | --- |
+| 1 | **Introduction.** The auditing problem, and why a kernel comparison is the right place to show it | not written | — |
+| 2 | **Background.** The geometric difference's ordered arguments, the scope of Huang's bound, source against implementation | **drafted** | `docs/paper-background.md` |
+| 3 | **Design.** Pre-registration, primary cells, endpoints, decision rule, power | not written | condenses `docs/pre-registration.md` |
+| 4 | **Results.** | **drafted** | section 3 below |
+| 5 | **The protocol.** The contribution: what is tooling, what is procedure, what each costs, and the argument against it | **drafted** | `docs/paper-protocol.md` |
+| 6 | **Discussion and limitations.** | limitations **drafted**, discussion not | section 4 below |
+| 7 | **Deviations.** A pointer to `deviations.md`, not a summary of it | not written | — |
 
-1. **Introduction.** The claim under test and why business tabular data is the
-   right place to test it.
-2. **Background.** Huang's geometric difference as a pre-training screen; what
-   the field takes on trust. (Branch B: the audit problem instead.)
-3. **Design.** Pre-registration, primary cells, endpoints, decision rule, power.
-   Section 3 of this draft is the results that design produced.
-4. **Results.** Written below.
-5. **The protocol.** The checks, each tied to a defect it caught here.
-   (Branch A: methods. Branch B: the contribution.)
-6. **Discussion and limitations.** Including provenance, below.
-7. **Deviations.** A pointer to `deviations.md`, not a summary of it.
+The draft's own numbering below (sections 3 to 6) is not the outline's
+numbering; the table above is authoritative and the two are reconciled when the
+sections are assembled into one document.
 
 ---
 
