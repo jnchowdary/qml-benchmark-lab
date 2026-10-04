@@ -172,6 +172,33 @@ def test_lambda_from_svm_C_is_monotone_and_positive():
         lambda_from_svm_C(0.0, n)
 
 
+def test_lambda_from_svm_C_is_one_over_2C_and_does_not_scale_with_n():
+    """D14's decision of 4 October 2026, pinned.
+
+    The rule is lam = 1/(2C), from Appendix D's summed objective. The factor of
+    n that the first version carried came from a docstring claim that cited
+    nothing and is withdrawn. An unpinned definition is how that version
+    survived unexamined for the whole of the registered sweep, so the exact
+    value is asserted here, not just its monotonicity.
+    """
+    assert lambda_from_svm_C(1.0, 100) == 0.5
+    assert lambda_from_svm_C(10.0, 350) == 0.05
+    assert lambda_from_svm_C(1e-4, 200) == 5000.0
+    # n must not move the answer. This is the whole content of the correction.
+    vals = {lambda_from_svm_C(32.0, n) for n in (1, 50, 100, 200, 350, 10_000)}
+    assert len(vals) == 1, f"lam varies with n: {sorted(vals)}"
+    assert vals.pop() == 1.0 / 64.0
+
+
+def test_lambda_from_svm_C_rejects_nonpositive_n():
+    """n is unused but still validated: a caller passing 0 or a negative n has a
+    bug, and silently ignoring it would hide the bug rather than the parameter.
+    """
+    for bad in (0, -1):
+        with pytest.raises(ValueError):
+            lambda_from_svm_C(1.0, bad)
+
+
 def test_g_lambda_sweep_reports_ceiling_and_conditioning():
     n = 12
     K_c = random_psd_kernel(n, seed=0)

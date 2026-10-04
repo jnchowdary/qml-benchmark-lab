@@ -180,17 +180,43 @@ def geometric_difference_regularised(
 def lambda_from_svm_C(C: float, n: int) -> float:
     """Map an SVM's C to the equivalent kernel-ridge regularisation lam.
 
-    An SVM with penalty C corresponds to regularisation strength ~1/(2*C*n) in
-    the kernel-ridge sense. Using this ties g to the classical model actually
-    being compared against, which is the only choice that makes the resulting
-    g-versus-performance correlation interpretable.
+    Normalising the SVC primal (1/2)||w||^2 + C * SUM_i loss_i so the per-sample
+    loss carries coefficient 1 gives (1/(2C))||w||^2 + SUM_i loss_i, so the
+    regulariser-to-loss ratio is
+
+        lam = 1 / (2 * C)
+
+    with no factor of n. This matches the summed objective Huang et al. use in
+    Appendix D. The argument uses only the ratio of the two coefficients, so it
+    establishes the regularisation SCALING only; it does not claim that an SVM's
+    hinge loss and a kernel ridge's squared residual are otherwise equivalent.
+
+    The previous version of this function returned 1/(2*C*n) on a docstring
+    claim that cited nothing. That claim is withdrawn. See docs/deviations.md
+    D14 and its decision record of 4 October 2026, which records the correction,
+    the three callers it touches, and the outcome-to-verdict mapping fixed before
+    any recomputed g was read.
+
+    WARNING, and it is the important line here: Huang et al. do not derive lam
+    from C at all. Their procedure is a g_tra grid search over a declared grid.
+    This function is a SUBSTITUTE for that procedure, adopted by this project and
+    independently by Florez Ablan et al., and neither group said so. It is not
+    the source's method, and lam is still a function of a tuning outcome -- C is
+    chosen by inner CV, so lam inherits that selection.
+
+    `n` is retained in the signature and is deliberately unused. Every existing
+    call site passes it; dropping the parameter would let a call written against
+    the old rule keep working while silently meaning something else. It is
+    validated and ignored.
 
     Use the C selected by the classical baseline's inner CV (section 7 of the
     plan), not a default, and record it beside every g in the results JSON.
     """
     if C <= 0:
         raise ValueError(f"C must be positive, got {C}")
-    return 1.0 / (2.0 * C * n)
+    if n <= 0:
+        raise ValueError(f"n must be positive, got {n}")
+    return 1.0 / (2.0 * C)
 
 
 def g_lambda_sweep(

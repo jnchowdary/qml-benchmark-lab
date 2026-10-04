@@ -1768,3 +1768,224 @@ amendment is untouched and undecided.
 **Writing background or framing text authorizes neither.** A change in what the
 paper is about does not license recomputation, publication of the recovered
 branch, or revisiting any frozen analysis.
+
+---
+
+## D14 — DECISION, 4 October 2026: option (a) is adopted, its stated justification is corrected, and (b) is left open
+
+**Decided** 4 October 2026. **Declared** 4 October 2026, same day, in this file.
+**Affected results seen?** The *pre-correction* verdict was seen: H2 and H3 have
+been NOT ESTABLISHED on the record since 29 September. **No recomputed g has been
+examined**, and this record exists to be pushed before one is.
+
+This closes D14's DRAFT status. It changes one field's definition and nothing
+else.
+
+### 1. What is decided
+
+**Option (a).** `lambda_from_svm_C(C, n)` becomes `1 / (2 * C)`, dropping the
+factor of `n`. `C` continues to come from inner cross-validation, per cell, as
+registered. This is the author's decision, taken under D14 section 6's rule that
+adopting an option amends a pre-registered analysis and is therefore not the
+assistant's call.
+
+### 2. The ground offered for it, and the ground recorded for it
+
+The ground offered was: *the column's stated purpose is to reproduce the fixed-C
+reference calculation, and that purpose must determine the choice regardless of
+whether recomputation flips `clean`.*
+
+**The principle is adopted in full. The antecedent is false as written, and is
+recorded as false here rather than quietly relied on.**
+
+`docs/pre-registration.md` v1.0 line 112 states the column's registered purpose:
+
+> *"λ is not chosen by hand: it is derived from the classical model actually
+> being compared against, via `lambda_from_svm_C(C, n) = 1 / (2·C·n)`, using the
+> C that inner-CV selected for that cell."*
+
+That purpose is *λ derived from the classical model actually being compared
+against*. It is not reproduction of any external reference calculation, and no
+such purpose appears anywhere in the registration.
+
+Flórez Ablan et al. use a **fixed** C grid — `[32, 64, 128, 512, 1024]`,
+`main.tex` line 393 — giving λ in [4.88e-04, 1.56e-02]. This project takes C from
+inner CV per cell. Measured on all 7,200 rows of `results/audits/g_units.jsonl`:
+**nine distinct values of `classical_C`, from 1e-4 to 1e+04**, so under (a) λ
+takes nine distinct values from **5.00e-05 to 5.00e+03**.
+
+**(a) adopts their formula. It does not reproduce their calculation**, and the two
+λ ranges coincide only over a small part of their span. Any outward text claiming
+reproduction or direct numerical comparability would be wrong and checkable
+against their line 393.
+
+### 3. The selection-dependence objection applies to (a) as well
+
+(b) was set aside as answering *"a different, selection-dependent question."*
+Recorded here: **so does (a).** Under (a), λ is a function of an inner-CV
+outcome — nine values spanning eight orders of magnitude, each fixed by which C
+the tuning picked in that cell.
+
+The difference between (a) and (b) is not *whether* λ depends on a selection but
+*which* selection: (a) routes it through the classical arm's chosen C, (b) routes
+it through `g_tra` over Huang's declared grid. **(b) is the one the source
+prints.** No outward-facing text may describe (a) as selection-independent, as
+principled in a way (b) is not, or as Huang's procedure.
+
+### 4. What (a) therefore is, stated so a reader can check it
+
+A correction of a derivation error inside this project's own registered rule, and
+nothing more. The registered purpose in section 2 is preserved unchanged; what
+changes is that the derivation now matches the only objective Huang prints —
+Appendix D's summed form, as set out in D14 section 4 — instead of resting on a
+docstring claim that cited nothing and has been withdrawn.
+
+**That ground is independent of the outcome**, which is the only reason it is
+usable here. D14 section 5 recorded that (a) can flip `clean` and that choosing
+an option for its effect on the verdict, in either direction, is itself selection
+on the outcome.
+
+### 5. (b) is not retired, and (c) is rejected
+
+**(b) remains open.** It is neither adopted nor withdrawn, and it stays on the
+open-items list as implementing `g_tra` over Huang's declared grid
+`{1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1}` with the largest admissible λ. The
+finding it rests on is already established and reportable: **two independent
+groups substituted a C-derived λ for Huang's declared selection procedure, and
+neither said so.**
+
+**(c) is rejected.** Retiring the column removes an unsourced quantity, but it is
+also the only option that provably preserves the existing verdict, and the
+correction in section 4 is available without retiring anything.
+
+### 6. The affected column, and what rests on it
+
+`from_C` — one of five entries in `LAM_COLS` (`scripts/geometric_tests.py:354`),
+read from its own `g_from_C` field (line 364), with that plumbing pinned by
+`mutation_check.py` mutants at lines 88 and 237.
+
+**D5's `clean` is computed over all five columns** (`geometric_tests.py:663`), and
+a non-empty `clean` is the precondition for H2 and H3 returning a verdict at all.
+This column can therefore change a verdict. That is why this record precedes the
+recomputation rather than following it.
+
+**Unaffected:** the frozen sweep's four columns {1e-1, 1e-2, 1e-3, 1e-4}, and
+`d_normap`, which is read from the result records and does not depend on λ.
+
+### 7. The recomputation is a new run, not a rescale
+
+`results/kernels/` is empty. g at a new λ cannot be derived from stored Gram
+matrices, so **every classical and quantum Gram must be rebuilt**. The output is
+a new run under current HEAD and is written to a new path:
+
+    results/audits/g_units_lam2c.jsonl
+
+`results/audits/g_units.jsonl` and `results/audits/h2_h3_report.json` are
+**preserved unmodified as historical results** and remain the records cited by
+every verdict published before this date. Nothing overwrites them. The new file
+carries its own `git_commit`, and that identifier will resolve on `main` —
+unlike the three recorded in D11's fourth amendment.
+
+### 8. Integrity gate, which must pass before any value is read
+
+The re-run recomputes all five columns. **Only `from_C` should differ.** If any of
+the four frozen columns differs from `g_units.jsonl` at any of the 7,200 rows,
+the re-run is **invalid**, nothing is read from it, and the discrepancy is
+investigated as a defect in its own right.
+
+This check is free, it is a genuine test of determinism across the sweep, and it
+is stated before the run rather than after.
+
+### 9. Outcome-to-verdict mapping, committed in advance
+
+The existing values already bound the outcome, because g is monotone decreasing
+in λ (`docs/week-09-opening.md` section 3): of 7,200 rows, **5,710 are proven
+breach-free** under (a), **1,158 are inconclusive**, and **332 cannot be
+bounded** because λ_alt falls below the grid. So between 0 and 1,490 rows may
+still breach, and **the flip is not guaranteed in either direction.**
+
+| | condition | verdict, fixed now |
+|---|---|---|
+| **O1** | `from_C` breach-free on all 7,200 rows, with non-degenerate within-cell variation in g | `clean` = {`from_C`}. The registered D5 rule yields a verdict on that column. **That verdict is primary for H2 and H3, whatever its sign**, and §1.2, §6.1 and §6.5 of the paper are rewritten to it. |
+| **O2** | one or more rows still breach | `clean` stays empty. **H2 and H3 remain NOT ESTABLISHED.** No paper text changes except this record closing and §3.9 gaining a row. |
+| **O3** | breach-free, but `rank_correlation` (`src/qbench/stats.py:80`) **refuses** because `g_from_C` is constant across the 360 units — its existing guard, whose message already reads *"this is not a null result"* | Reported as a **measurement**, with the distinct-value count and tie fraction stated. **No verdict is claimed from a rank correlation on a constant.** λ reaching 5.00e+03 against Grams of trace N ≤ 350 compresses g towards zero, so this is a live branch and is pre-committed rather than invoked afterwards. |
+
+**O3 is exact constancy and nothing looser.** Heavy ties short of constancy are
+**not** O3: that case follows O1, with the tie fraction and distinct-value count
+reported beside the verdict. Written this way so that "the values looked
+degenerate" cannot become an exit from an unwelcome O1.
+
+**O1 is the branch that overturns the existing result, and it is pre-committed as
+primary.** What the paper flags under O1 is not the verdict's status but its
+provenance: that the column's λ definition was corrected after the pre-correction
+verdict was known, with the justification in section 4 and this mapping pushed
+first.
+
+**What may not happen under any outcome.** Reporting the λ = 0.1 column's rho as
+the headline because it is the figure already known. Reinstating NOT ESTABLISHED
+under O1 on the ground that it is the conservative reading — D14 section 5 names
+that as outcome selection too. Choosing between O1's verdict and the frozen
+sweep's after both have been seen. Describing the new run as reproducing the old
+one.
+
+### 10. What does not change
+
+No hypothesis. No threshold. No decision rule. No aggregation rule. No ceiling
+rule. No exclusion bound. No power figure.
+
+H1 rejects on churn and does not reject on fraud, and the negative control is
+clean on both datasets; none of those depends on λ. The frozen sweep's four
+columns remain valid under the orientation established in D14 section 3 and its
+amendment. D5's account of what a ceiling breach measures, and its three recorded
+wrong answers, are unaffected.
+
+### 11. The DRAFT heading at line 1200 is left as written
+
+D14's heading still reads *"DRAFT, NOT ADOPTED"*. It stays. The draft is a
+historical object; this record supersedes its status and is the operative one.
+Editing that heading would destroy the evidence that the option was declared
+after the draft existed and before the run happened, which is the whole content
+of the pre-commitment.
+
+### 12. Scope: the function has three production callers, not one
+
+`lambda_from_svm_C` is corrected **globally**, because the rule itself is wrong
+and a second, parallel λ rule would be worse than one corrected rule. The
+consequences outside the `from_C` column are therefore enumerated here rather
+than discovered afterwards.
+
+| caller | what it does with λ | consequence |
+|---|---|---|
+| `scripts/geometric_tests.py:242` | the `from_C` column of the 360-unit sweep | the subject of this record; re-run per section 7 |
+| `scripts/classical_limit.py:168` | the D4 exploratory classical-limit study — writes `lambda`, `g_selected`, `g_registered` | **its stored outputs were computed under the old rule and are not re-run.** They stand as historical exploratory results, and the λ recorded in them is the λ that was used. The figures citing them in `docs/week-04-report.md` and `docs/week-07-report.md` are unchanged and keep that reading. |
+| `scripts/run_quick_benchmark.py:87` | a smoke-level benchmark, no reported result | no consequence |
+
+**What is checked and is unaffected.** `scripts/sample_ceiling_mechanism.py` —
+the source of D5's classical-factor cap verification and of the amplification
+figures 2.491 and 2.487 that refuted the rank-deficiency explanation — does not
+call this function at all. It iterates the frozen `LAMBDAS` tuple at line 87.
+**D5's cap result is therefore untouched by this change**, and that was
+established by reading the script rather than assumed.
+
+**Tests.** `tests/test_geometric_difference.py:168` asserted only that λ is
+positive and monotone decreasing in C, both of which hold under 1/(2C), and that
+C <= 0 raises. **No test pinned the factor of n**, which is how the withdrawn
+rule survived the whole of the registered sweep unexamined. Two tests are added
+with this change: one asserting the exact values and that n does not move the
+answer, one asserting that a non-positive n still raises.
+
+**The new test has been shown to fail against the old rule.** The mutation was
+run by hand — the function reverted to `1.0 / (2.0 * C * n)` in an isolated copy,
+the assertions re-run, first assertion killed, and the working file verified
+unchanged by hash afterwards. It is **not** in `scripts/mutation_check.py`,
+because that harness is hardwired to `tests/test_geometric_tests.py`
+(`TESTS`, line 51; `run_test`, line 251) and its coverage check at line 262
+enumerates that file alone. Extending the harness to a second test file is an
+open item, recorded here rather than left implicit: until it is done, this
+mutant's status rests on a manual run and not on the suite.
+
+**A consequence worth stating plainly:** `classical_limit.py`'s stored outputs
+cannot be reproduced from current HEAD after this change. That is a new instance
+of the binding problem D11 records, created deliberately and declared here. The
+alternative — re-running an exploratory D4 study to keep an unsourced λ rule
+consistent with itself — buys nothing.
