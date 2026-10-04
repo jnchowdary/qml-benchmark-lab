@@ -247,9 +247,20 @@ that does not exist on the public repository. A history rewrite on 25 September
 local branch recovered from a folder that had been queued for deletion. A
 tree-identity mapping to public counterparts exists and is recorded, but a reader
 can verify that the counterpart has the stated tree and **cannot** verify that
-the stored hash ever had it. Full public provenance requires publishing that
-branch, which would restore the AI co-authorship trailers the rewrite removed.
-The paper states which choice was made.
+the stored hash ever had it.
+
+Bounded precisely: a reader cannot **independently bind a historical result
+record to the code that generated it**. Everything else remains checkable — the
+analysis scripts in full, the data provenance and checksums, the records
+themselves, and the public half of the mapping. A re-run from current HEAD
+produces new evidence about the current code; it does not authenticate the old
+records, since agreement is consistent with changes that do not alter these
+outputs and disagreement would not separate a code change from a data or
+environment change.
+
+Full public provenance requires publishing that branch, which would restore the
+AI co-authorship trailers the rewrite removed. The paper states which choice was
+made.
 
 **No external timestamp.** This project is not registered at OSF, has no
 Software Heritage snapshot predating its results, and its ordering evidence is

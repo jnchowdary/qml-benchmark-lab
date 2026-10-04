@@ -71,14 +71,41 @@ and (F20):
 **The regularised inverse is on K², the second argument. In Equation (5) it was
 on the first.**
 
-**This project verified** that this is not an inconsistency. Appendix F poses
-the reverse operational question — given a function represented by kernel 1,
-what complexity results when kernel 2 is trained to reproduce it — and derives
+**This project verified** that this is not an inconsistency, and the
+identification matters enough to show rather than assert.
+
+**Source states**, in Appendix F, the bound that accompanies F19:
 
 > s_{K²} ≤ g_gen² · s_{K¹}
 
-so that, at λ → 0, g_gen = g(K² ‖ K¹). The ordered comparison is reversed
-between the main text and the appendix, deliberately and for a stated reason.
+**The bound alone does not identify g_gen.** An inequality is satisfied by any
+coefficient larger than the smallest one that works, so `s_{K²} ≤ g_gen² s_{K¹}`
+is consistent with g_gen being g(K²‖K¹) and with its being anything larger. The
+bound tells us which *direction* the appendix is reasoning in; it cannot tell us
+which quantity g_gen *is*.
+
+**The defining expressions do identify it.** Take F19's λ → 0 limit directly.
+The middle factor `sqrt(K²)(K² + λI)⁻² sqrt(K²)` has eigenvalues μ/(μ+λ)² over
+K²'s spectrum, which tend to 1/μ, so that factor tends to (K²)⁻¹ and
+
+    F19(K¹, K²)  ->  sqrt( ‖ sqrt(K¹) (K²)⁻¹ sqrt(K¹) ‖_∞ )   as λ -> 0
+
+Equation (5)'s template is: **invert the first argument, take outer roots of the
+second.** Matching, the inverted matrix is K² and the outer roots are K¹, so the
+limit is g(K² ‖ K¹). Verified numerically on a constructed pair: at λ = 1e-10
+the two agree to a relative error of 7.5e-07, while the opposite orientation
+g(K¹‖K²) differs by a factor of 3.46, so the limit discriminates between them
+rather than being satisfied by both.
+
+So **g_gen = g(K² ‖ K¹)** follows from the expressions, with the Appendix F
+bound as independent corroboration of the direction. The ordered comparison is
+reversed between the main text and the appendix, deliberately and for a stated
+reason.
+
+**What is still assumed.** Only that F19 is transcribed correctly, which the
+e-print source in 2.6 establishes, and that the appendix intends F19 as the
+regularised form of the same functional — which its own λ → 0 limit is the
+evidence for.
 
 **What is nonetheless true of the notation.** The appendix presents F19 as the
 regularised geometric difference and does not relabel it as the reversed

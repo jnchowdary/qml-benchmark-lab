@@ -153,6 +153,25 @@ commit. **That commitment was satisfied in form and unverifiable in practice for
 nine days before anyone checked**, and it was checked only because a previous
 amendment had documented the same trap for different hashes.
 
+**The loss, bounded precisely.** What a reader cannot do is **independently bind
+a historical result record to the code that generated it**. That is the whole of
+it, and it is not nothing: they cannot confirm that the analysis code at run
+time is the code now published, nor diff the two to see what differs.
+
+**What remains independently checkable**: every analysis script, in full; the
+data provenance, which is separate and unaffected, with sources and checksums in
+`data/README.md`; the records themselves, which are intact; and the public half
+of the tree-identity mapping — that each named counterpart on `main` carries the
+stated tree.
+
+**What a re-run does not do.** Executing the current pipeline on the current
+data produces **new evidence about the current code**. It does not authenticate
+the old records, because agreement would be consistent with the code having
+changed in ways that do not alter these particular outputs, and disagreement
+would not distinguish a code change from a data or environment change. A
+reproduction and an authentication are different operations, and only the first
+is available here.
+
 ---
 
 ## 5.5 What this protocol does not do
@@ -182,23 +201,64 @@ went wrong here, usually after passing review. Fifteen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 
-**The prospective evidence is one case.** In week 6 the audit was run against a
-foreign pipeline — Kakavand et al.'s six `ibm_fez` hardware Grams, condition
-number 4.5e+05, read through an adapter against their public Zenodo deposit.
-That is the only time these checks met records they were not designed around.
-Parts B and C add two more cases apiece, but both were performed by the same
-party that wrote the procedures.
+**The prospective evidence is one case, and what it shows needs stating
+precisely.** In week 6 the audit was run against Kakavand et al.'s public
+Zenodo deposit through an adapter. It produced **one measurement and eight
+refusals**: kernel conditioning across all six deposited `ibm_fez` Grams, worst
+4.5e+05, against this project's own 7.8e+19 to 1.1e+33; and eight statements of
+what the deposit cannot answer — four required fields absent, so chance
+correction, power and the precision floor each name their gap; no classical arm
+in the hardware phase, so cross-arm has nothing to pair; one seed, so
+unit-of-analysis warns and power cannot speak; no `inner_score`, so selection
+cannot be shown.
 
-**The protocol has failed its own standard, repeatedly, in public.** It asserted
-from the manuscripts that two published benchmarks performed none of five
-checks; when the deposit behind one was actually read, six of seven claims in
-that paragraph were wrong or misleading. On its first contact with real records
-it required a field this project's own pipeline never emitted, collapsed fifteen
-configurations into one, and silently changed three answers. It then declared
-four checks unrunnable when three were not — one needed nothing at all. The
-first audit run against real records found four further defects, **all four in
-the checks rather than in the records**, with the full test suite passing on
+**It found no defect in their pipeline, and was not looking for one.** The
+week-6 record states it directly: *"None of this is a criticism of their work:
+it is a map of what a reader can and cannot verify from that deposit."*
+
+**The criterion by which this counts as useful, stated rather than assumed.**
+The output is useful if it changes what a reader knows about the deposit's
+evidential reach. Before the run, a reader could not say which questions those
+records could answer; after it, they could, in seconds, without the originating
+pipeline. That criterion is met. **It is a claim about a reader's state of
+knowledge, not about the quality of the audited work**, and it does not
+generalise to defect detection, because on the only occasion these checks met
+foreign records they detected none.
+
+Parts B and C add two cases apiece, but both were performed by the same party
+that wrote the procedures.
+
+**Four things have gone wrong in public, and they are two different kinds.**
+Collapsing them under one word was itself imprecise.
+
+*Defects in the instrument (two).* On its first contact with real records the
+tool required a field this project's own pipeline never emitted, collapsed
+fifteen configurations into one, and **silently changed three answers**. The
+first audit run against real records then found four further defects, **all four
+in the checks rather than in the records**, with the full test suite passing on
 every one.
+
+*Claims its authors made without checking (two).* It asserted from the
+manuscripts that two published benchmarks performed none of five checks; when
+the deposit behind one was read, **six of seven claims in that paragraph were
+wrong or misleading**. It declared four checks unrunnable when three were not —
+one needed nothing at all.
+
+**None of the four is an audited pipeline failing an audit.** A reader who takes
+this section as evidence that audited work fails these checks has read it as it
+was first written and not as it is meant. The two kinds matter differently: the
+first says the instrument needed repair, the second says its authors committed
+the error the instrument exists to prevent.
+
+**A fifth item, about Tier 2 rather than about either kind.** On a partial
+sample of two of the six foreign Grams, the conditioning check read 1.7e+04 —
+**understating the worst case by a factor of 26**. Two things should be kept
+apart here. The numerical miss was corrected only by running the full six. What
+printing the sample count achieved was narrower: it exposed that coverage was
+incomplete, so the reading was known to be partial. **It did not establish the
+true worst case and could not have.** That is the honest limit of indicative
+sampling, and it argues for treating `--hook-sample` readings as a prompt to run
+the full analysis rather than as a figure.
 
 That last fact is the honest summary of what this protocol is worth. **A green
 test suite was not evidence that a measurement tool measured anything**; reading
