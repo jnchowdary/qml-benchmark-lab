@@ -21,10 +21,14 @@ endpoints reject and both favour the classical kernel, a median deficit of
 there. On fraud the test does not reject, and is reported as a bound — an
 advantage larger than 0.0063 normAP at that cell is excluded at 80% power.
 
-H2 and H3 return NOT ESTABLISHED under the registered decision rule. The
-substantive figure is not the verdict but **rho² = 0.0293** at λ = 0.1, the only
-column where all 360 units survive: the geometric difference accounts for under
-three percent of the rank variance in observed difference.
+H2 and H3 return NOT ESTABLISHED under the registered decision rule. **That
+verdict is the rule declining to speak, not a finding that no relationship
+exists**: no λ column is free of ceiling breaches, so none satisfies the
+registered precondition. At λ = 0.1, the only column where all 360 units survive,
+the null *is* rejected and in Huang's predicted direction — rho = +0.1712,
+p = 1.11e-03, CI [+0.069, +0.270]. The substantive figure is therefore neither the
+verdict nor the sign but **rho² = 0.0293**: the geometric difference accounts for
+under three percent of the rank variance in observed difference.
 
 **The scope that result lives in.** Two datasets, one of which is saturated at
 every training size this study used. Three feature mappings, five qubit counts
@@ -38,10 +42,12 @@ difference is generally invalid as a pre-training screen. It was measured on
 this grid, with this λ treatment, against these kernels, on these two datasets.
 A metric can be uninformative where it was tested and informative elsewhere, and
 nothing here distinguishes those cases. **The defensible claim is that on 360
-pre-registered units of imbalanced business tabular data, g did not predict
-observed difference** — which is a meaningfully powered negative result about a
-quantity the field uses as a screen, and is not a claim about the quantity in
-general.
+pre-registered units of imbalanced business tabular data, g is not usable as the
+screen it is offered as** — a detectable relationship carrying under three percent
+of rank variance, whose sign depends on a parameter the practitioner chooses,
+cannot tell anyone not to bother. That is a meaningfully powered negative result
+about the screening use of the quantity. It is not a claim that the quantity
+carries no signal, and not a claim about the quantity in general.
 
 Two features of the result deserve weight a reader might otherwise give the
 verdict. The relationship **reverses sign across the regularisation sweep**,
@@ -143,10 +149,10 @@ so.
 ## 6.5 What this study is for
 
 The registered question was whether a cheap pre-training screen tells a
-practitioner not to bother. On the units tested, it did not: g carried under
-three percent of the rank variance, and its sign depended on a regularisation
-parameter the practitioner picks. That is useful to know and it is bounded by
-the grid it was measured on.
+practitioner not to bother. On the units tested, it cannot: g carried under three
+percent of the rank variance, and its sign depended on a regularisation parameter
+the practitioner picks. A relationship detectable at one column is not a screen.
+That is useful to know and it is bounded by the grid it was measured on.
 
 The more durable contribution is probably the smaller one. **A comparison can be
 run carefully, pass its own tests, and still not support the claim made from
