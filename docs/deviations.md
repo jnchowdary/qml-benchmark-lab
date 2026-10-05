@@ -2117,3 +2117,50 @@ both record files read, and `run` carries the commit, a UTC timestamp and
 `results/analysis/primary_tests_bw.json`, the exploratory bandwidth arm, was not
 regenerated and keeps the old shape with no provenance block. It is a historical
 output.
+
+---
+
+### Note, 5 October 2026: an inaccurate commit message of this project's own, recorded rather than rewritten
+
+Not a deviation. No hypothesis, rule, result or document content is affected.
+Recorded because this project's case against published work is that a record
+must say what happened, and a commit message is a record.
+
+**What the history shows.**
+
+    c9556a4  Paper section 6: discussion
+             docs/paper-discussion.md | 156 +++++  (1 file changed, 156 insertions)
+
+    fd86eb2  docs: add paper section 6, discussion
+             docs/paper-discussion.md |  30 +--    (18 insertions, 12 deletions)
+
+`c9556a4` created the file. `fd86eb2`, two commits later, **revised** it, and its
+subject line says *"add"*. The file already existed and the commit added nothing
+new to the repository.
+
+**What `fd86eb2` actually did**, and what its own message body did state
+correctly: it narrowed §6.1 and §6.5 from *"g did not predict observed
+difference"* to the unusability claim, after a cross-check established that at
+λ = 0.1 H2's null **is** rejected (rho = +0.1712, p = 1.11e-03,
+CI [+0.069, +0.270]) and that NOT ESTABLISHED is the registered rule declining
+to return a verdict rather than a finding of no relationship.
+
+**Provenance of the error.** The message was drafted by the assistant and run by
+the author unaltered. It is recorded here with that attribution because the
+alternative, leaving it unattributed, is the kind of silence this file exists to
+prevent.
+
+**Not corrected in place.** The history is not rewritten. `fd86eb2`'s message
+stands as pushed and this note is the correction, by the same rule D11 applies
+to the pre-registration: a record that is edited after the fact is weaker
+evidence than a wrong record with its correction attached.
+
+**Not added to §5.6's count, and the line that decides it.** §5.6 enumerates
+failures of the *protocol*: the tool producing wrong answers on real records, and
+the authors making claims about measurements they had not checked. A commit
+subject line is neither an instrument output nor a claim about a measurement, and
+no number anywhere moved. The boundary is stated explicitly so that it is a rule
+rather than a convenience: **an inaccuracy enters §5.6 when it misstates a
+measurement or an instrument's behaviour.** By that rule the superseded
+exclusion bound printed by `scripts/primary_tests.py` does qualify, and this does
+not.
