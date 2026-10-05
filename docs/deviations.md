@@ -1989,3 +1989,68 @@ cannot be reproduced from current HEAD after this change. That is a new instance
 of the binding problem D11 records, created deliberately and declared here. The
 alternative — re-running an exploratory D4 study to keep an unsourced λ rule
 consistent with itself — buys nothing.
+
+---
+
+### Amendment to D14's decision, 5 October 2026: outcome **O2** obtained, and the verdict does not move
+
+The option-(a) re-run is complete. The outcome is the one the mapping in the
+decision record calls **O2**, and the mapping is what fixes the response, not
+this paragraph.
+
+**The integrity gate passed first** (`scripts/check_lam2c_rerun.py`, decision
+section 8), before any from_C value was read:
+
+    7,200 old rows, 7,200 new rows, 7,200 shared keys
+    [PASS] all four frozen columns bit-identical
+    [PASS] all 7 lambda-independent fields identical
+    [PASS] lambda_from_C == 1/(2C) on every row
+
+**An unplanned result, recorded because it was not predicted.** The four frozen
+columns came back **bit-identical** across six days, a separate interpreter
+session and a changed λ rule. The gate only required that they not move; that
+they match to the last bit is stronger, and it is the first direct evidence in
+this project that the sweep is deterministic end to end. It is established for
+these 7,200 rows on one machine and says nothing about another machine, another
+BLAS or another library build.
+
+**The outcome.**
+
+| | under 1/(2Cn), withdrawn | under 1/(2C), adopted |
+|---|---|---|
+| from_C ceiling breaches | 2,893 / 7,200 (40.18%) | **979 / 7,200 (13.60%)** |
+
+**The pre-published bound held.** `docs/week-09-opening.md` section 3, written on
+1 October from the monotonicity of g in λ and without recomputing anything, said
+at least 5,710 rows would be breach-free and at most 1,490 could still breach.
+**979 falls inside that interval.** Of the 1,490 rows the bound could not clear,
+511 turned out breach-free and 979 did not. A bound published before the run and
+satisfied by it is worth more than the breach count itself.
+
+**Not O3.** `g_from_C` takes 7,195 distinct values across 7,200 rows, tie
+fraction 0.0007. The column is not degenerate and the O3 branch does not apply.
+
+**Therefore, per O2:** `clean` stays empty, and **H2 and H3 remain NOT
+ESTABLISHED.** The λ = 0.1 column retains the four breaching rows recorded in
+D5's correction section 2, so **no λ column is breach-free under either λ rule.**
+No paper text changes. Sections 1.2, 6.1 and 6.5 stand as written.
+
+**What this does not establish.** It does not establish that the correction was
+immaterial. It changed the breach status of **1,914 rows**, two thirds of that
+column's breaches. The verdict is unchanged because the registered rule requires
+a wholly breach-free column and no column has one, not because the λ rule turned
+out not to matter.
+
+**It also does not establish that the verdict is stable.** It now rests on no
+column being breach-free under **two** λ rules. Option (b) — `g_tra` over
+Huang's declared grid, the only procedure the source prints — remains untried,
+and a breach-free column under (b) would reopen H2 and H3. That possibility is
+recorded here rather than left for a reader to raise.
+
+**On the shape of this outcome.** O2 is the branch that preserves the existing
+result, which is exactly why the mapping had to precede the run. The option, the
+justification and the full outcome-to-verdict mapping were committed and pushed
+in `67b5c9e` before the sweep started, and the bound in week-09-opening section 3
+had already said in public that a flip was possible and not assured. Without
+that order, this amendment would be indistinguishable from having picked the
+option that protected the answer.

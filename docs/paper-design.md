@@ -270,10 +270,11 @@ getting to choose.
 | D8 | observed difference averaged over the same surviving seeds; above-floor subset must agree; signed secondary pre-declared | adds a constraint |
 | D12 | IBM hardware runs dropped as infeasible | removes planned evidence |
 | D13 | H3 ungated from H2, declared after its result was published; two readings offered | weakens H3's status |
-| D14 *(draft)* | `lambda_from_svm_C` found unsourced and probably wrong by a factor of n | **unresolved** |
+| D14 | `lambda_from_svm_C` corrected to 1/(2C) on an outcome-to-verdict mapping pushed before the re-run; the supplementary column's breaches fall from 2,893 to 979 of 7,200 and no verdict moves | corrects a defect, changes no result |
 | D15 | the paper's organising contribution becomes the protocol | reframes, changes no analysis |
 
 **Nothing in this table changes a hypothesis, an endpoint, a decision rule, a
 threshold, or a result.** D6 and D13 weaken what may be claimed; D2, D5, D7 and
 D8 make the tests harder to pass; D12 removes evidence that was never collected;
-D14 is open and load-bearing for one supplementary column only; D15 is editorial.
+D14 corrected one supplementary column's λ definition under a pre-committed
+mapping and left every verdict where it was; D15 is editorial.
