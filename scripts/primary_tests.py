@@ -46,11 +46,14 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import statistics as st
+import subprocess
 import sys
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -74,6 +77,36 @@ MDE_IU = {("churn", 250): 0.0171, ("churn", 100): 0.0298, ("churn", 50): 0.0427,
 CONFIRMATORY_N = 250
 REGISTERED_DEVICE = "lightning.qubit"
 CLASSICAL_KERNELS = ("linear", "rbf", "poly")
+
+
+# ------------------------------------------------------------ provenance
+
+def git_commit():
+    """Short HEAD, or None if this is not a checkout.
+
+    `rev-parse` is read-only and does not touch `.git/index`, unlike
+    `git status`, which refreshes and rewrites it.
+    """
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, text=True,
+            stderr=subprocess.DEVNULL).strip()
+    except Exception:
+        return None
+
+
+def file_provenance(path):
+    """Path, size and SHA-256 of an input, so a stored result names what it read."""
+    p = Path(path)
+    if not p.exists():
+        return {"path": str(p), "present": False}
+    h = hashlib.sha256()
+    with p.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    rel = str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)
+    return {"path": rel, "present": True, "bytes": p.stat().st_size,
+            "sha256": h.hexdigest()}
 
 
 # ---------------------------------------------------------------- loading
@@ -301,11 +334,21 @@ def report_primary(dataset, n_per_class, rows, confirmatory):
 
 
 def report_per_setting(dataset, q_by_cell, c_by_cell, cell, seeds):
-    """Section 9: does the headline depend on the quantum side choosing?"""
-    print(f"\n  EXPLORATORY: each quantum setting against best classical "
-          f"(Holm-corrected within this family of 4)")
-    labels, means, praw = [], [], []
-    for setting in sorted({r["setting"] for k, rs in q_by_cell.items() for r in rs}):
+    """Section 9: does the headline depend on the quantum side choosing?
+
+    Returns the family as data. Until week 12 this returned None, so the only
+    surviving trace of it was three rounded numbers per setting in a log:
+    no n, no median, no sd, no confidence interval and no sensitivity t-test,
+    because none of those is printed. The statistics are unchanged; what
+    changes is that they are now readable without re-running this script.
+
+    The Holm family size is computed rather than asserted. The previous header
+    printed the literal "4", which was right for every run made so far and was
+    never derived from the data.
+    """
+    attempted = sorted({r["setting"] for k, rs in q_by_cell.items() for r in rs})
+    labels, tested, praw = [], [], []
+    for setting in attempted:
         diffs = []
         for seed in seeds:
             k = (cell[0], cell[1], seed)
@@ -320,16 +363,39 @@ def report_per_setting(dataset, q_by_cell, c_by_cell, cell, seeds):
         if len(diffs) > 1:
             e = endpoint_test(diffs)
             labels.append(setting)
-            means.append(e["mean"])
+            tested.append(e)
             praw.append(e["p_wilcoxon"])
+    family = {"family": "per_setting", "exploratory": True,
+              "endpoint": "normap", "cell": list(cell),
+              "holm_scope": "within this family only",
+              "settings_attempted": attempted,
+              "holm_family_size": len(labels),
+              "settings_untested": [s for s in attempted if s not in labels],
+              "levels": []}
+    print(f"\n  EXPLORATORY: each quantum setting against best classical "
+          f"(Holm-corrected within this family of {len(labels)})")
     if not labels:
-        return
-    for lab, m, p, padj in zip(labels, means, praw, holm(praw)):
-        print(f"    {lab:<10} mean normAP {m:+.4f}   p {fmt_p(p)}   Holm {fmt_p(padj)}")
+        print("    no setting had more than one paired seed; nothing was tested")
+        return family
+    padj = holm(praw)
+    for lab, e, pa in zip(labels, tested, padj):
+        print(f"    {lab:<10} mean normAP {e['mean']:+.4f}   "
+              f"p {fmt_p(e['p_wilcoxon'])}   Holm {fmt_p(pa)}")
+        family["levels"].append({"setting": lab, **e, "p_holm": float(pa)})
+    if family["settings_untested"]:
+        print(f"    not tested (fewer than two paired seeds): "
+              f"{', '.join(family['settings_untested'])}")
+    return family
 
 
 def report_sweep(dataset, q_by_cell, c_by_cell, seeds):
-    """All 15 cells. Exploratory, Holm-corrected, and it decides nothing."""
+    """All 15 cells. Exploratory, Holm-corrected, and it decides nothing.
+
+    Returns the family as data, for the same reason as `report_per_setting`.
+    The header says "all cells"; a cell with fewer than two paired series is
+    skipped, so the included and attempted counts are recorded and any gap is
+    printed rather than left to be inferred from a shorter table.
+    """
     print(f"\n  EXPLORATORY: all cells (Holm-corrected within this family; "
           f"no cell here bears on H1)")
     cells = sorted({(m, q) for (m, q, _) in q_by_cell})
@@ -341,14 +407,29 @@ def report_sweep(dataset, q_by_cell, c_by_cell, seeds):
         e = endpoint_test([r["d_normap"] for r in series])
         rows.append((cell, e))
         praw.append(e["p_wilcoxon"])
+    family = {"family": "all_cells", "exploratory": True, "endpoint": "normap",
+              "holm_scope": "within this family only", "bears_on_h1": False,
+              "cells_attempted": len(cells),
+              "cells_included": len(rows),
+              "cells_excluded": [list(c) for c in cells
+                                 if c not in [r[0] for r in rows]],
+              "holm_family_size": len(rows), "levels": []}
     if not rows:
-        return
+        print("    no cell had two or more paired series; nothing was tested")
+        return family
     adj = holm(praw)
+    for (cell, e), pa in zip(rows, adj):
+        family["levels"].append({"mapping": cell[0], "n_qubits": int(cell[1]),
+                                 **e, "p_holm": float(pa)})
     print(f"    {'cell':<16}{'mean dNormAP':>14}{'p':>12}{'Holm':>12}")
     for (cell, e), pa in sorted(zip(rows, adj), key=lambda z: -z[0][1]["mean"]):
         star = "  *" if pa < ALPHA else ""
         print(f"    {cell[0] + '/' + str(cell[1]):<16}{e['mean']:>+14.4f}"
               f"{fmt_p(e['p_wilcoxon']):>12}{fmt_p(pa):>12}{star}")
+    if family["cells_excluded"]:
+        print(f"    {len(family['cells_excluded'])} of {len(cells)} cells not "
+              f"tested (fewer than two paired series)")
+    return family
 
 
 # ------------------------------------------------------------------ main
@@ -382,9 +463,17 @@ def run(dataset, n_per_class, q_dir, c_dir, sweep, integrity_only=False, q_suffi
     confirmatory = (n_per_class == CONFIRMATORY_N) and not is_arm
     rows = paired_series(q_by_cell, c_by_cell, cell, seeds)
     summary = report_primary(dataset, n_per_class, rows, confirmatory)
-    report_per_setting(dataset, q_by_cell, c_by_cell, cell, seeds)
-    if sweep:
-        report_sweep(dataset, q_by_cell, c_by_cell, seeds)
+    per_setting = report_per_setting(dataset, q_by_cell, c_by_cell, cell, seeds)
+    all_cells = report_sweep(dataset, q_by_cell, c_by_cell, seeds) if sweep else None
+    if summary is not None:
+        # Additive only. Every field report_primary already returned is
+        # untouched, so a regenerated file is comparable to its predecessor on
+        # the keys that existed before.
+        summary["seeds"] = [int(s) for s in seeds]
+        summary["inputs"] = [file_provenance(qpath), file_provenance(cpath)]
+        summary["exploratory_families"] = {
+            "per_setting": per_setting,
+            "all_cells": all_cells if sweep else "not requested (--sweep absent)"}
     return summary, 0
 
 
@@ -442,9 +531,22 @@ def main():
     if summaries:
         out = Path(args.out)
         out.parent.mkdir(parents=True, exist_ok=True)
+        meta = {
+            "git_commit": git_commit(),
+            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "script": "scripts/primary_tests.py",
+            "is_new_run": True,
+            "sweep_requested": bool(args.sweep),
+            "note": ("This file is the output of a new run under the commit named "
+                     "above. It does not authenticate any earlier printed or "
+                     "logged figure, and an earlier figure that happens to match "
+                     "is a match, not a verification. Each result names the input "
+                     "files it read with their SHA-256 digests."),
+        }
         out.write_text(json.dumps({"alpha": ALPHA, "rule": "intersection-union",
                                    "quantum_suffix": args.quantum_suffix,
                                    "confirmatory_n_per_class": CONFIRMATORY_N,
+                                   "run": meta,
                                    "results": summaries}, indent=2, default=float) + "\n")
         print(f"\n-> {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
 

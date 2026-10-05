@@ -2054,3 +2054,66 @@ in `67b5c9e` before the sweep started, and the bound in week-09-opening section 
 had already said in public that a flip was possible and not assured. Without
 that order, this amendment would be indistinguishable from having picked the
 option that protected the answer.
+
+---
+
+### Note, 5 October 2026: two latent defects in this project's own reporting code, and why they are not added to the §5.6 count
+
+Not a deviation. No hypothesis, endpoint, rule, threshold or result moves, and
+the pre-registered design is untouched. Recorded because the paper's §5.6
+enumerates this project's own failures and a reader is entitled to know the two
+below were found, by whom and how.
+
+**Found while making `report_per_setting` and `report_sweep` return their
+results instead of only printing them.** Both are in `scripts/primary_tests.py`.
+
+1. The per-setting family's header printed **the literal `4`** as its Holm
+   family size. The actual family is the number of settings that produced a
+   test, which is `len(labels)` and is never 4 by construction. It was 4 in
+   every run ever made, so no printed value was ever wrong.
+2. `report_sweep`'s header said **"all cells"** while silently skipping any cell
+   with fewer than two paired series. No cell was ever skipped, so no table was
+   ever short.
+
+Both are now computed from the data and both report the gap when there is one.
+
+**Neither is added to §5.6's list, and the count there stays at four.** §5.6's
+four items are *realised* failures: two where the tool produced wrong answers on
+real records, and two where this project's authors asserted something they had
+not checked and published it. These two are **latent** — unchecked assertions in
+code that would have become wrong answers under inputs that never arrived.
+Listing them beside the four would inflate a count the paper uses to argue
+against its own contribution, and conflating a defect that fired with one that
+did not is the same move §6.1 refuses when it declines to read eight refusals as
+eight findings.
+
+**What the two do establish**, and it belongs in §5.6 as a sentence rather than
+a list item: **both were found by writing a return value and a test, not by any
+check in the audit protocol.** The protocol's own tiers inspect records and
+kernels; nothing in it reads this project's reporting code for claims the data
+does not support. That is a bounded gap in the instrument, stated plainly.
+
+**What the refactor also establishes, on the persistence question.** The two
+families were never lost: all six arms are in `results/analysis/primary_tests.log`,
+which is tracked. What that log carries is three rounded values per level at four
+decimal places. It carries **no `n`, no median, no sd, no confidence interval and
+no sensitivity t-test**, because none of those is printed, and no commit, input
+digest or seed list. The earlier description of these families as "stdout-only"
+was the assistant's overstatement and is withdrawn here: they were
+*captured without provenance and at reduced precision*, which is a different and
+smaller problem than not being captured.
+
+**Verification, before the regenerated file was committed.** Stdout is
+**byte-identical** across the refactor on all six arms (`diff` of the committed
+log against the new run: no output). The regenerated
+`results/analysis/primary_tests.json` differs from its predecessor in **zero**
+pre-existing fields, compared key by key and recursively. Additions only:
+`run` and `quantum_suffix` at top level, and `seeds`, `inputs` and
+`exploratory_families` on each result. `inputs` carries the SHA-256 digest of
+both record files read, and `run` carries the commit, a UTC timestamp and
+`is_new_run: true` with a note that the file authenticates no earlier figure.
+
+**Still not reproducible, and not to be described as such.**
+`results/analysis/primary_tests_bw.json`, the exploratory bandwidth arm, was not
+regenerated and keeps the old shape with no provenance block. It is a historical
+output.
