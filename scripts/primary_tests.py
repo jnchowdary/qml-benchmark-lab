@@ -69,10 +69,27 @@ ALPHA = 0.05
 # Section 3 of the pre-registration. Named before any quantum kernel ran.
 PRIMARY_CELL = {"churn": ("pca", 12), "fraud": ("selectk", 8)}
 
-# Section 5, the intersection-union column. Used only to state the exclusion
+# The minimum detectable effect of the PRIMARY CELL'S OWN PAIRED DIFFERENCE at
+# 80% power under the intersection-union rule. Used only to state the exclusion
 # bound when the test does not reject; never to decide whether it rejects.
-MDE_IU = {("churn", 250): 0.0171, ("churn", 100): 0.0298, ("churn", 50): 0.0427,
-          ("fraud", 250): 0.0059, ("fraud", 100): 0.0094, ("fraud", 50): 0.0163}
+#
+# WHICH QUANTITY, AND WHY THE NAME SAYS SO. D6 establishes that section 5 of the
+# pre-registration tabulates a DIFFERENT quantity -- the arm-level sd, measured
+# classical-against-classical because the quantum arm did not exist when it was
+# written -- and that every row of it is wrong by between 2.3x and 3.9x. An
+# exclusion bound attached to a primary-cell test must quote the primary cell's
+# own paired sd. Substituting the arm-level figure is the exact conflation D6's
+# own correction note records having made once, which is why this constant no
+# longer carries the ambiguous name MDE_IU.
+#
+# The values below are D6's primary-cell table, not section 5's. They supersede
+# the registered figures, which stay in pre-registration.md v1.0 unedited.
+# Only the two confirmatory cells appear: the 100 and 50 arms are not
+# confirmatory, so no bound is ever printed for them, and D6 computed no
+# primary-cell paired figure for them. Carrying the superseded registered values
+# here for arms that never print would leave four wrong numbers in the source for
+# no purpose.
+MDE_PRIMARY_CELL = {("churn", 250): 0.0608, ("fraud", 250): 0.0063}
 
 CONFIRMATORY_N = 250
 REGISTERED_DEVICE = "lightning.qubit"
@@ -302,7 +319,7 @@ def report_primary(dataset, n_per_class, rows, confirmatory):
 
     both = ap["p_wilcoxon"] < ALPHA and roc["p_wilcoxon"] < ALPHA
     agree = (ap["mean"] > 0) == (roc["mean"] > 0)
-    mde = MDE_IU.get((dataset, n_per_class))
+    mde = MDE_PRIMARY_CELL.get((dataset, n_per_class))
 
     print(f"\n  INTERSECTION-UNION VERDICT: ", end="")
     if both and agree:

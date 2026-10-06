@@ -2164,3 +2164,266 @@ rather than a convenience: **an inaccuracy enters §5.6 when it misstates a
 measurement or an instrument's behaviour.** By that rule the superseded
 exclusion bound printed by `scripts/primary_tests.py` does qualify, and this does
 not.
+
+---
+
+### Note, 6 October 2026: the fifth public repair. The confirmatory script printed a superseded exclusion bound for eleven days
+
+Not a deviation from the registered design. D6 already corrected the figure on
+**25 September 2026**; what failed is that the correction never reached the code.
+The original failure and its correction are preserved above in D6 and are not
+edited here.
+
+**What was wrong.** `scripts/primary_tests.py` carried the constant `MDE_IU`
+holding section 5's registered table. When a confirmatory arm does not reject,
+the script prints *"an advantage larger than X in normAP is excluded at 80%
+power in this cell"*. For fraud at 250 per class it printed **0.0059**.
+
+Three records carried that figure:
+
+| where | what it said |
+|---|---|
+| `scripts/primary_tests.py` line 72 | `("fraud", 250): 0.0059` |
+| `results/analysis/primary_tests.log` line 78 | the printed bound, 0.0059 |
+| `tests/test_primary_tests.py` line 152 | `assert "0.0059" in out` |
+
+Meanwhile `docs/paper-draft.md`, `docs/paper-design.md`, `docs/paper-discussion.md`
+and `scripts/audit_sweep.py` all carried D6's corrected **0.0063**. A reader who
+cloned the repository and ran the confirmatory script got a number contradicting
+every document in it, with nothing anywhere saying why.
+
+**Why it is the authors' failure and not the tool's.** The script did what it
+was written to do. D6 was written, published and then not applied to the one
+place that prints the quantity it corrects, and a regression test was left
+pinning the superseded value with the comment *"fraud's registered
+intersection-union MDE"*. That is the same category as the two items already in
+§5.6 under claims made without checking.
+
+**Which quantity, which is the part that is easy to get wrong.** D6 records two
+tables. Arm level, which section 5 registered: fraud 250 → 0.0138. Primary-cell
+paired, *"the quantity an exclusion bound must quote"*: fraud 250 → **0.0063**.
+The printed sentence is a bound at the primary cell, so 0.0063 is the correct
+figure and **0.0138 would be the wrong quantity**. Substituting the arm-level
+number is precisely the conflation D6's own correction note confesses to having
+made once.
+
+**The repair.**
+
+* `MDE_IU` is renamed **`MDE_PRIMARY_CELL`**, because the old name said which
+  decision rule the figure belonged to and never which quantity it measured, and
+  quantity ambiguity is what D6 is about.
+* Its contents become D6's primary-cell figures for the two confirmatory cells
+  only: churn 250 → 0.0608, fraud 250 → 0.0063.
+* The four non-confirmatory rows are **deleted**. They can never print, since the
+  bound is emitted only for a confirmatory arm, and D6 computed no primary-cell
+  paired figure for them. Leaving four superseded numbers in the source for arms
+  that never read them is storage of known-wrong values for no purpose.
+* The test asserts **0.0063** and additionally asserts that 0.0059 does **not**
+  appear. **The test follows D6's independently measured table.** It was not
+  changed to make the code pass; the code and the test were both wrong against a
+  figure measured and published eleven days earlier.
+
+**The latent twin, recorded so it is not presented as a single slip.** Churn 250
+carried the registered 0.0171 against D6's 0.0608, wrong by 3.6x. It never
+printed, because churn rejects and the bound is emitted only on a
+non-rejection. Had a re-run failed to reject, it would have printed. It is
+corrected in the same change and counted as latent, by the rule stated in the
+note of 5 October.
+
+**Effect on the paper's own count.** §5.6 moves from four public failures to
+**five**, split two instrument defects and **three** authorial. §1.3 moves from
+*"four times in public, twice ... and twice"* to five, two and three. The
+existing fifth item in §5.6, the 26x sampling understatement, is of neither kind
+and is relabelled *"a further item"* so the ordinal does not collide.
+
+**How it was found, which is the part §5.6 now states.** By inspection, while
+refactoring `report_per_setting` and `report_sweep` for an unrelated reason. **No
+check in this protocol found it, and none could have.** Tier 1 reads records and
+Tier 2 reads kernels. Nothing reads this project's own reporting code for claims
+the data does not support, which is where this defect and the two latent ones of
+5 October all lived. That gap is now stated in §5.6 rather than left for a
+referee.
+
+**What does not change.** No hypothesis, endpoint, decision rule, aggregation
+rule, ceiling rule or verdict. H1 rejects on churn and does not reject on fraud.
+The exclusion bound a reader should quote has been 0.0063 since 25 September and
+still is; only the code now agrees with it. One line of stdout changes, and the
+committed analysis log and JSON are regenerated to match.
+
+---
+
+## D16 — PRE-COMMITMENT, 6 October 2026: option (b), Huang's own λ selection rule, specified before it is computed
+
+**Decided** 6 October 2026. **Declared** 6 October 2026, same day, in this file.
+**Affected results seen?** The verdicts under the two λ rules already evaluated
+are known: `clean` is empty and H2 and H3 are NOT ESTABLISHED. **Nothing has been
+computed under the rule specified below.** This record exists to be committed and
+pushed before anything is.
+
+**Status, fixed here and not revisable later.** This is a **prospectively
+specified follow-up analysis**. It is not part of the registered confirmatory
+design, it cannot become part of it, and no outcome of it may be reported as a
+confirmatory result. §3.9 and the paper label it so.
+
+---
+
+### 1. The rule, quoted rather than reconstructed
+
+**Source states** (Appendix F, as recorded in D14 §2 and paper §2.3): report
+g_gen at the **largest λ in the declared grid such that the training error
+g_tra ≤ 0.045**.
+
+**The grid is frozen exactly, and is Huang's, not this project's:**
+
+    {1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1}
+
+Seven values. This project's frozen sweep {1e-1, 1e-2, 1e-3, 1e-4} is a subset;
+1e-5, 0.025 and 0.05 are new.
+
+**F20, the diagnostic:**
+
+    g_tra = λ · sqrt( || sqrt(K¹) (K² + λI)⁻² sqrt(K¹) ||_∞ )
+
+**The boundary is ambiguous in the source** and is not resolved here. One passage
+writes `g_tra ≤ 0.045`, the numerical-details passage writes `g_tra < 0.045`.
+**The computation uses `≤`.** The run additionally reports how many rows have
+`|g_tra − 0.045| < 1e-9` at any grid λ, which is the only population on which the
+two readings could differ. If that count is zero, as expected in floating point,
+the ambiguity is immaterial and the record says so with a number rather than an
+assumption.
+
+### 2. Orientation, which is not a free choice
+
+F20 carries the **same** K¹ and K² assignment as F19. This project's F19 call is
+`geometric_difference_regularised(K_C, K_Q, lam=·)`, which is F19 with
+**K¹ = K_Q and K² = K_C** (D14 §3). Therefore
+
+    g_tra = λ · sqrt( || sqrt(K_Q) (K_C + λI)⁻² sqrt(K_Q) ||_∞ )
+
+and the matrix inverted in g_tra is the same `K_C + λI` inverted in g_gen. A
+consequence, stated so it is checkable rather than discovered: because Flórez
+Ablan et al. use the reverse assignment, **their stored `g_tra_train` is the
+reverse of this quantity.** That follows from the orientation finding in §2.2 and
+is not an additional claim.
+
+### 3. Normalisation
+
+Both Gram matrices are trace-normalised to `tr(K) = N` before anything else, by
+`normalise_kernel`, which is what `geometric_difference_regularised` already does
+internally with `normalise=True`. **g_tra is computed on the same normalised
+matrices, in the same call path**, so that g_tra and g_gen cannot disagree about
+which matrices they describe. No separate normalisation is applied.
+
+### 4. Selection unit
+
+**λ is selected per row**, independently, where a row is one
+`(arm, dataset, n_per_class, mapping, n_qubits, setting, seed)` tuple — one
+classical Gram against one quantum Gram, which is the object Huang's rule is
+about. It is **not** selected per cell, per seed or per column.
+
+**The consequence is stated rather than hidden:** the resulting column is not a
+single λ. It is a column of per-row λ chosen by a data-dependent rule, exactly as
+`from_C` is, and it is therefore **not** comparable to the frozen columns as a
+"λ = x" column. Any outward text describing it as a fixed-λ result would be
+wrong.
+
+### 5. Tie-breaking
+
+Grid values are distinct, and the rule takes the **largest** admissible λ, so
+ties cannot arise in the selection itself. If two grid λ yield bit-identical
+g_tra, the larger λ is still the one selected, by the rule as written.
+
+### 6. Numerical tolerances
+
+* g_tra and g_gen are computed in float64 through the existing module, sharing
+  `_matrix_sqrt_psd` and `_spectral_norm_sym`, so neither can differ from the
+  other in conditioning behaviour.
+* The comparison `g_tra ≤ 0.045` is performed on the raw float64 value. **No
+  tolerance band is applied**, and no rounding precedes it.
+* For every row, the run stores the selected λ, g_tra at that λ, the margin
+  `0.045 − g_tra`, and g_tra at the next larger grid λ, so a reader can see how
+  close each selection was to moving.
+* The breach test is the one D5's accounting already applies to all five existing
+  columns: strict `g > ceiling` against the stored `ceiling`, no tolerance.
+
+### 7. Failure handling
+
+| condition | handling, fixed now |
+|---|---|
+| no grid λ satisfies `g_tra ≤ 0.045` | the row has **no admissible λ**. It is marked `admissible: false`, **no fallback λ is substituted**, it is excluded from the column, and the count is published. |
+| g_tra or g_gen non-finite at any grid λ | row marked `valid: false`, counted, published. |
+| a linear-algebra routine raises | same as above; the exception text is stored with the row. |
+
+**A column containing any inadmissible or invalid row is INCOMPLETE**, and an
+incomplete column yields no verdict. This is the clause that must not be
+softened later: a rule that cannot be satisfied on some rows is a finding about
+the rule, not a licence to analyse the rows where it can.
+
+### 8. Eligible rows
+
+All **7,200** rows of the registered arm, the same population as the frozen sweep
+and `from_C`. No subsetting, no exclusions beyond §7's. The exploratory bandwidth
+arm (D4) is **not** included; it bears on no hypothesis. Units are then formed by
+D7's median over surviving seeds and D5's ceiling applies per row, exactly as for
+every other column.
+
+### 9. Integrity gate, which must pass before any value is read
+
+The run recomputes the four frozen columns alongside the new one. **If any of
+them differs from `results/audits/g_units.jsonl` at any of the 7,200 rows, the
+run is invalid and nothing is read from it.** Additionally, for every row whose
+selected λ is 0.1, **g_gen must equal the frozen λ = 0.1 column bit-identically**,
+since it is the same quantity at the same λ. Output goes to a new path,
+`results/audits/g_units_gtra.jsonl`; `g_units.jsonl` and `g_units_lam2c.jsonl` are
+preserved unmodified.
+
+### 10. A prediction, published before the computation, that determines the outcome
+
+**g_gen is non-increasing in λ**, and this is a theorem rather than an
+observation. In `g_gen² = ‖ sqrt(K¹) M(λ) sqrt(K¹) ‖_∞` with
+`M(λ) = sqrt(K²)(K²+λI)⁻² sqrt(K²)`, the eigenvalues of M are `μ/(μ+λ)²` with
+derivative `−2μ/(μ+λ)³ < 0`, so `M(λ₁) ⪰ M(λ₂)` whenever `λ₁ ≤ λ₂`; congruence by
+`sqrt(K¹)` preserves the Loewner order, and the largest eigenvalue is monotone
+under it. The project's test suite pins the same fact empirically in
+`test_larger_lambda_gives_smaller_or_equal_g`.
+
+The grid's maximum is **0.1**, so every selected λ satisfies `λ* ≤ 0.1`, so
+`g_gen(λ*) ≥ g_gen(0.1)` for every row. The ceiling is independent of λ.
+**Therefore every row that breaches at λ = 0.1 breaches under this rule.** The
+λ = 0.1 column has **4 breaching rows** (D5 correction §2).
+
+**Hence the column cannot be breach-free, and outcome B1 below is excluded in
+advance. The outcome is B2 or B3.**
+
+**If the run returns a breach-free column, the implementation is wrong, not the
+proof.** That case is pre-committed as an invalid run: nothing is read from it
+and the discrepancy is investigated before anything else.
+
+**What option (b) is still for, given that.** The verdict is not what it
+produces. It produces the λ values Huang's own rule selects on this data, g at
+those λ, and the answer to whether his rule is even satisfiable here — the
+quantity neither this project nor Flórez Ablan et al. computed, and the one the
+audit contribution rests on. That is reportable under every outcome.
+
+### 11. Outcome-to-verdict mapping, committed in advance
+
+| | condition | consequence, fixed now |
+|---|---|---|
+| **B1** | complete, valid, and breach-free | Excluded in advance by §10. Should it nonetheless occur, the run is invalid pending resolution of the contradiction. If it survives that, H2 and H3 are **evaluated** under the registered D5/D7/D8 machinery on this column and the verdict reported as the outcome of a **follow-up analysis**, never as confirmatory. **A breach-free column establishes neither hypothesis**; it only removes the precondition failure, and the verdict is whatever the test returns, including NOT SUPPORTED. |
+| **B2** | complete and valid, one or more breaches | **NOT ESTABLISHED stands**, and its scope widens from the two evaluated rules to three. No other paper text changes. |
+| **B3** | incomplete or numerically invalid: any inadmissible or non-finite row | **Option (b) is reported as unresolved.** No verdict is drawn from a partial column. The inadmissible and invalid counts are published, and the inability to satisfy Huang's rule on this data is itself the reported finding. |
+
+**What may not happen under any outcome.** Substituting a fallback λ for an
+inadmissible row. Extending the grid beyond Huang's seven values. Relaxing
+0.045, or applying a tolerance band to it, after seeing how many rows fall near
+it. Reporting a subset of rows as though the column were complete. Choosing
+between B1's verdict and the frozen sweep's after both are known. Describing the
+selected-λ column as a fixed-λ result.
+
+### 12. What this record does not change
+
+No hypothesis, endpoint, decision rule, aggregation rule, ceiling rule, exclusion
+bound, power figure or verdict. H1's results, the negative control, the frozen
+four columns and the `from_C` column are untouched. H2 and H3 remain NOT
+ESTABLISHED under the two λ rules evaluated so far, and that scope is the one the
+paper states until this record is resolved.

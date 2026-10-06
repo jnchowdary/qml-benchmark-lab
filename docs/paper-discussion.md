@@ -24,7 +24,11 @@ advantage larger than 0.0063 normAP at that cell is excluded at 80% power.
 H2 and H3 return NOT ESTABLISHED under the registered decision rule. **That
 verdict is the rule declining to speak, not a finding that no relationship
 exists**: no λ column is free of ceiling breaches, so none satisfies the
-registered precondition. At λ = 0.1, the only column where all 360 units survive,
+registered precondition. **The scope of that statement is two λ rules, not all
+of them** — the frozen sweep {1e-1, 1e-2, 1e-3, 1e-4} and the corrected
+C-derived rule λ = 1/(2C). A third, Huang's own g_tra selection over his declared
+grid, is specified in advance in D16 and not yet computed, and the paper claims
+nothing beyond the two evaluated rules until it is. At λ = 0.1, the only column where all 360 units survive,
 the null *is* rejected and in Huang's predicted direction — rho = +0.1712,
 p = 1.11e-03, CI [+0.069, +0.270]. The substantive figure is therefore neither the
 verdict nor the sign but **rho² = 0.0293**: the geometric difference accounts for
@@ -121,6 +125,33 @@ defects were all in the checks with the full suite passing; and two claims its
 authors made without checking, including one paragraph about published
 benchmarks of which six of seven claims were wrong. A green test suite was not
 evidence the instrument measured anything; reading a report on real data was.
+
+**One prospective check of the audit trail did succeed, and its significance is
+narrow enough to state exactly.** On 1 October 2026, before any value was
+recomputed, this project published an analytical upper bound on the effect of
+correcting its λ-from-C rule: from the monotonicity of g in λ, at least 5,710 of
+7,200 rows would be ceiling-free under the corrected rule and **at most 1,490
+could still breach**. The correction was adopted and pushed with its full
+outcome-to-verdict mapping before the recomputation ran. The recomputation
+produced **979** breaches, inside the published interval, and the four λ columns
+that should not have moved came back bit-identical across six days and a separate
+run.
+
+**What that demonstrates, precisely.** That a quantitative prediction about this
+pipeline's own behaviour was recorded publicly in advance and the computation
+satisfied it. It is evidence for the **audit trail and the internal consistency
+of the computation** — that the stored records, the stated monotonicity and the
+re-run agree, and that the ordering of declaration and result is checkable rather
+than asserted.
+
+**What it does not demonstrate, and the distinction matters more than the
+result.** It does not validate the geometric difference as a predictor, because
+the bound is a statement about ceiling arithmetic and not about g's relationship
+to performance. It does not establish H2 or H3, which remain NOT ESTABLISHED. It
+is not prospective defect detection: the prediction was confirmed, so no defect
+was found, and a satisfied bound is the absence of a surprise rather than the
+presence of a finding. And it concerns this project's own pipeline, not a
+stranger's, so it does not touch the gap named above.
 
 So the claim is narrow. **A results file in this format can be audited by a
 stranger in seconds, and that is a property of the format.** Whether these

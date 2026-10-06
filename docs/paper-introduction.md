@@ -34,8 +34,9 @@ settings, twenty seeds each.
 
 **A screen that is not usable, within its tested scope.** On those 360 units the
 registered decision rule returns no verdict, because no regularisation column is
-free of ceiling breaches — a rule declining to speak, not a finding that no
-relationship exists. At λ = 0.1, the only column where all 360 units survive, the
+free of ceiling breaches under either λ rule evaluated — a rule declining to
+speak, not a finding that no relationship exists. A third λ rule, the one Huang's
+own source prints, is specified in advance and not yet computed. At λ = 0.1, the only column where all 360 units survive, the
 null *is* rejected and in the predicted direction: rho = +0.17, p = 1.1e-03. That
 relationship accounts for **under three percent of the rank variance** and
 **reverses sign** across the regularisation sweep — to −0.38 at λ = 1e-3 — so what
@@ -92,8 +93,12 @@ case, unevidenced either way.
 
 **Not that the protocol is validated.** Every records-level and kernel-level
 check was written after the defect it catches. The instrument has needed repair
-four times in public, twice because the tool was wrong and twice because its
-authors asserted something they had not checked.
+five times in public, twice because the tool was wrong and three times because
+its authors asserted something they had not checked. The fifth was a superseded
+exclusion bound that the confirmatory script printed for eleven days after the
+correction was written, pinned in place by a regression test; nothing in the
+protocol caught it, because nothing in the protocol reads this project's own
+reporting code.
 
 **Not that the findings about published work are errors in their conclusions.**
 They are statements that a claim cannot be checked from the published artefact

@@ -228,7 +228,7 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Four things have gone wrong in public, and they are two different kinds.**
+**Five things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
 *Defects in the instrument (two).* On its first contact with real records the
@@ -238,19 +238,25 @@ first audit run against real records then found four further defects, **all four
 in the checks rather than in the records**, with the full test suite passing on
 every one.
 
-*Claims its authors made without checking (two).* It asserted from the
+*Claims its authors made without checking (three).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
 the deposit behind one was read, **six of seven claims in that paragraph were
 wrong or misleading**. It declared four checks unrunnable when three were not —
-one needed nothing at all.
+one needed nothing at all. And the confirmatory script printed a **superseded
+exclusion bound for eleven days**: `scripts/primary_tests.py` quoted the
+registered 0.0059 for fraud's primary cell while every document here quoted
+D6's corrected 0.0063, the committed analysis log carried the wrong figure, and
+a regression test asserted it. Nobody re-read the code after writing the
+correction. It was found on 6 October 2026 while refactoring an unrelated
+function, by inspection and not by any check in this protocol.
 
-**None of the four is an audited pipeline failing an audit.** A reader who takes
+**None of the five is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed
 the error the instrument exists to prevent.
 
-**A fifth item, about Tier 2 rather than about either kind.** On a partial
+**A further item, about Tier 2 rather than about either kind.** On a partial
 sample of two of the six foreign Grams, the conditioning check read 1.7e+04 —
 **understating the worst case by a factor of 26**. Two things should be kept
 apart here. The numerical miss was corrected only by running the full six. What
@@ -259,6 +265,17 @@ incomplete, so the reading was known to be partial. **It did not establish the
 true worst case and could not have.** That is the honest limit of indicative
 sampling, and it argues for treating `--hook-sample` readings as a prompt to run
 the full analysis rather than as a figure.
+
+**A bounded gap the fifth item exposes, and two more beside it.** The superseded
+bound was found by inspection, not by a check. So were two latent defects in this
+project's own reporting code, found the same day: a Holm family size printed as
+the literal 4 rather than computed, and a table headed "all cells" that silently
+skipped cells with too few paired series. Neither of those two ever produced a
+wrong value, so neither joins the count above; the superseded bound did, so it
+does. What all three share is the route by which they were found. **Tier 1 reads
+records and Tier 2 reads kernels. Nothing in this protocol reads its own
+reporting code for claims the data does not support**, which is where all three
+lived.
 
 That last fact is the honest summary of what this protocol is worth. **A green
 test suite was not evidence that a measurement tool measured anything**; reading

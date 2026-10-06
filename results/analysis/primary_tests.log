@@ -75,7 +75,7 @@ H1 CONFIRMATORY: fraud, selectk/8 qubits, 250 per class
 
   INTERSECTION-UNION VERDICT: DO NOT REJECT H1.
     Stated as an exclusion bound, not as 'no difference': an advantage larger than
-    0.0059 in normAP is excluded at 80% power in this cell.
+    0.0063 in normAP is excluded at 80% power in this cell.
 
   inner-CV chose, across seeds:
     quantum   {'angle-r1': 20}

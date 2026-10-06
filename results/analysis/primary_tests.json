@@ -4,8 +4,8 @@
   "quantum_suffix": "",
   "confirmatory_n_per_class": 250,
   "run": {
-    "git_commit": "da8aec0",
-    "generated_at": "2026-10-05T10:02:46+00:00",
+    "git_commit": "c91e2aa",
+    "generated_at": "2026-10-06T22:11:12+00:00",
     "script": "scripts/primary_tests.py",
     "is_new_run": true,
     "sweep_requested": true,
