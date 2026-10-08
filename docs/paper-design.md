@@ -272,12 +272,12 @@ getting to choose.
 | D13 | H3 ungated from H2, declared after its result was published; two readings offered | weakens H3's status |
 | D14 | `lambda_from_svm_C` corrected to 1/(2C) on an outcome-to-verdict mapping pushed before the re-run; the supplementary column's breaches fall from 2,893 to 979 of 7,200 and no verdict moves | corrects a defect, changes no result |
 | D15 | the paper's organising contribution becomes the protocol | reframes, changes no analysis |
-| D16 *(pre-commitment)* | Huang's own g_tra selection over his declared grid specified in full before computation; a **prospectively specified follow-up analysis**, never confirmatory | **not yet computed** |
+| D16 | Huang's own g_tra selection over his declared grid, specified in full before computation; a **prospectively specified follow-up analysis**, never confirmatory | computed, **outcome B3**: unsatisfiable on 76.5% of units, reported unresolved, no verdict moves |
 
 **Nothing in this table changes a hypothesis, an endpoint, a decision rule, a
 threshold, or a result.** D6 and D13 weaken what may be claimed; D2, D5, D7 and
 D8 make the tests harder to pass; D12 removes evidence that was never collected;
 D14 corrected one supplementary column's λ definition under a pre-committed
-mapping and left every verdict where it was; D15 is editorial; D16 is a
-pre-commitment for an analysis that has not run and that cannot, by its own
-terms, become part of the confirmatory design.
+mapping and left every verdict where it was; D15 is editorial; D16 ran under a
+pre-commitment published first, returned B3, moved no verdict, and cannot by its
+own terms become part of the confirmatory design.

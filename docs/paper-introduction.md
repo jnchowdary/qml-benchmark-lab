@@ -34,9 +34,12 @@ settings, twenty seeds each.
 
 **A screen that is not usable, within its tested scope.** On those 360 units the
 registered decision rule returns no verdict, because no regularisation column is
-free of ceiling breaches under either λ rule evaluated — a rule declining to
-speak, not a finding that no relationship exists. A third λ rule, the one Huang's
-own source prints, is specified in advance and not yet computed. At λ = 0.1, the only column where all 360 units survive, the
+free of ceiling breaches under any of three λ rules evaluated — a rule declining
+to speak, not a finding that no relationship exists. The third of those rules is
+the one Huang's own source prints, and it turned out not to select a λ at all on
+**76.5%** of the units: on 81.3% of them his λ rule and his √N ceiling cannot
+both be satisfied. Neither this study nor the peer-reviewed paper that inherited
+the quantity had ever run it. At λ = 0.1, the only column where all 360 units survive, the
 null *is* rejected and in the predicted direction: rho = +0.17, p = 1.1e-03. That
 relationship accounts for **under three percent of the rank variance** and
 **reverses sign** across the regularisation sweep — to −0.38 at λ = 1e-3 — so what

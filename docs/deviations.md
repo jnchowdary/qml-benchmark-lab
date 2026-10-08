@@ -2500,3 +2500,113 @@ left unsaid. It was unavoidable: whether the wobble could move a selection is
 precisely the question the gate raised, and it cannot be answered without the
 distance to the threshold. No `g_gen` value, no breach count, no selected-λ
 distribution and no outcome was read.
+
+---
+
+### Outcome of D16, 8 October 2026: **B3**, and Huang's rule is unsatisfiable on three quarters of the units
+
+The gate passed before any of this was read, after the tolerance amendment above
+was committed and pushed. `results/audits/g_units_gtra.jsonl`, 7,200 rows.
+
+**Gate, all nine checks.** Four frozen columns bit-identical. Seven
+λ-independent fields identical. All seven grid λ present on every row.
+`selected_lambda` equal to the maximum admissible set recomputed from the stored
+`g_tra`. `g_selected` equal to g at that λ. Every row selecting λ = 0.1
+reproducing the frozen λ = 0.1 value exactly. **g_gen non-increasing in λ on
+every row with a worst rise of 0.000e+00** — exactly monotone, no exceptions.
+g_tra monotonicity within the declared 1e-8 tolerance, worst 4.693e-11, nearest
+violating value 0.9848 from the threshold against a 1e-6 guard. Every row finite.
+
+**The pre-registered prediction held, 4 of 4.** D16 section 10 derived that every
+row breaching at λ = 0.1 must breach under this rule, because g_gen is
+non-increasing and the grid tops out at 0.1. All four such rows breach here.
+
+**The source's boundary ambiguity is immaterial, as a measured fact.** Rows with
+any grid value within 1e-9 of 0.045: **zero**. The `≤` and `<` readings of
+Huang's threshold select identically on this data, so D16's choice of `≤` carries
+no consequence. That was an assumption in D16 and is now a number.
+
+---
+
+#### The outcome: B3
+
+| | rows | share |
+|---|---|---|
+| **inadmissible** — no grid λ satisfies g_tra ≤ 0.045 | **5,507** | **76.5%** |
+| admissible | 1,693 | 23.5% |
+| of those admissible, g_gen breaches its √N ceiling | 348 | 20.6% of admissible |
+| **satisfying both Huang's λ rule and his ceiling** | **1,345** | **18.7%** |
+
+Per D16's mapping, B3 obtains: the column is **incomplete**, no fallback λ was
+substituted, and **option (b) is reported as UNRESOLVED**. No verdict is drawn
+from a partial column. **H2 and H3 remain NOT ESTABLISHED**, now with three λ
+rules evaluated rather than two, and the third did not fail to produce a clean
+column so much as fail to produce a column at all.
+
+Selected λ, where one existed: 1e-5 → 351, 1e-4 → 373, 1e-3 → 426, 1e-2 → 484,
+0.025 → 43, 0.05 → 7, 0.1 → 9.
+
+#### The finding D16 said would be the finding
+
+**On 81.3% of the units, Huang's own λ-selection rule and his own √N ceiling
+cannot both be satisfied.** Either no λ in his declared grid passes
+g_tra ≤ 0.045, or the only ones that pass force g_gen above its ceiling. The two
+constraints bound λ from opposite sides, which paper §2.3 states from the source;
+this measures what that costs on imbalanced business tabular data.
+
+**All 348 breaching admissible rows selected λ ∈ {1e-5, 1e-4}**, the two smallest
+grid values. **No row selecting λ ≥ 1e-3 breaches.** So the rows where the g_tra
+rule permits only a tiny λ are exactly the rows where the ceiling then fails.
+
+**This is the first measurement of that rule by anyone involved.** Flórez Ablan
+et al. compute `g_tra` throughout their pipeline and never compare it to
+anything; this project did not compute it at all until now. Neither group ran the
+only λ procedure the source prints.
+
+**Inadmissibility is uniform, not concentrated.** Churn 2,805 and fraud 2,702;
+sizes 1,921 / 1,871 / 1,715 across 250 / 100 / 50; qubit counts between 1,048 and
+1,129 across all five; mappings 1,917 pca, 2,118 selectk, 1,472 randproj. By
+(dataset, qubits) the share runs from 68.9% to 80.6% with no cell below two
+thirds. It is a structural property of this data against this rule, not an
+artefact of one corner of the grid.
+
+#### Mechanism, which is POST-HOC and labelled as such
+
+D16 specified no mechanism analysis. What follows was computed after the outcome
+was known and is **exploratory**. It bears on no hypothesis.
+
+Define the elasticity `d log g_tra / d log λ` across the grid span. A value of 1
+means g_tra scales linearly with λ; 0 means it ignores λ.
+
+| | median | mean | p90 |
+|---|---|---|---|
+| inadmissible rows | **0.0433** | 0.0783 | 0.2208 |
+| admissible rows | **0.5523** | 0.6004 | 0.8924 |
+
+λ rises by a factor of 10,000 across the grid; g_tra on the inadmissible rows
+rises by a median factor of **1.49**. On those rows g_tra is nearly independent
+of λ, and sits at a median of 1.343 against a threshold of 0.045 — **29.9 times
+above it**, with only 228 of 5,507 within a factor of two of it.
+
+**[Certain]** that the two populations separate on this elasticity.
+**[Likely]**, not certain, that the cause is `(K_C + λI)⁻²` being dominated by λ
+rather than by K_C's spectrum on those rows, which would make g_tra saturate at a
+λ-independent value. The elasticity is that regime's signature, but K_C's
+eigenvalues were not measured against λ directly, so the attribution is an
+inference and is marked as one.
+
+#### What this does and does not change
+
+**Does not change:** any hypothesis, endpoint, decision rule, aggregation rule,
+ceiling rule, exclusion bound, power figure or verdict. H1's results and the
+negative control are untouched. The frozen four columns and `from_C` are
+untouched — the frozen four were recomputed here and came back bit-identical.
+
+**Does change:** the paper states the scope of NOT ESTABLISHED as three λ rules
+evaluated, with the third unresolved because its own precondition fails, and
+§3.9 records D16 as computed with outcome B3.
+
+**Still cannot be claimed.** That Huang's rule is unsatisfiable in general. It
+was measured on two datasets, one grid, one orientation, with statevector
+simulation and this project's classical kernels. A rule can be unsatisfiable
+where it was tested and workable elsewhere, and nothing here separates those.

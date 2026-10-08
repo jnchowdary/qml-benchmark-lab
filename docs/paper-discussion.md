@@ -24,11 +24,12 @@ advantage larger than 0.0063 normAP at that cell is excluded at 80% power.
 H2 and H3 return NOT ESTABLISHED under the registered decision rule. **That
 verdict is the rule declining to speak, not a finding that no relationship
 exists**: no λ column is free of ceiling breaches, so none satisfies the
-registered precondition. **The scope of that statement is two λ rules, not all
-of them** — the frozen sweep {1e-1, 1e-2, 1e-3, 1e-4} and the corrected
-C-derived rule λ = 1/(2C). A third, Huang's own g_tra selection over his declared
-grid, is specified in advance in D16 and not yet computed, and the paper claims
-nothing beyond the two evaluated rules until it is. At λ = 0.1, the only column where all 360 units survive,
+registered precondition. **Three λ rules have now been evaluated** — the frozen
+sweep {1e-1, 1e-2, 1e-3, 1e-4}, the corrected C-derived rule λ = 1/(2C), and
+Huang's own g_tra selection over his declared grid, specified in advance in D16.
+**The third did not fail to produce a clean column so much as fail to produce a
+column**, for the reason in §6.2a, and is reported as unresolved rather than
+negative. At λ = 0.1, the only column where all 360 units survive,
 the null *is* rejected and in Huang's predicted direction — rho = +0.1712,
 p = 1.11e-03, CI [+0.069, +0.270]. The substantive figure is therefore neither the
 verdict nor the sign but **rho² = 0.0293**: the geometric difference accounts for
@@ -94,6 +95,47 @@ inconsistent, and in all four cases a reader working from the public artefact
 alone could not have established what they would have needed to. **That is the
 auditability limit this study demonstrates**, and it is a limit on what
 published materials support, not a finding about anyone's competence.
+
+---
+
+## 6.2a Running the source's own λ rule, which neither group had run
+
+Reading at source is what found the three items above. Running what the source
+printed produced something different in kind: not a limit on what can be
+checked, but a measurement of the method.
+
+**Source states** that g_gen is reported at the largest λ in the declared grid
+{1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1} such that the training error
+g_tra ≤ 0.045. **Neither group had run it.** Flórez Ablan et al. compute g_tra
+throughout their pipeline and never compare it to anything; this study did not
+compute it at all, substituting a λ derived from the classical arm's C, as they
+also did, and neither group said so. The procedure was specified in full and
+published before it was computed, including its outcome-to-verdict mapping and a
+proof of what the outcome could not be.
+
+**What it gives on 7,200 units.** On **5,507 of them, 76.5%, no λ in the grid
+satisfies the threshold at all.** Of the 1,693 that admit one, 348 then put g_gen
+above its own √N ceiling. **So on 81.3% of the units the source's λ rule and the
+source's ceiling cannot both be satisfied**, and 1,345 units satisfy both.
+
+The two constraints bound λ from opposite sides, which §2.3 states from the
+source. This measures the cost of that on imbalanced business tabular data, and
+the shape is specific: **all 348 breaching rows selected one of the two smallest
+grid values, and no row selecting λ ≥ 1e-3 breaches**. The rows where the g_tra
+rule permits only a tiny λ are exactly the rows where the ceiling then fails.
+
+Inadmissibility is uniform rather than concentrated: between 68.9% and 80.6%
+across every (dataset, qubit-count) combination, and comparable across training
+sizes and feature mappings. It is a property of this data against this rule, not
+of one corner of the grid.
+
+**What this does not claim.** Not that the rule is unsatisfiable in general: it
+was measured on two datasets, one grid, one orientation, statevector simulation
+and this study's classical kernels. Not that g_gen is therefore unusable, which
+§6.1 settles separately and on different evidence. And not a verdict on H2 or
+H3, which stay NOT ESTABLISHED; a rule that declines to select a λ leaves the
+registered decision rule with nothing to read, which is why this is reported as
+unresolved rather than as a negative result.
 
 ---
 
