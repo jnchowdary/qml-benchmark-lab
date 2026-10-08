@@ -16,6 +16,7 @@ from qbench.kernels.geometric_difference import (
     geometric_difference,
     geometric_difference_regularised,
     interpret_g,
+    geometric_difference_training,
     lambda_from_svm_C,
     normalise_kernel,
 )
@@ -251,3 +252,135 @@ def test_interpret_g_rules_out_advantage_for_identical_kernels():
     K = random_psd_kernel(64, seed=8)
     msg = interpret_g(geometric_difference(K, K), 64)
     assert "RULED OUT" in msg
+
+
+# ------------------------------------------- F20, the training diagnostic
+#
+# Added 6 October 2026 for D16. g_tra selects lambda under Huang's own rule, and
+# the rule is the only lambda procedure his source prints. Neither this project
+# nor Florez Ablan et al. ever compared a g_tra to anything, so this function has
+# no prior art inside either codebase to check against: the properties below are
+# the check.
+
+
+def test_g_tra_matches_the_closed_form_when_the_kernels_coincide():
+    """For K_C == K_Q the quadratic form has eigenvalues mu/(mu+lam)^2, so
+
+        g_tra = lam * max_i sqrt(mu_i) / (mu_i + lam)
+
+    THE MAXIMUM IS NOT AT mu_max. mu/(mu+lam)^2 peaks at mu = lam, so the
+    maximising eigenvalue is whichever lies nearest lam. The first version of
+    this test asserted the mu_max form and failed by a factor of 18 at
+    lam = 1e-5, which is how the error was found: the implementation was right
+    and the asserted closed form was wrong.
+    """
+    n = 10
+    K = random_psd_kernel(n, seed=3)
+    mus = np.linalg.eigvalsh(normalise_kernel(K))
+    for lam in (1e-5, 1e-3, 1e-2, 0.045, 0.1, 1.0):
+        want = float(np.max(lam * np.sqrt(mus) / (mus + lam)))
+        got = geometric_difference_training(K, K, lam=lam)
+        assert got == pytest.approx(want, rel=1e-9), (lam, got, want)
+        # The peak of mu/(mu+lam)^2 is 1/(4 lam), so this bound is tight-ish and
+        # holds for every spectrum. It is D5's cap, seen from F20.
+        assert got <= np.sqrt(lam) / 2 + 1e-12, (lam, got)
+
+
+def test_g_tra_cannot_exceed_the_quantum_kernels_spectral_norm():
+    """|| (K_C + lam I)^-2 || <= 1/lam^2, so g_tra <= sqrt(|| K_Q ||), which on
+    trace-normalised matrices is at most sqrt(N). Worth pinning because it says
+    how demanding Huang's 0.045 threshold is: the quantity has room to be orders
+    of magnitude above it."""
+    K_c = random_psd_kernel(10, seed=41)
+    K_q = random_psd_kernel(10, seed=42)
+    cap = float(np.sqrt(np.linalg.eigvalsh(normalise_kernel(K_q)).max()))
+    for lam in (1e-5, 1e-3, 1e-1, 1.0):
+        assert geometric_difference_training(K_c, K_q, lam=lam) <= cap + 1e-9
+
+
+def test_g_tra_is_non_decreasing_in_lambda():
+    """The theorem D16 section 10 relies on for the selection to be well posed:
+    lam^2 (K_C+lam I)^-2 rises in the Loewner order, so g_tra cannot fall as lam
+    rises, so the admissible set is a down-set and 'largest admissible lam' means
+    something. If this ever fails, the grid search in D16 is not well defined."""
+    lams = (1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1)
+    for seed in range(6):
+        K_c = random_psd_kernel(12, seed=seed)
+        K_q = random_psd_kernel(12, seed=seed + 50)
+        gs = [geometric_difference_training(K_c, K_q, lam=l) for l in lams]
+        assert all(b >= a - 1e-12 for a, b in zip(gs, gs[1:])), (seed, gs)
+
+
+def test_g_tra_pulls_against_the_ceiling_constraint():
+    """The two constraints move opposite ways, which is why lambda selection is
+    not free: g_tra <= 0.045 bounds lambda from above, the sqrt(n) ceiling on
+    g_gen bounds it from below."""
+    K_c = random_psd_kernel(12, seed=11)
+    K_q = random_psd_kernel(12, seed=77)
+    lo, hi = 1e-4, 1e-1
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        g_lo = geometric_difference_regularised(K_c, K_q, lam=lo)
+        g_hi = geometric_difference_regularised(K_c, K_q, lam=hi)
+    assert g_lo >= g_hi                                        # g_gen falls with lam
+    assert (geometric_difference_training(K_c, K_q, lam=lo)
+            <= geometric_difference_training(K_c, K_q, lam=hi))  # g_tra rises
+
+
+def test_g_tra_is_zero_at_zero_lambda_and_never_negative():
+    K_c = random_psd_kernel(8, seed=5)
+    K_q = random_psd_kernel(8, seed=6)
+    assert geometric_difference_training(K_c, K_q, lam=0.0) == 0.0
+    for lam in (1e-6, 1e-3, 1.0):
+        assert geometric_difference_training(K_c, K_q, lam=lam) >= 0.0
+
+
+def test_g_tra_inverts_the_classical_kernel_not_the_quantum_one():
+    """Orientation, pinned by an exact value rather than by an inequality.
+
+    D16 section 2 fixes K2 = K_C: the matrix inverted in F20 is the one inverted
+    in F19, which for `geometric_difference_regularised(K_C, K_Q, ...)` is K_C.
+
+    THE FIRST VERSION OF THIS TEST WAS VACUOUS. It asserted only that swapping
+    the arguments changes the answer, which is true of the correct function AND
+    of a mutant that inverts K_Q instead. That mutant passed all 51 tests in this
+    file. It was caught by running the mutation rather than by reading the test
+    name, which is the whole argument for scripts/mutation_check.py.
+
+    Set K_Q = I, so sqrt(K_Q) = I and the correct answer collapses to
+
+        g_tra = lam * || (K_C + lam I)^-1 ||  =  lam / (mu_min(K_C) + lam)
+
+    governed by the SMALLEST eigenvalue of K_C. The mutant that inverts K_Q
+    instead gives lam * sqrt(mu_max(K_C)) / (1 + lam), governed by the LARGEST.
+    A diagonal K_C with a small and a large eigenvalue separates them by a factor
+    of about six.
+    """
+    n = 4
+    d = np.array([0.01, 0.01, 1.0, 2.98])        # trace 4.0, so already normalised
+    K_c = np.diag(d)
+    K_q = np.eye(n)
+    lam = 0.1
+
+    want = lam / (d.min() + lam)                  # 0.9090..., inverting K_C
+    wrong = lam * np.sqrt(d.max()) / (1.0 + lam)  # 0.1569..., inverting K_Q
+
+    got = geometric_difference_training(K_c, K_q, lam=lam)
+    assert got == pytest.approx(want, rel=1e-9), (got, want)
+    assert got != pytest.approx(wrong, rel=1e-3), "the wrong matrix is inverted"
+
+    # And the reverse call really does land on the other value, which confirms
+    # the two orientations are distinguishable by this fixture rather than
+    # coincidentally equal.
+    assert (geometric_difference_training(K_q, K_c, lam=lam)
+            == pytest.approx(wrong, rel=1e-9))
+
+
+def test_g_tra_normalises_like_its_companion():
+    """Both functions trace-normalise by default, so a rescaled pair must give
+    the same answer. Huang's g is defined on tr(K) = N matrices."""
+    K_c = random_psd_kernel(9, seed=31)
+    K_q = random_psd_kernel(9, seed=32)
+    a = geometric_difference_training(K_c, K_q, lam=1e-2)
+    b = geometric_difference_training(17.0 * K_c, 0.3 * K_q, lam=1e-2)
+    assert a == pytest.approx(b, rel=1e-9)

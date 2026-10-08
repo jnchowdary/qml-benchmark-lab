@@ -65,6 +65,7 @@ __all__ = [
     "normalise_kernel",
     "geometric_difference",
     "geometric_difference_regularised",
+    "geometric_difference_training",
     "lambda_from_svm_C",
     "g_lambda_sweep",
     "interpret_g",
@@ -175,6 +176,70 @@ def geometric_difference_regularised(
             stacklevel=2,
         )
     return g
+
+
+def geometric_difference_training(
+    K_classical: np.ndarray,
+    K_quantum: np.ndarray,
+    *,
+    lam: float = 1e-3,
+    normalise: bool = True,
+) -> float:
+    """Huang Eq. (F20), the TRAINING-error diagnostic that selects lam.
+
+        g_tra = lam * sqrt( || sqrt(K_Q) (K_C + lam*I)^-2 sqrt(K_Q) ||_inf )
+
+    ORIENTATION IS NOT A FREE CHOICE. F20 carries the same K1 and K2 assignment
+    as F19. `geometric_difference_regularised(K_C, K_Q, ...)` is F19 with
+    K1 = K_Q and K2 = K_C, so the matrix inverted here is the same `K_C + lam*I`
+    inverted there. A consequence worth knowing: because Florez Ablan et al. use
+    the reverse assignment, their stored `g_tra_train` is the reverse of this
+    quantity. See docs/deviations.md D16 section 2.
+
+    WHAT IT IS FOR. Huang reports g_gen at the LARGEST lam in his declared grid
+    {1e-5, 1e-4, 1e-3, 1e-2, 0.025, 0.05, 0.1} satisfying g_tra <= 0.045. His
+    source is internally inconsistent on that boundary, writing `<=` in one place
+    and `<` in the numerical-details passage; D16 selects `<=` and publishes the
+    count of near-boundary rows rather than resolving the ambiguity silently.
+
+    MONOTONICITY, which makes the selection well posed. lam^2 (K_C + lam*I)^-2
+    has eigenvalues lam^2/(mu+lam)^2, increasing in lam, so lam^2 (K_C+lam I)^-2
+    rises in the Loewner order; congruence by sqrt(K_Q) preserves that order and
+    the largest eigenvalue is monotone under it. Hence **g_tra is non-decreasing
+    in lam**, the admissible set is a down-set, and "largest admissible lam" is
+    well defined. It also means the g_tra rule bounds lam from ABOVE while the
+    sqrt(n) ceiling bounds it from BELOW: the two constraints pull opposite ways,
+    which is the whole difficulty of selecting a lam.
+
+    THE MAXIMISING EIGENVALUE IS NOT THE LARGEST ONE. For K_C == K_Q the
+    quadratic form has eigenvalues mu/(mu+lam)^2 and
+
+        g_tra = lam * max_i sqrt(mu_i) / (mu_i + lam)
+
+    where the maximum is attained at whichever mu_i lies closest to lam, because
+    mu/(mu+lam)^2 peaks at mu = lam and falls away on both sides. Reading
+    `mu_max` off the spectrum gives the wrong answer, by a factor of 18 on a
+    10x10 test kernel at lam = 1e-5. This is the same mechanism as D5's cap: the
+    peak value is 1/(4 lam), so g_tra <= sqrt(lam)/2 whenever K_C == K_Q.
+
+    In general g_tra <= sqrt(|| K_Q ||) <= sqrt(N) on trace-normalised matrices,
+    since || (K_C + lam I)^-2 || <= 1/lam^2.
+    """
+    K_c = np.asarray(K_classical, dtype=float)
+    K_q = np.asarray(K_quantum, dtype=float)
+    _check_pair(K_c, K_q)
+
+    if normalise:
+        K_c, K_q = normalise_kernel(K_c), normalise_kernel(K_q)
+
+    n = K_c.shape[0]
+    sqrt_Kq = _matrix_sqrt_psd(K_q)
+
+    # A = (K_c + lam I)^-1 sqrt(K_q); the quantity wanted is || A^T A ||_inf,
+    # because (K_c + lam I) is symmetric so A^T A = sqrt(Kq)(Kc+lam I)^-2 sqrt(Kq).
+    A = np.linalg.solve(K_c + lam * np.eye(n), sqrt_Kq)
+    core = A.T @ A
+    return float(lam * np.sqrt(max(_spectral_norm_sym(core), 0.0)))
 
 
 def lambda_from_svm_C(C: float, n: int) -> float:

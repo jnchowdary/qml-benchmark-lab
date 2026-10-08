@@ -2427,3 +2427,76 @@ bound, power figure or verdict. H1's results, the negative control, the frozen
 four columns and the `from_C` column are untouched. H2 and H3 remain NOT
 ESTABLISHED under the two λ rules evaluated so far, and that scope is the one the
 paper states until this record is resolved.
+
+---
+
+### Amendment to D16, 8 October 2026: the gate's monotonicity check gets a declared tolerance, and a tighter clause beside it
+
+**Declared before the outcome was read.** The gate failed, the failure was
+diagnosed, this amendment was written and pushed, and only then was the gate
+re-run. Loosening a check after it fails is the pattern D16 exists to prevent, so
+the loosening is public and argued rather than applied quietly.
+
+**What failed.** `scripts/check_gtra_run.py` required `g_tra` to be
+non-decreasing across Huang's grid on every row, with a strict comparison. It
+failed on **64 (row, λ-pair) instances across 16 cells** of 7,200 rows.
+
+**What the violations measure.**
+
+| | |
+|---|---|
+| worst **relative** decrease | **4.693e-11** |
+| worst **absolute** decrease | **2.465e-10** |
+| values involved | order 1 to 6 |
+| most common λ pair | 1e-5 → 1e-4, 40 of 64 instances |
+| **closest any violating value comes to 0.045** | **9.848e-01** |
+| violating values within 1e-6 of 0.045 | **0** |
+
+**Diagnosis.** Rounding, not a defect. The monotonicity of `g_tra` in λ is a
+theorem in exact arithmetic — `λ²(K_C+λI)⁻²` has eigenvalues `λ²/(μ+λ)²`, rising
+in λ, and congruence by `sqrt(K_Q)` preserves the Loewner order. 5e-11 relative
+is far above one ulp but is what a solve against an ill-conditioned K_C
+accumulates; this project's classical Grams run to condition numbers of 1e+19 to
+1e+33, and the violations concentrate at the smallest λ, where `K_C + λI` is
+closest to singular. Three quarters of them are at the 1e-5 → 1e-4 step.
+
+**Why it cannot affect any result.** Two independent reasons, and the second is
+the decisive one.
+
+1. **The selection never relied on monotonicity.** `select_lambda` computes the
+   admissible set and takes `max()` of it directly. It does not scan downward
+   assuming a down-set. So the stored selection is the largest admissible λ of
+   the stored values whether or not those values are monotone. This was a
+   deliberate choice recorded in that function's docstring before the run.
+2. **Every violating value is at least 23 times the threshold.** The nearest
+   comes to within 0.9848 of 0.045. A perturbation of 1e-10 cannot move a value
+   of 1.03 across a threshold of 0.045.
+
+**What the check becomes.** Two clauses replacing one:
+
+* **Loose, on the cosmetic property.** A monotonicity violation fails the run
+  only if its relative size exceeds **1e-8**. That is roughly 200 times the
+  measured worst case, chosen with stated headroom rather than fitted to the
+  data, and the gate now **prints the worst relative violation as a number on
+  every run** so it is visible on a pass and not only on a failure.
+* **Tight, on the property that matters.** The run fails if **any** value
+  involved in a monotonicity violation lies within **1e-6** of 0.045, because
+  that is the only circumstance in which rounding could change an admissibility
+  decision. This clause is new, it is stricter than anything D16 asked for, and
+  it currently passes with a margin of 0.9848.
+
+**Scope.** This amends the gate script, which is this project's own addition.
+**D16's own section 9 clauses are untouched**: the four frozen columns still have
+to be bit-identical, and a row selecting λ = 0.1 still has to reproduce the
+frozen λ = 0.1 value exactly. Section 6's rule that the `g_tra ≤ 0.045`
+comparison carries **no** tolerance band is also untouched, and the 1e-6 clause
+above is a validity check on the run rather than a band around the threshold.
+
+**One disclosure.** Measuring the distance from the violating values to the
+threshold required reading `g_tra` values, and those readings show that the 16
+affected cells have no admissible λ at any grid point. That is partial outcome
+information, obtained before the gate passed, and it is recorded here rather than
+left unsaid. It was unavoidable: whether the wobble could move a selection is
+precisely the question the gate raised, and it cannot be answered without the
+distance to the threshold. No `g_gen` value, no breach count, no selected-λ
+distribution and no outcome was read.

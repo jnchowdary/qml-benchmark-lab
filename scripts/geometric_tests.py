@@ -222,8 +222,20 @@ def controls(verbose=True):
 
 # ------------------------------------------------------------------ the sweep
 
-def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by, arm):
-    """g for one (cell, seed): four settings against that seed's best classical."""
+def build_pair(dataset, n_per_class, mapping, nq, seed, q_by, c_by):
+    """Rebuild one (cell, seed)'s kernel pair. The ONLY place Grams are built.
+
+    Returns `(Xa, K_c, K_qs, best_c, qrecs)` or None when the records for this
+    (cell, seed) are incomplete.
+
+    Extracted 6 October 2026 so that `cell_seeds` here and the D16 g_tra sweep in
+    `scripts/gtra_sweep.py` cannot drift apart in how they construct the
+    matrices. A second copy of this block would be a second chance to get the
+    record's own params wrong, which is the defect the long comment below
+    describes. The extraction is pure: any change in behaviour shows up as a
+    frozen column moving, and both callers' integrity gates compare the frozen
+    columns against `results/audits/g_units.jsonl` bit-identically.
+    """
     key = (mapping, nq, seed)
     crecs = c_by.get(key, [])
     qrecs = {r["setting"]: r for r in q_by.get(key, [])}
@@ -239,8 +251,6 @@ def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by, arm):
     Xa = np.asarray(Xa, dtype=float)
 
     K_c = build_classical_kernel(best_c["method"], **(best_c.get("params") or {}))(Xa)
-    lam_c = lambda_from_svm_C(float(best_c["C"]), Xa.shape[0])
-    lams = tuple(LAMBDAS) + (lam_c,)
 
     # Built from the RECORD'S OWN params, never from a hardcoded bandwidth.
     # The first version of this function passed bandwidth=1.0 for every setting.
@@ -254,8 +264,20 @@ def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by, arm):
     # apply.
     fac = QuantumGramFactory(nq)
     K_qs = {s: fac.gram_fn(dict(qrecs[s]["params"]))(Xa) for s in SETTINGS}
-    gs, ceiling = g_for_settings(K_c, K_qs, lams)
     fac.clear()
+    return Xa, K_c, K_qs, best_c, qrecs
+
+
+def cell_seeds(dataset, n_per_class, mapping, nq, seed, q_by, c_by, arm):
+    """g for one (cell, seed): four settings against that seed's best classical."""
+    pair = build_pair(dataset, n_per_class, mapping, nq, seed, q_by, c_by)
+    if pair is None:
+        return None
+    Xa, K_c, K_qs, best_c, qrecs = pair
+
+    lam_c = lambda_from_svm_C(float(best_c["C"]), Xa.shape[0])
+    lams = tuple(LAMBDAS) + (lam_c,)
+    gs, ceiling = g_for_settings(K_c, K_qs, lams)
 
     c_nap = norm_ap(best_c)
     return [{"dataset": dataset, "n_per_class": n_per_class, "mapping": mapping,
