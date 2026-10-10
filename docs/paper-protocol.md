@@ -197,7 +197,7 @@ the contribution.
 
 **Every Tier 1 and Tier 2 check was written after the defect it catches.** The
 protocol's own first section says so: each exists because a specific reading
-went wrong here, usually after passing review. Fifteen deviation records and a
+went wrong here, usually after passing review. Sixteen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 

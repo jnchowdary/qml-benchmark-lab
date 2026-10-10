@@ -115,7 +115,8 @@ upstream of the authors who inherited it.
 Section 2 establishes what the geometric difference is, what its bound does and
 does not assert, and how its arguments compose — the derivation the rest
 depends on. Section 3 traces the registered design and marks every subsequent
-amendment. Section 4 reports the results. Section 5 is the protocol: what is
+amendment. Section 4 reports the results, with its limitations in §4.7. Section
+5 is the protocol: what is
 tooling, what is a reading procedure, what each costs, and §5.6, which argues
 against the contribution. Section 6 bounds what all of it supports. Section 7
 points at the deviation records, which govern wherever they and the

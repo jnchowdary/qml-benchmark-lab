@@ -1,7 +1,6 @@
 # Section 6 — Discussion
 
-**Draft, 4 October 2026.** Limitations are in section 4 of the draft and are not
-repeated here.
+**Draft, 10 October 2026.** Limitations are in §4.7 and are not repeated here.
 
 One distinction runs through this section and is stated once at the top because
 everything else depends on it. **Refusing an unsupported conclusion and
@@ -18,7 +17,10 @@ inflate every result below.
 primary cells. On churn the result is stronger than a failure to detect: both
 endpoints reject and both favour the classical kernel, a median deficit of
 0.0659 normAP in the cell chosen because the classical baseline was strongest
-there. On fraud the test does not reject, and is reported as a bound — an
+there. **The margin is narrow and §4.2 states it:** the effect clears that
+cell's *true* minimum detectable effect of 0.0608 by **1.31x**, not the
+registered 0.0171 it appears to clear by 4.7x, and D6 withdraws any phrasing
+that reads as comfortably powered. On fraud the test does not reject, and is reported as a bound — an
 advantage larger than 0.0063 normAP at that cell is excluded at 80% power.
 
 H2 and H3 return NOT ESTABLISHED under the registered decision rule. **That
@@ -157,7 +159,7 @@ Reading them as the latter is precisely the conflation this section opened by
 naming.
 
 **The retrospective instances are weak evidence.** Every records-level and
-kernel-level check was written after the defect it catches. Fifteen deviation
+kernel-level check was written after the defect it catches. Sixteen deviation
 records show that this project eventually noticed its own mistakes; they do not
 show that a tool built from them catches a stranger's.
 

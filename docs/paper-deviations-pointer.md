@@ -16,8 +16,8 @@ the whole of its statistical power table — and all three remain in the documen
 with their corrections recorded against them. This is deliberate: a registration
 that is edited after results are seen is not a registration.
 
-**`docs/deviations.md` is authoritative for every change.** Fifteen records, D1
-to D15, several carrying dated amendments. Each states what moved, when it was
+**`docs/deviations.md` is authoritative for every change.** Sixteen records, D1
+to D16, several carrying dated amendments. Each states what moved, when it was
 decided, when it was declared, and whether the affected results had been seen.
 
 **Where the two disagree, the deviations record governs**, and the
@@ -32,32 +32,52 @@ pre-registration's text is the historical object rather than the operative one.
 | what was registered, before anything moved | `docs/pre-registration.md` v1.0 |
 | every movement from that design, in one table | **§3.9 of this paper** |
 | why a given movement was made, and when it was declared | the numbered record in `docs/deviations.md` |
-| what is still undecided | D14, below |
+| what is still undecided | §7.3 — one branch, not one record |
 
-**§3.9 is the index.** It lists all nine movements with their direction — which
-added a constraint, which weakened a claim, which removed planned evidence — and
-is the fastest route to whether any of them could have manufactured a result.
-None did: D2, D5, D7 and D8 make the tests harder to pass; D6 and D13 weaken
-what may be claimed; D12 removes evidence never collected; D15 is editorial.
+**§3.9 is the index.** It lists all **eleven** movements with their direction —
+which added a constraint, which weakened a claim, which removed planned evidence
+— and is the fastest route to whether any of them could have manufactured a
+result. None did: D2, D5, D7 and D8 make the tests harder to pass; D6 and D13
+weaken what may be claimed; D12 removes evidence never collected; D15 is
+editorial; D14 corrected one supplementary column's λ definition and left every
+verdict where it was; D16 is a follow-up analysis that returned no verdict.
 
 ---
 
-## 7.3 One record is open
+## 7.3 Two λ records, both now closed, and one decision that is not
 
-**D14 is a draft and is not in force.** It establishes that this project's
-λ-from-C helper returns 1/(2·C·n) on an uncited assertion, that Huang prints no
-such correspondence, and that his Appendix D objective points to 1/(2C)
-instead. No option among its three candidates has been adopted, no g has been
-recomputed, and no verdict has moved.
+**D14 is closed.** It established that this project's λ-from-C helper returned
+1/(2·C·n) on an uncited assertion, that Huang prints no such correspondence, and
+that his Appendix D objective points to 1/(2C). Option (a) was adopted on
+4 October 2026 and the helper corrected. Two of its three candidate resolutions
+could have converted a NOT ESTABLISHED verdict into a substantive one, and it was
+written after that verdict was known, so its own requirement was that the chosen
+option and the mapping from each outcome to each verdict be **committed and
+pushed before any recomputed value was examined**. That is what happened. The
+recomputation returned outcome **O2**: the supplementary column's ceiling
+breaches fell from 2,893 to 979 of 7,200, which still leaves it not breach-free,
+so `clean` stayed empty and **no verdict moved**. The record notes that the
+correction changed 1,914 rows and was therefore not immaterial; the verdict
+survived because the registered rule needs a wholly breach-free column.
 
-**What rests on it:** one supplementary λ column. **What does not:** the frozen
-λ sweep at {1e-1, 1e-2, 1e-3, 1e-4} that carries every result reported here.
+**D16 is closed.** Huang's own g_tra selection over his declared grid, the only
+λ procedure his source prints and one neither this study nor the peer-reviewed
+paper that inherited the quantity had run. Specified in full and pushed before it
+was computed, including a proof that a breach-free column was impossible.
+Outcome **B3**: on 76.5% of the units no λ in the grid satisfies his threshold at
+all, so the column is incomplete and option (b) is **unresolved** rather than
+negative. §6.2a reports the measurement. A gate tolerance was loosened during
+that analysis, and that too was declared and pushed before the outcome was read.
 
-D14 also records why it remains a draft. Two of its three candidate resolutions
-could convert a NOT ESTABLISHED verdict into a substantive one, and it was
-written after that verdict was known. Its own requirement is that the chosen
-option and the mapping from each outcome to each verdict be committed and pushed
-*before* any recomputed value is examined.
+**What rests on neither:** the frozen λ sweep at {1e-1, 1e-2, 1e-3, 1e-4} that
+carries every result in §4.
+
+**The open decision is not a record.** `prerewrite-20260925`, the recovered
+branch on which full provenance depends, is **unpublished and the choice is
+undecided**. Publishing it makes every stored commit hash resolve without anyone
+having to trust the mapping; it also restores to the public repository the AI
+co-authorship trailers the 25 September rewrite removed. §4.7 states the
+trade-off and this paper does not resolve it.
 
 ---
 
