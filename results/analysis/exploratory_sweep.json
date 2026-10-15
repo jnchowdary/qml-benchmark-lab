@@ -201,9 +201,11 @@
             "level": 50,
             "n_seeds": 20,
             "mean_d_normap": -0.03154160464129234,
+            "below_d2_floor": false,
             "why_not_tested": "pre-registration line 104: run for the shape of the learning curve, not for hypothesis testing"
           }
-        ]
+        ],
+        "n_descriptive_below_floor": 0
       },
       "the learning curve": {
         "family": "the learning curve",
@@ -451,9 +453,11 @@
             "level": 50,
             "n_seeds": 20,
             "mean_d_normap": -0.010001038647970879,
+            "below_d2_floor": false,
             "why_not_tested": "pre-registration line 104: run for the shape of the learning curve, not for hypothesis testing"
           }
-        ]
+        ],
+        "n_descriptive_below_floor": 0
       },
       "the learning curve": {
         "family": "the learning curve",

@@ -313,6 +313,16 @@ MUTANTS = [
     return vals""",
       "TestSeedMeans::test_returns_one_value_per_seed_not_one_per_row",
       file=ES, tests=T_ES),
+
+    M("descriptive rows lose the D2 floor flag",
+      "D2 applies to a descriptive figure as much as to a tested one. Without "
+      "the flag a mean under the pipeline's resolution prints as a bare "
+      "number. The gap was latent until 15 October because no real row has "
+      "been below 1e-3, which is exactly how it survived",
+      '             "below_d2_floor": (None if m is None else bool(abs(m) < FLOOR)),\n',
+      '',
+      "TestTrainingSizeExclusion::test_descriptive_rows_carry_the_d2_floor_flag",
+      file=ES, tests=T_ES),
 ]
 
 

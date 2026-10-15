@@ -165,6 +165,42 @@ class TestTrainingSizeExclusion:
     def test_the_exclusion_list_is_the_registered_one(self):
         assert es.NO_TEST_SIZES == (50,)
 
+    def test_descriptive_rows_carry_the_d2_floor_flag(self):
+        """D2 applies to a descriptive figure as much as to a tested one.
+
+        Until 15 October 2026 the descriptive rows carried no below_d2_floor, so
+        a mean under the pipeline's resolution would have printed as a bare
+        number. No real row has ever been below the floor, so the gap was latent;
+        this pins it shut in both directions.
+        """
+        above = es.family_training_size(*self._by_size())
+        d = above["descriptive_only"][0]
+        assert "below_d2_floor" in d
+        assert d["below_d2_floor"] is False, "0.05 is above a 1e-3 floor"
+        assert above["n_descriptive_below_floor"] == 0
+
+        seeds = list(range(20))
+        cells = [(m, q) for m in es.MAPPINGS for q in es.QUBITS]
+        tiny = es.FLOOR / 10.0
+        by_size, seeds_by_size = {}, {}
+        for n in es.SIZES:
+            by_size[n] = diffs_for(cells, seeds, lambda c, s: (tiny, tiny))
+            seeds_by_size[n] = seeds
+        below = es.family_training_size(by_size, seeds_by_size)
+        d = below["descriptive_only"][0]
+        assert d["below_d2_floor"] is True, (es.FLOOR, d["mean_d_normap"])
+        assert below["n_descriptive_below_floor"] == 1
+
+    def test_the_two_floor_counters_are_not_the_same_number(self):
+        """n_levels_below_floor counts the TESTED rows because it describes the
+        Holm family; n_descriptive_below_floor counts the excluded ones. Folding
+        them together would let a descriptive figure inflate a count a reader
+        reads as being about the family."""
+        fam = es.family_training_size(*self._by_size())
+        assert "n_levels_below_floor" in fam
+        assert "n_descriptive_below_floor" in fam
+        assert len(fam["rows"]) == 2 and len(fam["descriptive_only"]) == 1
+
 
 # ----------------------------------- the cell-level trend unit, week 4 item 10
 

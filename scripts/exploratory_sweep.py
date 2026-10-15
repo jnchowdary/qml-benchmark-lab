@@ -240,12 +240,29 @@ def family_training_size(by_size, seeds_by_size):
         "per level: all 15 cells averaged within each seed, then Wilcoxon over "
         "seeds. The 50-per-class arm is EXCLUDED from testing by "
         "pre-registration line 104 and is reported descriptively below.")
-    fam["descriptive_only"] = [
-        {"level": n, "n_seeds": len(series[n]),
-         "mean_d_normap": float(np.mean(series[n])) if series[n] else None,
-         "why_not_tested": "pre-registration line 104: run for the shape of "
-                           "the learning curve, not for hypothesis testing"}
-        for n in levels if n in NO_TEST_SIZES]
+    # D2 applies to a descriptive figure exactly as it applies to a tested one.
+    # Until 15 October 2026 these rows carried no `below_d2_floor`, so a mean
+    # under the pipeline's resolution would have been printed as a number with
+    # nothing marking it. No row has ever been below the floor -- churn sits at
+    # -0.0315 and fraud at -0.0100 against a floor of 1e-3 -- so this was a
+    # latent gap and not a published one. It is closed here rather than left to
+    # be closed by the first dataset that lands under 1e-3.
+    desc = []
+    for n in levels:
+        if n not in NO_TEST_SIZES:
+            continue
+        m = float(np.mean(series[n])) if series[n] else None
+        desc.append(
+            {"level": n, "n_seeds": len(series[n]), "mean_d_normap": m,
+             "below_d2_floor": (None if m is None else bool(abs(m) < FLOOR)),
+             "why_not_tested": "pre-registration line 104: run for the shape of "
+                               "the learning curve, not for hypothesis testing"})
+    fam["descriptive_only"] = desc
+    # `n_levels_below_floor` above counts the TESTED rows, because it describes
+    # the Holm family. The descriptive rows are counted separately rather than
+    # folded in, so neither number can be read as the other.
+    fam["n_descriptive_below_floor"] = sum(1 for r in desc
+                                           if r.get("below_d2_floor"))
     return fam
 
 
@@ -365,7 +382,16 @@ def main():
                     default=str(ROOT / "results" / "runs" / "quantum"))
     ap.add_argument("--classical-dir",
                     default=str(ROOT / "results" / "runs" / "classical"))
-    ap.add_argument("--out", default=None)
+    # Defaulted 15 October 2026. It was None, and the write below is
+    # conditional on it, so the script printed its tables and saved nothing
+    # unless the caller remembered the path. That is how the committed JSON came
+    # to be four days older than the script that makes it, and it is the same
+    # shape as the .docx drift: a generator whose output depends on someone
+    # remembering a step. scripts/primary_tests.py already defaults its --out.
+    ap.add_argument("--out", default=str(ROOT / "results" / "analysis"
+                                        / "exploratory_sweep.json"),
+                    help="default: results/analysis/exploratory_sweep.json. "
+                         "Pass a different path to avoid overwriting it.")
     args = ap.parse_args()
 
     q_dir, c_dir = Path(args.quantum_dir), Path(args.classical_dir)
@@ -413,10 +439,13 @@ def main():
             if fam.get("descriptive_only"):
                 for r in fam["descriptive_only"]:
                     m = r["mean_d_normap"]
+                    if m is None:
+                        print(f"    n={r['level']} reported not tested: no data")
+                        continue
+                    sub = ("   BELOW D2 FLOOR, not a measurement"
+                           if r.get("below_d2_floor") else "")
                     print(f"    n={r['level']} reported not tested: mean "
-                          f"dNormAP {m:+.4f} over {r['n_seeds']} seeds"
-                          if m is not None else
-                          f"    n={r['level']} reported not tested: no data")
+                          f"dNormAP {m:+.4f} over {r['n_seeds']} seeds{sub}")
 
         lc = fams[3]
         print(f"\n  {lc['caption']}")
