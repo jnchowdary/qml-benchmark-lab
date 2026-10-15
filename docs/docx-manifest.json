@@ -8,6 +8,13 @@
       "generator_commit": "c8c5665",
       "docx_version": "9.7.1"
     },
+    "docs/paper.docx": {
+      "source": "docs/paper.md",
+      "source_sha256": "603de072f37bc3c0613944fe8a4c06c8c61918fe5ac3750fc271251960a9df33",
+      "generated_at": "2026-10-15T02:19:28Z",
+      "generator_commit": "4f7f666",
+      "docx_version": "9.7.1"
+    },
     "docs/week-04-report.docx": {
       "source": "docs/week-04-report.md",
       "source_sha256": "2707f538b4d1be436d57cdfcc5669e0d06a107cdee352dc98d6680f4d75057e7",

@@ -243,6 +243,23 @@ function convert(md) {
   return body;
 }
 
+// --- exported for reuse -----------------------------------------------------
+// scripts/paper_to_docx.js reuses runs(), cells(), buildTable() and
+// recordProvenance() from this file instead of copying them, so that the
+// escaped-pipe fix in cells() and the no-underscore-italics rule in runs()
+// stay in one place rather than in two that drift. Requiring this file must
+// therefore not run a weekly export, hence the guard below.
+//
+// Nothing after the guard is changed. The guard only stops the export block
+// running when this file is required rather than invoked. docs/week-04-report
+// and docs/deviations were regenerated after this edit and their
+// word/document.xml compared byte for byte against the versions built before
+// it; both were identical, so the ten existing exports are unaffected.
+module.exports = { runs, cells, buildTable, convert, recordProvenance,
+                   PAGE, CONTENT_WIDTH };
+
+if (require.main !== module) return;   // legal at CommonJS module scope
+
 const [, , mdPath, outPath] = process.argv;
 if (!mdPath || !outPath) {
   console.error('usage: node scripts/report_to_docx.js <record.md> <output.docx>');

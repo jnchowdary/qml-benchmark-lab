@@ -8,6 +8,6 @@
     "check-docx": "python3 scripts/check_docx_fresh.py"
   },
   "dependencies": {
-    "docx": "^9.7.1"
+    "docx": "9.7.1"
   }
 }
