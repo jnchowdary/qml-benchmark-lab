@@ -2733,9 +2733,20 @@ depend on this repository's visibility. What was undermined is the
 **Both are now done.** Visibility was changed on 15 October 2026. Two save
 requests (2558108 at 01:15, 2558127 at 01:25) failed with
 `visit_status: not_found` against the private origin. A third, 2558130, was
-submitted at 01:32:59 and **succeeded** at **01:33:06 UTC**, `visit_status: full`:
+submitted at 01:32:59 and **succeeded** at **01:33:06 UTC**, `visit_status: full`.
+A fourth, 2558131, succeeded at **01:36:58**. Two snapshots, deliberately:
 
-    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd
+    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd   01:33:06, repository at 5464088
+    swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005   01:36:58, includes d76d232
+
+**Why two.** A snapshot cannot contain its own citation. The first captured the
+repository at the instant visibility changed, before the SWHID was written into
+any file, so a reader who resolves it finds a §4.7 with no mention of it. The
+second contains `d76d232`, the commit that records the first. The second is
+itself cited only by a commit made after it, and **that regress is infinite**: it
+is stopped by choosing to stop. Any self-referential archive citation has this
+shape, and the alternative is an unbounded series of snapshots each attesting the
+record of the last.
 
 **This is the first externally verifiable fact this project has produced.** It
 postdates every result, every record in this file and every pre-commitment in it,

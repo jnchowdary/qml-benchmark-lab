@@ -267,11 +267,21 @@ is something the author practised rather than something a reader can check.
 **Visibility was changed on 15 October 2026**, after two Software Heritage save
 requests (2558108, 2558127) had failed with `visit_status: not_found` against the
 private origin. A third request succeeded at **01:33:06 UTC on 15 October 2026**,
-`visit_status: full`, snapshot
+`visit_status: full`. A fourth was taken three minutes later. **There are two
+snapshots and the reason is structural:**
 
-    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd
+    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd   01:33:06, repository at 5464088
+    swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005   01:36:58, includes the commit recording the first
 
-**This is the first externally verifiable fact in this study.** A third party now
+**A snapshot cannot contain its own citation.** The first attests the repository
+as it stood when visibility changed, before any record of the archive existed; a
+reader resolving it finds a §4.7 that does not mention it. The second contains
+the commit that records the first, so it is the one to resolve to read this
+paragraph as archived. The second is in turn cited by a commit made after it, and
+**that regress does not terminate** — it is stopped here by choosing to stop, not
+by completeness, and the same is true of any self-referential archive citation.
+
+**These are the first externally verifiable facts in this study.** A third party now
 attests that this repository's content existed in that exact form at or before
 that instant, at a time no one here controls. Everything below describes what a
 reader can do from that moment on.
@@ -368,9 +378,9 @@ for it.
 
 **Three items unchanged.** The `descriptive_only` rows in the exploratory output
 do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
-check has not been extended since week 9. And the **Software Heritage snapshot
-now exists**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd`, taken
-01:33:06 UTC on 15 October 2026 after two earlier requests failed against the
-private origin. It postdates every result here, so it bounds the provenance gap
+check has not been extended since week 9. And **two Software Heritage snapshots
+now exist**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd` at 01:33:06
+and `swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005` at 01:36:58 UTC on
+15 October 2026, after two earlier requests failed against the private origin. It postdates every result here, so it bounds the provenance gap
 rather than closing it; the first paragraph of this section states what it does
 and does not establish.
