@@ -2730,13 +2730,29 @@ depend on this repository's visibility. What was undermined is the
 
 #### What is being done
 
-The author has decided to make the repository public and to retry the archive.
-**Neither has happened yet.** At 01:25 on 15 October 2026 the unauthenticated
-GitHub API still returned 404, and a second save request (2558127) was submitted
-against the still-private origin and will fail as 2558108 did. When the
-visibility change is made and a save succeeds, the snapshot identifier is
-recorded here and in §4.7, with the standing caveat that **it postdates every
-result in this paper** and therefore bounds the gap rather than closing it.
+**Both are now done.** Visibility was changed on 15 October 2026. Two save
+requests (2558108 at 01:15, 2558127 at 01:25) failed with
+`visit_status: not_found` against the private origin. A third, 2558130, was
+submitted at 01:32:59 and **succeeded** at **01:33:06 UTC**, `visit_status: full`:
+
+    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd
+
+**This is the first externally verifiable fact this project has produced.** It
+postdates every result, every record in this file and every pre-commitment in it,
+so it bounds the gap rather than closing it, and it does **not** repair D11: the
+snapshot holds the public refs, `prerewrite-20260925` is not among them, and the
+three commit identifiers in all 15,120 result records still resolve for no
+reader.
+
+**A note on the verification itself, because two of the three checks misled.** An
+unauthenticated GitHub API query returned **403**, not 200, after the visibility
+change — the 60-per-hour unauthenticated rate limit, confirmed from the response
+body, and not a privacy signal at all. The 404s that found this problem were
+genuine; the 403 that followed was noise, and reading it as an answer either way
+would have been wrong. The visibility was settled by an unauthenticated request
+to the repository's **web page**, which returned 200 and is not rate-limited the
+same way. A check that returns three different codes for three different reasons
+needs its codes distinguished before any of them is believed.
 
 An earlier version of the §4.7 paragraph stated that visibility "was changed on
 15 October 2026 and the archive retried". It had not been. That sentence was

@@ -5,7 +5,7 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-15T01:26:26+00:00 at commit `d863a60`.
+Assembled 2026-10-15T01:35:30+00:00 at commit `5464088`.
 
 | section | source | sha256 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Assembled 2026-10-15T01:26:26+00:00 at commit `d863a60`.
 | 1 | `docs/paper-introduction.md` | `9bda5ef0dddc770b` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `60c6a9ec10f7f837` |
-| 4 | `docs/paper-results.md` | `e4c19c463281ab7f` |
+| 4 | `docs/paper-results.md` | `862e2efa63f4fec6` |
 | 5 | `docs/paper-protocol.md` | `8311acae52aa28ff` |
 | 6 | `docs/paper-discussion.md` | `854f81aec0a4f449` |
 | 7 | `docs/paper-deviations-pointer.md` | `b6302387ea49dade` |
@@ -1004,13 +1004,28 @@ publicly* or *published before the run* is **withdrawn** in favour of *committed
 and pushed to a private remote before*, and the pre-commitment discipline here
 is something the author practised rather than something a reader can check.
 
-**As this is written the repository is still private**, confirmed by a 404 from
-the unauthenticated GitHub API at 01:25 on 15 October 2026. The author has
-decided to make it public and two Software Heritage save requests (2558108,
-2558127) have failed for that reason. Until the change is made, everything below
-describes what a reader **would** be able to do and not what any reader can do
-today. This sentence is the marker for that, and it is dated so that a reader can
-tell whether it was updated.
+**Visibility was changed on 15 October 2026**, after two Software Heritage save
+requests (2558108, 2558127) had failed with `visit_status: not_found` against the
+private origin. A third request succeeded at **01:33:06 UTC on 15 October 2026**,
+`visit_status: full`, snapshot
+
+    swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd
+
+**This is the first externally verifiable fact in this study.** A third party now
+attests that this repository's content existed in that exact form at or before
+that instant, at a time no one here controls. Everything below describes what a
+reader can do from that moment on.
+
+**What the snapshot does not do**, stated because an archive identifier invites
+being read as more than it is. It **backdates nothing**: every result, every
+deviation record and every pre-commitment in this paper predates it and remains
+externally unattested. It does **not** repair D11: the snapshot captures the
+public refs, and `prerewrite-20260925` is not among them, so the three commit
+identifiers stored in all 15,120 result records still resolve for no reader.
+Archiving a repository that does not contain those commits does not make them
+resolvable. What it establishes is forward-looking only: from 01:33 on 15 October
+2026, a claim about this repository's state can point at something outside this
+machine.
 
 **Provenance.** Every one of the 15,120 result records stores a `git_commit`
 that does not exist on the public repository. A history rewrite on 25 September
@@ -1093,13 +1108,12 @@ for it.
 
 **Three items unchanged.** The `descriptive_only` rows in the exploratory output
 do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
-check has not been extended since week 9. And the **Software Heritage save
-request of 15 October 2026 FAILED** (request 2558108): accepted, then
-`save_task_status: failed`, `visit_status: not_found`, no snapshot identifier.
-The loader could not find the origin because the repository was private; see the
-first paragraph of this section.
-Had it succeeded it would still have postdated every result here, bounding that
-gap rather than closing it.
+check has not been extended since week 9. And the **Software Heritage snapshot
+now exists**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd`, taken
+01:33:06 UTC on 15 October 2026 after two earlier requests failed against the
+private origin. It postdates every result here, so it bounds the provenance gap
+rather than closing it; the first paragraph of this section states what it does
+and does not establish.
 
 ---
 
