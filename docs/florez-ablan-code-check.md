@@ -1,4 +1,8 @@
-# Code check: Flórez-Ablan and Schnabel, arXiv:2503.05602
+# Code check: Flórez Ablan, Roth and Schnabel, arXiv:2503.05602
+
+*(Title corrected 15 October 2026. It read "Flórez-Ablan and Schnabel" and
+dropped Marco Roth, the error C1 below records and which had survived in this
+document's own heading for seventeen days after being corrected in its body.)*
 
 **Status of the week-4 claim: RESOLVED.** The claim "no negative controls",
 withdrawn in week 4 as unverified, is now tested against the authors' own code

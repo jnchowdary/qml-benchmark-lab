@@ -27,7 +27,11 @@ Paired per-seed differences at the pre-registered primary cells, 250 per class,
 20 seeds, intersection-union across both endpoints at alpha = 0.05.
 *(`results/analysis/primary_tests.json`)*
 
-**Figure 2** shows both datasets on one shared scale.
+![Figure 2 — H1's twenty paired per-seed differences at each primary cell, both datasets on one shared scale.](../results/figures/fig2_h1_paired.png)
+
+**Figure 2** shows both datasets on one shared scale. Each figure stamps its own
+source artefact into the image, so a reader can tell which run it came from
+without trusting a caption.
 
 **Churn, PCA at 12 qubits — rejects, against the quantum kernel.**
 
@@ -88,6 +92,8 @@ and is not leakage.
 ## 4.4 H2 and H3: the prediction is not established
 
 *(`results/audits/h2_h3_report.json`, 360 units, 7,200 per-seed rows)*
+
+![Figure 1 — H2 across the frozen lambda sweep: rho with its 95% interval above, units retained beneath.](../results/figures/fig1_h2_lambda.png)
 
 **Figure 1** plots this table: rho with its interval above, units retained
 below, because a rho from 61 units with 299 excluded is not the same evidence as
@@ -170,6 +176,8 @@ bears on H1 or H2. Each tested level averages the cells at that level **within
 each seed** before testing, because cells at one seed share a train/test split;
 levels carry 20 paired observations, not pooled rows.
 *(`results/analysis/exploratory_sweep.json`, `results/analysis/primary_tests.json`)*
+
+![Figure 3 — the churn exploratory families, with Holm-significant levels in the accent colour.](../results/figures/fig3_churn_exploratory.png)
 
 **Figure 3** shows the churn families.
 
@@ -278,6 +286,19 @@ that already disqualified it from hypothesis testing.
 **One dataset is saturated.** Fraud's classical baseline sits at 0.9659 normAP
 at the primary cell and is saturated at every training size tested, so one of the
 two datasets could not have shown an advantage had one existed.
+
+**The figures, and a reversed decision.** The three PNGs above are **committed**,
+by name, as exceptions to the `.gitignore` rule that excludes
+`results/figures/*`. An earlier draft excluded them on the ground that outputs
+are regenerated rather than versioned and that
+`PYTHONPATH=src python scripts/make_figures.py` reproduces them deterministically
+from committed artefacts. That reasoning is sound as far as it goes and the
+regeneration command still works. It was reversed for one reason it did not
+address: **determinism there rests on an unpinned plotting library**, so a reader
+on a different matplotlib gets a visually different figure, and a figure a paper
+references but does not ship is the same defect class as a commit hash that does
+not resolve. Three PNGs are 319 KB. The SVG sources remain excluded, being
+regenerable and read by nothing in the paper.
 
 **Checks this study has not completed.** Four, listed rather than left implicit.
 `scripts/mutation_check.py` is scoped to a single test file, so the mutants for

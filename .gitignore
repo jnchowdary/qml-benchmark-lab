@@ -6,6 +6,12 @@ results/runs/*
 !results/runs/.gitkeep
 results/figures/*
 !results/figures/.gitkeep
+# The three figures the paper's section 4 references. Named one by one so
+# that other output in this directory stays ignored. The SVG sources stay
+# out: they are regenerable and nothing in the paper reads them.
+!results/figures/fig1_h2_lambda.png
+!results/figures/fig2_h1_paired.png
+!results/figures/fig3_churn_exploratory.png
 __pycache__/
 *.pyc
 .pytest_cache/

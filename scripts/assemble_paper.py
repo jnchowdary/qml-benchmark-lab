@@ -34,16 +34,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "paper.md"
 
-# (file, the heading the file must open with). Order is the paper's order.
+# (file, the heading the file must open with, the label in the manifest).
+# Order is the paper's order, and this list IS the outline: the draft document
+# that used to carry one is now a pointer to this.
 SECTIONS = [
-    ("docs/paper-abstract.md", "# Abstract"),
-    ("docs/paper-introduction.md", "# Section 1 — Introduction"),
-    ("docs/paper-background.md", "# Section 2 — Background"),
-    ("docs/paper-design.md", "# Section 3 — Design"),
-    ("docs/paper-results.md", "# Section 4 — Results"),
-    ("docs/paper-protocol.md", "# Section 5 — The protocol"),
-    ("docs/paper-discussion.md", "# Section 6 — Discussion"),
-    ("docs/paper-deviations-pointer.md", "# Section 7 — Deviations"),
+    ("docs/paper-abstract.md", "# Abstract", "Abstract"),
+    ("docs/paper-introduction.md", "# Section 1 — Introduction", "1"),
+    ("docs/paper-background.md", "# Section 2 — Background", "2"),
+    ("docs/paper-design.md", "# Section 3 — Design", "3"),
+    ("docs/paper-results.md", "# Section 4 — Results", "4"),
+    ("docs/paper-protocol.md", "# Section 5 — The protocol", "5"),
+    ("docs/paper-discussion.md", "# Section 6 — Discussion", "6"),
+    ("docs/paper-deviations-pointer.md", "# Section 7 — Deviations", "7"),
+    ("docs/paper-references.md", "# References", "References"),
 ]
 
 TITLE = ("Auditing a quantum-classical kernel comparison: a pre-registered null "
@@ -67,7 +70,7 @@ def digest(p):
 def build(stamp=True):
     """Return the assembled markdown, or raise SystemExit naming the problem."""
     problems, parts = [], []
-    for rel, heading in SECTIONS:
+    for rel, heading, _label in SECTIONS:
         p = ROOT / rel
         if not p.exists():
             problems.append(f"{rel} does not exist")
@@ -101,8 +104,7 @@ def build(stamp=True):
             "| section | source | sha256 |",
             "| --- | --- | --- |",
         ]
-        for i, (rel, _) in enumerate(SECTIONS):
-            label = "Abstract" if i == 0 else str(i)
+        for rel, _heading, label in SECTIONS:
             head.append(f"| {label} | `{rel}` | `{digest(ROOT / rel)[:16]}` |")
         head.append("")
     return "\n".join(head) + "\n---\n\n" + "\n\n---\n\n".join(parts) + "\n"
@@ -133,7 +135,8 @@ def main():
     n_words = len(text.split())
     print(f"\n  -> {OUT.relative_to(ROOT)}  "
           f"({len(text.splitlines())} lines, ~{n_words:,} words)")
-    print(f"  {len(SECTIONS)} sections: Abstract, 1 to {len(SECTIONS) - 1}\n")
+    print(f"  {len(SECTIONS)} parts: "
+          f"{', '.join(l for _, _, l in SECTIONS)}\n")
 
 
 if __name__ == "__main__":
