@@ -266,4 +266,74 @@ const doc = new Document({
 Packer.toBuffer(doc).then(buf => {
   fs.writeFileSync(outPath, buf);
   console.log(`${outPath}  ${buf.length} bytes`);
+  recordProvenance(mdPath, outPath);
 });
+
+/**
+ * Append this export to docs/docx-manifest.json.
+ *
+ * WHY. The header of this file argues that a record and its document drift and
+ * that the drift is invisible because nobody diffs a .docx against a .md. That
+ * argument was right and the drift happened anyway: on 15 October 2026
+ * `deviations.docx` was found sixteen days behind a record that had grown by
+ * roughly 1,400 lines, because generating the document was a step someone had
+ * to remember. A generator with no freshness check is a convention, not a
+ * guarantee.
+ *
+ * So each export records the SHA-256 of the markdown it was built from, and
+ * `scripts/check_docx_fresh.py` fails when a source has moved since. mtime
+ * cannot do this job: a fresh clone gives every file the checkout time, so a
+ * stale export in a clone looks current. A content hash survives cloning.
+ */
+function recordProvenance(src, out) {
+  const path = require('path');
+  const crypto = require('crypto');
+  const { execFileSync } = require('child_process');
+  const root = path.resolve(__dirname, '..');
+  const rel = (f) => path.relative(root, path.resolve(f)).split(path.sep).join('/');
+  const manifestPath = path.join(root, 'docs', 'docx-manifest.json');
+
+  let manifest = {};
+  if (fs.existsSync(manifestPath)) {
+    try {
+      manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).exports || {};
+    } catch (e) {
+      console.error(`  manifest unreadable (${e.message}); not overwriting it.`);
+      return;
+    }
+  }
+
+  // rev-parse only. It does not touch .git/index, unlike `git status`.
+  let commit = null;
+  try {
+    commit = execFileSync('git', ['rev-parse', '--short', 'HEAD'],
+                          { cwd: root, encoding: 'utf8' }).trim();
+  } catch (e) { /* not a checkout; leave null */ }
+
+  let docxVersion = null;
+  try {
+    const pj = path.join(path.dirname(require.resolve('docx')), '..', 'package.json');
+    docxVersion = JSON.parse(fs.readFileSync(pj, 'utf8')).version;
+  } catch (e) { /* exports-restricted or absent; leave null */ }
+
+  manifest[rel(out)] = {
+    source: rel(src),
+    source_sha256: crypto.createHash('sha256')
+      .update(fs.readFileSync(src)).digest('hex'),
+    generated_at: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
+    generator_commit: commit,
+    docx_version: docxVersion,
+  };
+
+  const ordered = {};
+  for (const k of Object.keys(manifest).sort()) ordered[k] = manifest[k];
+  fs.writeFileSync(manifestPath, JSON.stringify({
+    note: 'Written by scripts/report_to_docx.js. Checked by ' +
+          'scripts/check_docx_fresh.py, which fails when a source markdown has ' +
+          'changed since its export. An export with no entry here has ' +
+          'unrecorded provenance and is reported as such rather than assumed ' +
+          'current.',
+    exports: ordered,
+  }, null, 2) + '\n');
+  console.log(`  provenance -> docs/docx-manifest.json`);
+}

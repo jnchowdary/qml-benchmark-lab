@@ -12,6 +12,7 @@ results/figures/*
 !results/figures/fig1_h2_lambda.png
 !results/figures/fig2_h1_paired.png
 !results/figures/fig3_churn_exploratory.png
+node_modules/
 __pycache__/
 *.pyc
 .pytest_cache/

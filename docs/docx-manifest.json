@@ -1,0 +1,19 @@
+{
+  "note": "Written by scripts/report_to_docx.js. Checked by scripts/check_docx_fresh.py, which fails when a source markdown has changed since its export. An export with no entry here has unrecorded provenance and is reported as such rather than assumed current.",
+  "exports": {
+    "docs/deviations.docx": {
+      "source": "docs/deviations.md",
+      "source_sha256": "19597f44d3571b2c131ad81db97832d0cc1e3d90a2ddf2339a63117b4a67a9bd",
+      "generated_at": "2026-10-15T01:11:21Z",
+      "generator_commit": "c8c5665",
+      "docx_version": "9.7.1"
+    },
+    "docs/week-04-report.docx": {
+      "source": "docs/week-04-report.md",
+      "source_sha256": "2707f538b4d1be436d57cdfcc5669e0d06a107cdee352dc98d6680f4d75057e7",
+      "generated_at": "2026-10-15T01:11:21Z",
+      "generator_commit": "c8c5665",
+      "docx_version": "9.7.1"
+    }
+  }
+}

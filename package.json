@@ -1,0 +1,13 @@
+{
+  "name": "qml-benchmark-lab-docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Document generation for the QML Benchmark Lab records. The research pipeline is Python; this manifest exists only so that scripts/report_to_docx.js can be run from a clean clone. Until 15 October 2026 the README claimed the weekly documents were generated while the only copy of the dependency was a global install on one machine, so a reader could not run the generator at all.",
+  "scripts": {
+    "docx": "node scripts/report_to_docx.js",
+    "check-docx": "python3 scripts/check_docx_fresh.py"
+  },
+  "dependencies": {
+    "docx": "^9.7.1"
+  }
+}

@@ -10,7 +10,7 @@ The protocol is the part worth reusing. It exists because every check in it was 
 
 ## Status
 
-Week 7 of 12. The classical and quantum arms are complete: 5,400 classical and 7,200 quantum records, two datasets, three training sizes, 15 configurations, 20 seeds. **All three registered confirmatory hypotheses have now been tested.** H1 rejects on churn in the classical kernel's favour and does not reject on fraud. **H2 and H3 return no verdict**: no lambda in the frozen sweep is free of ceiling breaches, so D5's decision rule does not resolve, at any lambda. 15 test files; `scripts/geometric_tests.py`, which produced the H2 and H3 result, has none.
+Week 12 of 12; the paper is assembled at [`docs/paper.md`](docs/paper.md), generated from its sections by `scripts/assemble_paper.py`. The classical and quantum arms are complete: **15,120 result records** — 7,440 classical, 7,520 quantum, 160 negative-control — across two datasets, three training sizes, 15 configurations and 20 seeds. **All three registered confirmatory hypotheses have been tested.** H1 rejects on churn in the classical kernel's favour and does not reject on fraud. **H2 and H3 return no verdict**: no lambda column is free of ceiling breaches, so D5's decision rule does not resolve. That is the rule declining to speak and not a finding of no relationship — at the largest lambda the null is rejected in the predicted direction, accounts for 2.9% of rank variance, and reverses sign across the sweep. **Three lambda rules have now been evaluated**, including the one Huang's own source prints, which selects no lambda at all on 76.5% of the units; see D16. 19 test files, and `scripts/geometric_tests.py` now carries 30 of its own plus a mutation harness that checks they are not vacuous.
 
 The audit now reaches the kernels. Three of the four checks it had declared unrunnable were not: `tuning symmetry` needed nothing and is Tier 1, `kernel conditioning` and `classical surrogate equivalence` needed only an interface and run against any pipeline supplying `--hook`. Those are the checks that would have caught this project's two largest defects, and both were invisible from records alone.
 
@@ -61,11 +61,11 @@ Reported as results, not as advantage claims.
 | document | what it holds |
 | --- | --- |
 | [`docs/pre-registration.md`](docs/pre-registration.md) | v1.0, frozen. Hypotheses, design, declared power, decision rule. Never edited; errors in it are corrected by deviation records. |
-| [`docs/deviations.md`](docs/deviations.md) | Eleven records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
+| [`docs/deviations.md`](docs/deviations.md) | Sixteen records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
 | [`docs/predictions.md`](docs/predictions.md) | Exploratory claims written down with falsification conditions **before** the run that tests them. Outcomes are appended, never edited, including a withdrawn bound. |
 | `docs/week-0N-report.md` | Weekly records. Week 4 logs twelve errors and names the pattern behind four of them. |
 
-Weekly documents are generated from their records by `scripts/report_to_docx.js`, not transcribed.
+Weeks 4 to 8 and `deviations.docx` are generated from their records by `scripts/report_to_docx.js`. **Weeks 1 to 3 were transcribed into Word by hand**, before that generator existed, and are not regenerated; `scripts/check_docx_fresh.py` reports them as provenance-unrecorded rather than assuming they match. That checker exists because the generator alone did not prevent drift: on 15 October 2026 `deviations.docx` was found sixteen days behind a record that had since doubled in length.
 
 ## Use of AI assistance
 
