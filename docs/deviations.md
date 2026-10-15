@@ -2663,3 +2663,88 @@ stays at five.
 reasoning for each of the three items is in `docs/paper-results.md` §4.7, in
 `docs/paper-draft.md`, and in `docs/paper-references.md`. Nothing about the
 repository's content is wrong; only the message describing how it got there.
+
+---
+
+### Note, 15 October 2026: the repository was private throughout, so "pushed before" never meant "published before"
+
+Not a deviation from the registered design. It changes **no** result. It changes
+**what every ordering claim in this project is worth**, and it is the most
+consequential thing recorded in this file after D6.
+
+**How it was found.** A Software Heritage save request was submitted on
+15 October 2026 (request 2558108). It was accepted and then failed:
+`save_task_status: failed`, `visit_status: not_found`, no snapshot identifier.
+The loader could not find the origin. An unauthenticated query to
+`https://api.github.com/repos/jnchowdary/qml-benchmark-lab` returns **404**. The
+author's pushes had always succeeded because the author is authenticated, which
+says nothing about anonymous access.
+
+**The window.** Private from the project's start on 17 September 2026 until
+15 October 2026, as far as the author knows — roughly four weeks, covering every
+commit discussed in this file. **No reader could have checked any claim in this
+project during its entire working life.**
+
+#### What this withdraws
+
+**"Committed and pushed before the value was read" does not mean published.**
+D14 section 9 required that "the chosen option and the mapping from each outcome
+to each verdict be committed and pushed *before* any recomputed value is
+examined", and recorded that this is what happened. D16 was "specified in full
+and pushed before it was computed". Both are true as stated and **neither was
+public**. The remote was readable by one person.
+
+What the increment over a purely local commit actually is: GitHub holds
+server-side receipt times for a push, which the author does not directly set.
+That is a real difference from a local commit, whose timestamp the author
+controls completely. But those times are **not exposed to a reader, not
+verifiable by one, and not citable**, so the increment is small and this project
+does not claim it as evidence. Every phrasing in this file of the form
+*"declared publicly"*, *"published before"* or *"public before the run"* is
+**withdrawn and replaced by "committed and pushed to a private remote before"**.
+
+**This compounds D11 rather than standing beside it.** D11 already records that
+there is no external registration, no pre-result external timestamp, and a
+history rewritten on 25 September. Add that the history was invisible to anyone
+else, and the ordering evidence is: an author-controlled history, once rewritten,
+on a remote only the author could read, with no external attestation at any
+point. **A reader who declines to accept that as evidence of ordering is left
+with nothing**, and the honest position is that the pre-commitment discipline
+documented here is a discipline the author practised, not a claim a reader can
+check.
+
+#### What survives
+
+The pre-commitments were real, in the sense that matters for the work: the
+option, the mapping and the proof existed before the computation ran, and the
+record shows the author constraining himself rather than choosing afterwards.
+That is worth something to the author and to anyone who extends the work. It is
+**not** worth what a public timestamp would be worth, and this file previously
+implied otherwise.
+
+The format claim in paper §6.3 is unaffected. *"A results file in this format can
+be audited by a stranger in seconds"* is a property of the format, demonstrable
+from the specification in §5.2 and from the week-6 foreign run, and it does not
+depend on this repository's visibility. What was undermined is the
+**demonstration**, not the claim: no stranger could obtain the file.
+
+#### What is being done
+
+The author has decided to make the repository public and to retry the archive.
+**Neither has happened yet.** At 01:25 on 15 October 2026 the unauthenticated
+GitHub API still returned 404, and a second save request (2558127) was submitted
+against the still-private origin and will fail as 2558108 did. When the
+visibility change is made and a save succeeds, the snapshot identifier is
+recorded here and in §4.7, with the standing caveat that **it postdates every
+result in this paper** and therefore bounds the gap rather than closing it.
+
+An earlier version of the §4.7 paragraph stated that visibility "was changed on
+15 October 2026 and the archive retried". It had not been. That sentence was
+written in anticipation of an action that had not occurred, which is the same
+error this file records on 5 October and twice since, and it was corrected before
+being committed.
+
+Nothing in this note is reported as a defect in the tool or in a measurement, so
+**§5.6's count stays at five**, by the boundary set on 5 October. It is a defect
+in what this project believed about its own availability, found by a service
+that tried to read it and could not.

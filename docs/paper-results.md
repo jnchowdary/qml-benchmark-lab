@@ -245,6 +245,33 @@ dataset and one non-significant contrast.
 
 ## 4.7 Limitations, including two this study created
 
+**The artefact was not available, and this conditions every limitation below
+it.** The repository was **private from 17 September to 15 October 2026**, the
+whole of the project's working life. It was found on 15 October, when a Software
+Heritage save request failed with `visit_status: not_found` and an
+unauthenticated GitHub query returned 404; the author's pushes had always
+succeeded because the author is authenticated. **No reader could have checked
+any claim in this study while it was being made.**
+
+The consequence for ordering is the one that matters. D14 required its chosen
+option and outcome-to-verdict mapping to be "committed and pushed before any
+recomputed value is examined", and D16 was "specified in full and pushed before
+it was computed". Both happened. **Neither was public.** A push to a private
+remote does leave server-side receipt times the author does not set, which a
+purely local commit does not, but those times are not exposed to a reader, not
+verifiable by one and not citable. So every phrasing of the form *declared
+publicly* or *published before the run* is **withdrawn** in favour of *committed
+and pushed to a private remote before*, and the pre-commitment discipline here
+is something the author practised rather than something a reader can check.
+
+**As this is written the repository is still private**, confirmed by a 404 from
+the unauthenticated GitHub API at 01:25 on 15 October 2026. The author has
+decided to make it public and two Software Heritage save requests (2558108,
+2558127) have failed for that reason. Until the change is made, everything below
+describes what a reader **would** be able to do and not what any reader can do
+today. This sentence is the marker for that, and it is dated so that a reader can
+tell whether it was updated.
+
 **Provenance.** Every one of the 15,120 result records stores a `git_commit`
 that does not exist on the public repository. A history rewrite on 25 September
 2026 changed every commit hash; the three stored hashes resolve only from a
@@ -271,11 +298,15 @@ co-authorship trailers the rewrite removed. **That decision is open and is
 recorded as open.** The trade-off is stated in D11's fourth amendment and this
 paper does not resolve it.
 
-**No external timestamp.** This study is not registered at OSF and has **no
-Software Heritage snapshot predating its results**, which remains outstanding.
-Its ordering evidence is an author-controlled history that has already been
-rewritten once. Every ordering claim in this paper, including the claims in D13
-and D16 that a decision preceded a result, rests on evidence of that class.
+**No external timestamp, and no external reader either.** This study is not
+registered at OSF and has **no Software Heritage snapshot predating its
+results**. Its ordering evidence is an author-controlled history, rewritten once
+on 25 September, on a remote that no one else could read until 15 October, with
+no external attestation at any point. Every ordering claim in this paper,
+including the claims in D13, D14 and D16 that a decision preceded a result, rests
+on evidence of that class. **A reader who declines to accept it is left with
+nothing**, and that is the honest statement of the position rather than a
+reason to discount the claims selectively.
 
 **No hardware.** The IBM runs registered for weeks 7 to 8 were dropped as
 infeasible (D12) and no claim in this paper depends on them.
@@ -322,8 +353,10 @@ for it.
 
 **Three items unchanged.** The `descriptive_only` rows in the exploratory output
 do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
-check has not been extended since week 9. And a **Software Heritage save request
-was accepted on 15 October 2026** (request 2558108); until its visit completes
-there is no snapshot identifier to cite, and when there is, **it will postdate
-every result in this paper**. It bounds the gap in the paragraph above rather
-than closing it.
+check has not been extended since week 9. And the **Software Heritage save
+request of 15 October 2026 FAILED** (request 2558108): accepted, then
+`save_task_status: failed`, `visit_status: not_found`, no snapshot identifier.
+The loader could not find the origin because the repository was private; see the
+first paragraph of this section.
+Had it succeeded it would still have postdated every result here, bounding that
+gap rather than closing it.

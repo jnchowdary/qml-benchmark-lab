@@ -98,8 +98,12 @@ tags `records-0b796a3`, `records-2cf7ec7` and `records-0b2aef4` map those
 identifiers to public counterparts and state in their own messages which half of
 that correspondence a reader can check.
 
-**Every ordering claim in this paper — including the claims in D13 and D15 that
-a decision preceded a result — rests on evidence of that class.** A reader who
-does not accept an author-controlled history as evidence of ordering should
-discount those claims accordingly, and the records say so rather than leaving it
-to be noticed.
+**Every ordering claim in this paper — including the claims in D13, D14, D15 and
+D16 that a decision preceded a result — rests on evidence of that class**, and on
+one further fact recorded on 15 October 2026: **the repository was private from
+17 September to 15 October**, so none of those pushes was public when it was
+made. "Committed and pushed before the value was read" is true of all of them and
+means pushed to a remote only the author could read. A reader who does not accept
+an author-controlled, once-rewritten, privately-held history as evidence of
+ordering should discount those claims accordingly, and the records say so rather
+than leaving it to be noticed.
