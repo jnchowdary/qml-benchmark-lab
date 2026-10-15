@@ -48,15 +48,33 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TESTS = ROOT / "tests" / "test_geometric_tests.py"
+
+# Source files a mutant may touch.
 GT = "scripts/geometric_tests.py"
 PT = "scripts/primary_tests.py"
+GD = "src/qbench/kernels/geometric_difference.py"
+GS = "scripts/gtra_sweep.py"
+ES = "scripts/exploratory_sweep.py"
+
+# Test files a mutant may be checked against.
+#
+# EXTENDED 15 OCTOBER 2026, and the reason is recorded because the gap was
+# published. Until now `TESTS` was a single file and `run_test` hardcoded it, so
+# a mutant for a test living anywhere else could not be expressed. Three
+# mutants run during the F20 and lambda work had to be run BY HAND and their
+# status rested on a manual run rather than on this suite; that limitation is
+# stated in paper section 4.7 and in the deviations note of 5 October. A harness
+# that can only check one file is not a harness for the project.
+T_GT = "tests/test_geometric_tests.py"
+T_GD = "tests/test_geometric_difference.py"
+T_PT = "tests/test_primary_tests.py"
+T_ES = "tests/test_exploratory_sweep.py"
 
 
-def M(name, why, old, new, test, file=GT):
-    """One mutant: revert `old` to `new` in `file`, then `test` MUST fail."""
+def M(name, why, old, new, test, file=GT, tests=T_GT):
+    """One mutant: revert `old` to `new` in `file`, then `test` in `tests` MUST fail."""
     return {"name": name, "why": why, "old": old, "new": new, "test": test,
-            "file": file}
+            "file": file, "tests": tests}
 
 
 MUTANTS = [
@@ -244,11 +262,62 @@ MUTANTS = [
       "def load(path):\n    path = Path(path)\n    if not path.exists():",
       "TestSweepPlumbing::test_load_takes_a_path_not_a_string",
       file=PT),
+
+    # ---- added 15 October 2026, when this harness learned to read more than
+    # ---- one test file. These four were run BY HAND during the F20, lambda
+    # ---- and exploratory work, and their status rested on that until now.
+
+    M("g_tra inverts the quantum kernel",
+      "F20 carries F19's assignment, so the inverted matrix is K_C. A mutant "
+      "that inverts K_Q instead is still monotone, still non-negative, and "
+      "passed all 51 tests in its file until the orientation test was pinned "
+      "to an exact value",
+      "    A = np.linalg.solve(K_c + lam * np.eye(n), sqrt_Kq)",
+      "    A = np.linalg.solve(K_q + lam * np.eye(n), _matrix_sqrt_psd(K_c))",
+      "test_g_tra_inverts_the_classical_kernel_not_the_quantum_one",
+      file=GD, tests=T_GD),
+
+    M("g_tra drops its leading lambda",
+      "F20 is lam * sqrt(||.||). Without the factor it is not g_tra and the "
+      "0.045 threshold means nothing",
+      "    return float(lam * np.sqrt(max(_spectral_norm_sym(core), 0.0)))",
+      "    return float(np.sqrt(max(_spectral_norm_sym(core), 0.0)))",
+      "test_g_tra_matches_the_closed_form_when_the_kernels_coincide",
+      file=GD, tests=T_GD),
+
+    M("lambda regains its factor of n",
+      "D14 adopted 1/(2C) from Appendix D's summed objective. The withdrawn "
+      "1/(2*C*n) rested on a docstring that cited nothing and survived the "
+      "whole registered sweep because no test pinned the factor",
+      "    return 1.0 / (2.0 * C)",
+      "    return 1.0 / (2.0 * C * n)",
+      "test_lambda_from_svm_C_is_one_over_2C_and_does_not_scale_with_n",
+      file=GD, tests=T_GD),
+
+    M("seed_means pools rows instead of averaging within seed",
+      "week 4 item 10: cells at one seed share a train/test split, so pooling "
+      "them turns 20 paired observations into 60 pseudo-replicates and every "
+      "p-value in the family is wrong",
+      """    vals = []
+    for seed in seeds:
+        xs = [diffs[c][seed][idx] for c in cells
+              if c in diffs and seed in diffs[c]]
+        if xs:
+            vals.append(float(np.mean(xs)))
+    return vals""",
+      """    vals = []
+    for seed in seeds:
+        for c in cells:
+            if c in diffs and seed in diffs[c]:
+                vals.append(float(diffs[c][seed][idx]))
+    return vals""",
+      "TestSeedMeans::test_returns_one_value_per_seed_not_one_per_row",
+      file=ES, tests=T_ES),
 ]
 
 
-def run_test(nodeid):
-    cmd = [sys.executable, "-m", "pytest", f"{TESTS}::{nodeid}",
+def run_test(nodeid, testfile):
+    cmd = [sys.executable, "-m", "pytest", f"{ROOT / testfile}::{nodeid}",
            "-q", "--no-header", "-x", "-p", "no:cacheprovider"]
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True,
                        env={**os.environ, "PYTHONPATH": str(ROOT / "src")})
@@ -256,27 +325,46 @@ def run_test(nodeid):
 
 
 def coverage_report():
-    """Which tests have no mutant, i.e. whose non-vacuity is unproven."""
+    """Per test file: which of its test FUNCTIONS have a mutant and which do not.
+
+    EVERY file under tests/ is scanned, not only the ones a mutant names. An
+    earlier version of this function reported only files that already had
+    mutants, so a test file with none was invisible and the uncovered total
+    excluded it. That made the report flatter the harness: it said 40 functions
+    lacked a mutant when the figure across the suite was ten times that.
+
+    The denominator is test FUNCTIONS, not collected test cases. Six
+    `parametrize` decorators in tests/test_geometric_difference.py alone mean
+    pytest collects 51 cases from 28 functions. A mutant is tied to a function,
+    so functions are the right denominator, and the wording says so rather than
+    leaving "3 of 28" to be read as pytest's count.
+    """
     import re
-    covered = {m["test"].split("::")[-1] for m in MUTANTS}
-    allt = set(re.findall(r"def (test_\w+)", TESTS.read_text()))
-    return covered, allt
+    out = {}
+    for path in sorted((ROOT / "tests").glob("test_*.py")):
+        tf = str(path.relative_to(ROOT))
+        covered = {m["test"].split("::")[-1] for m in MUTANTS if m["tests"] == tf}
+        allt = set(re.findall(r"def (test_\w+)", path.read_text()))
+        out[tf] = (covered, allt)
+    return out
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--list", action="store_true", help="show the mutants and stop")
+    ap.add_argument("--uncovered", action="store_true",
+                    help="also name every test that has no mutant")
     args = ap.parse_args()
 
     if args.list:
         for i, m in enumerate(MUTANTS, 1):
             print(f"  {i:2d}. {m['name']}  [{m['file']}]\n      {m['why']}"
-                  f"\n      -> {m['test']}")
+                  f"\n      -> {m['tests']}::{m['test']}")
         return
 
-    covered, allt = coverage_report()
-    stray = covered - allt
-    uncovered = allt - covered
+    cov = coverage_report()
+    stray = {tf: sorted(c - a) for tf, (c, a) in cov.items() if c - a}
+    uncovered = {tf: sorted(a - c) for tf, (c, a) in cov.items() if a - c}
 
     files = sorted({m["file"] for m in MUTANTS})
     originals = {f: (ROOT / f).read_text() for f in files}
@@ -285,11 +373,31 @@ def main():
     print(f"\nMUTATION CHECK, {len(MUTANTS)} mutants across {len(files)} file(s)")
     for f in files:
         print(f"    {f}  {digests[f]}")
-    print(f"\n  coverage: {len(covered)} of {len(allt)} tests have a mutant")
+    n_cov = sum(len(c) for c, _ in cov.values())
+    n_all = sum(len(a) for _, a in cov.values())
+    print(f"\n  coverage: {n_cov} of {n_all} test FUNCTIONS across "
+          f"{len(cov)} files have a mutant.")
+    print(f"  Functions, not collected cases: parametrisation means pytest "
+          f"collects more.")
+    for tf, (c, a) in cov.items():
+        mark = "   " if c else " * "
+        print(f"  {mark}{tf:<40} {len(c):>3} of {len(a):>3}")
+    print(f"    * = no mutant anywhere in this file")
     if stray:
-        print(f"  MUTANTS NAMING A TEST THAT DOES NOT EXIST: {sorted(stray)}")
-    if uncovered:
-        print(f"  tests with NO mutant (non-vacuity unproven): {sorted(uncovered)}")
+        print(f"\n  MUTANTS NAMING A TEST THAT DOES NOT EXIST:")
+        for tf, names in stray.items():
+            print(f"    {tf}: {names}")
+    n_unc = sum(len(v) for v in uncovered.values())
+    if n_unc:
+        print(f"\n  {n_unc} test(s) have NO mutant, so their non-vacuity is "
+              f"unproven.")
+        if args.uncovered:
+            for tf, names in uncovered.items():
+                print(f"    {tf}:")
+                for n in names:
+                    print(f"      {n}")
+        else:
+            print(f"  Re-run with --uncovered to name them.")
     print("\n  Each fix is reverted, its test is run, and the run MUST fail.")
     print("  A SURVIVOR means the test does not test what its name says.\n")
 
@@ -305,7 +413,7 @@ def main():
                 missing.append(name)
                 continue
             path.write_text(src.replace(m["old"], m["new"]))
-            code, _ = run_test(test)
+            code, _ = run_test(test, m["tests"])
             if code == 0:
                 print(f"  [SURVIVED] {name}\n             {m['why']}\n"
                       f"             {test} still passes against the broken code")
@@ -336,6 +444,8 @@ def main():
     print("\n  This is a lower bound: killed mutants are not proof of coverage,")
     print("  only proof that these particular tests are not vacuous.")
     sys.exit(1 if (survivors or missing or stray) else 0)
+    # `stray` is a dict now; an empty dict is falsey, so this is unchanged in
+    # behaviour and a mutant naming a nonexistent test still fails the run.
 
 
 if __name__ == "__main__":

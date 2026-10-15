@@ -5,7 +5,7 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-15T01:13:14+00:00 at commit `c8c5665`.
+Assembled 2026-10-15T01:18:49+00:00 at commit `60c3bd3`.
 
 | section | source | sha256 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Assembled 2026-10-15T01:13:14+00:00 at commit `c8c5665`.
 | 1 | `docs/paper-introduction.md` | `9bda5ef0dddc770b` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `60c6a9ec10f7f837` |
-| 4 | `docs/paper-results.md` | `1c8d2738804ca103` |
+| 4 | `docs/paper-results.md` | `ea3cb7fd47ab8053` |
 | 5 | `docs/paper-protocol.md` | `8311acae52aa28ff` |
 | 6 | `docs/paper-discussion.md` | `854f81aec0a4f449` |
 | 7 | `docs/paper-deviations-pointer.md` | `7854495c6f155e1d` |
@@ -1040,14 +1040,33 @@ references but does not ship is the same defect class as a commit hash that does
 not resolve. Three PNGs are 319 KB. The SVG sources remain excluded, being
 regenerable and read by nothing in the paper.
 
-**Checks this study has not completed.** Four, listed rather than left implicit.
-`scripts/mutation_check.py` is scoped to a single test file, so the mutants for
-the F20 diagnostic, the exploratory families and the λ correction were run by
-hand and their status rests on manual runs rather than on the suite. The
-`descriptive_only` rows in the exploratory output do not carry the
-`below_d2_floor` field the tested rows carry. The grid adequacy check has not
-been extended since week 9. And the Software Heritage snapshot named above has
-not been taken.
+**Checks this study has not completed**, listed rather than left implicit.
+
+**The mutation harness now reads every test file, and what it reveals is worse
+than what it fixed.** Until 15 October it was hardwired to one test file, so
+mutants for the F20 diagnostic, the λ correction and the exploratory families
+had to be run by hand. Those four are now in the suite and all 34 mutants are
+killed by the test that names each one, across four source files and three test
+files. But the coverage report was also scanning only the files that already had
+mutants, which hid every file with none: corrected, it reads **34 of 374 test
+functions**, not the 34 of 70 the old report implied. **Fifteen of eighteen test
+files have no mutant at all**, including `tests/test_audit.py` and its 76
+functions — the tests for the audit tool §5 is about. So the honest statement is
+that this project has demonstrated non-vacuity for 9% of its test functions and
+has not examined the rest.
+
+**One check has no mutant because it has no test.** `select_lambda` in
+`scripts/gtra_sweep.py`, which implements D16's selection rule, is exercised only
+by that script's own control F and not by pytest, so no mutant can be expressed
+for it.
+
+**Three items unchanged.** The `descriptive_only` rows in the exploratory output
+do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
+check has not been extended since week 9. And a **Software Heritage save request
+was accepted on 15 October 2026** (request 2558108); until its visit completes
+there is no snapshot identifier to cite, and when there is, **it will postdate
+every result in this paper**. It bounds the gap in the paragraph above rather
+than closing it.
 
 ---
 
