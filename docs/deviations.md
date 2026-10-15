@@ -2610,3 +2610,56 @@ evaluated, with the third unresolved because its own precondition fails, and
 was measured on two datasets, one grid, one orientation, with statevector
 simulation and this project's classical kernels. A rule can be unsatisfiable
 where it was tested and workable elsewhere, and nothing here separates those.
+
+---
+
+### Note, 15 October 2026: a second commit message that misdescribes its contents, and the cause named
+
+Not a deviation. No hypothesis, rule, result or document content is affected.
+Recorded because this is the **second** instance of the same failure, and because
+the first note of 5 October stated the rule this one follows.
+
+**What happened.** `a8f55a7` carries the message *"docs: track week-09-plan.md,
+untracked since 1 October"* and contains **eleven** files:
+
+    .gitignore                              (three figure exceptions)
+    docs/florez-ablan-code-check.md         (dropped co-author restored in the title)
+    docs/paper-draft.md                     (results duplicate removed)
+    docs/paper-references.md                (new)
+    docs/paper-results.md                   (figures inline, reversal recorded)
+    docs/paper.md                           (regenerated)
+    scripts/assemble_paper.py               (References added to SECTIONS)
+    results/figures/fig1_h2_lambda.png      (new)
+    results/figures/fig2_h1_paired.png      (new)
+    results/figures/fig3_churn_exploratory.png (new)
+    docs/week-09-plan.md                    (new, and the only one the message describes)
+
+Ten of the eleven were intended for a separate commit whose message set out the
+three items: removing the results duplicate, committing the figures with the
+reason the earlier exclusion decision was reversed, and adding the references.
+That message was never used.
+
+**The cause, which is the part worth recording.** The assistant supplied two
+commits in two separate messages while the staging area was shared between them,
+and asked the author to scroll back for the first. The author ran the one in
+front of him, which committed everything already staged. **Every other commit in
+this session put the `git add` and the message in one block**, and this one did
+not. The failure is in how the instruction was handed over, not in how it was
+followed.
+
+**Not corrected in place.** `a8f55a7` is pushed. Amending it would require a
+force-push, and the 25 September history rewrite is the direct cause of every
+provenance limitation in §4.7 — trading that for a tidier message is a bad
+bargain. The message stands as pushed and this note is the correction, by the
+rule the note of 5 October set out: *a record that is edited after the fact is
+weaker evidence than a wrong record with its correction attached.*
+
+**Not added to §5.6's count.** By the boundary stated on 5 October, an
+inaccuracy enters §5.6 when it misstates a measurement or an instrument's
+behaviour. A commit subject line does neither and no number moved. The count
+stays at five.
+
+**What the contents of `a8f55a7` actually are** is the list above, and the
+reasoning for each of the three items is in `docs/paper-results.md` §4.7, in
+`docs/paper-draft.md`, and in `docs/paper-references.md`. Nothing about the
+repository's content is wrong; only the message describing how it got there.
