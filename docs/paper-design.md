@@ -57,9 +57,11 @@ The cost of refusing that shortcut was about 46 hours of compute against 34.
 **Classical kernels and grids, frozen.** Linear; RBF with gamma 1e-3 to 1e2 in
 half-decades; polynomial with degree 2 to 5, scale-relative multiplier
 0.1/1/3/10, `coef0` in {0, 1}; C from 1e-4 to 1e4. These were tested for
-under-tuning by extension in both directions against a shuffled-label null; the
-extension gained five to seven times more on random labels than on real ones, so
-they stand.
+under-tuning by extension in both directions against a shuffled-label null. The
+extension gained more on random labels than on real ones on every kernel and
+both datasets, by factors of 2.0 and 5.0 on churn and 35.7 and 6.6 on fraud, so
+they stand. §3.7 records that the registered wording gives this as "five to
+seven times", which is the polynomial-kernel figure and not the range.
 
 **Tuning, identical across arms.** Nested cross-validation: 20 outer seeds,
 5-fold stratified inner CV on the outer-train portion only.
@@ -220,8 +222,17 @@ enforced in code and tested.
 **Grid adequacy.** Any claim that a quantum grid is too narrow must be
 adjudicated by `scripts/check_grid_edges.py` against a shuffled-label null.
 **Hyperparameter edge flags alone will never justify widening a grid**, because
-extension raises the maximum inner-CV score even when no point is better —
-measured at five to seven times the real gain on the classical grids.
+extension raises the maximum inner-CV score even when no point is better.
+
+The registered wording puts that effect at "five to seven times the real gain on
+the classical grids". The measurement supports its direction everywhere and its
+range nowhere. Five and seven are the polynomial-kernel mean ratios, 5.0 on
+churn and 6.6 on fraud; on the RBF kernels the ratio is 2.0 on churn and 35.7 on
+fraud, so two of the four measurements fall outside the registered range and one
+of them falls below it, understating the effect the rule exists to guard
+against. The figures are in `results/analysis/grid_edges_*_both*.json`. **The
+pre-registration's wording is unamended**, because changing a registered
+document is a deviation and not a copy edit.
 
 **Backend.** All quantum kernels on `lightning.qubit`, with a test asserting
 `default.qubit` agreement to 1e-8. Cost is reported in circuit evaluations,

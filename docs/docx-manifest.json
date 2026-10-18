@@ -10,9 +10,9 @@
     },
     "docs/paper.docx": {
       "source": "docs/paper.md",
-      "source_sha256": "603de072f37bc3c0613944fe8a4c06c8c61918fe5ac3750fc271251960a9df33",
-      "generated_at": "2026-10-15T02:23:00Z",
-      "generator_commit": "c588aa7",
+      "source_sha256": "686ec7687a0dfefa47625c875be49de418c8148d7b13860d370f167500280170",
+      "generated_at": "2026-10-18T13:50:59Z",
+      "generator_commit": "986d364",
       "docx_version": "9.7.1"
     },
     "docs/week-04-report.docx": {

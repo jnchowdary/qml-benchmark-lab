@@ -96,12 +96,14 @@ case, unevidenced either way.
 
 **Not that the protocol is validated.** Every records-level and kernel-level
 check was written after the defect it catches. The instrument has needed repair
-five times in public, twice because the tool was wrong and three times because
-its authors asserted something they had not checked. The fifth was a superseded
-exclusion bound that the confirmatory script printed for eleven days after the
-correction was written, pinned in place by a regression test; nothing in the
-protocol caught it, because nothing in the protocol reads this project's own
-reporting code.
+six times in public, three times because the tool was wrong and three times
+because its authors asserted something they had not checked. Two of the six are
+the same lesson twice: a superseded exclusion bound that the confirmatory script
+printed for eleven days after the correction was written, pinned in place by a
+regression test, and the registered adjudicator of grid adequacy, which printed
+a verdict its own record had withdrawn for three weeks. Nothing in the protocol
+caught either, because nothing in the protocol reads this project's own analysis
+and reporting code.
 
 **Not that the findings about published work are errors in their conclusions.**
 They are statements that a claim cannot be checked from the published artefact

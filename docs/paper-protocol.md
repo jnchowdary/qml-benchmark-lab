@@ -228,15 +228,33 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Five things have gone wrong in public, and they are two different kinds.**
+**Six things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
-*Defects in the instrument (two).* On its first contact with real records the
+*Defects in the instrument (three).* On its first contact with real records the
 tool required a field this project's own pipeline never emitted, collapsed
 fifteen configurations into one, and **silently changed three answers**. The
 first audit run against real records then found four further defects, **all four
 in the checks rather than in the records**, with the full test suite passing on
 every one.
+
+The third is the registered adjudicator of grid adequacy. Section 7 of the
+pre-registration names `scripts/check_grid_edges.py` as what decides whether a
+grid is too narrow, and requires the decision to be made against a
+shuffled-label null. The script computed that null when asked, printed it, and
+told the reader to do the subtraction by hand, while on a real run printing a
+verdict derived from the ratio of the gain to the minimum detectable effect.
+Week 3 had already recorded that ratio as a defect, because the maximum over a
+grid grows with the number of points searched and so cannot separate an optimum
+lying outside the grid from a surface too noisy to rank; the threshold week 3
+describes as pre-declared existed nowhere in the code. The committed log
+`results/analysis/grid_edges_fraud.log` therefore carried the verdict
+**UNDER-TUNED, widen the grids and re-run week 3**, where the registered
+comparison returns adequate. The correct answer was in the week-3 record
+throughout and the project acted on it, so no result here rests on the wrong
+verdict; what was published was an instrument contradicting its own record for
+three weeks. Found on 18 October 2026 by reading the script, not by any check in
+this protocol.
 
 *Claims its authors made without checking (three).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
@@ -250,7 +268,7 @@ a regression test asserted it. Nobody re-read the code after writing the
 correction. It was found on 6 October 2026 while refactoring an unrelated
 function, by inspection and not by any check in this protocol.
 
-**None of the five is an audited pipeline failing an audit.** A reader who takes
+**None of the six is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed
@@ -272,10 +290,25 @@ project's own reporting code, found the same day: a Holm family size printed as
 the literal 4 rather than computed, and a table headed "all cells" that silently
 skipped cells with too few paired series. Neither of those two ever produced a
 wrong value, so neither joins the count above; the superseded bound did, so it
-does. What all three share is the route by which they were found. **Tier 1 reads
-records and Tier 2 reads kernels. Nothing in this protocol reads its own
-reporting code for claims the data does not support**, which is where all three
-lived.
+does. The sixth item above, the grid adjudicator, was found the same way. What
+all four share is the route. **Tier 1 reads records and Tier 2 reads kernels.
+Nothing in this protocol reads this project's own analysis and reporting code
+for claims the data does not support**, which is where all four lived.
+
+**A further group found by reading and deliberately not counted.** Three
+separate generators defaulted to not recording their output: the `.docx`
+exporter wrote no provenance, `scripts/exploratory_sweep.py` required `--out`
+with no default, and the paper existed only as section files until an assembler
+was written for it. An unrecorded output is an absent value rather than a wrong
+one, so none of these joins the count above. One of them did publish a stale
+artefact: on 15 October 2026 `docs/deviations.docx` was sixteen days and roughly
+1,400 record lines behind its source, because generating the document was a step
+somebody had to remember. `scripts/check_docx_fresh.py` now stores the SHA-256
+of each export's source and fails when it moves. **It does not hash the
+generator**, so a change there leaves every export reported current while its
+output would differ, and **it does not look inside the document**, so an export
+edited by hand after generation also reports current. Both gaps are stated here
+rather than closed.
 
 That last fact is the honest summary of what this protocol is worth. **A green
 test suite was not evidence that a measurement tool measured anything**; reading

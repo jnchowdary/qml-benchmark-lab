@@ -5,16 +5,16 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-15T01:38:43+00:00 at commit `d76d232`.
+Assembled 2026-10-18T13:50:56+00:00 at commit `986d364`.
 
 | section | source | sha256 |
 | --- | --- | --- |
 | Abstract | `docs/paper-abstract.md` | `daae3db496e43fef` |
-| 1 | `docs/paper-introduction.md` | `9bda5ef0dddc770b` |
+| 1 | `docs/paper-introduction.md` | `ec22402aefe452b8` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
-| 3 | `docs/paper-design.md` | `60c6a9ec10f7f837` |
-| 4 | `docs/paper-results.md` | `51436c407e18bdbe` |
-| 5 | `docs/paper-protocol.md` | `8311acae52aa28ff` |
+| 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
+| 4 | `docs/paper-results.md` | `e29d56f96bdac5a5` |
+| 5 | `docs/paper-protocol.md` | `1836338ac8e1a3a6` |
 | 6 | `docs/paper-discussion.md` | `854f81aec0a4f449` |
 | 7 | `docs/paper-deviations-pointer.md` | `b6302387ea49dade` |
 | References | `docs/paper-references.md` | `958b0237e15ec45f` |
@@ -145,12 +145,14 @@ case, unevidenced either way.
 
 **Not that the protocol is validated.** Every records-level and kernel-level
 check was written after the defect it catches. The instrument has needed repair
-five times in public, twice because the tool was wrong and three times because
-its authors asserted something they had not checked. The fifth was a superseded
-exclusion bound that the confirmatory script printed for eleven days after the
-correction was written, pinned in place by a regression test; nothing in the
-protocol caught it, because nothing in the protocol reads this project's own
-reporting code.
+six times in public, three times because the tool was wrong and three times
+because its authors asserted something they had not checked. Two of the six are
+the same lesson twice: a superseded exclusion bound that the confirmatory script
+printed for eleven days after the correction was written, pinned in place by a
+regression test, and the registered adjudicator of grid adequacy, which printed
+a verdict its own record had withdrawn for three weeks. Nothing in the protocol
+caught either, because nothing in the protocol reads this project's own analysis
+and reporting code.
 
 **Not that the findings about published work are errors in their conclusions.**
 They are statements that a claim cannot be checked from the published artefact
@@ -511,9 +513,11 @@ The cost of refusing that shortcut was about 46 hours of compute against 34.
 **Classical kernels and grids, frozen.** Linear; RBF with gamma 1e-3 to 1e2 in
 half-decades; polynomial with degree 2 to 5, scale-relative multiplier
 0.1/1/3/10, `coef0` in {0, 1}; C from 1e-4 to 1e4. These were tested for
-under-tuning by extension in both directions against a shuffled-label null; the
-extension gained five to seven times more on random labels than on real ones, so
-they stand.
+under-tuning by extension in both directions against a shuffled-label null. The
+extension gained more on random labels than on real ones on every kernel and
+both datasets, by factors of 2.0 and 5.0 on churn and 35.7 and 6.6 on fraud, so
+they stand. §3.7 records that the registered wording gives this as "five to
+seven times", which is the polynomial-kernel figure and not the range.
 
 **Tuning, identical across arms.** Nested cross-validation: 20 outer seeds,
 5-fold stratified inner CV on the outer-train portion only.
@@ -674,8 +678,17 @@ enforced in code and tested.
 **Grid adequacy.** Any claim that a quantum grid is too narrow must be
 adjudicated by `scripts/check_grid_edges.py` against a shuffled-label null.
 **Hyperparameter edge flags alone will never justify widening a grid**, because
-extension raises the maximum inner-CV score even when no point is better —
-measured at five to seven times the real gain on the classical grids.
+extension raises the maximum inner-CV score even when no point is better.
+
+The registered wording puts that effect at "five to seven times the real gain on
+the classical grids". The measurement supports its direction everywhere and its
+range nowhere. Five and seven are the polynomial-kernel mean ratios, 5.0 on
+churn and 6.6 on fraud; on the RBF kernels the ratio is 2.0 on churn and 35.7 on
+fraud, so two of the four measurements fall outside the registered range and one
+of them falls below it, understating the effect the rule exists to guard
+against. The figures are in `results/analysis/grid_edges_*_both*.json`. **The
+pre-registration's wording is unamended**, because changing a registered
+document is a deviation and not a copy edit.
 
 **Backend.** All quantum kernels on `lightning.qubit`, with a test asserting
 `default.qubit` agreement to 1e-8. Cost is reported in circuit evaluations,
@@ -1116,14 +1129,24 @@ has not examined the rest.
 by that script's own control F and not by pytest, so no mutant can be expressed
 for it.
 
-**Three items unchanged.** The `descriptive_only` rows in the exploratory output
-do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
-check has not been extended since week 9. And **two Software Heritage snapshots
+**One item unchanged, and two closed since.** **Two Software Heritage snapshots
 now exist**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd` at 01:33:06
 and `swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005` at 01:36:58 UTC on
 15 October 2026, after two earlier requests failed against the private origin. It postdates every result here, so it bounds the provenance gap
 rather than closing it; the first paragraph of this section states what it does
 and does not establish.
+
+The other two are closed, and one of them was described wrongly here. The
+`descriptive_only` rows in the exploratory output now carry the
+`below_d2_floor` field the tested rows carry. The grid adequacy check was said
+to have "not been extended since week 9", which misplaced the gap: the
+measurement was complete and correct in week 3 and reproduces bit-identically
+under current code, and what was missing was that its adjudication lived only in
+prose. `scripts/check_grid_edges.py` went on printing the rule week 3 had
+withdrawn, reporting UNDER-TUNED on fraud where the registered comparison
+against a shuffled-label null returns adequate on both datasets. The registered
+comparison is now what the script computes and what its output records; §5.6
+counts the episode.
 
 ---
 
@@ -1357,15 +1380,33 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Five things have gone wrong in public, and they are two different kinds.**
+**Six things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
-*Defects in the instrument (two).* On its first contact with real records the
+*Defects in the instrument (three).* On its first contact with real records the
 tool required a field this project's own pipeline never emitted, collapsed
 fifteen configurations into one, and **silently changed three answers**. The
 first audit run against real records then found four further defects, **all four
 in the checks rather than in the records**, with the full test suite passing on
 every one.
+
+The third is the registered adjudicator of grid adequacy. Section 7 of the
+pre-registration names `scripts/check_grid_edges.py` as what decides whether a
+grid is too narrow, and requires the decision to be made against a
+shuffled-label null. The script computed that null when asked, printed it, and
+told the reader to do the subtraction by hand, while on a real run printing a
+verdict derived from the ratio of the gain to the minimum detectable effect.
+Week 3 had already recorded that ratio as a defect, because the maximum over a
+grid grows with the number of points searched and so cannot separate an optimum
+lying outside the grid from a surface too noisy to rank; the threshold week 3
+describes as pre-declared existed nowhere in the code. The committed log
+`results/analysis/grid_edges_fraud.log` therefore carried the verdict
+**UNDER-TUNED, widen the grids and re-run week 3**, where the registered
+comparison returns adequate. The correct answer was in the week-3 record
+throughout and the project acted on it, so no result here rests on the wrong
+verdict; what was published was an instrument contradicting its own record for
+three weeks. Found on 18 October 2026 by reading the script, not by any check in
+this protocol.
 
 *Claims its authors made without checking (three).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
@@ -1379,7 +1420,7 @@ a regression test asserted it. Nobody re-read the code after writing the
 correction. It was found on 6 October 2026 while refactoring an unrelated
 function, by inspection and not by any check in this protocol.
 
-**None of the five is an audited pipeline failing an audit.** A reader who takes
+**None of the six is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed
@@ -1401,10 +1442,25 @@ project's own reporting code, found the same day: a Holm family size printed as
 the literal 4 rather than computed, and a table headed "all cells" that silently
 skipped cells with too few paired series. Neither of those two ever produced a
 wrong value, so neither joins the count above; the superseded bound did, so it
-does. What all three share is the route by which they were found. **Tier 1 reads
-records and Tier 2 reads kernels. Nothing in this protocol reads its own
-reporting code for claims the data does not support**, which is where all three
-lived.
+does. The sixth item above, the grid adjudicator, was found the same way. What
+all four share is the route. **Tier 1 reads records and Tier 2 reads kernels.
+Nothing in this protocol reads this project's own analysis and reporting code
+for claims the data does not support**, which is where all four lived.
+
+**A further group found by reading and deliberately not counted.** Three
+separate generators defaulted to not recording their output: the `.docx`
+exporter wrote no provenance, `scripts/exploratory_sweep.py` required `--out`
+with no default, and the paper existed only as section files until an assembler
+was written for it. An unrecorded output is an absent value rather than a wrong
+one, so none of these joins the count above. One of them did publish a stale
+artefact: on 15 October 2026 `docs/deviations.docx` was sixteen days and roughly
+1,400 record lines behind its source, because generating the document was a step
+somebody had to remember. `scripts/check_docx_fresh.py` now stores the SHA-256
+of each export's source and fails when it moves. **It does not hash the
+generator**, so a change there leaves every export reported current while its
+output would differ, and **it does not look inside the document**, so an export
+edited by hand after generation also reports current. Both gaps are stated here
+rather than closed.
 
 That last fact is the honest summary of what this protocol is worth. **A green
 test suite was not evidence that a measurement tool measured anything**; reading

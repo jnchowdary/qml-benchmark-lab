@@ -376,11 +376,21 @@ has not examined the rest.
 by that script's own control F and not by pytest, so no mutant can be expressed
 for it.
 
-**Three items unchanged.** The `descriptive_only` rows in the exploratory output
-do not carry the `below_d2_floor` field the tested rows carry. The grid adequacy
-check has not been extended since week 9. And **two Software Heritage snapshots
+**One item unchanged, and two closed since.** **Two Software Heritage snapshots
 now exist**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd` at 01:33:06
 and `swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005` at 01:36:58 UTC on
 15 October 2026, after two earlier requests failed against the private origin. It postdates every result here, so it bounds the provenance gap
 rather than closing it; the first paragraph of this section states what it does
 and does not establish.
+
+The other two are closed, and one of them was described wrongly here. The
+`descriptive_only` rows in the exploratory output now carry the
+`below_d2_floor` field the tested rows carry. The grid adequacy check was said
+to have "not been extended since week 9", which misplaced the gap: the
+measurement was complete and correct in week 3 and reproduces bit-identically
+under current code, and what was missing was that its adjudication lived only in
+prose. `scripts/check_grid_edges.py` went on printing the rule week 3 had
+withdrawn, reporting UNDER-TUNED on fraud where the registered comparison
+against a shuffled-label null returns adequate on both datasets. The registered
+comparison is now what the script computes and what its output records; §5.6
+counts the episode.
