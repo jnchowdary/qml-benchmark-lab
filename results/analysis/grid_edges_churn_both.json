@@ -29,6 +29,7 @@
     1000.0,
     10000.0
   ],
+  "shuffled": false,
   "extension": {
     "rbf_low": [
       1e-05,
@@ -62,7 +63,7 @@
       9
     ]
   },
-  "elapsed_seconds": 741.9538866251241,
+  "elapsed_seconds": 757.1561364168301,
   "summaries": [
     {
       "kernel": "rbf",
@@ -749,5 +750,37 @@
         "coef0": 1.0
       }
     }
-  ]
+  ],
+  "adjudication": {
+    "threshold": 0.002,
+    "kernels": [
+      "poly",
+      "rbf"
+    ],
+    "per_kernel": [
+      {
+        "kernel": "poly",
+        "real_mean": 0.0015957083535989532,
+        "null_mean": 0.008033731123672427,
+        "real_max": 0.007929466454206224,
+        "null_max": 0.021508188250925042,
+        "excess_mean": -0.006438022770073474,
+        "excess_max": -0.013578721796718818
+      },
+      {
+        "kernel": "rbf",
+        "real_mean": 0.0004094229267031772,
+        "null_mean": 0.000807454729812392,
+        "real_max": 0.002374608592787264,
+        "null_max": 0.007701353350330287,
+        "excess_mean": -0.00039803180310921484,
+        "excess_max": -0.005326744757543023
+      }
+    ],
+    "worst_excess_mean": -0.00039803180310921484,
+    "worst_excess_max": -0.005326744757543023,
+    "crossed": [],
+    "outcome": "ADEQUATE",
+    "null_run": "results/analysis/grid_edges_churn_both_shuffled.json"
+  }
 }

@@ -29,6 +29,7 @@
     1000.0,
     10000.0
   ],
+  "shuffled": false,
   "extension": {
     "rbf_low": [
       1e-05,
@@ -62,7 +63,7 @@
       9
     ]
   },
-  "elapsed_seconds": 415.9115442088805,
+  "elapsed_seconds": 418.7732430421747,
   "summaries": [
     {
       "kernel": "rbf",
@@ -742,5 +743,37 @@
         "coef0": 1.0
       }
     }
-  ]
+  ],
+  "adjudication": {
+    "threshold": 0.002,
+    "kernels": [
+      "poly",
+      "rbf"
+    ],
+    "per_kernel": [
+      {
+        "kernel": "poly",
+        "real_mean": 0.0008281505268771398,
+        "null_mean": 0.0055036116000855674,
+        "real_max": 0.006348985363339166,
+        "null_max": 0.02792795214428867,
+        "excess_mean": -0.004675461073208428,
+        "excess_max": -0.021578966780949504
+      },
+      {
+        "kernel": "rbf",
+        "real_mean": 1.684684209601143e-05,
+        "null_mean": 0.0006013267666885517,
+        "real_max": 0.00025270263144017147,
+        "null_max": 0.008033234045002224,
+        "excess_mean": -0.0005844799245925403,
+        "excess_max": -0.007780531413562053
+      }
+    ],
+    "worst_excess_mean": -0.0005844799245925403,
+    "worst_excess_max": -0.007780531413562053,
+    "crossed": [],
+    "outcome": "ADEQUATE",
+    "null_run": "results/analysis/grid_edges_fraud_both_shuffled.json"
+  }
 }

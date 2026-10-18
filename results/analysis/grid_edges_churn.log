@@ -26,8 +26,28 @@ VERDICT
   minimum detectable effect for this arm                 : 0.0159
   largest gain as a fraction of the MDE                  : 50%
 
-  AMBIGUOUS. The gain is a noticeable fraction of the MDE. Widen the grid:
-  a wider grid can only make the classical baseline harder to beat, and the
-  cost is one hour of classical re-runs against a weakened claim.
+  THESE NUMBERS ARE NOT A VERDICT. They cannot decide grid adequacy: the
+  maximum over a grid rises with the number of points searched even when no
+  point is genuinely better, so a gain that is a large fraction of the MDE
+  is equally consistent with a surface too noisy to rank. This script
+  printed PLATEAU, AMBIGUOUS or UNDER-TUNED from that ratio until
+  16 October 2026, and said UNDER-TUNED on fraud where the adjudicated
+  answer is that the grid is adequate. The decision is the excess over a
+  shuffled-label null: pass --null, or run --shuffle-labels first.
 
-wall-clock 742.0s  ->  results/analysis/grid_edges_churn_both.json
+REGISTERED ADJUDICATION  (real-label gain minus shuffled-label gain)
+  null run: results/analysis/grid_edges_churn_both_shuffled.json
+  kernel     real mean  null mean     excess   real max   null max     excess
+  poly        +0.00160   +0.00803   -0.00644   +0.00793   +0.02151   -0.01358
+  rbf         +0.00041   +0.00081   -0.00040   +0.00237   +0.00770   -0.00533
+
+  threshold for widening, pre-declared : +0.00200
+  worst excess, mean statistic         : -0.00040
+  worst excess, max statistic          : -0.00533
+
+  ADEQUATE. Neither statistic exceeds the threshold on any kernel, so
+  widening buys no more on signal than it buys on noise. The frozen grid
+  stands, no re-run is required, and the edge flags are the winner's
+  curse. Edge flags alone never justify widening a grid.
+
+wall-clock 757.2s  ->  results/analysis/grid_edges_churn_both.json

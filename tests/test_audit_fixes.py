@@ -431,3 +431,125 @@ def test_grid_edge_diagnostic_runs_end_to_end(tmp_path):
     assert {s["kernel"] for s in payload["summaries"]} == {"rbf", "poly"}
     assert all(r["inner_extended"] >= r["inner_current"] - 1e-12 for r in payload["rows"]), \
         "a superset grid can never score worse than its subset"
+
+
+# --- the registered adjudication (16 Oct 2026) ----------------------------------
+#
+# Section 7 of the pre-registration makes check_grid_edges.py the adjudicator of
+# grid adequacy and requires the adjudication to be against a shuffled-label
+# null. For three weeks the script computed the null on request and then, on a
+# real run with --mde, printed a verdict derived from the MDE instead -- the
+# rule week 3 had already recorded as the defect, and which says UNDER-TUNED on
+# fraud where the adjudicated answer is ADEQUATE. These tests pin the comparison
+# the pre-registration actually registered.
+
+def _run(shuffled, mean, mx, kernel="poly", **over):
+    """A minimal stored run, with only the fields the adjudication reads."""
+    d = {
+        "dataset": "churn", "n_per_class": 250, "direction": "both",
+        "seeds": [0, 1, 2, 3, 4], "mappings": ["pca"], "qubits": [8],
+        "c_grid": [1.0], "extension": {"poly_degrees": [6]},
+        "shuffled": shuffled,
+        "summaries": [{"kernel": kernel, "mean_gain": mean, "max_gain": mx}],
+    }
+    d.update(over)
+    return d
+
+
+def test_adjudication_threshold_is_the_pre_declared_one():
+    """0.002 was declared in docs/week-03-report.md section 14 before the
+    comparison was made. A threshold chosen after seeing the excess would make
+    the adjudication unfalsifiable, so it is pinned here rather than left as a
+    literal somebody can nudge."""
+    assert _grid_mod().EXCESS_THRESHOLD == 0.002
+
+
+def test_adjudication_subtracts_the_null_and_in_the_right_direction():
+    """The whole content of the check is the sign of real minus null.
+
+    A mutant that reversed the subtraction, or dropped it and compared the real
+    gain against the threshold alone, would turn every stored run from ADEQUATE
+    into WIDEN. Both directions are pinned so neither mutant survives.
+    """
+    ge = _grid_mod()
+    quiet = ge.adjudicate(_run(False, 0.0016, 0.0079), _run(True, 0.0080, 0.0215))
+    assert quiet["outcome"] == "ADEQUATE"
+    assert quiet["worst_excess_mean"] < 0 and quiet["worst_excess_max"] < 0
+
+    loud = ge.adjudicate(_run(False, 0.0080, 0.0215), _run(True, 0.0016, 0.0079))
+    assert loud["outcome"] == "WIDEN"
+    assert loud["crossed"] == ["mean", "max"]
+
+    # Real gain alone is far above the threshold in BOTH cases, so a rule that
+    # ignored the null could not tell these two apart.
+    assert 0.0080 > ge.EXCESS_THRESHOLD and 0.0016 < ge.EXCESS_THRESHOLD
+
+
+def test_adjudication_declines_when_the_two_statistics_disagree():
+    ge = _grid_mod()
+    split = ge.adjudicate(_run(False, 0.0100, 0.0100), _run(True, 0.0000, 0.0200))
+    assert split["outcome"] == "SPLIT" and split["crossed"] == ["mean"]
+
+
+def test_adjudication_refuses_a_null_from_a_different_experiment():
+    """Subtracting one experiment's selection noise from another's gain measures
+    nothing, and the mismatch must be named rather than averaged over."""
+    ge = _grid_mod()
+    with pytest.raises(SystemExit) as e:
+        ge.adjudicate(_run(False, 0.001, 0.002),
+                      _run(True, 0.008, 0.021, seeds=[0, 1]))
+    assert "NOT COMPARABLE" in str(e.value) and "seeds" in str(e.value)
+
+
+def test_adjudication_refuses_reversed_arguments():
+    ge = _grid_mod()
+    with pytest.raises(SystemExit):
+        ge.adjudicate(_run(True, 0.008, 0.021), _run(True, 0.008, 0.021))
+    with pytest.raises(SystemExit):
+        ge.adjudicate(_run(False, 0.001, 0.002), _run(False, 0.001, 0.002))
+
+
+def test_load_run_refuses_a_file_that_does_not_declare_whether_it_is_a_null(tmp_path):
+    """The two stored real runs predate the `shuffled` field, so nothing in
+    either file says it carries signal. The guard refuses rather than assuming,
+    and names the field; see test_stored_runs_adjudicate_as_adequate."""
+    ge = _grid_mod()
+    p = tmp_path / "no_flag.json"
+    d = _run(False, 0.001, 0.002)
+    del d["shuffled"]
+    p.write_text(json.dumps(d))
+    with pytest.raises(SystemExit) as e:
+        ge.load_run(p)
+    assert "shuffled" in str(e.value)
+
+
+STORED = Path(__file__).resolve().parents[1] / "results" / "analysis"
+
+
+@pytest.mark.parametrize("dataset", ["churn", "fraud"])
+def test_stored_runs_adjudicate_as_adequate(dataset):
+    """The week 3 conclusion, re-derived from the files rather than quoted.
+
+    docs/week-03-report.md section 14 records that the excess of real over null
+    is negative in all four dataset-by-kernel comparisons and that the frozen
+    grid is therefore not under-tuned. Nothing had ever re-computed that from
+    the stored runs. If either file changes, this fails instead of the paper
+    quietly keeping a conclusion its evidence no longer supports.
+
+    The `shuffled` flag is supplied here because the two real runs were written
+    before the script recorded it. That is an assertion by this test, not a
+    fact read from the file, and it is the reason load_run refuses those files.
+    """
+    real_p = STORED / f"grid_edges_{dataset}_both.json"
+    null_p = STORED / f"grid_edges_{dataset}_both_shuffled.json"
+    if not (real_p.exists() and null_p.exists()):
+        pytest.skip("stored grid-edge runs not present in this checkout")
+    ge = _grid_mod()
+    real = json.loads(real_p.read_text())
+    real.setdefault("shuffled", False)
+    a = ge.adjudicate(real, json.loads(null_p.read_text()))
+    assert a["outcome"] == "ADEQUATE", a
+    assert {p["kernel"] for p in a["per_kernel"]} == {"rbf", "poly"}
+    for p in a["per_kernel"]:
+        assert p["excess_mean"] < 0, f"{dataset} {p['kernel']} mean excess is no longer negative"
+        assert p["excess_max"] < 0, f"{dataset} {p['kernel']} max excess is no longer negative"

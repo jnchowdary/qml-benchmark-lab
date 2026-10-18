@@ -93,6 +93,19 @@ EXTRA_POLY_MULT_HIGH = (30.0, 100.0)
 # number happened to be typed here.
 EXTRA_POLY_DEGREES = (6, 7, 8, 9)
 
+# The threshold for widening, pre-declared in docs/week-03-report.md section 14
+# BEFORE the comparison was made, and unchanged since: a real-label gain
+# justifies widening only insofar as it EXCEEDS the shuffled-label gain by more
+# than this. It lived in prose for three weeks while this script went on
+# printing a verdict that did not use it.
+EXCESS_THRESHOLD = 0.002
+
+# A real run and a null run are comparable only if all of these agree.
+# Subtracting one experiment's selection noise from another experiment's gain
+# measures nothing, so a mismatch is refused by name rather than averaged over.
+COMPARABLE_ON = ("dataset", "n_per_class", "direction", "seeds", "mappings",
+                 "qubits", "c_grid", "extension")
+
 
 def _key(p):
     return tuple(sorted((k, round(float(v), 12)) for k, v in p.items()))
@@ -242,6 +255,109 @@ def report(rows, kernel):
             "median_gain": st.median(gains), "max_gain": max(gains)}
 
 
+def load_run(path):
+    """Load a stored run, refusing anything that is not one of this script's."""
+    p = Path(path)
+    if not p.exists():
+        raise SystemExit(f"\n  no such run: {p}\n")
+    d = json.loads(p.read_text(encoding="utf-8"))
+    missing = [k for k in ("summaries", "shuffled", *COMPARABLE_ON) if k not in d]
+    if missing:
+        raise SystemExit(
+            f"\n  {p}\n"
+            f"  does not carry {', '.join(missing)}. Either it is not a run this\n"
+            f"  script wrote, or it predates the fields the adjudication needs.\n"
+            f"  Re-run it rather than adjudicating against it.\n")
+    return d
+
+
+def adjudicate(real, null, threshold=EXCESS_THRESHOLD):
+    """The registered decision: real-label gain MINUS shuffled-label gain.
+
+    Section 7 of the pre-registration names this script as what adjudicates grid
+    adequacy, and requires the adjudication to be against a shuffled-label null.
+    Until this function existed the script computed the null when asked, printed
+    it, and told the reader to do the subtraction by hand, while on a real run
+    with --mde printing a verdict derived from the MDE instead.
+
+    Week 3 had already recorded that MDE rule as the defect: the expected
+    maximum over a grid grows with the number of points searched, so the ratio
+    cannot separate "the optimum lies outside the grid" from "the surface is too
+    noisy to rank". It said AMBIGUOUS on churn and UNDER-TUNED on fraud, where
+    the adjudicated answer on the same stored runs is that the frozen grid is
+    adequate on both. The replacement rule was recorded in prose and never
+    reached the code, so the registered adjudicator went on printing the
+    withdrawn verdict for three weeks.
+
+    Both statistics are reported because neither was nominated in advance. They
+    agree on every stored run; if they ever disagree this returns SPLIT and
+    declines to choose.
+    """
+    if real.get("shuffled"):
+        raise SystemExit("\n  the first run is a null run: the arguments are the "
+                         "wrong way round.\n")
+    if not null.get("shuffled"):
+        raise SystemExit("\n  the second run has shuffled=false, so it carries "
+                         "signal and is not a null.\n")
+    bad = [k for k in COMPARABLE_ON if real.get(k) != null.get(k)]
+    if bad:
+        raise SystemExit(
+            "\n  NOT COMPARABLE. These differ between the real run and the null:\n"
+            + "".join(f"    {k}:\n      real {real.get(k)!r}\n      null {null.get(k)!r}\n"
+                      for k in bad)
+            + "  Re-run the null with matching settings.\n")
+
+    rn = {s["kernel"]: s for s in real["summaries"]}
+    nn = {s["kernel"]: s for s in null["summaries"]}
+    shared = sorted(set(rn) & set(nn))
+    if not shared:
+        raise SystemExit("\n  the two runs share no kernel.\n")
+
+    per = [{
+        "kernel": k,
+        "real_mean": rn[k]["mean_gain"], "null_mean": nn[k]["mean_gain"],
+        "real_max": rn[k]["max_gain"], "null_max": nn[k]["max_gain"],
+        "excess_mean": rn[k]["mean_gain"] - nn[k]["mean_gain"],
+        "excess_max": rn[k]["max_gain"] - nn[k]["max_gain"],
+    } for k in shared]
+
+    worst_mean = max(p["excess_mean"] for p in per)
+    worst_max = max(p["excess_max"] for p in per)
+    crossed = [n for n, v in (("mean", worst_mean), ("max", worst_max)) if v > threshold]
+    outcome = "ADEQUATE" if not crossed else ("WIDEN" if len(crossed) == 2 else "SPLIT")
+    return {"threshold": threshold, "kernels": shared, "per_kernel": per,
+            "worst_excess_mean": worst_mean, "worst_excess_max": worst_max,
+            "crossed": crossed, "outcome": outcome}
+
+
+def print_adjudication(a, source=None):
+    print("\nREGISTERED ADJUDICATION  (real-label gain minus shuffled-label gain)")
+    if source:
+        print(f"  null run: {source}")
+    print(f"  {'kernel':<9}{'real mean':>11}{'null mean':>11}{'excess':>11}"
+          f"{'real max':>11}{'null max':>11}{'excess':>11}")
+    for p in a["per_kernel"]:
+        print(f"  {p['kernel']:<9}{p['real_mean']:>+11.5f}{p['null_mean']:>+11.5f}"
+              f"{p['excess_mean']:>+11.5f}{p['real_max']:>+11.5f}"
+              f"{p['null_max']:>+11.5f}{p['excess_max']:>+11.5f}")
+    print(f"\n  threshold for widening, pre-declared : {a['threshold']:+.5f}")
+    print(f"  worst excess, mean statistic         : {a['worst_excess_mean']:+.5f}")
+    print(f"  worst excess, max statistic          : {a['worst_excess_max']:+.5f}")
+    if a["outcome"] == "ADEQUATE":
+        print("\n  ADEQUATE. Neither statistic exceeds the threshold on any kernel, so")
+        print("  widening buys no more on signal than it buys on noise. The frozen grid")
+        print("  stands, no re-run is required, and the edge flags are the winner's")
+        print("  curse. Edge flags alone never justify widening a grid.")
+    elif a["outcome"] == "WIDEN":
+        print("\n  WIDEN. Both statistics exceed the threshold, so the gain is not")
+        print("  explained by the maximum of a noisy surface growing with the number of")
+        print("  points searched. Widen the grids and re-run the affected arm.")
+    else:
+        print(f"\n  SPLIT. The {a['crossed'][0]} statistic exceeds the threshold and the")
+        print("  other does not, so the answer depends on which statistic is chosen.")
+        print("  This script will not choose. Report both and decide in the record.")
+
+
 def verdict(summaries, mde, shuffled=False):
     print("\nNULL RUN SUMMARY" if shuffled else "\nVERDICT")
     worst = max((s["max_gain"] for s in summaries), default=0.0)
@@ -256,32 +372,22 @@ def verdict(summaries, mde, shuffled=False):
         print("  point is genuinely better. Only the EXCESS over this run is evidence.")
         return
     if mde:
-        ratio = worst / mde
         print(f"  minimum detectable effect for this arm                 : {mde:.4f}")
-        print(f"  largest gain as a fraction of the MDE                  : {ratio:.0%}")
-        if ratio < 0.33:
-            print("\n  PLATEAU. The best a wider grid could buy is a fraction of the smallest")
-            print("  difference this experiment can resolve, so the grid cannot be costing")
-            print("  anything measurable however many edge flags it produces. Keep the frozen")
-            print("  grid; raise the plateau tolerance in tuning.edge_flags so it stops")
-            print("  reporting false alarms. Record both numbers in the pre-registration.")
-        elif ratio < 1.0:
-            print("\n  AMBIGUOUS. The gain is a noticeable fraction of the MDE. Widen the grid:")
-            print("  a wider grid can only make the classical baseline harder to beat, and the")
-            print("  cost is one hour of classical re-runs against a weakened claim.")
-        else:
-            print("\n  UNDER-TUNED. A wider grid would change the classical baseline by more")
-            print("  than the effect the experiment is built to detect. Widen tuning.py's grids")
-            print("  and re-run week 3 BEFORE any quantum work.")
-    else:
-        print("\n  Pass --mde with the minimum detectable effect for this arm (from")
-        print("  scripts/power_analysis.py) to get a verdict against the experiment's own")
-        print("  resolution rather than against an arbitrary threshold.")
+        print(f"  largest gain as a fraction of the MDE                  : {worst / mde:.0%}")
+    print("\n  THESE NUMBERS ARE NOT A VERDICT. They cannot decide grid adequacy: the")
+    print("  maximum over a grid rises with the number of points searched even when no")
+    print("  point is genuinely better, so a gain that is a large fraction of the MDE")
+    print("  is equally consistent with a surface too noisy to rank. This script")
+    print("  printed PLATEAU, AMBIGUOUS or UNDER-TUNED from that ratio until")
+    print("  18 October 2026, and said UNDER-TUNED on fraud where the adjudicated")
+    print("  answer is that the grid is adequate. The decision is the excess over a")
+    print("  shuffled-label null: pass --null, or run --shuffle-labels first.")
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True, choices=["churn", "fraud", "synthetic"])
+    ap.add_argument("--dataset", default=None,
+                    choices=["churn", "fraud", "synthetic"])
     ap.add_argument("--seeds", type=int, nargs="+", default=SEEDS[:5])
     ap.add_argument("--mappings", nargs="+", default=list(MAPPINGS))
     ap.add_argument("--qubits", type=int, nargs="+", default=[8])
@@ -298,7 +404,26 @@ def main():
                          "that selection noise. The real gain is only evidence of under-tuning "
                          "insofar as it EXCEEDS the shuffled gain.")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--null", default=None,
+                    help="a stored shuffled-label run to adjudicate this one against. "
+                         "Defaults to the sibling _shuffled.json for the same dataset "
+                         "and direction when it exists.")
+    ap.add_argument("--no-null", action="store_true",
+                    help="skip the registered adjudication. Use this only to produce a "
+                         "run that will be adjudicated later; the numbers printed "
+                         "without it do not decide grid adequacy.")
+    ap.add_argument("--adjudicate", nargs=2, metavar=("REAL", "NULL"), default=None,
+                    help="adjudicate two stored runs and exit. Computes nothing, so the "
+                         "registered decision is reproducible in a second rather than in "
+                         "the twelve minutes the runs themselves take.")
     args = ap.parse_args()
+    if args.adjudicate:
+        print_adjudication(adjudicate(load_run(args.adjudicate[0]),
+                                      load_run(args.adjudicate[1])),
+                           source=args.adjudicate[1])
+        return
+    if not args.dataset:
+        raise SystemExit("\n  --dataset is required unless --adjudicate is given.\n")
     tag = "_shuffled" if args.shuffle_labels else ""
     out_path = Path(args.out) if args.out else (
         ROOT / "results" / "analysis" / f"grid_edges_{args.dataset}_{args.direction}{tag}.json")
@@ -327,8 +452,7 @@ def main():
     summaries = [s for s in (report(rows, k) for k in ("rbf", "poly")) if s]
     verdict(summaries, args.mde, args.shuffle_labels)
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps({
+    payload = {
         "dataset": args.dataset, "n_per_class": args.n_per_class, "seeds": args.seeds,
         "mappings": args.mappings, "qubits": args.qubits, "direction": args.direction,
         "mde": args.mde, "c_grid": list(C_GRID), "shuffled": bool(args.shuffle_labels),
@@ -337,7 +461,32 @@ def main():
                       "poly_mult_high": list(EXTRA_POLY_MULT_HIGH),
                       "poly_degrees": list(EXTRA_POLY_DEGREES)},
         "elapsed_seconds": elapsed, "summaries": summaries, "rows": rows,
-    }, indent=2) + "\n")
+    }
+
+    # The adjudication runs here, on this run's own payload, so that what is
+    # stored and what is printed cannot disagree. It is recorded in the file as
+    # well as printed, because a decision that exists only in a terminal is a
+    # decision nobody can check later -- which is how the MDE verdict survived
+    # three weeks after being withdrawn in prose.
+    if not args.shuffle_labels and not args.no_null:
+        null_path = Path(args.null) if args.null else (
+            out_path.parent / f"grid_edges_{args.dataset}_{args.direction}_shuffled.json")
+        if null_path.exists():
+            adj = adjudicate(payload, load_run(null_path))
+            rel = (null_path.relative_to(ROOT) if null_path.is_relative_to(ROOT)
+                   else null_path)
+            print_adjudication(adj, source=str(rel))
+            payload["adjudication"] = {**adj, "null_run": str(rel)}
+        else:
+            payload["adjudication"] = None
+            print(f"\n  NO ADJUDICATION. The registered decision needs a shuffled-label")
+            print(f"  null and {null_path} does not exist. Produce one with")
+            print(f"  matching settings:")
+            print(f"    PYTHONPATH=src python scripts/check_grid_edges.py "
+                  f"--dataset {args.dataset} --direction {args.direction} --shuffle-labels")
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"\nwall-clock {elapsed:.1f}s  ->  "
           f"{out_path.relative_to(ROOT) if out_path.is_relative_to(ROOT) else out_path}")
 
