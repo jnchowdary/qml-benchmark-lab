@@ -615,3 +615,29 @@ def test_the_adjudication_cli_decides_from_two_stored_runs(dataset):
     assert "REGISTERED ADJUDICATION" in proc.stdout
     assert "ADEQUATE" in proc.stdout
     assert "WIDEN." not in proc.stdout
+
+
+def test_the_papers_figures_still_match_the_records():
+    """A check nobody runs is a convention and not a guarantee.
+
+    scripts/report_to_docx.js made exactly that argument about generated
+    documents, and the drift happened anyway: deviations.docx was found sixteen
+    days behind its source, which is why check_docx_fresh.py exists. The same
+    applies to scripts/check_paper_figures.py, which protects the paper only if
+    something runs it. This runs it.
+
+    It is a subprocess with no PYTHONPATH because that script imports json, re,
+    argparse and pathlib and nothing else, so the figures stay checkable without
+    the research environment, and this test would notice if that stopped being
+    true.
+    """
+    proc = subprocess.run(
+        [sys.executable, "-I", str(ROOT / "scripts" / "check_paper_figures.py")],
+        env=_bare_env(), capture_output=True, text=True, timeout=300)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    # Named individually, so emptying the registry fails rather than passing
+    # with nothing to check -- the way this project's mutation harness once
+    # reported coverage it did not have.
+    for figure in ("0.0608", "0.0063", "76.5"):
+        assert figure in proc.stdout, f"{figure} is no longer re-derived"
+    assert proc.stdout.count("[AGREES") >= 3, proc.stdout
