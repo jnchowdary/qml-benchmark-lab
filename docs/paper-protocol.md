@@ -295,6 +295,21 @@ all four share is the route. **Tier 1 reads records and Tier 2 reads kernels.
 Nothing in this protocol reads this project's own analysis and reporting code
 for claims the data does not support**, which is where all four lived.
 
+**What now exists, and what it would not have caught.** Since 19 October 2026
+`scripts/check_paper_figures.py` re-derives figures this paper prints from the
+stored records, and a test asserts that the exclusion bound
+`scripts/primary_tests.py` prints matches the copy `scripts/audit_sweep.py`
+checks against regenerated data. Neither is part of the protocol, and the
+figures check would have caught **none of the four items above**. All four were
+divergences between code and record in which this paper's prose was correct or
+unaffected: the fifth repair had `primary_tests.py` printing 0.0059 while every
+document here quoted 0.0063, so a check reading the paper against the records
+would have passed it without comment. What would have caught it is the narrower
+assertion, the one tying a printed figure to the copy that is checked against
+data — which exists only because the fifth repair was corrected at its value and
+not at the structure that produced it. §4.7 states how much of this paper the
+figures check covers, which is very little.
+
 **A further group found by reading and deliberately not counted.** Three
 separate generators defaulted to not recording their output: the `.docx`
 exporter wrote no provenance, `scripts/exploratory_sweep.py` required `--out`

@@ -376,6 +376,22 @@ has not examined the rest.
 by that script's own control F and not by pytest, so no mutant can be expressed
 for it.
 
+**The figures check covers three of this paper's numbers.**
+`scripts/check_paper_figures.py` re-derives the churn and fraud primary-cell
+exclusion bounds from `results/audits/d6_table.json`, and D16's share of units
+with no admissible λ from the 7,200 stored unit records, comparing each at the
+precision this paper states rather than within a chosen tolerance. Everything
+else it reports as **not checked**, against a denominator of every decimal
+figure in this paper, which it counts on each run rather than quoting from here
+so that the figure cannot go stale the way this section's own items did. The
+denominator is left unfiltered on purpose: it includes section
+cross-references, arXiv numbers and DOIs that are not measurements, and
+filtering those by pattern would be a guess, which is what made the mutation
+coverage above overstate itself. Among the figures it does **not** cover are the
+H2 rank correlation and D16's elasticities, whose quantities have not been
+mapped to an accessor in any stored record. §5.6 records that this check would
+not have caught any of the defects that motivated it.
+
 **One item unchanged, and two closed since.** **Two Software Heritage snapshots
 now exist**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd` at 01:33:06
 and `swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005` at 01:36:58 UTC on

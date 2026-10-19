@@ -5,7 +5,7 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-18T13:50:56+00:00 at commit `986d364`.
+Assembled 2026-10-19T01:31:32+00:00 at commit `f2d15d9`.
 
 | section | source | sha256 |
 | --- | --- | --- |
@@ -13,8 +13,8 @@ Assembled 2026-10-18T13:50:56+00:00 at commit `986d364`.
 | 1 | `docs/paper-introduction.md` | `ec22402aefe452b8` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
-| 4 | `docs/paper-results.md` | `e29d56f96bdac5a5` |
-| 5 | `docs/paper-protocol.md` | `1836338ac8e1a3a6` |
+| 4 | `docs/paper-results.md` | `b9c806172f9a6a7e` |
+| 5 | `docs/paper-protocol.md` | `11a22622dd238b8c` |
 | 6 | `docs/paper-discussion.md` | `854f81aec0a4f449` |
 | 7 | `docs/paper-deviations-pointer.md` | `b6302387ea49dade` |
 | References | `docs/paper-references.md` | `958b0237e15ec45f` |
@@ -1129,6 +1129,22 @@ has not examined the rest.
 by that script's own control F and not by pytest, so no mutant can be expressed
 for it.
 
+**The figures check covers three of this paper's numbers.**
+`scripts/check_paper_figures.py` re-derives the churn and fraud primary-cell
+exclusion bounds from `results/audits/d6_table.json`, and D16's share of units
+with no admissible λ from the 7,200 stored unit records, comparing each at the
+precision this paper states rather than within a chosen tolerance. Everything
+else it reports as **not checked**, against a denominator of every decimal
+figure in this paper, which it counts on each run rather than quoting from here
+so that the figure cannot go stale the way this section's own items did. The
+denominator is left unfiltered on purpose: it includes section
+cross-references, arXiv numbers and DOIs that are not measurements, and
+filtering those by pattern would be a guess, which is what made the mutation
+coverage above overstate itself. Among the figures it does **not** cover are the
+H2 rank correlation and D16's elasticities, whose quantities have not been
+mapped to an accessor in any stored record. §5.6 records that this check would
+not have caught any of the defects that motivated it.
+
 **One item unchanged, and two closed since.** **Two Software Heritage snapshots
 now exist**, `swh:1:snp:bdbf43089b1ed77f5ec9307e11f5c255dddc84dd` at 01:33:06
 and `swh:1:snp:c19a29f94639c2ea87347ae40a3d949919a75005` at 01:36:58 UTC on
@@ -1446,6 +1462,21 @@ does. The sixth item above, the grid adjudicator, was found the same way. What
 all four share is the route. **Tier 1 reads records and Tier 2 reads kernels.
 Nothing in this protocol reads this project's own analysis and reporting code
 for claims the data does not support**, which is where all four lived.
+
+**What now exists, and what it would not have caught.** Since 19 October 2026
+`scripts/check_paper_figures.py` re-derives figures this paper prints from the
+stored records, and a test asserts that the exclusion bound
+`scripts/primary_tests.py` prints matches the copy `scripts/audit_sweep.py`
+checks against regenerated data. Neither is part of the protocol, and the
+figures check would have caught **none of the four items above**. All four were
+divergences between code and record in which this paper's prose was correct or
+unaffected: the fifth repair had `primary_tests.py` printing 0.0059 while every
+document here quoted 0.0063, so a check reading the paper against the records
+would have passed it without comment. What would have caught it is the narrower
+assertion, the one tying a printed figure to the copy that is checked against
+data — which exists only because the fifth repair was corrected at its value and
+not at the structure that produced it. §4.7 states how much of this paper the
+figures check covers, which is very little.
 
 **A further group found by reading and deliberately not counted.** Three
 separate generators defaulted to not recording their output: the `.docx`
