@@ -93,18 +93,20 @@ EXTRA_POLY_MULT_HIGH = (30.0, 100.0)
 # number happened to be typed here.
 EXTRA_POLY_DEGREES = (6, 7, 8, 9)
 
-# The threshold for widening, pre-declared in docs/week-03-report.md section 14
-# BEFORE the comparison was made, and unchanged since: a real-label gain
-# justifies widening only insofar as it EXCEEDS the shuffled-label gain by more
-# than this. It lived in prose for three weeks while this script went on
-# printing a verdict that did not use it.
-EXCESS_THRESHOLD = 0.002
-
-# A real run and a null run are comparable only if all of these agree.
-# Subtracting one experiment's selection noise from another experiment's gain
-# measures nothing, so a mismatch is refused by name rather than averaged over.
-COMPARABLE_ON = ("dataset", "n_per_class", "direction", "seeds", "mappings",
-                 "qubits", "c_grid", "extension")
+# The decision itself lives in scripts/adjudicate_grid.py, which imports json
+# and pathlib and nothing else. Section 7 of the pre-registration names this
+# file as the adjudicator of grid adequacy; before the split, checking that
+# decision meant installing numpy, joblib, scikit-learn and qbench first, for a
+# subtraction of two numbers out of two JSON files. One implementation, two
+# entry points.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from adjudicate_grid import (  # noqa: E402
+    COMPARABLE_ON,
+    EXCESS_THRESHOLD,
+    adjudicate,
+    load_run,
+    print_adjudication,
+)
 
 
 def _key(p):
@@ -253,109 +255,6 @@ def report(rows, kernel):
             "winning_degrees": by_degree,
             "frozen_edges": edges, "mean_gain": st.mean(gains),
             "median_gain": st.median(gains), "max_gain": max(gains)}
-
-
-def load_run(path):
-    """Load a stored run, refusing anything that is not one of this script's."""
-    p = Path(path)
-    if not p.exists():
-        raise SystemExit(f"\n  no such run: {p}\n")
-    d = json.loads(p.read_text(encoding="utf-8"))
-    missing = [k for k in ("summaries", "shuffled", *COMPARABLE_ON) if k not in d]
-    if missing:
-        raise SystemExit(
-            f"\n  {p}\n"
-            f"  does not carry {', '.join(missing)}. Either it is not a run this\n"
-            f"  script wrote, or it predates the fields the adjudication needs.\n"
-            f"  Re-run it rather than adjudicating against it.\n")
-    return d
-
-
-def adjudicate(real, null, threshold=EXCESS_THRESHOLD):
-    """The registered decision: real-label gain MINUS shuffled-label gain.
-
-    Section 7 of the pre-registration names this script as what adjudicates grid
-    adequacy, and requires the adjudication to be against a shuffled-label null.
-    Until this function existed the script computed the null when asked, printed
-    it, and told the reader to do the subtraction by hand, while on a real run
-    with --mde printing a verdict derived from the MDE instead.
-
-    Week 3 had already recorded that MDE rule as the defect: the expected
-    maximum over a grid grows with the number of points searched, so the ratio
-    cannot separate "the optimum lies outside the grid" from "the surface is too
-    noisy to rank". It said AMBIGUOUS on churn and UNDER-TUNED on fraud, where
-    the adjudicated answer on the same stored runs is that the frozen grid is
-    adequate on both. The replacement rule was recorded in prose and never
-    reached the code, so the registered adjudicator went on printing the
-    withdrawn verdict for three weeks.
-
-    Both statistics are reported because neither was nominated in advance. They
-    agree on every stored run; if they ever disagree this returns SPLIT and
-    declines to choose.
-    """
-    if real.get("shuffled"):
-        raise SystemExit("\n  the first run is a null run: the arguments are the "
-                         "wrong way round.\n")
-    if not null.get("shuffled"):
-        raise SystemExit("\n  the second run has shuffled=false, so it carries "
-                         "signal and is not a null.\n")
-    bad = [k for k in COMPARABLE_ON if real.get(k) != null.get(k)]
-    if bad:
-        raise SystemExit(
-            "\n  NOT COMPARABLE. These differ between the real run and the null:\n"
-            + "".join(f"    {k}:\n      real {real.get(k)!r}\n      null {null.get(k)!r}\n"
-                      for k in bad)
-            + "  Re-run the null with matching settings.\n")
-
-    rn = {s["kernel"]: s for s in real["summaries"]}
-    nn = {s["kernel"]: s for s in null["summaries"]}
-    shared = sorted(set(rn) & set(nn))
-    if not shared:
-        raise SystemExit("\n  the two runs share no kernel.\n")
-
-    per = [{
-        "kernel": k,
-        "real_mean": rn[k]["mean_gain"], "null_mean": nn[k]["mean_gain"],
-        "real_max": rn[k]["max_gain"], "null_max": nn[k]["max_gain"],
-        "excess_mean": rn[k]["mean_gain"] - nn[k]["mean_gain"],
-        "excess_max": rn[k]["max_gain"] - nn[k]["max_gain"],
-    } for k in shared]
-
-    worst_mean = max(p["excess_mean"] for p in per)
-    worst_max = max(p["excess_max"] for p in per)
-    crossed = [n for n, v in (("mean", worst_mean), ("max", worst_max)) if v > threshold]
-    outcome = "ADEQUATE" if not crossed else ("WIDEN" if len(crossed) == 2 else "SPLIT")
-    return {"threshold": threshold, "kernels": shared, "per_kernel": per,
-            "worst_excess_mean": worst_mean, "worst_excess_max": worst_max,
-            "crossed": crossed, "outcome": outcome}
-
-
-def print_adjudication(a, source=None):
-    print("\nREGISTERED ADJUDICATION  (real-label gain minus shuffled-label gain)")
-    if source:
-        print(f"  null run: {source}")
-    print(f"  {'kernel':<9}{'real mean':>11}{'null mean':>11}{'excess':>11}"
-          f"{'real max':>11}{'null max':>11}{'excess':>11}")
-    for p in a["per_kernel"]:
-        print(f"  {p['kernel']:<9}{p['real_mean']:>+11.5f}{p['null_mean']:>+11.5f}"
-              f"{p['excess_mean']:>+11.5f}{p['real_max']:>+11.5f}"
-              f"{p['null_max']:>+11.5f}{p['excess_max']:>+11.5f}")
-    print(f"\n  threshold for widening, pre-declared : {a['threshold']:+.5f}")
-    print(f"  worst excess, mean statistic         : {a['worst_excess_mean']:+.5f}")
-    print(f"  worst excess, max statistic          : {a['worst_excess_max']:+.5f}")
-    if a["outcome"] == "ADEQUATE":
-        print("\n  ADEQUATE. Neither statistic exceeds the threshold on any kernel, so")
-        print("  widening buys no more on signal than it buys on noise. The frozen grid")
-        print("  stands, no re-run is required, and the edge flags are the winner's")
-        print("  curse. Edge flags alone never justify widening a grid.")
-    elif a["outcome"] == "WIDEN":
-        print("\n  WIDEN. Both statistics exceed the threshold, so the gain is not")
-        print("  explained by the maximum of a noisy surface growing with the number of")
-        print("  points searched. Widen the grids and re-run the affected arm.")
-    else:
-        print(f"\n  SPLIT. The {a['crossed'][0]} statistic exceeds the threshold and the")
-        print("  other does not, so the answer depends on which statistic is chosen.")
-        print("  This script will not choose. Report both and decide in the record.")
 
 
 def verdict(summaries, mde, shuffled=False):

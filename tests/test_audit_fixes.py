@@ -553,3 +553,65 @@ def test_stored_runs_adjudicate_as_adequate(dataset):
     for p in a["per_kernel"]:
         assert p["excess_mean"] < 0, f"{dataset} {p['kernel']} mean excess is no longer negative"
         assert p["excess_max"] < 0, f"{dataset} {p['kernel']} max excess is no longer negative"
+
+
+# --- the decision is checkable without the research environment (19 Oct 2026) ---
+
+def test_check_grid_edges_still_exposes_the_adjudication():
+    """One implementation, two entry points. The tests above reach it through
+    check_grid_edges and the script's own --adjudicate mode does too."""
+    ge = _grid_mod()                      # puts scripts/ on sys.path
+    import adjudicate_grid                # noqa: PLC0415
+    assert ge.adjudicate is adjudicate_grid.adjudicate
+    assert ge.load_run is adjudicate_grid.load_run
+    assert ge.print_adjudication is adjudicate_grid.print_adjudication
+    assert ge.EXCESS_THRESHOLD == adjudicate_grid.EXCESS_THRESHOLD == 0.002
+
+
+def _bare_env():
+    return {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+
+
+def test_the_adjudication_imports_nothing_from_the_research_environment(tmp_path):
+    """Section 5 claims the cheap end of this protocol costs seconds and needs no
+    access to the originating pipeline. Until 19 October 2026 the registered
+    grid decision contradicted that: it lived in check_grid_edges.py, so
+    checking it meant importing numpy, joblib, scikit-learn and qbench first,
+    for a subtraction of two numbers out of two JSON files.
+
+    This runs in a subprocess because importing the module in this process
+    would prove nothing: pytest has already imported numpy.
+    """
+    probe = tmp_path / "probe.py"
+    probe.write_text(
+        "import sys\n"
+        f"sys.path.insert(0, {str(ROOT / 'scripts')!r})\n"
+        "import adjudicate_grid\n"
+        "heavy = sorted({m.split('.')[0] for m in sys.modules}\n"
+        "               & {'numpy', 'joblib', 'sklearn', 'pandas', 'scipy', 'qbench'})\n"
+        "print('HEAVY=' + ','.join(heavy))\n"
+        "print('THRESHOLD=' + repr(adjudicate_grid.EXCESS_THRESHOLD))\n")
+    proc = subprocess.run([sys.executable, "-I", str(probe)], env=_bare_env(),
+                          capture_output=True, text=True, timeout=120)
+    assert proc.returncode == 0, proc.stderr
+    heavy = [l for l in proc.stdout.splitlines() if l.startswith("HEAVY=")]
+    assert heavy == ["HEAVY="], f"the adjudication pulled in {heavy}"
+    assert "THRESHOLD=0.002" in proc.stdout
+
+
+@pytest.mark.parametrize("dataset", ["churn", "fraud"])
+def test_the_adjudication_cli_decides_from_two_stored_runs(dataset):
+    """End to end as a stranger would run it: two file paths, no PYTHONPATH, no
+    installation, no computation."""
+    real = STORED / f"grid_edges_{dataset}_both.json"
+    null = STORED / f"grid_edges_{dataset}_both_shuffled.json"
+    if not (real.exists() and null.exists()):
+        pytest.skip("stored grid-edge runs not present in this checkout")
+    proc = subprocess.run(
+        [sys.executable, "-I", str(ROOT / "scripts" / "adjudicate_grid.py"),
+         str(real), str(null)],
+        env=_bare_env(), capture_output=True, text=True, timeout=120)
+    assert proc.returncode == 0, proc.stderr
+    assert "REGISTERED ADJUDICATION" in proc.stdout
+    assert "ADEQUATE" in proc.stdout
+    assert "WIDEN." not in proc.stdout
