@@ -6,9 +6,16 @@
  * ---------------
  * Weeks 1 to 3 were transcribed into Word by hand. That is fine once and a
  * liability by week 12: a record and its document drift, and the drift is
- * invisible because nobody diffs a .docx against a .md. It also repeats the
- * step that produced two of week 4's ten logged errors, both of which came
- * from copying numbers out of one representation into another.
+ * invisible because nobody diffs a .docx against a .md. It also repeats a step
+ * that has damaged a figure twice in this project, both times by
+ * hand-transcription out of a log: scripts/audit_sweep.py exists because of the
+ * first, and docs/deviations.md records the second.
+ *
+ * This paragraph previously read "two of week 4's ten logged errors, both of
+ * which came from copying numbers out of one representation into another".
+ * Week 4's section 10 logs eleven, numbered 1 to 11; only item 9 involves
+ * transcription, and there it was the recovery from a destroyed output rather
+ * than the cause of the error. Corrected 19 October 2026.
  *
  * So the document is generated from the record, and the record stays the
  * single source of truth.
