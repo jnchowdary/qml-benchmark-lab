@@ -364,3 +364,41 @@ def test_file_provenance_digests_what_it_read(tmp_path):
     assert got["bytes"] == 9
     assert got["sha256"] == hashlib.sha256(b'{"a": 1}\n').hexdigest()
     assert tph.file_provenance(tmp_path / "absent.jsonl")["present"] is False
+
+
+def test_the_printed_exclusion_bound_agrees_with_the_figure_that_is_checked():
+    """D6's exclusion-bound figures exist twice and nothing connected the copies.
+
+    scripts/primary_tests.py prints the paper's exclusion bounds from the
+    literal MDE_PRIMARY_CELL. scripts/audit_sweep.py holds the same two figures
+    in D6_H1, and that copy is anchored: audit_sweep regenerates the MDE from
+    results/runs and exits 1 when a claim and its regenerated value differ by
+    more than 5e-4. The printed copy had no such anchor.
+
+    The two agree today. If a correction updated one and missed the other,
+    audit_sweep would still pass, and so would
+    test_no_rejection_is_reported_as_an_exclusion_bound above, because its
+    `assert "0.0063" in out` pins the literal to itself rather than to anything
+    measured. The paper would then print a figure the data does not support.
+    That is what happened for eleven days with the registered 0.0059, which
+    section 5.6 of the paper counts as its fifth public repair: the value and
+    its test were corrected and the structure that allowed the divergence was
+    not.
+
+    The dicts are compared and not merged. They hold the same quantity for the
+    cells they share, but the first version of audit_sweep got exactly that
+    mapping wrong, comparing D6's arm-level figure against a median over every
+    method pair in the cell, so the equality is asserted rather than assumed.
+    """
+    from audit_sweep import D6_H1  # noqa: PLC0415
+
+    printed = tph.MDE_PRIMARY_CELL
+    shared = {(d, n) for (d, n) in printed if (d, n, "registered") in D6_H1}
+    assert shared == {("churn", 250), ("fraud", 250)}, (
+        f"the cells the two tables share have changed: {sorted(shared)}. "
+        f"Decide which quantity each table holds before updating this test.")
+    for d, n in sorted(shared):
+        assert printed[(d, n)] == D6_H1[(d, n, "registered")], (
+            f"{d} n={n}: primary_tests prints {printed[(d, n)]} as the "
+            f"exclusion bound while audit_sweep checks "
+            f"{D6_H1[(d, n, 'registered')]} against the regenerated records")
