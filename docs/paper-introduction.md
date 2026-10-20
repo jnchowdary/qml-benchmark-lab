@@ -96,8 +96,9 @@ case, unevidenced either way.
 
 **Not that the protocol is validated.** Every records-level and kernel-level
 check was written after the defect it catches. The instrument has needed repair
-six times in public, three times because the tool was wrong and three times
-because its authors asserted something they had not checked. Two of the six are
+seven times in public, three times because the tool was wrong and four times
+because its authors stated something their own data does not support. Two of the
+seven are
 the same lesson twice: a superseded exclusion bound that the confirmatory script
 printed for eleven days after the correction was written, pinned in place by a
 regression test, and the registered adjudicator of grid adequacy, which printed

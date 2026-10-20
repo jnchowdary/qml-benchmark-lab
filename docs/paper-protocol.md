@@ -197,7 +197,7 @@ the contribution.
 
 **Every Tier 1 and Tier 2 check was written after the defect it catches.** The
 protocol's own first section says so: each exists because a specific reading
-went wrong here, usually after passing review. Sixteen deviation records and a
+went wrong here, usually after passing review. Seventeen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 
@@ -228,7 +228,7 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Six things have gone wrong in public, and they are two different kinds.**
+**Seven things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
 *Defects in the instrument (three).* On its first contact with real records the
@@ -256,7 +256,7 @@ verdict; what was published was an instrument contradicting its own record for
 three weeks. Found on 18 October 2026 by reading the script, not by any check in
 this protocol.
 
-*Claims its authors made without checking (three).* It asserted from the
+*Claims its authors made that their own data does not support (four).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
 the deposit behind one was read, **six of seven claims in that paragraph were
 wrong or misleading**. It declared four checks unrunnable when three were not —
@@ -266,9 +266,21 @@ registered 0.0059 for fraud's primary cell while every document here quoted
 D6's corrected 0.0063, the committed analysis log carried the wrong figure, and
 a regression test asserted it. Nobody re-read the code after writing the
 correction. It was found on 6 October 2026 while refactoring an unrelated
-function, by inspection and not by any check in this protocol.
+function, by inspection and not by any check in this protocol. And the
+pre-registration gives the measured advantage of extending a grid on random
+labels over real ones as **five to seven times**, which is the
+polynomial-kernel figure: on the RBF kernels the ratio is 2.0 and 35.7, so two
+of the four measurements fall outside the stated range, one above it and one
+below. Week 3 had the full four-row table in front of it when that sentence was
+written. **This fourth one differs in kind from the three before it**, and the
+difference does not favour it: those asserted things nobody had checked, while
+this took a measurement that had been made correctly and stated it more broadly
+than it supported. Nothing in a reader's view distinguishes a generalised
+measurement from a measured one. The rule that figure supports is unaffected,
+the direction holding on every kernel and both datasets; D17 records it and the
+registered document is not edited.
 
-**None of the six is an audited pipeline failing an audit.** A reader who takes
+**None of the seven is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed

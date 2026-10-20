@@ -32,7 +32,7 @@ pre-registration's text is the historical object rather than the operative one.
 | what was registered, before anything moved | `docs/pre-registration.md` v1.0 |
 | every movement from that design, in one table | **§3.9 of this paper** |
 | why a given movement was made, and when it was declared | the numbered record in `docs/deviations.md` |
-| what is still undecided | §7.3 — one branch, not one record |
+| what the record left open, and how it was closed | §7.3 — one branch, now published |
 
 **§3.9 is the index.** It lists all **eleven** movements with their direction —
 which added a constraint, which weakened a claim, which removed planned evidence
@@ -72,12 +72,15 @@ that analysis, and that too was declared and pushed before the outcome was read.
 **What rests on neither:** the frozen λ sweep at {1e-1, 1e-2, 1e-3, 1e-4} that
 carries every result in §4.
 
-**The open decision is not a record.** `prerewrite-20260925`, the recovered
-branch on which full provenance depends, is **unpublished and the choice is
-undecided**. Publishing it makes every stored commit hash resolve without anyone
-having to trust the mapping; it also restores to the public repository the AI
-co-authorship trailers the 25 September rewrite removed. §4.7 states the
-trade-off and this paper does not resolve it.
+**The decision that was not a record has been taken.**
+`prerewrite-20260925`, the recovered branch on which full provenance depended,
+was **published on 21 October 2026**. Every commit hash stored in the result
+records now resolves, so no reader has to trust the tag mapping. It also
+restored to the public repository the AI co-authorship trailers the 25 September
+rewrite removed, which was the cost D11's fourth amendment weighed; `main`
+already carried twenty commits bearing them, left in place and documented rather
+than rewritten. §4.7 states what the publication closes, which is the binding of
+a record to its code, and what it does not, which is anything about ordering.
 
 ---
 

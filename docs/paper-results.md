@@ -289,39 +289,43 @@ reader can do from that moment on.
 **What the snapshot does not do**, stated because an archive identifier invites
 being read as more than it is. It **backdates nothing**: every result, every
 deviation record and every pre-commitment in this paper predates it and remains
-externally unattested. It does **not** repair D11: the snapshot captures the
-public refs, and `prerewrite-20260925` is not among them, so the three commit
-identifiers stored in all 15,120 result records still resolve for no reader.
-Archiving a repository that does not contain those commits does not make them
-resolvable. What it establishes is forward-looking only: from 01:33 on 15 October
-2026, a claim about this repository's state can point at something outside this
-machine.
+externally unattested. It does **not** repair D11, and could not: both snapshots
+capture the public refs as they stood on 15 October, six days before
+`prerewrite-20260925` was published, so neither archive contains the commits the
+result records name. Those identifiers resolve from the repository itself and
+not from the archive. What the snapshots establish is forward-looking only: from
+01:33 on 15 October 2026, a claim about this repository's state can point at
+something outside this machine.
 
-**Provenance.** Every one of the 15,120 result records stores a `git_commit`
-that does not exist on the public repository. A history rewrite on 25 September
-2026 changed every commit hash; the three stored hashes resolve only from a
-local branch recovered from a folder that had been queued for deletion.
-Annotated tags `records-0b796a3`, `records-2cf7ec7` and `records-0b2aef4` now map
-those identifiers to public counterparts and carry the tree hashes in their own
-messages, so the mapping arrives with a clone rather than having to be found in a
-document. **That improves the delivery of the mapping and not its status**: a
-reader can confirm the counterpart has the stated tree and **cannot** confirm
-that the stored hash ever had it. A tag records an assertion.
+**Provenance, and the decision that was open until 21 October 2026.** Every one
+of the 15,120 result records stores a `git_commit` that a history rewrite on
+25 September 2026 removed from the public repository. The recovered branch
+`prerewrite-20260925` was **published on 21 October 2026**, tip `b5bf0431`, and
+all five identifiers this study depends on are reachable from it: `a8bafbb` and
+`61f7db9`, which `pre-registration.md` cites as its anchor, and `0b796a3`,
+`2cf7ec7` and `0b2aef4`, which the records store. **A reader can now compute the
+tree of a stored hash directly.** The annotated tags `records-0b796a3`,
+`records-2cf7ec7` and `records-0b2aef4` remain as a convenience and are no
+longer the only route; a tag records an assertion, and the assertion is now
+checkable against the object it is about.
 
-Bounded precisely: a reader cannot **independently bind a historical result
-record to the code that generated it**. Everything else remains checkable — the
-analysis scripts in full, the data provenance and checksums, the records
-themselves, and the public half of the mapping. A re-run from current HEAD
-produces new evidence about the current code; it does not authenticate the old
-records, since agreement is consistent with changes that do not alter these
-outputs and disagreement would not separate a code change from a data or
-environment change.
+**What that closes and what it leaves.** It closes the binding: a record names a
+commit, the commit is public, its tree can be computed by anyone. It closes
+nothing about **ordering**. Commit dates are author-set, both histories are
+author-controlled, and the two Software Heritage snapshots were taken six days
+before this branch was public, so neither contains it. A re-run from current HEAD
+still produces evidence about the current code rather than authenticating the old
+records. The limitation that remains is the one in the next paragraph, and it is
+the one that was always the larger of the two.
 
-Full public provenance requires publishing the recovered branch
-`prerewrite-20260925`, which would restore to the public repository the AI
-co-authorship trailers the rewrite removed. **That decision is open and is
-recorded as open.** The trade-off is stated in D11's fourth amendment and this
-paper does not resolve it.
+**The cost, stated rather than minimised.** Publishing restored to the public
+repository the AI co-authorship trailers the rewrite removed, across the
+branch's 25 commits. `main` already carried **twenty** commits with those
+trailers, reinstated by default in late September and then deliberately left in
+place and documented rather than rewritten, and this repository's README
+declares the assistance in prose. The decision therefore conceded in public what
+the record had already conceded four weeks earlier. It is recorded as an
+amendment to D11.
 
 **No external timestamp, and no external reader either.** This study is not
 registered at OSF and has **no Software Heritage snapshot predating its

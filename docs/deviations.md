@@ -2775,3 +2775,149 @@ Nothing in this note is reported as a defect in the tool or in a measurement, so
 **§5.6's count stays at five**, by the boundary set on 5 October. It is a defect
 in what this project believed about its own availability, found by a service
 that tried to read it and could not.
+
+---
+
+## D17 — a measured range in the pre-registration is wrong, the registered document is not edited
+
+**Found** 19 October 2026, while re-deriving the grid-adequacy adjudication from
+the stored runs. **Recorded** 21 October 2026. **No result, rule, threshold or
+verdict moves.**
+
+### What the registered document says
+
+`docs/pre-registration.md` states the figure twice.
+
+* Line 62, section 3: *"these grids were tested for under-tuning by extending
+  them in both directions and comparing against a shuffled-label null; the
+  extension gained five to seven times more on random labels than on real ones,
+  so they stand."*
+* Line 128, section 7: *"extending a grid raises the maximum inner-CV score even
+  when no point is better — measured at five to seven times the real gain on the
+  classical grids."*
+
+### What was measured
+
+The ratio of shuffled-label gain to real-label gain, per kernel and dataset,
+from `results/analysis/grid_edges_{churn,fraud}_both.json` and their `_shuffled`
+counterparts, on mean gain:
+
+    churn polynomial   5.0x        fraud polynomial   6.6x
+    churn RBF          2.0x        fraud RBF         35.7x
+
+**Five and seven are the polynomial figures.** Two of the four measurements fall
+outside the stated range, one far above it and one below it. The sentence
+generalises a polynomial-kernel result to "the classical grids", which is both
+kernels. Week 3 section 14 had the full four-row table when the sentence was
+written; the figure was measured and then summarised beyond what it supported.
+
+### What does not change
+
+**The rule is unaffected and so is every conclusion drawn from it.** The claim
+the rule needs is that extension gains more on noise than on signal, and that
+holds on every kernel and both datasets, including the 2.0x case. The excess of
+real over null is negative in all four comparisons. Re-run on 18 October 2026
+under current code, the figures reproduce bit-identically and
+`scripts/check_grid_edges.py` returns ADEQUATE on both datasets against the
+pre-declared threshold of +0.002. No grid was widened, no arm was re-run, and no
+registered value depends on the range being five to seven rather than two to
+thirty-six.
+
+### Why the registered document is not edited
+
+By the rule D6 and D15 both applied: version 1.0 stands as registered and the
+record is the correction. D15 section 5 states it for section 8 of the
+pre-registration in those words. Editing a frozen document in week 12, after the
+results are known, to replace a figure with one that strengthens this project's
+own case, is harder to defend than the error it removes. A reader comparing the
+registration against the paper sees the paper correcting its own registration,
+which is better evidence of discipline than a registration with no visible
+errors in it.
+
+The correction is carried in `docs/paper-design.md` sections 3.3 and 3.7, which
+give all four measured ratios and state that the registered wording is
+unamended.
+
+### Whether §5.6's count moves, and why it does
+
+**It does: six becomes seven, and the authorial count three becomes four.** The
+boundary set on 5 October is that an inaccuracy enters §5.6 when it misstates a
+measurement or an instrument's behaviour. This misstates a measurement, in a
+public document, in the direction that favours the project on three of the four
+cases and understates it on the fourth.
+
+It belongs to the second kind rather than the first. The instrument was right:
+`scripts/check_grid_edges.py` measured all four ratios correctly and week 3
+tabulated them. What went wrong was the summary written from that table. That is
+the same failure as the other three authorial items, with one difference worth
+stating plainly: those three asserted things nobody had checked, and this one
+took something that had been checked and stated it more broadly than the
+measurement allowed. The second is not obviously the lesser failure, because
+nothing in a reader's view distinguishes a generalised measurement from a
+measured one.
+
+### What this record does not authorize
+
+No edit to `docs/pre-registration.md`. No recomputation. No change to the grid
+adequacy verdict, which stands as ADEQUATE on both datasets on the evidence
+re-derived on 18 October.
+
+---
+
+### Amendment to D11, 21 October 2026: the recovered branch is published and the trade-off is resolved
+
+**Decided and executed** 21 October 2026 by the author. D11's fourth amendment
+left this open and the paper recorded it as open in §4.7 and §7.3 through week
+12. It is now taken.
+
+**What was published.** `prerewrite-20260925`, 25 commits, tip `b5bf0431` —
+the backup HEAD whose absence from the live repository began the 29 September
+investigation. All five identifiers this project depends on are reachable from
+it, verified by `git merge-base --is-ancestor` before any paper text was written
+about it: `a8bafbb` and `61f7db9`, which `docs/pre-registration.md` cites as its
+anchor, and `0b796a3`, `2cf7ec7` and `0b2aef4`, which every one of the 15,120
+result records stores. `main` is untouched.
+
+**What was checked before pushing**, because publishing history cannot be undone.
+Every path ever added on the branch, 108 of them, was listed and compared against
+the current tree. Two are absent today: `results/analysis/grid_edges.json`, from
+before the grid extension was made two-sided, and
+`results/analysis/rbf_surrogate_registered_allcells.json`, the output destroyed
+by the filename collision week 4 logs as its ninth error, later split into the
+three dataset-and-size-specific files that are public now. Neither is sensitive
+and the second is the evidence behind a documented defect. No credential-shaped
+path, no `data/raw`, nothing over 200 KB, consistent with what the 29 September
+amendment recorded.
+
+**What decided it, and a correction to the amendment that framed it.** The
+recorded reason against publishing was that it restores to the public repository
+the AI co-authorship trailers the rewrite removed. That cost had already been
+paid. The fourth amendment itself records that commits reinstating those
+trailers were "left as they stand and documented rather than rewritten", and
+`main` has been public since 15 October. The measured number is **twenty**
+commits on `main` carrying `Co-Authored-By: Claude Opus 5`, all with author date
+29 September 2026. **The amendment says "roughly thirty"**; twenty is the count
+from `git log --grep`. That is an overstatement of this project's own history by
+half, and it is corrected here rather than in place. It does not enter §5.6: it
+misstates a count in this project's record, not a measurement or an instrument's
+behaviour, by the same boundary that kept the week-4 error count out.
+
+**What this closes.** The binding. A result record names a commit, the commit is
+public, and its tree can be computed by any reader. The annotated tags remain a
+convenience rather than the only route, and the sentence "a reader cannot
+independently bind a historical result record to the code that generated it" no
+longer describes this repository.
+
+**What it does not close, and this is the larger half.** Ordering. Commit dates
+are author-set, both histories are author-controlled, and the two Software
+Heritage snapshots were taken on 15 October, six days before this branch was
+public, so neither archive contains it. Every ordering claim in this project,
+including D13's, D14's and D16's claims that a declaration preceded a
+computation, rests on exactly the evidence it rested on yesterday. Publishing
+the objects proves they exist; it proves nothing about when.
+
+**What this record does not authorize.** No edit to `docs/pre-registration.md`,
+whose two cited hashes now resolve but whose text stands as registered under
+D17. No rewrite of either history. No claim that the archive covers the branch;
+a fresh Software Heritage save request would be needed for that, and it would
+attest 21 October and later, not anything earlier.

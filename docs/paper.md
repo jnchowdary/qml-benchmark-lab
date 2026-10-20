@@ -5,18 +5,18 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-19T01:31:32+00:00 at commit `f2d15d9`.
+Assembled 2026-10-20T23:54:18+00:00 at commit `f49ebc1`.
 
 | section | source | sha256 |
 | --- | --- | --- |
-| Abstract | `docs/paper-abstract.md` | `daae3db496e43fef` |
-| 1 | `docs/paper-introduction.md` | `ec22402aefe452b8` |
+| Abstract | `docs/paper-abstract.md` | `e8de5d9407875e8c` |
+| 1 | `docs/paper-introduction.md` | `7e7279f51ce61f94` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
-| 4 | `docs/paper-results.md` | `b9c806172f9a6a7e` |
-| 5 | `docs/paper-protocol.md` | `11a22622dd238b8c` |
-| 6 | `docs/paper-discussion.md` | `854f81aec0a4f449` |
-| 7 | `docs/paper-deviations-pointer.md` | `b6302387ea49dade` |
+| 4 | `docs/paper-results.md` | `5c1b6ff56204d8f0` |
+| 5 | `docs/paper-protocol.md` | `fde9712da551c93d` |
+| 6 | `docs/paper-discussion.md` | `18453af3c95068b7` |
+| 7 | `docs/paper-deviations-pointer.md` | `1bfa12527bc78e11` |
 | References | `docs/paper-references.md` | `958b0237e15ec45f` |
 
 ---
@@ -43,7 +43,8 @@ not usable as the screen it is offered as. A third rule, the source's own and on
 one had run, selects no parameter at all on 76.5% of units, returning nothing to
 test.
 
-Sixteen deviation records govern; one provenance decision is unresolved.
+Seventeen deviation records govern; the recovered pre-rewrite history is now
+published, so every stored commit identifier resolves.
 
 ---
 
@@ -145,8 +146,9 @@ case, unevidenced either way.
 
 **Not that the protocol is validated.** Every records-level and kernel-level
 check was written after the defect it catches. The instrument has needed repair
-six times in public, three times because the tool was wrong and three times
-because its authors asserted something they had not checked. Two of the six are
+seven times in public, three times because the tool was wrong and four times
+because its authors stated something their own data does not support. Two of the
+seven are
 the same lesson twice: a superseded exclusion bound that the confirmatory script
 printed for eleven days after the correction was written, pinned in place by a
 regression test, and the registered adjudicator of grid adequacy, which printed
@@ -1042,39 +1044,43 @@ reader can do from that moment on.
 **What the snapshot does not do**, stated because an archive identifier invites
 being read as more than it is. It **backdates nothing**: every result, every
 deviation record and every pre-commitment in this paper predates it and remains
-externally unattested. It does **not** repair D11: the snapshot captures the
-public refs, and `prerewrite-20260925` is not among them, so the three commit
-identifiers stored in all 15,120 result records still resolve for no reader.
-Archiving a repository that does not contain those commits does not make them
-resolvable. What it establishes is forward-looking only: from 01:33 on 15 October
-2026, a claim about this repository's state can point at something outside this
-machine.
+externally unattested. It does **not** repair D11, and could not: both snapshots
+capture the public refs as they stood on 15 October, six days before
+`prerewrite-20260925` was published, so neither archive contains the commits the
+result records name. Those identifiers resolve from the repository itself and
+not from the archive. What the snapshots establish is forward-looking only: from
+01:33 on 15 October 2026, a claim about this repository's state can point at
+something outside this machine.
 
-**Provenance.** Every one of the 15,120 result records stores a `git_commit`
-that does not exist on the public repository. A history rewrite on 25 September
-2026 changed every commit hash; the three stored hashes resolve only from a
-local branch recovered from a folder that had been queued for deletion.
-Annotated tags `records-0b796a3`, `records-2cf7ec7` and `records-0b2aef4` now map
-those identifiers to public counterparts and carry the tree hashes in their own
-messages, so the mapping arrives with a clone rather than having to be found in a
-document. **That improves the delivery of the mapping and not its status**: a
-reader can confirm the counterpart has the stated tree and **cannot** confirm
-that the stored hash ever had it. A tag records an assertion.
+**Provenance, and the decision that was open until 21 October 2026.** Every one
+of the 15,120 result records stores a `git_commit` that a history rewrite on
+25 September 2026 removed from the public repository. The recovered branch
+`prerewrite-20260925` was **published on 21 October 2026**, tip `b5bf0431`, and
+all five identifiers this study depends on are reachable from it: `a8bafbb` and
+`61f7db9`, which `pre-registration.md` cites as its anchor, and `0b796a3`,
+`2cf7ec7` and `0b2aef4`, which the records store. **A reader can now compute the
+tree of a stored hash directly.** The annotated tags `records-0b796a3`,
+`records-2cf7ec7` and `records-0b2aef4` remain as a convenience and are no
+longer the only route; a tag records an assertion, and the assertion is now
+checkable against the object it is about.
 
-Bounded precisely: a reader cannot **independently bind a historical result
-record to the code that generated it**. Everything else remains checkable — the
-analysis scripts in full, the data provenance and checksums, the records
-themselves, and the public half of the mapping. A re-run from current HEAD
-produces new evidence about the current code; it does not authenticate the old
-records, since agreement is consistent with changes that do not alter these
-outputs and disagreement would not separate a code change from a data or
-environment change.
+**What that closes and what it leaves.** It closes the binding: a record names a
+commit, the commit is public, its tree can be computed by anyone. It closes
+nothing about **ordering**. Commit dates are author-set, both histories are
+author-controlled, and the two Software Heritage snapshots were taken six days
+before this branch was public, so neither contains it. A re-run from current HEAD
+still produces evidence about the current code rather than authenticating the old
+records. The limitation that remains is the one in the next paragraph, and it is
+the one that was always the larger of the two.
 
-Full public provenance requires publishing the recovered branch
-`prerewrite-20260925`, which would restore to the public repository the AI
-co-authorship trailers the rewrite removed. **That decision is open and is
-recorded as open.** The trade-off is stated in D11's fourth amendment and this
-paper does not resolve it.
+**The cost, stated rather than minimised.** Publishing restored to the public
+repository the AI co-authorship trailers the rewrite removed, across the
+branch's 25 commits. `main` already carried **twenty** commits with those
+trailers, reinstated by default in late September and then deliberately left in
+place and documented rather than rewritten, and this repository's README
+declares the assistance in prose. The decision therefore conceded in public what
+the record had already conceded four weeks earlier. It is recorded as an
+amendment to D11.
 
 **No external timestamp, and no external reader either.** This study is not
 registered at OSF and has **no Software Heritage snapshot predating its
@@ -1365,7 +1371,7 @@ the contribution.
 
 **Every Tier 1 and Tier 2 check was written after the defect it catches.** The
 protocol's own first section says so: each exists because a specific reading
-went wrong here, usually after passing review. Sixteen deviation records and a
+went wrong here, usually after passing review. Seventeen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 
@@ -1396,7 +1402,7 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Six things have gone wrong in public, and they are two different kinds.**
+**Seven things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
 *Defects in the instrument (three).* On its first contact with real records the
@@ -1424,7 +1430,7 @@ verdict; what was published was an instrument contradicting its own record for
 three weeks. Found on 18 October 2026 by reading the script, not by any check in
 this protocol.
 
-*Claims its authors made without checking (three).* It asserted from the
+*Claims its authors made that their own data does not support (four).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
 the deposit behind one was read, **six of seven claims in that paragraph were
 wrong or misleading**. It declared four checks unrunnable when three were not —
@@ -1434,9 +1440,21 @@ registered 0.0059 for fraud's primary cell while every document here quoted
 D6's corrected 0.0063, the committed analysis log carried the wrong figure, and
 a regression test asserted it. Nobody re-read the code after writing the
 correction. It was found on 6 October 2026 while refactoring an unrelated
-function, by inspection and not by any check in this protocol.
+function, by inspection and not by any check in this protocol. And the
+pre-registration gives the measured advantage of extending a grid on random
+labels over real ones as **five to seven times**, which is the
+polynomial-kernel figure: on the RBF kernels the ratio is 2.0 and 35.7, so two
+of the four measurements fall outside the stated range, one above it and one
+below. Week 3 had the full four-row table in front of it when that sentence was
+written. **This fourth one differs in kind from the three before it**, and the
+difference does not favour it: those asserted things nobody had checked, while
+this took a measurement that had been made correctly and stated it more broadly
+than it supported. Nothing in a reader's view distinguishes a generalised
+measurement from a measured one. The rule that figure supports is unaffected,
+the direction holding on every kernel and both datasets; D17 records it and the
+registered document is not edited.
 
-**None of the six is an audited pipeline failing an audit.** A reader who takes
+**None of the seven is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed
@@ -1672,7 +1690,7 @@ Reading them as the latter is precisely the conflation this section opened by
 naming.
 
 **The retrospective instances are weak evidence.** Every records-level and
-kernel-level check was written after the defect it catches. Sixteen deviation
+kernel-level check was written after the defect it catches. Seventeen deviation
 records show that this project eventually noticed its own mistakes; they do not
 show that a tool built from them catches a stranger's.
 
@@ -1785,7 +1803,7 @@ pre-registration's text is the historical object rather than the operative one.
 | what was registered, before anything moved | `docs/pre-registration.md` v1.0 |
 | every movement from that design, in one table | **§3.9 of this paper** |
 | why a given movement was made, and when it was declared | the numbered record in `docs/deviations.md` |
-| what is still undecided | §7.3 — one branch, not one record |
+| what the record left open, and how it was closed | §7.3 — one branch, now published |
 
 **§3.9 is the index.** It lists all **eleven** movements with their direction —
 which added a constraint, which weakened a claim, which removed planned evidence
@@ -1825,12 +1843,15 @@ that analysis, and that too was declared and pushed before the outcome was read.
 **What rests on neither:** the frozen λ sweep at {1e-1, 1e-2, 1e-3, 1e-4} that
 carries every result in §4.
 
-**The open decision is not a record.** `prerewrite-20260925`, the recovered
-branch on which full provenance depends, is **unpublished and the choice is
-undecided**. Publishing it makes every stored commit hash resolve without anyone
-having to trust the mapping; it also restores to the public repository the AI
-co-authorship trailers the 25 September rewrite removed. §4.7 states the
-trade-off and this paper does not resolve it.
+**The decision that was not a record has been taken.**
+`prerewrite-20260925`, the recovered branch on which full provenance depended,
+was **published on 21 October 2026**. Every commit hash stored in the result
+records now resolves, so no reader has to trust the tag mapping. It also
+restored to the public repository the AI co-authorship trailers the 25 September
+rewrite removed, which was the cost D11's fourth amendment weighed; `main`
+already carried twenty commits bearing them, left in place and documented rather
+than rewritten. §4.7 states what the publication closes, which is the binding of
+a record to its code, and what it does not, which is anything about ordering.
 
 ---
 
