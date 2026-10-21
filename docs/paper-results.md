@@ -329,8 +329,16 @@ amendment to D11.
 
 **No external timestamp, and no external reader either.** This study is not
 registered at OSF and has **no Software Heritage snapshot predating its
-results**. Its ordering evidence is an author-controlled history, rewritten once
-on 25 September, on a remote that no one else could read until 15 October, with
+results**. The first of those is a **decision** rather than an omission, taken
+on 21 October 2026 and recorded against D11: a registration created now would
+be dated three weeks after every result and after this paper was written, and
+attaching it to a document whose header once claimed an earlier date would read
+as backdating, converting an honest absence into an apparent misrepresentation.
+Two weekly reports had listed it as outstanding work without reconciling that
+against the reasoning already in D11.
+
+Its ordering evidence is an author-controlled history, rewritten once on
+25 September, on a remote that no one else could read until 15 October, with
 no external attestation at any point. Every ordering claim in this paper,
 including the claims in D13, D14 and D16 that a decision preceded a result, rests
 on evidence of that class. **A reader who declines to accept it is left with

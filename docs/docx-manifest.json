@@ -3,16 +3,16 @@
   "exports": {
     "docs/deviations.docx": {
       "source": "docs/deviations.md",
-      "source_sha256": "8db8aac72fd07958207cd2baa955774d2b49415a940626211ec0ef77a1598e81",
-      "generated_at": "2026-10-20T23:55:27Z",
-      "generator_commit": "f49ebc1",
+      "source_sha256": "0edd56ab93c55cecd1b123f34a7b59e86882ffdc276feffbe37d703c95a05084",
+      "generated_at": "2026-10-21T00:17:01Z",
+      "generator_commit": "c7d5dc6",
       "docx_version": "9.7.1"
     },
     "docs/paper.docx": {
       "source": "docs/paper.md",
-      "source_sha256": "ae414284d26fb5808cbbee1c04ca66edb11df292f58cce3d126cfd4cf1cfc416",
-      "generated_at": "2026-10-21T00:10:07Z",
-      "generator_commit": "5f06664",
+      "source_sha256": "2471d0a6fcbf05ec64b232ede048e617428cd9ba4d4851c2c41f957521abd521",
+      "generated_at": "2026-10-21T00:17:02Z",
+      "generator_commit": "c7d5dc6",
       "docx_version": "9.7.1"
     },
     "docs/week-04-report.docx": {

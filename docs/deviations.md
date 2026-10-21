@@ -2921,3 +2921,58 @@ whose two cited hashes now resolve but whose text stands as registered under
 D17. No rewrite of either history. No claim that the archive covers the branch;
 a fresh Software Heritage save request would be needed for that, and it would
 attest 21 October and later, not anything earlier.
+
+---
+
+### Amendment to D11, 21 October 2026: the OSF item is a decision, not an omission
+
+**This record reconciles two statements in this repository that contradict each
+other and were never put side by side.** Neither is new; what is new is noticing
+that both are in the record and that the weaker one has been driving a task
+list for five weeks.
+
+**What the weekly reports say.** Week 6 section 10: *"OSF registration is not
+blocked by anything. It was recorded through this week as waiting on a rewrite
+of the pre-registration's section 1. That was wrong twice over. v1.0 plus D1 to
+D6 can be registered exactly as they stand; git already timestamps the document
+publicly from 24 September and OSF adds an independent immutable record and a
+DOI, requiring no edit to anything."* Week 7 section 8 repeats it in one line:
+*"OSF registration was never blocked and still has not happened."*
+
+**What D11 says, four days earlier.** Under "What is NOT done, and why": *"No OSF
+registration is being created now. An OSF record dated 29 September 2026,
+attached to a document whose header claimed 24 September, with the study's
+results already computed and committed, would be checkable by anyone and would
+read as backdating. It would convert an honest absence into an apparent
+misrepresentation. The absence is reported instead."*
+
+**D11 is right, and its argument is stronger now than when it was written.** A
+registration dated 21 October 2026 sits three weeks after every result was
+computed and after the paper was written. Week 6's claim is not false on its own
+terms — nothing was blocking the mechanism, and OSF would indeed add an
+immutable record and a DOI — but "not blocked" was read as "therefore to be
+done", and the reason not to do it was in a record written four days before, in
+the same file, about the same document.
+
+**How that happened is the familiar shape.** Week 6's paragraph is itself a
+correction: it says the earlier framing was "wrong twice over". In correcting one
+error about what blocked the task it asserted what should happen next without
+re-reading the reasoning D11 had already set down. A claim made while fixing an
+adjacent claim, without checking the record, is the same failure §5.6's second
+kind collects.
+
+**Decided.** No OSF registration will be created for this study. The absence is
+a decision and is recorded as one. §4.7 says the study is not registered there
+and now says the absence was chosen rather than left.
+
+**What this does not change.** The pre-registration's own corrected line, which
+states that it is not registered at OSF and never has been and says what the old
+text claimed and for how long, stands as written. No ordering claim in this
+project gains or loses anything: git commit dates were author-controlled before
+this record and remain so, and the two Software Heritage snapshots are
+forward-looking for the same reason an OSF record created now would be.
+
+**It does not enter §5.6.** An unreconciled contradiction between two of this
+project's own records misstates neither a measurement nor an instrument's
+behaviour, by the boundary set on 5 October. It is recorded here and counted
+nowhere.

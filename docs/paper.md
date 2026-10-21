@@ -5,7 +5,7 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-21T00:09:37+00:00 at commit `5f06664`.
+Assembled 2026-10-21T00:15:46+00:00 at commit `c7d5dc6`.
 
 | section | source | sha256 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Assembled 2026-10-21T00:09:37+00:00 at commit `5f06664`.
 | 1 | `docs/paper-introduction.md` | `7e7279f51ce61f94` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
-| 4 | `docs/paper-results.md` | `e240461eba153a25` |
+| 4 | `docs/paper-results.md` | `b32aecd493a5dce3` |
 | 5 | `docs/paper-protocol.md` | `fde9712da551c93d` |
 | 6 | `docs/paper-discussion.md` | `18453af3c95068b7` |
 | 7 | `docs/paper-deviations-pointer.md` | `1bfa12527bc78e11` |
@@ -1084,8 +1084,16 @@ amendment to D11.
 
 **No external timestamp, and no external reader either.** This study is not
 registered at OSF and has **no Software Heritage snapshot predating its
-results**. Its ordering evidence is an author-controlled history, rewritten once
-on 25 September, on a remote that no one else could read until 15 October, with
+results**. The first of those is a **decision** rather than an omission, taken
+on 21 October 2026 and recorded against D11: a registration created now would
+be dated three weeks after every result and after this paper was written, and
+attaching it to a document whose header once claimed an earlier date would read
+as backdating, converting an honest absence into an apparent misrepresentation.
+Two weekly reports had listed it as outstanding work without reconciling that
+against the reasoning already in D11.
+
+Its ordering evidence is an author-controlled history, rewritten once on
+25 September, on a remote that no one else could read until 15 October, with
 no external attestation at any point. Every ordering claim in this paper,
 including the claims in D13, D14 and D16 that a decision preceded a result, rests
 on evidence of that class. **A reader who declines to accept it is left with
