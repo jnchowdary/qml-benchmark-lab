@@ -5,7 +5,7 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-20T23:54:18+00:00 at commit `f49ebc1`.
+Assembled 2026-10-21T00:09:37+00:00 at commit `5f06664`.
 
 | section | source | sha256 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Assembled 2026-10-20T23:54:18+00:00 at commit `f49ebc1`.
 | 1 | `docs/paper-introduction.md` | `7e7279f51ce61f94` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
 | 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
-| 4 | `docs/paper-results.md` | `5c1b6ff56204d8f0` |
+| 4 | `docs/paper-results.md` | `e240461eba153a25` |
 | 5 | `docs/paper-protocol.md` | `fde9712da551c93d` |
 | 6 | `docs/paper-discussion.md` | `18453af3c95068b7` |
 | 7 | `docs/paper-deviations-pointer.md` | `1bfa12527bc78e11` |
@@ -1120,20 +1120,27 @@ regenerable and read by nothing in the paper.
 **The mutation harness now reads every test file, and what it reveals is worse
 than what it fixed.** Until 15 October it was hardwired to one test file, so
 mutants for the F20 diagnostic, the λ correction and the exploratory families
-had to be run by hand. Those four are now in the suite and all 34 mutants are
-killed by the test that names each one, across four source files and three test
+had to be run by hand. Those four are now in the suite and all **37** mutants are
+killed by the test that names each one, across five source files and four test
 files. But the coverage report was also scanning only the files that already had
-mutants, which hid every file with none: corrected, it reads **34 of 374 test
-functions**, not the 34 of 70 the old report implied. **Fifteen of eighteen test
+mutants, which hid every file with none: corrected, it reads **37 of 395 test
+functions**, not the 34 of 70 the old report implied. **Fifteen of nineteen test
 files have no mutant at all**, including `tests/test_audit.py` and its 76
 functions — the tests for the audit tool §5 is about. So the honest statement is
 that this project has demonstrated non-vacuity for 9% of its test functions and
 has not examined the rest.
 
-**One check has no mutant because it has no test.** `select_lambda` in
-`scripts/gtra_sweep.py`, which implements D16's selection rule, is exercised only
-by that script's own control F and not by pytest, so no mutant can be expressed
-for it.
+**The one check that had no mutant now has two.** `select_lambda` in
+`scripts/gtra_sweep.py`, which implements D16's selection rule, was exercised
+only by that script's own control F and not by pytest. The harness maps each
+mutant to a pytest node, so a rule with no pytest test cannot have its
+non-vacuity demonstrated at all, and control F runs inside a sweep that takes
+hours. `tests/test_gtra_sweep.py` now pins the rule, and two mutants target it:
+taking the smallest admissible λ rather than the largest, and reading the
+threshold as strict where D16 fixed it inclusive. Both are killed. One of those
+tests covers a case control F does not — an admissible set with a hole in it,
+where an implementation scanning upward for the first violation would agree with
+control F on every monotone input and still select the wrong λ.
 
 **The figures check covers three of this paper's numbers.**
 `scripts/check_paper_figures.py` re-derives the churn and fraud primary-cell

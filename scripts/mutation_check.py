@@ -69,6 +69,7 @@ T_GT = "tests/test_geometric_tests.py"
 T_GD = "tests/test_geometric_difference.py"
 T_PT = "tests/test_primary_tests.py"
 T_ES = "tests/test_exploratory_sweep.py"
+T_GS = "tests/test_gtra_sweep.py"
 
 
 def M(name, why, old, new, test, file=GT, tests=T_GT):
@@ -78,6 +79,27 @@ def M(name, why, old, new, test, file=GT, tests=T_GT):
 
 
 MUTANTS = [
+
+    # ---- D16's selection rule, which had no pytest test until 21 Oct 2026 ----
+    # GS was declared when the gtra sweep was written and no mutant ever used
+    # it, because select_lambda was exercised only by that script's control F.
+    M("largest admissible -> smallest",
+      "D16 selects the LARGEST admissible lambda; g_tra rises with lambda, so "
+      "taking the smallest would select 1e-5 almost everywhere and the rule "
+      "would say nothing about the data",
+      "    return max(admissible), True, near",
+      "    return min(admissible), True, near",
+      "TestSelectLambda::test_selection_takes_the_largest_admissible_lambda",
+      file=GS, tests=T_GS),
+
+    M("inclusive threshold -> strict",
+      "the source is internally inconsistent between '<=' and '<'; D16 fixed "
+      "'<=', so a lambda sitting exactly on 0.045 is admissible",
+      "admissible = [l for l in HUANG_GRID if gtra_by_lam[l] <= GTRA_MAX]",
+      "admissible = [l for l in HUANG_GRID if gtra_by_lam[l] < GTRA_MAX]",
+      "TestSelectLambda::test_the_threshold_is_inclusive",
+      file=GS, tests=T_GS),
+
     # ---- the twelve defects week 7 section 6 records ----------------------
     M("median -> mean",
       "D7 chose the median so one heavy-tailed seed cannot carry a unit",
