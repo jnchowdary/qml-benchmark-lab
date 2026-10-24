@@ -19,3 +19,14 @@ __pycache__/
 .coverage
 .ipynb_checkpoints/
 .DS_Store
+
+# The arXiv bundle. paper.tex, paper_source.md and the three figures ARE the
+# submission and are committed; arXiv compiles the PDF from them. Everything
+# below is a local TeX build, regenerated on demand and never submitted.
+arxiv/*.aux
+arxiv/*.log
+arxiv/*.out
+arxiv/*.toc
+arxiv/*.pdf
+arxiv/*.fls
+arxiv/*.fdb_latexmk
