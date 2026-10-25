@@ -240,10 +240,17 @@ which are framework-independent; wall-clock is secondary and always labelled
 with its backend.
 
 > **Amended, D12.** The IBM hardware runs registered for weeks 7 to 8 were
-> dropped as infeasible. No registered claim depends on them, and the protocol
-> has consequently never been run against this project's own hardware records
-> because there are none — a gap in the protocol's evidence base, recorded as
-> forgone rather than unimportant.
+> **never feasible as registered**, which is the wording D12's amendment
+> requires in place of "dropped". The run needs 18,172,000 circuit executions,
+> 113,575 per record across four settings, twenty seeds and two datasets,
+> against an Open Plan allocation of ten minutes of QPU time per month: thirty
+> times the budget at 1 ms per circuit and still three times over at 0.1 ms.
+> Nobody established this for seven weeks, although the number that makes the
+> timeline impossible was printed in every quantum record from week 4 and three
+> weekly records each flagged the allocation as unchecked. No registered claim
+> depends on them, and the protocol has consequently never been run against this
+> project's own hardware records because there are none — a gap in the
+> protocol's evidence base, recorded as forgone rather than unimportant.
 
 ---
 
@@ -279,7 +286,7 @@ getting to choose.
 | D6 | the registered power table is wrong by 2.3x–3.9x throughout; corrected figures supersede it | weakens claims |
 | D7 | unit g is the median over surviving seeds, IQR reported, 10-seed minimum | adds a constraint |
 | D8 | observed difference averaged over the same surviving seeds; above-floor subset must agree; signed secondary pre-declared | adds a constraint |
-| D12 | IBM hardware runs dropped as infeasible | removes planned evidence |
+| D12 | IBM hardware runs never feasible as registered: 18.17M circuits against a 600-second monthly allocation | removes planned evidence |
 | D13 | H3 ungated from H2, declared after its result was published; two readings offered | weakens H3's status |
 | D14 | `lambda_from_svm_C` corrected to 1/(2C) on an outcome-to-verdict mapping pushed before the re-run; the supplementary column's breaches fall from 2,893 to 979 of 7,200 and no verdict moves | corrects a defect, changes no result |
 | D15 | the paper's organising contribution becomes the protocol | reframes, changes no analysis |

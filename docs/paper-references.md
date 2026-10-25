@@ -72,6 +72,23 @@ checked numerically in `scripts/tekeli_check.py`; the check and its boundary are
 reported in `docs/week-06-report.md`. Used as a cross-check on this study's own
 kernels, not as a source for any claim about the geometric difference.
 
+**[5] Bowles, J., Ahmed, S., and Schuld, M.** *Better than classical? The subtle
+art of benchmarking quantum machine learning models.* arXiv:2403.07059,
+March 2024.
+
+Read from the arXiv listing rather than from a stored transcription, so its
+title and author list carry the same caveat as the rest of this section. It
+measures the publication skew this paper's framing rests on: in a sample of 55
+arXiv papers using the word "outperform", about 40% report a quantum model
+beating a classical one and three report the reverse. Across 12 models and 6
+binary tasks it finds that out-of-the-box classical models generally outperform
+the quantum classifiers, and that removing entanglement often leaves
+performance unchanged. **It was not consulted while this study was designed or
+run**, and is cited because §1.2's claim about what published work merges should
+rest on the work that measured the merging rather than on assertion. Week 4
+records a missing literature check as that week's largest error; this is the
+same class, found on 25 October 2026 and recorded in the weeks 10 to 12 record.
+
 ---
 
 **Datasets.** Sources, licences and checksums are in `data/README.md`. The

@@ -5,19 +5,19 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-21T00:15:46+00:00 at commit `c7d5dc6`.
+Assembled 2026-10-25T22:58:41+00:00 at commit `8719c0e`.
 
 | section | source | sha256 |
 | --- | --- | --- |
 | Abstract | `docs/paper-abstract.md` | `e8de5d9407875e8c` |
-| 1 | `docs/paper-introduction.md` | `7e7279f51ce61f94` |
+| 1 | `docs/paper-introduction.md` | `1b7b13a3c91057f2` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
-| 3 | `docs/paper-design.md` | `248f7f0f316ea1cf` |
+| 3 | `docs/paper-design.md` | `e79e7703212f4ec9` |
 | 4 | `docs/paper-results.md` | `b32aecd493a5dce3` |
 | 5 | `docs/paper-protocol.md` | `fde9712da551c93d` |
 | 6 | `docs/paper-discussion.md` | `18453af3c95068b7` |
 | 7 | `docs/paper-deviations-pointer.md` | `1bfa12527bc78e11` |
-| References | `docs/paper-references.md` | `958b0237e15ec45f` |
+| References | `docs/paper-references.md` | `fb91450b1d9fe1b1` |
 
 ---
 
@@ -105,6 +105,14 @@ says what a quantity is. A refusal says the file cannot answer a question and
 names which. An unsupported claim is an assertion its own artefact does not
 license. The procedure's output is mostly refusals, and the paper is explicit
 that a refusal is not a finding about the audited work.
+
+**That merging has been measured, and the measurement is not this paper's.**
+Bowles, Ahmed and Schuld sampled 55 arXiv papers using the word "outperform":
+around 40% report a quantum model beating a classical one and three report the
+reverse [5]. Their classical baselines are out-of-the-box rather than tuned and
+still generally win. This study's are tuned under a pre-registered rule and
+still win. That skew is why a pre-registered null is worth reporting at all,
+and it was found after this study was designed and run, not before.
 
 **A record format whose value is a property of the format.** A results file
 carrying the fields in §5.2 can be audited by a stranger in seconds, without the
@@ -698,10 +706,17 @@ which are framework-independent; wall-clock is secondary and always labelled
 with its backend.
 
 > **Amended, D12.** The IBM hardware runs registered for weeks 7 to 8 were
-> dropped as infeasible. No registered claim depends on them, and the protocol
-> has consequently never been run against this project's own hardware records
-> because there are none — a gap in the protocol's evidence base, recorded as
-> forgone rather than unimportant.
+> **never feasible as registered**, which is the wording D12's amendment
+> requires in place of "dropped". The run needs 18,172,000 circuit executions,
+> 113,575 per record across four settings, twenty seeds and two datasets,
+> against an Open Plan allocation of ten minutes of QPU time per month: thirty
+> times the budget at 1 ms per circuit and still three times over at 0.1 ms.
+> Nobody established this for seven weeks, although the number that makes the
+> timeline impossible was printed in every quantum record from week 4 and three
+> weekly records each flagged the allocation as unchecked. No registered claim
+> depends on them, and the protocol has consequently never been run against this
+> project's own hardware records because there are none — a gap in the
+> protocol's evidence base, recorded as forgone rather than unimportant.
 
 ---
 
@@ -737,7 +752,7 @@ getting to choose.
 | D6 | the registered power table is wrong by 2.3x–3.9x throughout; corrected figures supersede it | weakens claims |
 | D7 | unit g is the median over surviving seeds, IQR reported, 10-seed minimum | adds a constraint |
 | D8 | observed difference averaged over the same surviving seeds; above-floor subset must agree; signed secondary pre-declared | adds a constraint |
-| D12 | IBM hardware runs dropped as infeasible | removes planned evidence |
+| D12 | IBM hardware runs never feasible as registered: 18.17M circuits against a 600-second monthly allocation | removes planned evidence |
 | D13 | H3 ungated from H2, declared after its result was published; two readings offered | weakens H3's status |
 | D14 | `lambda_from_svm_C` corrected to 1/(2C) on an outcome-to-verdict mapping pushed before the re-run; the supplementary column's breaches fall from 2,893 to 979 of 7,200 and no verdict moves | corrects a defect, changes no result |
 | D15 | the paper's organising contribution becomes the protocol | reframes, changes no analysis |
@@ -1972,6 +1987,23 @@ Derives in closed form a property of the ZZ feature map that this project
 checked numerically in `scripts/tekeli_check.py`; the check and its boundary are
 reported in `docs/week-06-report.md`. Used as a cross-check on this study's own
 kernels, not as a source for any claim about the geometric difference.
+
+**[5] Bowles, J., Ahmed, S., and Schuld, M.** *Better than classical? The subtle
+art of benchmarking quantum machine learning models.* arXiv:2403.07059,
+March 2024.
+
+Read from the arXiv listing rather than from a stored transcription, so its
+title and author list carry the same caveat as the rest of this section. It
+measures the publication skew this paper's framing rests on: in a sample of 55
+arXiv papers using the word "outperform", about 40% report a quantum model
+beating a classical one and three report the reverse. Across 12 models and 6
+binary tasks it finds that out-of-the-box classical models generally outperform
+the quantum classifiers, and that removing entanglement often leaves
+performance unchanged. **It was not consulted while this study was designed or
+run**, and is cited because §1.2's claim about what published work merges should
+rest on the work that measured the merging rather than on assertion. Week 4
+records a missing literature check as that week's largest error; this is the
+same class, found on 25 October 2026 and recorded in the weeks 10 to 12 record.
 
 ---
 

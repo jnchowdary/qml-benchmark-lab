@@ -10,9 +10,9 @@
     },
     "docs/paper.docx": {
       "source": "docs/paper.md",
-      "source_sha256": "2471d0a6fcbf05ec64b232ede048e617428cd9ba4d4851c2c41f957521abd521",
-      "generated_at": "2026-10-21T00:17:02Z",
-      "generator_commit": "c7d5dc6",
+      "source_sha256": "9a4a1425ec211f95e5d241cbd9e823f0278759340cc288c4847dbd9e59fd8d0f",
+      "generated_at": "2026-10-25T23:16:48Z",
+      "generator_commit": "8719c0e",
       "docx_version": "9.7.1"
     },
     "docs/week-04-report.docx": {
@@ -20,6 +20,20 @@
       "source_sha256": "2707f538b4d1be436d57cdfcc5669e0d06a107cdee352dc98d6680f4d75057e7",
       "generated_at": "2026-10-15T02:22:57Z",
       "generator_commit": "c588aa7",
+      "docx_version": "9.7.1"
+    },
+    "docs/week-09-report.docx": {
+      "source": "docs/week-09-report.md",
+      "source_sha256": "91fc5f9341179c3e6413466f0918b9fcc525d9f39eb6316944867501204375bd",
+      "generated_at": "2026-10-25T23:16:46Z",
+      "generator_commit": "8719c0e",
+      "docx_version": "9.7.1"
+    },
+    "docs/week-10-12-report.docx": {
+      "source": "docs/week-10-12-report.md",
+      "source_sha256": "57b6192ee5a103ef53ae120fe2ef2b6edcb07073fba57220b6277d712b2adc15",
+      "generated_at": "2026-10-25T23:16:47Z",
+      "generator_commit": "8719c0e",
       "docx_version": "9.7.1"
     }
   }

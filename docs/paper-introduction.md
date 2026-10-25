@@ -56,6 +56,14 @@ names which. An unsupported claim is an assertion its own artefact does not
 license. The procedure's output is mostly refusals, and the paper is explicit
 that a refusal is not a finding about the audited work.
 
+**That merging has been measured, and the measurement is not this paper's.**
+Bowles, Ahmed and Schuld sampled 55 arXiv papers using the word "outperform":
+around 40% report a quantum model beating a classical one and three report the
+reverse [5]. Their classical baselines are out-of-the-box rather than tuned and
+still generally win. This study's are tuned under a pre-registered rule and
+still win. That skew is why a pre-registered null is worth reporting at all,
+and it was found after this study was designed and run, not before.
+
 **A record format whose value is a property of the format.** A results file
 carrying the fields in §5.2 can be audited by a stranger in seconds, without the
 pipeline that produced it, and the audit states which questions that file cannot

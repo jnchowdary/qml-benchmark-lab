@@ -63,9 +63,10 @@ Reported as results, not as advantage claims.
 | [`docs/pre-registration.md`](docs/pre-registration.md) | v1.0, frozen. Hypotheses, design, declared power, decision rule. Never edited; errors in it are corrected by deviation records. |
 | [`docs/deviations.md`](docs/deviations.md) | Sixteen records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
 | [`docs/predictions.md`](docs/predictions.md) | Exploratory claims written down with falsification conditions **before** the run that tests them. Outcomes are appended, never edited, including a withdrawn bound. |
-| `docs/week-0N-report.md` | Weekly records. Week 4 logs eleven errors and names the pattern behind three of them. |
+| `docs/week-0N-report.md` | Weekly records, weeks 1 to 9. Week 4 logs eleven errors and names the pattern behind three of them. |
+| `docs/week-10-12-report.md` | The closing record for the registered writing phase, weeks 10 to 12, kept as one record because the phase was one. |
 
-Weeks 4 to 8 and `deviations.docx` are generated from their records by `scripts/report_to_docx.js`. **Weeks 1 to 3 were transcribed into Word by hand**, before that generator existed, and are not regenerated; `scripts/check_docx_fresh.py` reports them as provenance-unrecorded rather than assuming they match. That checker exists because the generator alone did not prevent drift: on 15 October 2026 `deviations.docx` was found sixteen days behind a record that had since doubled in length.
+Weeks 4 to 9, the weeks 10 to 12 record and `deviations.docx` are generated from their records by `scripts/report_to_docx.js`. **Weeks 1 to 3 were transcribed into Word by hand**, before that generator existed, and are not regenerated; `scripts/check_docx_fresh.py` reports them as provenance-unrecorded rather than assuming they match. That checker exists because the generator alone did not prevent drift: on 15 October 2026 `deviations.docx` was found sixteen days behind a record that had since doubled in length.
 
 ## Use of AI assistance
 
