@@ -5,17 +5,17 @@
 section and re-run; `--check` fails if this file has drifted from its
 sources.
 
-Assembled 2026-10-25T22:58:41+00:00 at commit `8719c0e`.
+Assembled 2026-10-25T23:34:38+00:00 at commit `378fc3d`.
 
 | section | source | sha256 |
 | --- | --- | --- |
-| Abstract | `docs/paper-abstract.md` | `e8de5d9407875e8c` |
+| Abstract | `docs/paper-abstract.md` | `4c19807aa474cddc` |
 | 1 | `docs/paper-introduction.md` | `1b7b13a3c91057f2` |
 | 2 | `docs/paper-background.md` | `b77857d2ab111f69` |
-| 3 | `docs/paper-design.md` | `e79e7703212f4ec9` |
+| 3 | `docs/paper-design.md` | `3e21c31d39e5b422` |
 | 4 | `docs/paper-results.md` | `b32aecd493a5dce3` |
-| 5 | `docs/paper-protocol.md` | `fde9712da551c93d` |
-| 6 | `docs/paper-discussion.md` | `18453af3c95068b7` |
+| 5 | `docs/paper-protocol.md` | `fddeea5cd7f7c7e1` |
+| 6 | `docs/paper-discussion.md` | `2ecacdab80837417` |
 | 7 | `docs/paper-deviations-pointer.md` | `1bfa12527bc78e11` |
 | References | `docs/paper-references.md` | `fb91450b1d9fe1b1` |
 
@@ -43,7 +43,7 @@ not usable as the screen it is offered as. A third rule, the source's own and on
 one had run, selects no parameter at all on 76.5% of units, returning nothing to
 test.
 
-Seventeen deviation records govern; the recovered pre-rewrite history is now
+Eighteen deviation records govern; the recovered pre-rewrite history is now
 published, so every stored commit identifier resolves.
 
 ---
@@ -709,8 +709,17 @@ with its backend.
 > **never feasible as registered**, which is the wording D12's amendment
 > requires in place of "dropped". The run needs 18,172,000 circuit executions,
 > 113,575 per record across four settings, twenty seeds and two datasets,
-> against an Open Plan allocation of ten minutes of QPU time per month: thirty
-> times the budget at 1 ms per circuit and still three times over at 0.1 ms.
+> against an Open Plan allocation of ten minutes of QPU time per month.
+>
+> **Corrected, D18.** Those are circuit counts and not costs. A hardware run
+> estimates each kernel entry from S shots, so the executions IBM meters are the
+> circuit count times S; at the 1,024 shots this project's one audited hardware
+> deposit used, a single primary-cell Gram is 116,300,800 executions against a
+> documented per-job ceiling of 10 million, and the registered scope is
+> 18,608,128,000. D12's figure of thirty times the budget omitted the shot
+> dimension, as did its finding that one Gram would have fitted inside the
+> allocation; the second is withdrawn. The registered run was further from
+> feasible than D12 said, not nearer.
 > Nobody established this for seven weeks, although the number that makes the
 > timeline impossible was printed in every quantum record from week 4 and three
 > weekly records each flagged the allocation as unchecked. No registered claim
@@ -1401,7 +1410,7 @@ the contribution.
 
 **Every Tier 1 and Tier 2 check was written after the defect it catches.** The
 protocol's own first section says so: each exists because a specific reading
-went wrong here, usually after passing review. Seventeen deviation records and a
+went wrong here, usually after passing review. Eighteen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 
@@ -1432,7 +1441,7 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Seven things have gone wrong in public, and they are two different kinds.**
+**Eight things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
 *Defects in the instrument (three).* On its first contact with real records the
@@ -1460,7 +1469,7 @@ verdict; what was published was an instrument contradicting its own record for
 three weeks. Found on 18 October 2026 by reading the script, not by any check in
 this protocol.
 
-*Claims its authors made that their own data does not support (four).* It asserted from the
+*Claims its authors made that their own data does not support (five).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
 the deposit behind one was read, **six of seven claims in that paragraph were
 wrong or misleading**. It declared four checks unrunnable when three were not —
@@ -1484,7 +1493,25 @@ measurement from a measured one. The rule that figure supports is unaffected,
 the direction holding on every kernel and both datasets; D17 records it and the
 registered document is not edited.
 
-**None of the seven is an audited pipeline failing an audit.** A reader who takes
+**The fifth is the cost figure this paper reports, and it was published in
+three source files, the README, three records and §3.7.** `QuantumGramFactory.evaluations()`
+returns the pair count n(n-1)/2, and four documents call that the
+*hardware-equivalent* cost of the experiment. It is not: the protocol those same
+documents describe estimates a probability from S repetitions of each pairwise
+circuit, so a hardware run costs the pair count **times a shot count**, and no
+shot count appears in the registration, in any section of this paper, or in any
+field of any of the 15,120 result records. At the 1,024 shots the one hardware
+deposit audited here used, a single primary-cell Gram is 116,300,800 Sampler
+executions against a documented per-job ceiling of 10 million, so it is at least
+twelve jobs rather than the two minutes D12 computed. The error is the same kind
+as the fourth and arrives by a worse route: D12 exists **because** a feasibility
+number went seven weeks unchecked, and the amendment correcting that failure
+recomputed it from a metric missing the dominant factor. Found on 25 October 2026
+by checking the arithmetic before writing hardware code, not by any check in this
+protocol. D18 records it; no computed result moves, because the omitted factor
+affects only what the experiment would have cost on hardware.
+
+**None of the eight is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed
@@ -1720,7 +1747,7 @@ Reading them as the latter is precisely the conflation this section opened by
 naming.
 
 **The retrospective instances are weak evidence.** Every records-level and
-kernel-level check was written after the defect it catches. Seventeen deviation
+kernel-level check was written after the defect it catches. Eighteen deviation
 records show that this project eventually noticed its own mistakes; they do not
 show that a tool built from them catches a stranger's.
 

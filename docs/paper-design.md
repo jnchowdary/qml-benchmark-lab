@@ -243,8 +243,17 @@ with its backend.
 > **never feasible as registered**, which is the wording D12's amendment
 > requires in place of "dropped". The run needs 18,172,000 circuit executions,
 > 113,575 per record across four settings, twenty seeds and two datasets,
-> against an Open Plan allocation of ten minutes of QPU time per month: thirty
-> times the budget at 1 ms per circuit and still three times over at 0.1 ms.
+> against an Open Plan allocation of ten minutes of QPU time per month.
+>
+> **Corrected, D18.** Those are circuit counts and not costs. A hardware run
+> estimates each kernel entry from S shots, so the executions IBM meters are the
+> circuit count times S; at the 1,024 shots this project's one audited hardware
+> deposit used, a single primary-cell Gram is 116,300,800 executions against a
+> documented per-job ceiling of 10 million, and the registered scope is
+> 18,608,128,000. D12's figure of thirty times the budget omitted the shot
+> dimension, as did its finding that one Gram would have fitted inside the
+> allocation; the second is withdrawn. The registered run was further from
+> feasible than D12 said, not nearer.
 > Nobody established this for seven weeks, although the number that makes the
 > timeline impossible was printed in every quantum record from week 4 and three
 > weekly records each flagged the allocation as unchecked. No registered claim

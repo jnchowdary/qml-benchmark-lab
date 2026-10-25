@@ -1,8 +1,8 @@
 {
   "note": "Written by scripts/paper_to_latex.py. The bundle in arxiv/ is generated from docs/paper.md and is what would be submitted. This file records the pandoc that built it, because pandoc's LaTeX writer and template differ across major versions.",
   "source": "docs/paper.md",
-  "source_sha256": "9a4a1425ec211f95e5d241cbd9e823f0278759340cc288c4847dbd9e59fd8d0f",
-  "generated_at": "2026-10-25T23:16:50+00:00",
+  "source_sha256": "ba6106ecb3862905406000358b8482d53739a601b061f9bbf06a0c36f551b24f",
+  "generated_at": "2026-10-25T23:34:44+00:00",
   "pandoc": "pandoc 3.12.1",
   "figures": [
     "fig1_h2_lambda.png",

@@ -61,7 +61,7 @@ Reported as results, not as advantage claims.
 | document | what it holds |
 | --- | --- |
 | [`docs/pre-registration.md`](docs/pre-registration.md) | v1.0, frozen. Hypotheses, design, declared power, decision rule. Never edited; errors in it are corrected by deviation records. |
-| [`docs/deviations.md`](docs/deviations.md) | Sixteen records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
+| [`docs/deviations.md`](docs/deviations.md) | Eighteen records. Each states its date, its reason, and whether it was made before or after the affected results were seen. D3, D6 and D11 record defects in the pre-registration itself; D10 is marked POST-HOC in its own heading and records three wrong explanations before the one that held. |
 | [`docs/predictions.md`](docs/predictions.md) | Exploratory claims written down with falsification conditions **before** the run that tests them. Outcomes are appended, never edited, including a withdrawn bound. |
 | `docs/week-0N-report.md` | Weekly records, weeks 1 to 9. Week 4 logs eleven errors and names the pattern behind three of them. |
 | `docs/week-10-12-report.md` | The closing record for the registered writing phase, weeks 10 to 12, kept as one record because the phase was one. |
@@ -98,7 +98,7 @@ pre-registration hashes in the first place; the third amendment to D11 in
 
 Raw data is never committed. `data/README.md` carries provenance and checksums; the churn licence forbids redistribution, so you need your own Kaggle credentials. Python 3.13, `requirements.txt` pinned exactly, `requirements.lock.txt` for the full resolved set. Every record stores its git commit, the C grid, the seed, the per-test-point decision scores, the test labels, and an order-sensitive label fingerprint.
 
-Quantum kernels are computed from statevectors rather than pairwise circuits — identical to 1e−15, about 100x faster, and recorded as deviation D1. **Reported cost stays hardware-equivalent** at n(n−1)/2 circuit evaluations; the simulator shortcut is counted separately, so no claim here rests on something a quantum computer cannot do.
+Quantum kernels are computed from statevectors rather than pairwise circuits — identical to 1e−15, about 100x faster, and recorded as deviation D1. **Reported cost stays the pairwise circuit count**, n(n−1)/2, with the simulator shortcut counted separately, so no claim here rests on something a quantum computer cannot do. That count is not QPU time: hardware runs each pairwise circuit once per shot, and deviation **D18** records that D1, D12, the week 8 record, this file and §3.7 of the paper, plus three source files, called the count a hardware-equivalent cost until 25 October 2026.
 
 ## Reading a g value
 

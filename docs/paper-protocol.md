@@ -197,7 +197,7 @@ the contribution.
 
 **Every Tier 1 and Tier 2 check was written after the defect it catches.** The
 protocol's own first section says so: each exists because a specific reading
-went wrong here, usually after passing review. Seventeen deviation records and a
+went wrong here, usually after passing review. Eighteen deviation records and a
 list of caught mistakes are **not** evidence that a tool catches a stranger's
 mistakes. They are evidence that this project eventually noticed its own.
 
@@ -228,7 +228,7 @@ foreign records they detected none.
 Parts B and C add two cases apiece, but both were performed by the same party
 that wrote the procedures.
 
-**Seven things have gone wrong in public, and they are two different kinds.**
+**Eight things have gone wrong in public, and they are two different kinds.**
 Collapsing them under one word was itself imprecise.
 
 *Defects in the instrument (three).* On its first contact with real records the
@@ -256,7 +256,7 @@ verdict; what was published was an instrument contradicting its own record for
 three weeks. Found on 18 October 2026 by reading the script, not by any check in
 this protocol.
 
-*Claims its authors made that their own data does not support (four).* It asserted from the
+*Claims its authors made that their own data does not support (five).* It asserted from the
 manuscripts that two published benchmarks performed none of five checks; when
 the deposit behind one was read, **six of seven claims in that paragraph were
 wrong or misleading**. It declared four checks unrunnable when three were not —
@@ -280,7 +280,25 @@ measurement from a measured one. The rule that figure supports is unaffected,
 the direction holding on every kernel and both datasets; D17 records it and the
 registered document is not edited.
 
-**None of the seven is an audited pipeline failing an audit.** A reader who takes
+**The fifth is the cost figure this paper reports, and it was published in
+three source files, the README, three records and §3.7.** `QuantumGramFactory.evaluations()`
+returns the pair count n(n-1)/2, and four documents call that the
+*hardware-equivalent* cost of the experiment. It is not: the protocol those same
+documents describe estimates a probability from S repetitions of each pairwise
+circuit, so a hardware run costs the pair count **times a shot count**, and no
+shot count appears in the registration, in any section of this paper, or in any
+field of any of the 15,120 result records. At the 1,024 shots the one hardware
+deposit audited here used, a single primary-cell Gram is 116,300,800 Sampler
+executions against a documented per-job ceiling of 10 million, so it is at least
+twelve jobs rather than the two minutes D12 computed. The error is the same kind
+as the fourth and arrives by a worse route: D12 exists **because** a feasibility
+number went seven weeks unchecked, and the amendment correcting that failure
+recomputed it from a metric missing the dominant factor. Found on 25 October 2026
+by checking the arithmetic before writing hardware code, not by any check in this
+protocol. D18 records it; no computed result moves, because the omitted factor
+affects only what the experiment would have cost on hardware.
+
+**None of the eight is an audited pipeline failing an audit.** A reader who takes
 this section as evidence that audited work fails these checks has read it as it
 was first written and not as it is meant. The two kinds matter differently: the
 first says the instrument needed repair, the second says its authors committed

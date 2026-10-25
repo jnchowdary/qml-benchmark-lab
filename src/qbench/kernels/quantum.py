@@ -48,10 +48,13 @@ turned a projected 110-hour sweep into well under an hour.
 
 This changes no number. It changes what the run costs on THIS machine, and
 nothing about what the experiment would cost on hardware. So `evaluations()`
-keeps reporting the hardware-equivalent n(n-1)/2, which is what the
-pre-registration commits to reporting, and `simulator_executions()` reports
-the shortcut separately. Conflating the two would let the paper claim quantum
-kernels are cheap on the strength of something no quantum computer can do.
+keeps reporting n(n-1)/2, which is the pair count the pre-registration commits
+to reporting, and `simulator_executions()` reports the shortcut separately.
+Conflating the two would let the paper claim quantum kernels are cheap on the
+strength of something no quantum computer can do.
+
+n(n-1)/2 is a CIRCUIT COUNT and not a hardware cost. See COST ACCOUNTING below
+and D18: hardware runs each pairwise circuit once per shot.
 
 WHY THE CACHE EXISTS
 --------------------
@@ -71,13 +74,22 @@ Entries are keyed by the content of the input arrays, not their identity, so a
 re-derived but equal array still hits. `clear()` is called between cells to
 bound memory: four settings times two matrices at 350 points is about 8 MB.
 
-COST ACCOUNTING
----------------
+COST ACCOUNTING, AND WHAT IT IS NOT
+-----------------------------------
 The pre-registration reports cost in circuit evaluations, which are
 framework-independent, with wall-clock as a secondary always labelled by
-backend. `evaluations()` reports the true count, excluding cache hits, so the
-figure is what the experiment would cost on hardware rather than what this
-particular optimisation happened to save.
+backend. `evaluations()` reports the true count of PAIRS, excluding cache hits,
+so the figure is what the experiment would cost on this machine rather than what
+this particular optimisation happened to save.
+
+It is NOT a hardware cost, and this docstring claimed it was until 25 October
+2026. The protocol named above measures a probability, which needs S shots per
+pair, so a hardware run costs n(n-1)/2 circuits times S executions. This counter
+has no shot dimension and this project records no shot count anywhere, so the
+figure understates hardware cost by whatever S would have been -- three orders of
+magnitude at the 1,024 shots the one hardware deposit this project has audited
+used. D18 records it. Report this number as a circuit count; it does not license
+any statement about QPU time.
 """
 
 from __future__ import annotations
@@ -281,7 +293,7 @@ class QuantumGramFactory:
             n = len(A)
             if Y is None:
                 if first_time:
-                    self._evaluations += n * (n - 1) // 2   # hardware-equivalent cost
+                    self._evaluations += n * (n - 1) // 2   # pair count, not a cost: D18
                 K = np.abs(A.conj() @ A.T) ** 2
                 K = (K + K.T) / 2                          # kill 1e-16 asymmetry
                 np.fill_diagonal(K, 1.0)

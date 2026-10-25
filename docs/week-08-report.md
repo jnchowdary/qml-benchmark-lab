@@ -137,6 +137,14 @@ unconfirmed in weeks 1, 2 and 3 and never checked, is **10 minutes of QPU time
 per month**, with the trial account expiring in one day and no workload ever
 submitted.
 
+**Corrected 25 October 2026, D18: `circuit_evaluations` is a circuit count and
+not a hardware cost.** Hardware estimates each kernel entry from S shots, so the
+executions a QPU meters are this count times S, and no shot count exists
+anywhere in this project. Every figure in the paragraphs below is therefore a
+floor rather than an estimate; the conclusion they support -- that the registered
+run was never feasible within the allocation -- holds by a wider margin than they
+give. They stand as written, as a weekly record.
+
 Every quantum record already carries the hardware-equivalent cost, because D1
 required it: `circuit_evaluations` = 113,575, being 61,075 training pairs plus
 52,500 test pairs. The registered scope is 4 settings x 20 seeds x 2 datasets:

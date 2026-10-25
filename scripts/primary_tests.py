@@ -229,7 +229,10 @@ def integrity(qrecs, crecs, dataset, n_per_class):
 
     hw = sum(int(r.get("circuit_evaluations", 0)) for r in qrecs)
     sim = sum(int(r.get("simulator_executions", 0)) for r in qrecs)
-    notes.append(f"cost: {hw:,} hardware-equivalent circuit evaluations; "
+    # NOT a hardware cost: a pairwise circuit is run once per shot on hardware
+    # and no shot count exists in this project. D18. Say circuits, not cost.
+    notes.append(f"cost: {hw:,} pairwise circuits (a circuit count, NOT QPU time: "
+                 f"hardware multiplies it by the shots per entry, see D18); "
                  f"{sim:,} statevectors actually simulated "
                  f"({hw / max(sim, 1):.0f}x, and the paper reports the former)")
 

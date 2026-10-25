@@ -198,7 +198,9 @@ def run_cell(X, y, seed, n_per_class, mapping, nq, shuffle, device, done, out, m
                    bandwidth_grid=(list(bandwidths) if bandwidths else None),
                    n_per_class=int(n_per_class), shuffled=bool(shuffle),
                    device=device,
-                   # hardware-equivalent: what this kernel would cost on a QPU
+                   # the pairwise circuit count. NOT a QPU cost: hardware runs
+                   # each of these once per shot, and this project has no shot
+                   # count. D18.
                    circuit_evaluations=factory.evaluations() - ev0,
                    # what the simulator actually ran, reported separately so the
                    # shortcut is never mistaken for a property of the method
@@ -296,7 +298,8 @@ def main():
     secs = sum(SEC_PER_STATE.get(q, 0.006) * (n_bw * n_train + n_test)
                for _, _, q, _ in todo)
     print(f"projected wall clock from the measured cost model: {secs / 3600:.2f} h "
-          f"(statevector path; hardware-equivalent cost is reported per record)")
+          f"(statevector path; the pairwise circuit count is reported per record, "
+          f"which is not a QPU cost -- see D18)")
     print(f"-> {out.relative_to(ROOT) if out.is_relative_to(ROOT) else out}")
 
     if args.dry_run:

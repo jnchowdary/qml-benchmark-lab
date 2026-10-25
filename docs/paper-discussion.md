@@ -159,7 +159,7 @@ Reading them as the latter is precisely the conflation this section opened by
 naming.
 
 **The retrospective instances are weak evidence.** Every records-level and
-kernel-level check was written after the defect it catches. Seventeen deviation
+kernel-level check was written after the defect it catches. Eighteen deviation
 records show that this project eventually noticed its own mistakes; they do not
 show that a tool built from them catches a stranger's.
 

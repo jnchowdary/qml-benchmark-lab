@@ -2976,3 +2976,157 @@ forward-looking for the same reason an OSF record created now would be.
 project's own records misstates neither a measurement nor an instrument's
 behaviour, by the boundary set on 5 October. It is recorded here and counted
 nowhere.
+
+---
+
+## D18 — the reported "hardware-equivalent" cost is a circuit count, and D12's correction of the feasibility error repeated it
+
+**Found** 25 October 2026, while checking the practical execution estimate
+before writing any hardware code. **Recorded** 25 October 2026. **No result,
+threshold, decision rule or verdict moves.** What moves is every statement this
+project has made about what its experiment would cost on hardware.
+
+### The claim
+
+`src/qbench/kernels/quantum.py`, module docstring, under COST ACCOUNTING:
+
+> `evaluations()` reports the true count, excluding cache hits, so the figure is
+> what the experiment would cost on hardware rather than what this particular
+> optimisation happened to save.
+
+D1 says the same in its "What is NOT changed" paragraph: *"Reported cost stays
+hardware-equivalent. `QuantumGramFactory.evaluations()` reports n(n−1)/2, which
+is what a quantum computer would need."* D12's amendment calls 113,575 *"the
+hardware-equivalent figure"*. Week 8 section 10 says *"Every quantum record
+already carries the hardware-equivalent cost."* The paper carries it in §3.7.
+
+### Why it is wrong, from the same docstring, four paragraphs up
+
+> The textbook protocol, and the only one available on hardware, runs
+> U(x_i)^dagger U(x_j) and measures the all-zeros probability, once per PAIR:
+> n(n-1)/2 circuit evaluations.
+
+**Measuring a probability requires shots.** A fidelity kernel entry is estimated
+as the fraction of S repetitions returning the all-zeros string, with standard
+error sqrt(p(1−p)/S). One execution per pair estimates nothing. So the hardware
+cost of a Gram is n(n−1)/2 **circuits**, each run S times, and
+`evaluations()` reports the first factor only. There is no shot count anywhere
+in this project: the word does not appear in `docs/pre-registration.md`, in any
+paper section, or in any field of any one of the 15,120 result records.
+
+The metric is not faulty — it returns the count its own docstring describes, and
+does so correctly. **What is wrong is the claim attached to it**, in four
+documents and one source file, that the count is what the experiment would cost
+on hardware. It is the circuit dimension of that cost with the shot dimension
+omitted, and the omitted factor is three orders of magnitude.
+
+### The practical execution estimate, with the shot dimension restored
+
+The only shot count this project has ever had evidence about is **1,024**, which
+is what Kakavand et al. used on `ibm_fez` and what
+`results/audits/kakavand_hw.jsonl` records in its `shots` field for all 18
+borrowed records. The audit protocol's record format has a `shots` column; this
+project reads it from another group's deposit and emits it in none of its own.
+
+At 1,024 shots, and counting executions as IBM counts them for the Sampler
+primitive — circuits multiplied by shots, after PUB broadcasting:
+
+    one primary-cell Gram      113,575 circuits  ->    116,300,800 executions
+    the registered scope    18,172,000 circuits  -> 18,608,128,000 executions
+
+**IBM's documented per-job ceiling is 10 million Sampler executions.** One Gram
+therefore cannot be one job: it is at least 12. The registered scope is at least
+1,861 jobs. Neither figure depends on any assumption about how fast a backend
+runs, and neither appears in D12.
+
+**What D12 claimed, and why it does not follow.** D12's amendment states that
+*"One (setting, seed) Gram is 113,575 circuits, roughly two minutes at 1 ms, and
+fits inside the 600 seconds."* The 1 ms is a rate per circuit and names no shot
+count. For it to hold at 1,024 shots the per-shot time would have to be 0.98
+microseconds, for a 12-qubit circuit including its readout and its reset. The
+claim is unsupported whatever the true rate, because the figure it rests on has
+no shot dimension in it; the question of whether one Gram fits inside the
+allocation was open and was reported as closed.
+
+**An estimate of the rate, labelled as an estimate.** Vendor-reported CLOPS for
+Heron-family processors is of order 3e+05, which places per-shot cost in the
+tens to low hundreds of microseconds depending on circuit depth and how jobs are
+batched. On that bracket a single primary-cell Gram costs roughly 4 to 60 times
+the whole monthly Open Plan allocation of 600 seconds, and the registered scope
+roughly 600 to 9,000 times it. **These numbers are an estimate and no decision
+here rests on them.** The per-shot cost on a given backend on a given day is
+measurable in one small job and is not being guessed at in any record that
+follows.
+
+### What this changes about weeks 7 and 8
+
+**Nothing, and it makes the existing conclusion stronger rather than weaker.**
+D12's primary ground stands: the registered run was never feasible as
+registered. It was further from feasible than D12 said, by between one and two
+further orders of magnitude.
+
+**One sentence of D12 is withdrawn.** Its paragraph headed "What was feasible,
+and is being declined" is wrong: a full primary-cell Gram at 1,024 shots was
+never inside the allocation, so what was declined on 29 September was not
+available to decline. The grounds given for declining it — no hardware code, the
+trial lapsing the next day — were sound; the premise that it would have fitted
+was not.
+
+**The scale that was feasible is a much smaller one, and the evidence for that
+was already in this repository.** Kakavand et al. ran n_train = 60 on hardware:
+1,770 pairs, 1,812,480 executions at 1,024 shots, inside one job. This project
+registered n_train = 350 for the same step, 64 times the pair count. The only
+published hardware record this project has ever examined was running at
+one-sixty-fourth of the scale its own timeline assumed, and nobody compared the
+two numbers across seven weeks.
+
+### Whether §5.6's count moves, and which kind it joins
+
+**It does: seven becomes eight, and the authorial count four becomes five.** An
+inaccuracy enters §5.6 when it misstates a measurement or an instrument's
+behaviour, by the boundary set on 5 October. This misstates what an instrument
+reports, in a public source file and three public documents.
+
+**It is the second kind, not the first, by D17's own precedent.** The instrument
+is right: `evaluations()` counts circuits and says so. What went wrong is the
+claim written about it. D17 drew exactly that line for the grid-adequacy ratios —
+the script measured all four correctly and the summary generalised them — and the
+same line puts this one here.
+
+**It is counted once, not twice.** D12's feasibility claim and the cost-metric
+claim are one error with two appearances: the first is a consequence of the
+second. Counting them separately would inflate this project's own tally, which
+is the failure D11's "roughly thirty" was corrected for.
+
+**The uncomfortable part, stated rather than left to inference.** D12 exists
+because a feasibility number went unchecked for seven weeks, and its amendment is
+the correction of that failure. The correction was itself computed from a metric
+that omits the dominant factor, published, carried into the paper, and used to
+decide what was feasible. A record written to close an unchecked-arithmetic
+failure repeated it one order down. That is the clearest instance this project
+has of §5.6's closing claim, which is that a green instrument is not evidence
+that what it reports is what the reader is told it reports.
+
+### What this record does not authorize
+
+No edit to `docs/pre-registration.md`, whose section 7 commits to reporting
+circuit evaluation counts and is accurate in doing so: it never calls them a
+hardware cost. No edit to D1 or D12 in place; this record is their correction, by
+the convention D5 and D11 both used. No recomputation of any result: the shot
+dimension affects what the experiment would cost on hardware and affects no
+quantity that was computed. No hardware job. **No paid usage of any kind.** A
+bounded exploratory run is a separate decision, needs the account facts nobody
+has yet verified, and is not pre-committed here.
+
+### What it requires
+
+* `evaluations()` keeps its behaviour and loses the claim. The docstring now
+  says it is a circuit count and names the missing factor. The same claim was
+  printed by `scripts/primary_tests.py` in every confirmatory run and by
+  `scripts/run_quantum_kernels.py` in its projection line and its record
+  comment; all three now say "circuit count" and point here.
+* `simulator_executions()` is unaffected: the distinction it draws between the
+  statevector shortcut and the pairwise protocol was always correct.
+* Any future hardware record emitted by this project carries `shots`, `backend`,
+  `job_id` and metered `quantum_seconds`, so that this project's own hardware
+  records are at least as complete as the borrowed ones it audited.

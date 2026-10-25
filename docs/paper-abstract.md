@@ -20,5 +20,5 @@ not usable as the screen it is offered as. A third rule, the source's own and on
 one had run, selects no parameter at all on 76.5% of units, returning nothing to
 test.
 
-Seventeen deviation records govern; the recovered pre-rewrite history is now
+Eighteen deviation records govern; the recovered pre-rewrite history is now
 published, so every stored commit identifier resolves.
