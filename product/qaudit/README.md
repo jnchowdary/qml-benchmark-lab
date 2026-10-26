@@ -76,5 +76,19 @@ documented and should not have to be rediscovered:
 - A clean report means the file supports the kind of claim being made. It does
   not mean the claim is true.
 
-No comparison with other tools is claimed anywhere here, because none has been
-done.
+## What else does this
+
+`ALTERNATIVES.md` has the survey. Its first finding is that the content of
+these checks is not novel: REFORMS, a consensus reporting standard of 32 items
+for machine-learning-based science, already covers data leakage, metrics and
+uncertainty quantification, modelling and generalizability, and it has no
+executable implementation. statcheck does the closest thing in method, in
+psychology, recomputing reported p-values from the statistics beside them, and
+its own documentation says it only detects whether a set of numbers is
+consistent with each other.
+
+So the claim made here is narrow and is a claim about form rather than content:
+nothing found reads a third party's results file and reports which claims it
+supports, which questions it cannot answer, and which missing field blocks each
+one. No uniqueness claim is made beyond that, and the survey names what it did
+not look at.
