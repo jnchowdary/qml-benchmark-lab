@@ -1,0 +1,5 @@
+origin	destination	origin_sha256	change
+src/qbench/stats.py	src/qaudit/_qbench_stats.py	4b31541fc57a707ccd60c2cd8cacb4fd39cf600e3890fd33f616e4a1534d4a0d	byte-identical
+src/qbench/metrics.py	src/qaudit/_qbench_metrics.py	f98250c8916abd8137c86eac8fe2583cc2107b0d18b1f1006318d6da43ed9170	byte-identical
+scripts/audit.py	src/qaudit/audit.py	341e4f5500af9b10e62d71ac84226d33afe0c936a2fcad6bd9aeebb240efb77e	import block rewired, 7 lines
+tests/test_audit.py	tests/test_audit.py	e891346be0e0bca7bc1d57b5ba8accb5c1581543f1bd1ea419c32acb26242ad6	import block rewired, 5 lines

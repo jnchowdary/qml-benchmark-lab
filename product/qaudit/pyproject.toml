@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qaudit"
+version = "0.1.0"
+description = "Reports what a quantum-classical benchmark results file can and cannot establish."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Nagesh Kumar Jonnalagadda" }]
+keywords = ["quantum machine learning", "benchmark", "audit", "reproducibility"]
+
+# numpy and scipy only. The research repository this was extracted from pulls in
+# qiskit, qiskit-machine-learning, qiskit-aer, pennylane, pennylane-lightning,
+# scikit-learn, pandas, statsmodels, matplotlib and joblib. None of them is
+# reached by any check here, and requiring them to read a JSONL file is what
+# made this tool uninstallable.
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+qaudit = "qaudit.audit:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

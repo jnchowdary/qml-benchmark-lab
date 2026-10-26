@@ -30,3 +30,9 @@ arxiv/*.toc
 arxiv/*.pdf
 arxiv/*.fls
 arxiv/*.fdb_latexmk
+
+# Python packaging artefacts from product/
+build/
+dist/
+*.egg-info/
+.venv/

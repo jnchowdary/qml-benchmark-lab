@@ -1,0 +1,27 @@
+{
+  "note": "Transcribed from results/audits/kakavand_hw_report.json of the QML Benchmark Lab research repository, the one external case this tool has. Check names and statuses only: no number, endpoint or array from the audited deposit is reproduced here.",
+  "case": "kakavand-2026",
+  "citation": "Kakavand, Strohmeyer & Schlotter (2026), arXiv:2604.18837",
+  "deposit": "Zenodo 10.5281/zenodo.19197916, CC BY 4.0",
+  "audited": "2026-09-29",
+  "invocation_note": "--hook-sample 18; the committed report does not record this, which is a finding of its own. See EXTRACTION.md.",
+  "statuses": {
+    "schema": "FAIL",
+    "chance correction": "SKIP",
+    "negative control": "SKIP",
+    "pairing integrity": "SKIP",
+    "solver health": "PASS",
+    "unit of analysis": "WARN",
+    "statistical power": "SKIP",
+    "precision floor": "SKIP",
+    "multiplicity": "WARN",
+    "tuning symmetry": "SKIP",
+    "cross-arm comparison": "SKIP",
+    "kernel conditioning": "PASS",
+    "classical surrogate equivalence": "NOT RUN",
+    "selection": "SKIP"
+  },
+  "not_runnable": [
+    "grid adequacy against a shuffled null"
+  ]
+}
