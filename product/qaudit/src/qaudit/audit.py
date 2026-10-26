@@ -225,8 +225,18 @@ def check_schema(recs, ctx):
                        f"required fields missing from some records: "
                        f"{', '.join(missing)}. Discount the checks that name them "
                        f"below; the checks that do not need them still answer.")
-    opt = [f for f in ("test_label_fingerprint", "shuffled", "final_converged", "cell")
+    opt = [f for f in ("test_label_fingerprint", "shuffled", "final_converged")
            if not has(recs, f)]
+    # `cell` was in that list and should not have been. Section 2 of the
+    # protocol says configuration may be supplied EITHER as a nested `cell`
+    # dict OR as top-level fields the audit infers, so warning about `cell`
+    # when the inference succeeded warned about an absence the protocol
+    # explicitly permits. It never showed on the one foreign file, which fails
+    # on required fields above and never reaches this line. A file is missing
+    # configuration only when it has neither route.
+    if not has(recs, "cell") and not ctx.get("cell_fields"):
+        opt.append("`cell`, and no top-level configuration field could be "
+                   "inferred either")
     if opt:
         return Outcome("schema", WARN,
                        f"{len(recs)} records readable; missing recommended fields "
@@ -304,7 +314,20 @@ def check_negative_control(recs, ctx):
         se = (float(np.std(vals, ddof=1) / math.sqrt(len(vals)))
               if len(vals) > 1 else 0.0)
         z = (m - null) / se if se > 0 else 0.0
-        out[label] = {"mean": m, "sigma": z, "se": se, "n_units": len(vals)}
+        # A sigma scales a deviation. When the deviation is itself below the
+        # pipeline's reproducibility floor there is no deviation to scale, so
+        # the figure is arithmetic rather than evidence and is NOT printed. The
+        # verdict rule below has always required both conditions; the PASS line
+        # printed the sigma anyway, and on a healthy control that is the common
+        # case, not the edge case: a control that sits at its null has almost no
+        # spread across splits by construction. Printing -4.8e+11 sigma on a
+        # PASS invites a reader either to distrust the report or to quote the
+        # number, and this check's own history is the first version dividing by
+        # a standard error of order 1e-22 and reporting 3.5e+16 sigma on a mean
+        # deviation of 0.000014.
+        reportable = abs(m - null) > floor
+        out[label] = {"mean": m, "sigma": z, "se": se, "n_units": len(vals),
+                      "null": null, "sigma_reportable": reportable}
         # BOTH conditions, never the sigma alone. A control whose records are
         # near-identical has a standard error of order 1e-22, which is floating
         # point residue rather than a measured spread, and dividing by it turned
@@ -321,11 +344,22 @@ def check_negative_control(recs, ctx):
                        f"control deviates from its null by more than the {floor:g} "
                        f"floor over {unit}: {'; '.join(bad)}. Investigate before "
                        f"reading any result in the main file.", numbers=out)
-    return Outcome("negative control", PASS,
-                   f"{unit}: ROC-AUC {out['ROC-AUC']['mean']:.4f} "
-                   f"({out['ROC-AUC']['sigma']:+.2f} sigma), normAP "
-                   f"{out['normAP']['mean']:+.4f} ({out['normAP']['sigma']:+.2f} sigma).",
-                   numbers=out)
+    def say(label, fmt):
+        d = out[label]
+        if d["sigma_reportable"]:
+            return f"{label} {d['mean']:{fmt}} ({d['sigma']:+.2f} sigma)"
+        return (f"{label} {d['mean']:{fmt}}, within the {floor:g} floor of its null "
+                f"of {d['null']:g}")
+    said = f"{say('ROC-AUC', '.4f')}, {say('normAP', '+.4f')}"
+    suppressed = [l for l in ("ROC-AUC", "normAP") if not out[l]["sigma_reportable"]]
+    why = ""
+    if suppressed:
+        why = (f" No sigma is given for {' or '.join(suppressed)} because a deviation "
+               f"below the pipeline's own reproducibility floor is not a leak however "
+               f"many sigma the arithmetic produces, and the spread it would divide by "
+               f"is floating-point residue rather than a measurement. That is the "
+               f"healthy case for a control, not an edge case.")
+    return Outcome("negative control", PASS, f"{unit}: {said}.{why}", numbers=out)
 
 
 def check_pairing(recs, ctx):

@@ -122,9 +122,10 @@ balanced accuracy in a slide, 4 can, and this tool will say which 4 rather than
 estimating the rest.
 
 `FIELDS.md` lists every field, what each one enables, and what goes dark
-without it. `template.jsonl` is three records in the right shape: a hardware
-quantum arm, its classical comparator on the same split, and the same setting
-on a simulator.
+without it. `template.jsonl` and `template_control.jsonl` are a complete input
+in the right shape, eight records across two configurations, two seeds and two
+arms with a permuted-label companion. Running them puts twelve of the fifteen
+checks on the record, which is the contrast worth seeing beside the four above.
 
 ## Regenerating this
 

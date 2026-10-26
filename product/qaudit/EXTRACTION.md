@@ -133,3 +133,42 @@ numbers. Added as a top-level key, which leaves every existing field untouched.
 * Everything asserted in this document is re-checked by
   `verify_extraction.py` on every run, which is now the regression guard for
   every change made to this package after the extraction.
+
+## Two defects found after the extraction, by running the template
+
+Neither was caused by the extraction. Neither appears on the one external file,
+which fails on required fields and never reaches either code path. Both were
+found by running the tool on its own shipped template, which is the argument for
+shipping one that is exercised rather than described.
+
+**`check_schema` warned about an absence the protocol permits.** `cell` was in
+its recommended-fields list, while section 2 of the protocol says configuration
+may be supplied *either* as a nested `cell` dict *or* as top-level fields the
+audit infers. The template takes the documented second route and was warned for
+it. The check now warns only when a file has neither route, and names both.
+
+**`check_negative_control` printed a sigma with no meaning.** Its verdict rule
+has always required both a sigma bar and the reproducibility floor, because the
+first version of it divided by a standard error of order 1e-22 and reported
+3.5e+16 sigma on a mean deviation of 0.000014. The PASS line printed the sigma
+regardless, and the template's first run read
+`normAP -0.0000 (-479279874081.53 sigma)`.
+
+That is the common case and not the edge case: a control sitting at its null has
+almost no spread across splits by construction, so a healthy control is exactly
+when the figure is residue. The PASS line now prints the deviation, says it is
+inside the floor of its stated null, and says why no sigma is given. The verdict
+logic is untouched and a real leak still FAILs, with a test for it.
+
+**What the template's own first draft got wrong**, recorded because it is the
+same class of error the tool exists to report. The selected hyperparameters were
+encoded into the method name, which gave five methods, so no configuration field
+was scored by the same set of methods, the inference found nothing, and every
+quantum parameter looked fixed to the tuning check. And the control's labels
+were permuted on average precision while ROC-AUC kept its real values, which the
+negative control correctly caught at +45 sigma on the endpoint that had not been
+permuted. Both are now asserted against the shipped files by
+`tests/test_check_fixes.py`, so the template cannot rot into either again.
+
+After these changes: 112 tests pass, and the external report still reproduces
+field for field.

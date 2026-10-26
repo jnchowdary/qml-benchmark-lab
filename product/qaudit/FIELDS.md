@@ -3,9 +3,45 @@
 One JSON object per line. A record is **one model, scored once, on one
 train/test split**. Nothing in the format is specific to quantum kernels.
 
-`template.jsonl` holds three records in the shape below: one hardware quantum
-arm, its classical comparator on the same split, and the same quantum setting
-on a simulator. Copy it and replace the values.
+## The template, and what it gets you
+
+`template.jsonl` is eight records: two configurations (`pca`/12 qubits and
+`selectk`/8 qubits) by two seeds by two methods (`quantum` on hardware and
+`rbf` classically). `template_control.jsonl` is the same eight with permuted
+labels. Together they are a complete input, and running them is the fastest way
+to tell whether your own file is in shape:
+
+    qaudit template.jsonl --control template_control.jsonl
+
+Twelve of the fifteen checks speak. `schema`, `chance correction`,
+`negative control`, `pairing integrity`, `solver health`, `precision floor`,
+`tuning symmetry`, `selection` and `hardware cost claims` pass;
+`unit of analysis`, `statistical power` and `multiplicity` warn, which with two
+seeds is the correct answer rather than a problem with the file. Exit code 1,
+because a warning is a warning.
+
+The other three are `kernel conditioning` and `classical surrogate
+equivalence`, which read kernels rather than records and need `--hook`, and
+`cross-arm comparison`, which skips because both arms are in one file. None of
+the three is about the file being incomplete. Separately, and outside the
+fifteen, `grid adequacy against a shuffled null` is reported as not runnable
+from records at all: it needs a re-run of your pipeline on permuted labels with
+a widened grid, which no file can supply.
+
+**Two things the template is deliberate about.** `method` is the arm and not
+the setting: the embedding, the repetitions and C live in `params`. Putting
+them into the method name gives one method per setting, at which point no
+configuration field is scored by the same set of methods and the inference
+finds nothing. And both arms are in one file, which is why `cross-arm
+comparison` is among the three above. That is the one check that wants the arms
+separated, which is the shape most pipelines emit anyway:
+
+    qaudit quantum.jsonl --control quantum_shuffled.jsonl --compare classical.jsonl
+
+Without `--compare`, every power and multiplicity figure describes comparisons
+within one arm. D6 of the research project is what that costs: a registered
+power figure of 0.0171 came from classical-versus-classical variance where the
+true cross-arm figure is 0.0608, understated 3.6 times.
 
 ## Required
 

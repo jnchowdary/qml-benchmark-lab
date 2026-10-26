@@ -30,8 +30,10 @@ failure.
   anything else.
 * **`FIELDS.md`** — every field, what it enables, and which checks go dark
   without it.
-* **`template.jsonl`** — three records in the right shape: a hardware quantum
-  arm, its classical comparator on the same split, the same setting simulated.
+* **`template.jsonl`** and **`template_control.jsonl`** — a complete input,
+  eight records across two configurations, two seeds and two arms, with its
+  permuted-label companion. Run them to see what a file in shape produces, and
+  to check your own against it.
 * **`EXTRACTION.md`** — how this package was taken out of the research
   repository and how that was verified.
 
