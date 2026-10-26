@@ -206,6 +206,55 @@ def verbatim_is_clean(text):
     return bad
 
 
+def add_break_opportunities(body):
+    """Make over-long `\\texttt` spans breakable. -> (text, seqsplit, permitted).
+
+    At module level so a test can exercise it directly rather than retyping
+    its logic. That distinction is not academic: on 26 October 2026 the
+    throwaway check for this code held the correct pattern while the file on
+    disk held a broken one, so the check passed and the defect shipped.
+    """
+    split, permitted = [], []
+
+    def _breakable(m):
+        inner = m.group(1)
+        if len(inner) >= SEQSPLIT_MIN and "\\" not in inner:
+            split.append(inner)
+            return "\\texttt{\\seqsplit{" + inner + "}}"
+        # A span seqsplit declines still has to fit the line, and on 26 October
+        # 2026 three did not: `scripts/foreign/kakavand_adapter.py` ran 43.2pt
+        # past the right margin, `scripts/check_paper_figures.py` 41.6pt, and
+        # the dataset slug `blastchar/telco-customer-churn` 8.9pt. All three are
+        # under SEQSPLIT_MIN and two contain \_, so they fail both of the
+        # conditions above.
+        #
+        # \allowbreak PERMITS a break and never forces one, and unlike seqsplit
+        # it walks nothing, so a span containing \_ or \^{} is unaffected --
+        # which is what made the global seqsplit redefinition produce 12 errors.
+        # It is inserted after a separator only, so a break can land where a
+        # reader already expects one, as the url package does. There is no
+        # length threshold: adding a break opportunity to a span that fits
+        # changes nothing about how it sets.
+        #
+        # The separator must be a path slash and NOT the one in pandoc's italic
+        # correction
+        # `\\/`, which it emits between the hyphens of `--flag` to stop the
+        # ligature. Inserting a break there let `--check` split into `-` and
+        # `-check` across a line, which the first draft of this did.
+        if re.search(r"(?<!\\)/", inner) or "\\_" in inner:
+            permitted.append(inner)
+            inner = re.sub(r"(?<!\\)/", "/\\\\allowbreak{}", inner)
+            inner = inner.replace("\\_", "\\_\\allowbreak{}")
+            return "\\texttt{" + inner + "}"
+        return m.group(0)
+
+    # re.subn's count is every match, including the ones this declines, so it
+    # would report all 166 spans as split. The counter is explicit for that
+    # reason: a number that measures nothing reads as evidence.
+    body = re.sub(r"\\texttt\{([^}]*)\}", _breakable, body)
+    return body, split, permitted
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pandoc", default="pandoc", help="path to the pandoc binary")
@@ -257,44 +306,7 @@ def main():
     # 73 of this paper's 166 texttt spans contain things like \\_ and \\^{},
     # and seqsplit walks its argument token by token, so redefining texttt
     # globally produced 12 LaTeX errors on the first attempt.
-    split, permitted = [], []
-
-    def _breakable(m):
-        inner = m.group(1)
-        if len(inner) >= SEQSPLIT_MIN and "\\" not in inner:
-            split.append(inner)
-            return "\\texttt{\\seqsplit{" + inner + "}}"
-        # A span seqsplit declines still has to fit the line, and on 26 October
-        # 2026 three did not: `scripts/foreign/kakavand_adapter.py` ran 43.2pt
-        # past the right margin, `scripts/check_paper_figures.py` 41.6pt, and
-        # the dataset slug `blastchar/telco-customer-churn` 8.9pt. All three are
-        # under SEQSPLIT_MIN and two contain \_, so they fail both of the
-        # conditions above.
-        #
-        # \allowbreak PERMITS a break and never forces one, and unlike seqsplit
-        # it walks nothing, so a span containing \_ or \^{} is unaffected --
-        # which is what made the global seqsplit redefinition produce 12 errors.
-        # It is inserted after a separator only, so a break can land where a
-        # reader already expects one, as the url package does. There is no
-        # length threshold: adding a break opportunity to a span that fits
-        # changes nothing about how it sets.
-        #
-        # The separator must be a path slash and NOT the one in pandoc's italic
-        # correction
-        # `\\/`, which it emits between the hyphens of `--flag` to stop the
-        # ligature. Inserting a break there let `--check` split into `-` and
-        # `-check` across a line, which the first draft of this did.
-        if re.search(r"(?<!\\)/", inner) or "\\_" in inner:
-            permitted.append(inner)
-            inner = re.sub(r"(?<!\\)/", "/\\\\allowbreak{}", inner)
-            inner = inner.replace("\\_", "\\_\\allowbreak{}")
-            return "\\texttt{" + inner + "}"
-        return m.group(0)
-
-    # re.subn's count is every match, including the ones this declines, so it
-    # would report all 166 spans as split. The counter is explicit for that
-    # reason: a number that measures nothing reads as evidence.
-    body = re.sub(r"\\texttt\{([^}]*)\}", _breakable, body)
+    body, split, permitted = add_break_opportunities(body)
     n_split = len(split)
 
     figures = []
