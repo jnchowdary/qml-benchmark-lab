@@ -36,6 +36,11 @@ failure.
   to check your own against it.
 * **`EXTRACTION.md`** — how this package was taken out of the research
   repository and how that was verified.
+* **`VALIDATION_NOTES.md`** — observations bearing on whether the output can be
+  trusted, including a recurring overstatement found three times in this tool's
+  own verdict lines, and a review of every PASS message against its number.
+* **`demo/DEMONSTRATION.md`** — one workflow end to end on a third party's
+  deposit: retained artefacts, reconstructed evidence, audit report.
 
 ## Four things a report keeps apart
 

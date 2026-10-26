@@ -871,7 +871,7 @@ def test_selection_warns_when_the_inner_score_does_not_predict_the_endpoint():
     assert "does not invalidate the held-out estimates" in o.detail
 
 
-def test_selection_passes_when_the_criterion_tracks_the_endpoint():
+def test_selection_passes_on_a_positive_correlation():
     o = audit.check_selection_leak(with_inner(+1), ctx())
     assert o.status == audit.PASS
     assert o.numbers["spearman_inner_vs_test"] > 0

@@ -951,9 +951,22 @@ def check_selection_leak(recs, ctx):
                        numbers={"n_records": rc.n})
     r = rc.rho
     num = {"spearman_inner_vs_test": r}
-    # The sign is the boundary, and it is qualitative rather than a chosen
-    # threshold: a correlation that is not positive means the selection
-    # criterion carries no information about the quantity it selects for.
+    # THE SIGN IS THE BOUNDARY, and it is qualitative rather than a chosen
+    # threshold. A correlation that is not positive means the selection
+    # criterion carries no information about the quantity it selects for, which
+    # is a statement about direction and needs no threshold to make.
+    #
+    # Why no magnitude threshold is used, and why the PASS message therefore
+    # reports the number without interpreting it: any cut-off on how strongly a
+    # criterion must track its endpoint would be chosen rather than derived, and
+    # a chosen threshold presented as a verdict is the defect this protocol
+    # exists to report. Section 5.6 of the paper collects three instances of it.
+    #
+    # The cost of that choice is that a PASS covers +0.001 and +0.999 alike. The
+    # message says so rather than papering over it: until 26 October 2026 it read
+    # "selection is auditable and the criterion tracks the endpoint", which on a
+    # demonstration run asserted tracking at +0.098. The verdict was right and
+    # the sentence was not.
     #
     # This check used to compute that number, print it, and PASS regardless. It
     # returned "Selection auditable" on an arm whose correlation was -0.367,
@@ -970,9 +983,15 @@ def check_selection_leak(recs, ctx):
                        f"tuning bought nothing. It does not invalidate the held-out "
                        f"estimates.", numbers=num)
     return Outcome("selection", PASS,
-                   f"inner scores recorded alongside test scores; their rank "
-                   f"correlation is {r:+.3f}, so selection is auditable and the "
-                   f"criterion tracks the endpoint.", numbers=num)
+                   f"an inner selection score is recorded alongside the test "
+                   f"scores, and their observed rank correlation is {r:+.3f}, "
+                   f"which is positive. That is the whole of what this says: "
+                   f"selection had an inner criterion available and that "
+                   f"criterion is not anti-correlated with the endpoint. "
+                   f"NO assessment of the strength of association or of "
+                   f"statistical significance is made. The magnitude is reported "
+                   f"and not judged, because this check's boundary is the sign.",
+                   numbers=num)
 
 
 # ----------------------------------------------------------------- tier 2

@@ -78,8 +78,6 @@ This audits METHOD, not results. It never says which model won.
   2 passed, 2 warnings, 1 failed, 9 skipped for missing fields.
   10 question(s) were NOT ANSWERED. A SKIP is missing evidence, not a passed check, and nothing above should be read as this file having satisfied those checks.
   A FAIL means a conclusion drawn from this file is not supported BY this file. It does not mean the conclusion is wrong.
-
--> /sessions/rcw-01rsqbzyrgcdwk1mnczjuzib/example_report.json
 ```
 
 ## What this establishes, and what it does not

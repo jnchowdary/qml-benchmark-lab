@@ -173,3 +173,68 @@ class TestTheShippedTemplateIsExercised:
         assert "[ PASS  ] tuning symmetry" in out
         assert "[ PASS  ] hardware cost claims" in out
         assert "0 failed" in out
+
+
+class TestSelectionPassClaimsOnlyWhatTheSignEstablishes:
+    """A third PASS line asserting more than its number supported.
+
+    The demonstration run on reconstructed Kakavand records printed
+    `rank correlation is +0.098, so selection is auditable and the criterion
+    tracks the endpoint`. The verdict was right and the sentence was not.
+
+    The verdict rule is deliberately NOT changed. Its boundary is the sign,
+    because any threshold on how strongly a criterion must track its endpoint
+    would be chosen rather than derived, and a positive sign does establish what
+    the check exists to establish. What changed is that the message now reports
+    the magnitude without interpreting it.
+    """
+
+    def _recs(self, inner, ap):
+        return [dict(method="m", seed=i, n_train=40, n_test=100,
+                     test_base_rate=0.5, test_average_precision=a,
+                     test_roc_auc=a, inner_score=s)
+                for i, (s, a) in enumerate(zip(inner, ap))]
+
+    def test_a_weak_positive_correlation_claims_no_tracking(self):
+        """The exact failure: +0.098 must not be described as tracking."""
+        # inner scores in ascending order; the average precisions take ranks
+        # 3, 6, 1, 8, 2, 7, 4, 5 against them, which is Spearman +0.190 by
+        # 1 - 6*sum(d^2)/(n(n^2-1)) with sum(d^2) = 68 and n = 8. Constructed
+        # rather than guessed: the first draft of this fixture was negatively
+        # correlated and the check correctly WARNed on it.
+        recs = self._recs([0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80],
+                          [0.53, 0.56, 0.51, 0.58, 0.52, 0.57, 0.54, 0.55])
+        o = audit.check_selection_leak(recs, {})
+        assert o.status == audit.PASS
+        assert 0 < o.numbers["spearman_inner_vs_test"] < 0.5
+        assert "tracks the endpoint" not in o.detail
+        assert "not anti-correlated" in o.detail
+        assert "NO assessment of the strength of association" in o.detail
+        assert "statistical significance" in o.detail
+        assert "boundary is the sign" in o.detail
+
+    def test_a_strong_positive_correlation_claims_no_more(self):
+        """The message must not strengthen with the number either. A PASS covers
+        +0.001 and +0.999 alike and says so, rather than grading them."""
+        recs = self._recs([0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
+                          [0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
+        o = audit.check_selection_leak(recs, {})
+        assert o.status == audit.PASS
+        assert o.numbers["spearman_inner_vs_test"] > 0.9
+        assert "tracks the endpoint" not in o.detail
+        assert "NO assessment of the strength of association" in o.detail
+
+    def test_the_observed_correlation_is_still_reported(self):
+        recs = self._recs([0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
+                          [0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
+        o = audit.check_selection_leak(recs, {})
+        assert f"{o.numbers['spearman_inner_vs_test']:+.3f}" in o.detail
+
+    def test_the_verdict_rule_is_unchanged_on_both_sides_of_zero(self):
+        """Negative still WARNs, undefined still SKIPs. Only wording moved."""
+        neg = self._recs([0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
+                         [0.6, 0.5, 0.4, 0.3, 0.2, 0.1])
+        assert audit.check_selection_leak(neg, {}).status == audit.WARN
+        const = self._recs([0.3] * 6, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
+        o = audit.check_selection_leak(const, {})
+        assert o.status == audit.SKIP and o.status != audit.PASS
