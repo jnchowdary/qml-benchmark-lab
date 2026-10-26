@@ -36,3 +36,6 @@ build/
 dist/
 *.egg-info/
 .venv/
+
+# built by scripts/make_arxiv_bundle.py
+arxiv-submission.tar.gz
