@@ -1,9 +1,29 @@
 # Extracting the audit: what moved, what did not, and two divergences
 
-Written 25 October 2026. The claim this document supports is narrow and
-checkable: **`qaudit` gives the same report as `scripts/audit.py` on the same
-input.** `verify_extraction.py` checks it on every run and is the thing to
-trust; this records what the first runs found.
+Written 25 October 2026. Amended 26 October 2026.
+
+The claim this document supported was narrow and checkable: **`qaudit` gives the
+same report as `scripts/audit.py` on the same input.** `verify_extraction.py`
+checks it on every run and is the thing to trust.
+
+**That claim has since narrowed and the narrowing is stated here rather than
+left to a reader to discover.** The package has diverged from the research copy:
+158 net lines across 14 hunks, being one added check, one verdict change in
+`schema`, and two corrected PASS messages. See VALIDATION_NOTES.md for each.
+What `verify_extraction.py` still establishes is **agreement with the research
+repository's own committed report on the one external file**, field for field,
+exactly. That is agreement on that file. It is not a guarantee of agreement
+across all inputs, and the `schema` change is an example: on the Kakavand
+records `schema` FAILs on required fields before it ever reaches the
+recommended-field list, so the regression does not exercise the behaviour that
+changed.
+
+**The research copy is not being edited to match.** `scripts/audit.py` is what
+produced the results in the closed paper, and §5.6 describes it as it stands. It
+remains the record of what generated the published figures; the package is the
+forward copy.
+
+Below records what the first runs found.
 
 ## What was copied, and how little was changed
 
@@ -11,7 +31,7 @@ trust; this records what the first runs found.
 | --- | --- | --- |
 | `src/qbench/stats.py` | `src/qaudit/_qbench_stats.py` | none, byte-identical |
 | `src/qbench/metrics.py` | `src/qaudit/_qbench_metrics.py` | none, byte-identical |
-| `scripts/audit.py` | `src/qaudit/audit.py` | 7-line import block |
+| `scripts/audit.py` | `src/qaudit/audit.py` | 7-line import block **at extraction**; has since diverged, see the amendment above |
 | `tests/test_audit.py` | `tests/test_audit.py` | 5-line import block |
 
 `EXTRACTION_SOURCES.tsv` carries each origin's sha256. The two statistics

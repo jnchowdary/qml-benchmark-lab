@@ -114,3 +114,30 @@ What it does support is the design of the cost check: a careful group deposited
 a field for metered QPU seconds, it carries no figure, and the wall-clock number
 beside it cannot substitute. A check that accepted either would report a cost
 that was never measured.
+
+## A claim that was true when written and is not now
+
+Found 26 October 2026, by checking the package's description of itself after
+three changes rather than assuming it had kept up.
+
+`README.md` said the checks "and their wording are unchanged from that
+repository's `scripts/audit.py`". That was true at extraction on 25 October and
+false by 26 October. The package had diverged by 158 net lines across 14 hunks:
+one added check, one verdict change in `schema`, and two corrected PASS
+messages. `EXTRACTION.md` likewise asserted that `qaudit` gives the same report
+as the research copy on the same input, where what is actually guaranteed is
+agreement with the research repository's committed report **on the one external
+file**, field for field.
+
+Both are corrected in place. The research copy is deliberately not edited to
+match: `scripts/audit.py` produced the results in the closed paper and §5.6
+describes it as it stands.
+
+**The shape, for the list above.** This is not a verdict line overstating its
+number. It is a true statement left standing while the thing it described moved,
+which no test can catch because nothing executes a README. The only defence is
+re-reading a document's claims about itself whenever the thing it describes
+changes, and that is now a step rather than an intention: each later change to
+this package gets an entry in this file, and a change that alters a verdict or a
+printed message gets its claim in README.md and EXTRACTION.md re-read in the
+same commit.

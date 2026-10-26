@@ -5,10 +5,17 @@ establish**. It does not say which model won, and it is not a defect detector.
 The limits are in "What this does not do" below, which is the part to read
 first.
 
-Extracted from the QML Benchmark Lab research repository. The fourteen checks
-and their wording are unchanged from that repository's `scripts/audit.py`;
-`EXTRACTION.md` records what moved, what did not, and the two divergences the
-extraction found. One check has been added since.
+Extracted from the QML Benchmark Lab research repository. **That sentence used
+to say the fourteen checks and their wording were unchanged from that
+repository's `scripts/audit.py`. It is no longer true and is corrected here
+rather than left.** Since the extraction: `schema` stopped warning about an
+absent `cell` field when configuration was inferred from top-level fields, which
+the protocol permits, and that changes its verdict in that case; `negative
+control` and `selection` had PASS messages corrected that claimed more than
+their numbers supported, with no change to either verdict rule; and a fifteenth
+check, `hardware cost claims`, was added. `EXTRACTION.md` records how the
+extraction was verified, `VALIDATION_NOTES.md` records each later change and
+why.
 
 ## Install and run
 
