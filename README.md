@@ -34,7 +34,7 @@ PYTHONPATH=src python scripts/audit.py RESULTS.jsonl \
 
 `--hook` is optional and points at a three-function adapter for your own pipeline; without it the checks that need kernels say so and name what they needed.
 
-The record format is **seven** required fields, none of them quantum-specific. This line said eight until 26 October 2026; `check_schema` requires seven, and `docs/audit-protocol.md` tabulates them in six rows because one row covers both `n_train` and `n_test`, which is how the miscount happened. Full specification in [`docs/audit-protocol.md`](docs/audit-protocol.md).
+The record format is **seven** required fields, none of them quantum-specific. This line said eight until 26 October 2026; `check_schema` requires seven, and `docs/audit-protocol.md` tabulates them in six rows because one row covers both `n_train` and `n_test`, which is how the miscount happened. Full specification of the **published research** format in [`docs/audit-protocol.md`](docs/audit-protocol.md); the package's format has since grown and is specified separately, below.
 
 **If you only want to audit a results file, you do not need this environment.** [`product/qaudit`](product/qaudit) is the same audit packaged to install on its own, requiring numpy and scipy and nothing else, where `requirements.txt` above pulls in qiskit, pennylane and scikit-learn that no check reaches:
 
@@ -43,7 +43,9 @@ pip install ./product/qaudit
 qaudit RESULTS.jsonl
 ```
 
-**The two have diverged and the package is not what produced the results in this repository.** `scripts/audit.py` is, and the paper describes it as it stands. Since the extraction the package has added a fifteenth check, changed one verdict in `schema` and corrected two PASS messages; [`product/qaudit/VALIDATION_NOTES.md`](product/qaudit/VALIDATION_NOTES.md) records each, and [`product/qaudit/EXTRACTION.md`](product/qaudit/EXTRACTION.md) records what the extraction guarantees, which is agreement with this repository's committed report on the one external file rather than across all inputs.
+**The two have diverged and the package is not what produced the results in this repository.** `scripts/audit.py` is, and the paper describes it as it stands. Since the extraction the package has added a fifteenth check, changed one verdict in `schema`, corrected two PASS messages, **and extended the record format**: it adds `provenance`, `shots`, `backend` and `quantum_seconds`, which the published format does not carry. So the two specifications differ in record format as well as in checks, verdicts and messages.
+
+**Which specification to read.** [`docs/audit-protocol.md`](docs/audit-protocol.md) is the published research specification and describes what produced the results here; it is not amended. [`product/qaudit/FIELDS.md`](product/qaudit/FIELDS.md) is the package's specification and is the one to use with `qaudit`. [`product/qaudit/VALIDATION_NOTES.md`](product/qaudit/VALIDATION_NOTES.md) records every change since the extraction, and [`product/qaudit/EXTRACTION.md`](product/qaudit/EXTRACTION.md) records what the extraction guarantees, which is agreement with this repository's committed report on the one external file rather than across all inputs.
 
 ## What the study found
 
