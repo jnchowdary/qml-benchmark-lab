@@ -141,3 +141,17 @@ changes, and that is now a step rather than an intention: each later change to
 this package gets an entry in this file, and a change that alters a verdict or a
 printed message gets its claim in README.md and EXTRACTION.md re-read in the
 same commit.
+
+**First application of that procedure, immediately.** Applied to the package
+rather than to the commit that introduced it, it found two more within minutes:
+
+* `src/qaudit/__init__.py` carried the withdrawn claim verbatim. It was the
+  **third** place that sentence lived, and I had corrected the other two twice
+  without searching for a third.
+* `EXTRACTION.md` said 112 tests pass, where the count is 116. Now stated with
+  its date, because an undated figure in a document goes quietly wrong.
+
+Both are the same shape as the README: a true statement left standing while the
+thing it described moved. Finding a claim in two places and not looking for a
+third is the part worth keeping, and it is why the procedure searches the
+package rather than the files I happen to remember editing.

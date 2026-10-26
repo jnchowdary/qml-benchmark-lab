@@ -190,5 +190,7 @@ negative control correctly caught at +45 sigma on the endpoint that had not been
 permuted. Both are now asserted against the shipped files by
 `tests/test_check_fixes.py`, so the template cannot rot into either again.
 
-After these changes: 112 tests pass, and the external report still reproduces
-field for field.
+After these changes: **116 tests pass as of 26 October 2026**, and the external
+report still reproduces field for field. The count is dated deliberately: an
+undated figure in a document goes quietly wrong, which is the failure recorded
+at the end of VALIDATION_NOTES.md.
