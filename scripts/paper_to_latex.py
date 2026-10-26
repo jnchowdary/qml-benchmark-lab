@@ -257,13 +257,38 @@ def main():
     # 73 of this paper's 166 texttt spans contain things like \\_ and \\^{},
     # and seqsplit walks its argument token by token, so redefining texttt
     # globally produced 12 LaTeX errors on the first attempt.
-    split = []
+    split, permitted = [], []
 
     def _breakable(m):
         inner = m.group(1)
         if len(inner) >= SEQSPLIT_MIN and "\\" not in inner:
             split.append(inner)
             return "\\texttt{\\seqsplit{" + inner + "}}"
+        # A span seqsplit declines still has to fit the line, and on 26 October
+        # 2026 three did not: `scripts/foreign/kakavand_adapter.py` ran 43.2pt
+        # past the right margin, `scripts/check_paper_figures.py` 41.6pt, and
+        # the dataset slug `blastchar/telco-customer-churn` 8.9pt. All three are
+        # under SEQSPLIT_MIN and two contain \_, so they fail both of the
+        # conditions above.
+        #
+        # \allowbreak PERMITS a break and never forces one, and unlike seqsplit
+        # it walks nothing, so a span containing \_ or \^{} is unaffected --
+        # which is what made the global seqsplit redefinition produce 12 errors.
+        # It is inserted after a separator only, so a break can land where a
+        # reader already expects one, as the url package does. There is no
+        # length threshold: adding a break opportunity to a span that fits
+        # changes nothing about how it sets.
+        #
+        # The separator must be a path slash and NOT the one in pandoc's italic
+        # correction
+        # `\\/`, which it emits between the hyphens of `--flag` to stop the
+        # ligature. Inserting a break there let `--check` split into `-` and
+        # `-check` across a line, which the first draft of this did.
+        if re.search(r"(?<!\\)/", inner) or "\\_" in inner:
+            permitted.append(inner)
+            inner = re.sub(r"(?<!\\)/", "/\\\\allowbreak{}", inner)
+            inner = inner.replace("\\_", "\\_\\allowbreak{}")
+            return "\\texttt{" + inner + "}"
         return m.group(0)
 
     # re.subn's count is every match, including the ones this declines, so it
@@ -297,11 +322,14 @@ def main():
         "pandoc": version,
         "figures": sorted(figures),
         "seqsplit_spans": n_split,
+        "allowbreak_spans": len(permitted),
     }, indent=2) + "\n", encoding="utf-8")
 
     print(f"\n  -> {tex.relative_to(ROOT)}  "
           f"({len(body.splitlines())} lines, {len(body):,} bytes)")
     print(f"  {len(figures)} figure(s) copied flat: {', '.join(sorted(figures))}")
+    print(f"  {n_split} span(s) seqsplit, {len(permitted)} given break "
+          f"opportunities after a separator")
     print(f"  {version}")
     print(f"  provenance -> {MANIFEST.relative_to(ROOT)}\n")
     print("  arXiv compiles this itself; no local TeX is needed to submit.\n")

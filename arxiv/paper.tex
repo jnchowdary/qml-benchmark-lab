@@ -99,7 +99,7 @@ pre-registered null and what its own artefact will
 support}\label{auditing-a-quantum-classical-kernel-comparison-a-pre-registered-null-and-what-its-own-artefact-will-support}
 
 \textbf{GENERATED FILE. Do not edit.} Assembled by
-\texttt{scripts/assemble\_paper.py} from the section files listed below.
+\texttt{scripts/\allowbreak{}assemble\_\allowbreak{}paper.py} from the section files listed below.
 Edit a section and re-run; \texttt{-\/-check} fails if this file has
 drifted from its sources.
 
@@ -113,17 +113,17 @@ section & source & sha256 \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Abstract & \texttt{docs/paper-abstract.md} &
+Abstract & \texttt{docs/\allowbreak{}paper-abstract.md} &
 \texttt{4c19807aa474cddc} \\
-1 & \texttt{docs/paper-introduction.md} & \texttt{1b7b13a3c91057f2} \\
-2 & \texttt{docs/paper-background.md} & \texttt{b77857d2ab111f69} \\
-3 & \texttt{docs/paper-design.md} & \texttt{3e21c31d39e5b422} \\
-4 & \texttt{docs/paper-results.md} & \texttt{b32aecd493a5dce3} \\
-5 & \texttt{docs/paper-protocol.md} & \texttt{fddeea5cd7f7c7e1} \\
-6 & \texttt{docs/paper-discussion.md} & \texttt{2ecacdab80837417} \\
-7 & \texttt{docs/paper-deviations-pointer.md} &
+1 & \texttt{docs/\allowbreak{}paper-introduction.md} & \texttt{1b7b13a3c91057f2} \\
+2 & \texttt{docs/\allowbreak{}paper-background.md} & \texttt{b77857d2ab111f69} \\
+3 & \texttt{docs/\allowbreak{}paper-design.md} & \texttt{3e21c31d39e5b422} \\
+4 & \texttt{docs/\allowbreak{}paper-results.md} & \texttt{b32aecd493a5dce3} \\
+5 & \texttt{docs/\allowbreak{}paper-protocol.md} & \texttt{fddeea5cd7f7c7e1} \\
+6 & \texttt{docs/\allowbreak{}paper-discussion.md} & \texttt{2ecacdab80837417} \\
+7 & \texttt{docs/\allowbreak{}paper-deviations-pointer.md} &
 \texttt{1bfa12527bc78e11} \\
-References & \texttt{docs/paper-references.md} &
+References & \texttt{docs/\allowbreak{}paper-references.md} &
 \texttt{fb91450b1d9fe1b1} \\
 \end{longtable}
 }
@@ -418,7 +418,7 @@ s\_\{K\(^{2}\)\} \(\le\) g\_gen\(^{2}\) \(\cdot\) s\_\{K\(^{1}\)\}
 
 \textbf{The bound alone does not identify g\_gen.} An inequality is
 satisfied by any coefficient larger than the smallest one that works, so
-\texttt{s\_\{K\^{}2\}\ \textless{}=\ g\_gen\^{}2\ s\_\{K\^{}1\}} is
+\texttt{s\_\allowbreak{}\{K\^{}2\}\ \textless{}=\ g\_gen\^{}2\ s\_\{K\^{}1\}} is
 consistent with g\_gen being g(K\(^{2}\)\(\|\)K\(^{1}\)) and with its
 being anything larger. The bound tells us which \emph{direction} the
 appendix is reasoning in; it cannot tell us which quantity g\_gen
@@ -527,7 +527,7 @@ with C \(\in\) {[}32, 1024{]}; no g\_tra rule appears anywhere in the
 source.
 
 \textbf{Implementation does.} Their released code calls
-\texttt{geometric\_difference(K\_train\_poly,\ K\_train\_quantum,\ 1/(2*C\_quantum))},
+\texttt{geometric\_\allowbreak{}difference(K\_\allowbreak{}train\_\allowbreak{}poly,\ K\_\allowbreak{}train\_\allowbreak{}quantum,\ 1/\allowbreak{}(2*C\_\allowbreak{}quantum))},
 faithful to their Equation (4). Paper, equation and code agree with one
 another.
 
@@ -546,9 +546,9 @@ compared without first fixing the ordering.
 
 Two further observations from their released code, relevant to what a
 published number means. Their ROC-AUC is computed on hard predicted
-labels --- \texttt{decision\_function} and \texttt{predict\_proba} do
+labels --- \texttt{decision\_\allowbreak{}function} and \texttt{predict\_\allowbreak{}proba} do
 not occur in the repository --- which makes the reported quantity
-balanced accuracy rather than a ranking measure. And \texttt{g\_tra} is
+balanced accuracy rather than a ranking measure. And \texttt{g\_\allowbreak{}tra} is
 computed and stored throughout their pipeline and never compared to
 anything; the 0.045 threshold appears once, in a docstring quoting
 Huang, and is never applied.
@@ -556,7 +556,7 @@ Huang, and is never applied.
 \subsubsection{This project}\label{this-project}
 
 \textbf{Implementation does.}
-\texttt{geometric\_difference\_regularised(K\_C,\ K\_Q,\ lam)} computes
+\texttt{geometric\_\allowbreak{}difference\_\allowbreak{}regularised(K\_\allowbreak{}C,\ K\_\allowbreak{}Q,\ lam)} computes
 
 \begin{quote}
 sqrt( \(\|\) sqrt(K\_Q) sqrt(K\_C) (K\_C + \(\lambda\)I)\(^{-2}\)
@@ -686,7 +686,7 @@ revise any frozen analysis.
 \section{Section 3 --- Design}\label{section-3-design}
 
 \textbf{Draft, 4 October 2026.} Every figure below is traceable to
-\texttt{docs/pre-registration.md} v1.0. \textbf{The registered design
+\texttt{docs/\allowbreak{}pre-registration.md} v1.0. \textbf{The registered design
 and its later amendments are kept separable throughout}: registered
 values are given first, amendments are marked with their deviation
 number, and \S{}3.9 tabulates every movement so a reader can reconstruct
@@ -714,8 +714,8 @@ fraud
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-source & Kaggle \texttt{blastchar/telco-customer-churn} & Kaggle
-\texttt{mlg-ulb/creditcardfraud} \\
+source & Kaggle \texttt{blastchar/\allowbreak{}telco-customer-churn} & Kaggle
+\texttt{mlg-ulb/\allowbreak{}creditcardfraud} \\
 SHA-256 & \texttt{88be4b93...} & \texttt{76274b69...} \\
 rows & 7,032 after cleaning & 284,807 \\
 features & 30 & 29 (\texttt{Time} dropped) \\
@@ -728,7 +728,7 @@ measured paired variance: at ten seeds churn's minimum detectable effect
 was 0.0324, larger than almost any effect this literature reports.
 
 \textbf{Tracks.} \emph{Matched} --- class-balanced subsample, mapped to
-\texttt{n\_qubits} dimensions, scaled to {[}0, \(\pi\){]} --- is the
+\texttt{n\_\allowbreak{}qubits} dimensions, scaled to {[}0, \(\pi\){]} --- is the
 hypothesis-testing track and \textbf{the only one on which g can be
 computed}, since g requires both Gram matrices over the same points.
 \emph{Unconstrained} is a reference ceiling, reported separately and
@@ -775,7 +775,7 @@ range.
 
 \textbf{Tuning, identical across arms.} Nested cross-validation: 20
 outer seeds, 5-fold stratified inner CV on the outer-train portion only.
-\texttt{SVC(kernel="precomputed",\ class\_weight="balanced")} for every
+\texttt{SVC(kernel="precomputed",\ class\_\allowbreak{}weight="balanced")} for every
 kernel, classical and quantum alike, \textbf{so folds, solver and
 selection rule are identical and only the Gram matrix differs}.
 Selection on inner-CV average precision. Grid points failing to converge
@@ -884,7 +884,7 @@ fraud 250/class & 0.0085 & 0.0056 & \textbf{0.0059} \\
 \begin{quote}
 \textbf{Amended, D6. Every row above is wrong, in the same direction, by
 2.3x to 3.9x.} The registered standard deviations pair \emph{classical
-kernels against each other} --- \texttt{power\_analysis.py} was written
+kernels against each other} --- \texttt{power\_\allowbreak{}analysis.py} was written
 in week 3, when the classical arm was the only arm that existed, so it
 could not have measured anything else. H1 tests a cross-arm difference,
 which is both larger and more variable.
@@ -917,10 +917,10 @@ it.
 \subsection{3.6 How g is computed}\label{how-g-is-computed}
 
 \textbf{As registered.} g in its regularised form,
-\texttt{geometric\_difference\_regularised}, on normalised Gram matrices
+\texttt{geometric\_\allowbreak{}difference\_\allowbreak{}regularised}, on normalised Gram matrices
 over the matched-track training set. \(\lambda\) derived from the
 classical model actually being compared against, via
-\texttt{lambda\_from\_svm\_C(C,\ n)\ =\ 1/(2.C.n)}, using the C that
+\texttt{lambda\_\allowbreak{}from\_\allowbreak{}svm\_\allowbreak{}C(C,\ n)\ =\ 1/\allowbreak{}(2.C.n)}, using the C that
 inner CV selected for that cell. A \(\lambda\) sweep reported alongside
 every value, because g is sensitive to \(\lambda\) and an unregularised
 g exceeding its own \(\sqrt{n}\) ceiling means the classical kernel is
@@ -943,7 +943,7 @@ minimum; the observed difference is averaged over \textbf{the same}
 surviving seeds; the above-precision-floor subset must agree; and a
 signed secondary is pre-declared.
 
-\textbf{Open, D14 (draft).} \texttt{lambda\_from\_svm\_C} returns
+\textbf{Open, D14 (draft).} \texttt{lambda\_\allowbreak{}from\_\allowbreak{}svm\_\allowbreak{}C} returns
 1/(2\(\cdot\)C\(\cdot\)n) with a docstring asserting the correspondence
 and citing nothing. Huang prints no SVM-to-ridge relation, and his
 Appendix D objective is a summed residual, which points to 1/(2C).
@@ -977,7 +977,7 @@ datasets.
 rate, enforced in code and tested.
 
 \textbf{Grid adequacy.} Any claim that a quantum grid is too narrow must
-be adjudicated by \texttt{scripts/check\_grid\_edges.py} against a
+be adjudicated by \texttt{scripts/\allowbreak{}check\_\allowbreak{}grid\_\allowbreak{}edges.py} against a
 shuffled-label null. \textbf{Hyperparameter edge flags alone will never
 justify widening a grid}, because extension raises the maximum inner-CV
 score even when no point is better.
@@ -989,7 +989,7 @@ polynomial-kernel mean ratios, 5.0 on churn and 6.6 on fraud; on the RBF
 kernels the ratio is 2.0 on churn and 35.7 on fraud, so two of the four
 measurements fall outside the registered range and one of them falls
 below it, understating the effect the rule exists to guard against. The
-figures are in \texttt{results/analysis/grid\_edges\_*\_both*.json}.
+figures are in \texttt{results/\allowbreak{}analysis/\allowbreak{}grid\_\allowbreak{}edges\_\allowbreak{}*\_\allowbreak{}both*.json}.
 \textbf{The pre-registration's wording is unamended}, because changing a
 registered document is a deviation and not a copy edit.
 
@@ -1088,7 +1088,7 @@ D12 & IBM hardware runs never feasible as registered: 18.17M circuits
 against a 600-second monthly allocation & removes planned evidence \\
 D13 & H3 ungated from H2, declared after its result was published; two
 readings offered & weakens H3's status \\
-D14 & \texttt{lambda\_from\_svm\_C} corrected to 1/(2C) on an
+D14 & \texttt{lambda\_\allowbreak{}from\_\allowbreak{}svm\_\allowbreak{}C} corrected to 1/(2C) on an
 outcome-to-verdict mapping pushed before the re-run; the supplementary
 column's breaches fall from 2,893 to 979 of 7,200 and no verdict moves &
 corrects a defect, changes no result \\
@@ -1143,7 +1143,7 @@ dataset}\label{h1-no-quantum-advantage-on-either-dataset}
 
 Paired per-seed differences at the pre-registered primary cells, 250 per
 class, 20 seeds, intersection-union across both endpoints at alpha =
-0.05. \emph{(\texttt{results/analysis/primary\_tests.json})}
+0.05. \emph{(\texttt{results/\allowbreak{}analysis/\allowbreak{}primary\_\allowbreak{}tests.json})}
 
 \begin{figure}
 \centering
@@ -1222,7 +1222,7 @@ clean}\label{the-negative-control-is-clean}
 
 The full quantum pipeline on permuted labels at each primary cell, 80
 records over 20 seeds.
-\emph{(\texttt{results/analysis/negative\_control\_quantum.log})}
+\emph{(\texttt{results/\allowbreak{}analysis/\allowbreak{}negative\_\allowbreak{}control\_\allowbreak{}quantum.log})}
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}lllll@{}}
@@ -1247,7 +1247,7 @@ between them is expected and is not leakage.
 \subsection{4.4 H2 and H3: the prediction is not
 established}\label{h2-and-h3-the-prediction-is-not-established}
 
-\emph{(\texttt{results/audits/h2\_h3\_report.json}, 360 units, 7,200
+\emph{(\texttt{results/\allowbreak{}audits/\allowbreak{}h2\_\allowbreak{}h3\_\allowbreak{}report.json}, 360 units, 7,200
 per-seed rows)}
 
 \begin{figure}
@@ -1388,8 +1388,8 @@ finding here bears on H1 or H2. Each tested level averages the cells at
 that level \textbf{within each seed} before testing, because cells at
 one seed share a train/test split; levels carry 20 paired observations,
 not pooled rows.
-\emph{(\texttt{results/analysis/exploratory\_sweep.json},
-\texttt{results/analysis/primary\_tests.json})}
+\emph{(\texttt{results/\allowbreak{}analysis/\allowbreak{}exploratory\_\allowbreak{}sweep.json},
+\texttt{results/\allowbreak{}analysis/\allowbreak{}primary\_\allowbreak{}tests.json})}
 
 \begin{figure}
 \centering
@@ -1477,7 +1477,7 @@ created}\label{limitations-including-two-this-study-created}
 limitation below it.} The repository was \textbf{private from 17
 September to 15 October 2026}, the whole of the project's working life.
 It was found on 15 October, when a Software Heritage save request failed
-with \texttt{visit\_status:\ not\_found} and an unauthenticated GitHub
+with \texttt{visit\_\allowbreak{}status:\ not\_\allowbreak{}found} and an unauthenticated GitHub
 query returned 404; the author's pushes had always succeeded because the
 author is authenticated. \textbf{No reader could have checked any claim
 in this study while it was being made.}
@@ -1497,9 +1497,9 @@ author practised rather than something a reader can check.
 
 \textbf{Visibility was changed on 15 October 2026}, after two Software
 Heritage save requests (2558108, 2558127) had failed with
-\texttt{visit\_status:\ not\_found} against the private origin. A third
+\texttt{visit\_\allowbreak{}status:\ not\_\allowbreak{}found} against the private origin. A third
 request succeeded at \textbf{01:33:06 UTC on 15 October 2026},
-\texttt{visit\_status:\ full}. A fourth was taken three minutes later.
+\texttt{visit\_\allowbreak{}status:\ full}. A fourth was taken three minutes later.
 \textbf{There are two snapshots and the reason is structural:}
 
 \begin{verbatim}
@@ -1536,7 +1536,7 @@ this repository's state can point at something outside this machine.
 
 \textbf{Provenance, and the decision that was open until 21 October
 2026.} Every one of the 15,120 result records stores a
-\texttt{git\_commit} that a history rewrite on 25 September 2026 removed
+\texttt{git\_\allowbreak{}commit} that a history rewrite on 25 September 2026 removed
 from the public repository. The recovered branch
 \texttt{prerewrite-20260925} was \textbf{published on 21 October 2026},
 tip \texttt{b5bf0431}, and all five identifiers this study depends on
@@ -1601,9 +1601,9 @@ advantage had one existed.
 
 \textbf{The figures, and a reversed decision.} The three PNGs above are
 \textbf{committed}, by name, as exceptions to the \texttt{.gitignore}
-rule that excludes \texttt{results/figures/*}. An earlier draft excluded
+rule that excludes \texttt{results/\allowbreak{}figures/\allowbreak{}*}. An earlier draft excluded
 them on the ground that outputs are regenerated rather than versioned
-and that \texttt{PYTHONPATH=src\ python\ scripts/make\_figures.py}
+and that \texttt{PYTHONPATH=src\ python\ scripts/\allowbreak{}make\_\allowbreak{}figures.py}
 reproduces them deterministically from committed artefacts. That
 reasoning is sound as far as it goes and the regeneration command still
 works. It was reversed for one reason it did not address:
@@ -1627,18 +1627,18 @@ But the coverage report was also scanning only the files that already
 had mutants, which hid every file with none: corrected, it reads
 \textbf{37 of 395 test functions}, not the 34 of 70 the old report
 implied. \textbf{Fifteen of nineteen test files have no mutant at all},
-including \texttt{tests/test\_audit.py} and its 76 functions --- the
+including \texttt{tests/\allowbreak{}test\_\allowbreak{}audit.py} and its 76 functions --- the
 tests for the audit tool \S{}5 is about. So the honest statement is that
 this project has demonstrated non-vacuity for 9\% of its test functions
 and has not examined the rest.
 
 \textbf{The one check that had no mutant now has two.}
-\texttt{select\_lambda} in \texttt{scripts/gtra\_sweep.py}, which
+\texttt{select\_\allowbreak{}lambda} in \texttt{scripts/\allowbreak{}gtra\_\allowbreak{}sweep.py}, which
 implements D16's selection rule, was exercised only by that script's own
 control F and not by pytest. The harness maps each mutant to a pytest
 node, so a rule with no pytest test cannot have its non-vacuity
 demonstrated at all, and control F runs inside a sweep that takes hours.
-\texttt{tests/test\_gtra\_sweep.py} now pins the rule, and two mutants
+\texttt{tests/\allowbreak{}test\_\allowbreak{}gtra\_\allowbreak{}sweep.py} now pins the rule, and two mutants
 target it: taking the smallest admissible \(\lambda\) rather than the
 largest, and reading the threshold as strict where D16 fixed it
 inclusive. Both are killed. One of those tests covers a case control F
@@ -1648,9 +1648,9 @@ control F on every monotone input and still select the wrong
 \(\lambda\).
 
 \textbf{The figures check covers three of this paper's numbers.}
-\texttt{scripts/check\_paper\_figures.py} re-derives the churn and fraud
+\texttt{scripts/\allowbreak{}check\_\allowbreak{}paper\_\allowbreak{}figures.py} re-derives the churn and fraud
 primary-cell exclusion bounds from
-\texttt{results/audits/d6\_table.json}, and D16's share of units with no
+\texttt{results/\allowbreak{}audits/\allowbreak{}d6\_\allowbreak{}table.json}, and D16's share of units with no
 admissible \(\lambda\) from the 7,200 stored unit records, comparing
 each at the precision this paper states rather than within a chosen
 tolerance. Everything else it reports as \textbf{not checked}, against a
@@ -1675,13 +1675,13 @@ the provenance gap rather than closing it; the first paragraph of this
 section states what it does and does not establish.
 
 The other two are closed, and one of them was described wrongly here.
-The \texttt{descriptive\_only} rows in the exploratory output now carry
-the \texttt{below\_d2\_floor} field the tested rows carry. The grid
+The \texttt{descriptive\_\allowbreak{}only} rows in the exploratory output now carry
+the \texttt{below\_\allowbreak{}d2\_\allowbreak{}floor} field the tested rows carry. The grid
 adequacy check was said to have ``not been extended since week 9'',
 which misplaced the gap: the measurement was complete and correct in
 week 3 and reproduces bit-identically under current code, and what was
 missing was that its adjudication lived only in prose.
-\texttt{scripts/check\_grid\_edges.py} went on printing the rule week 3
+\texttt{scripts/\allowbreak{}check\_\allowbreak{}grid\_\allowbreak{}edges.py} went on printing the rule week 3
 had withdrawn, reporting UNDER-TUNED on fraud where the registered
 comparison against a shuffled-label null returns adequate on both
 datasets. The registered comparison is now what the script computes and
@@ -1738,8 +1738,8 @@ exercised on
 \bottomrule\noalign{}
 \endlastfoot
 \textbf{A. The record audit} & what a results file does and does not
-support & \textbf{implemented}: \texttt{scripts/audit.py},
-\texttt{tests/test\_audit.py}, a documented record format and a hook
+support & \textbf{implemented}: \texttt{scripts/\allowbreak{}audit.py},
+\texttt{tests/\allowbreak{}test\_\allowbreak{}audit.py}, a documented record format and a hook
 interface & this project's six arms; one foreign pipeline \\
 \textbf{B. Source to implementation} & that a paper's printed equation,
 its stated interpretation, and its released code are the same thing &
@@ -1763,14 +1763,14 @@ audit}\label{part-a-the-record-audit}
 
 One JSON object per line; a record is one model, scored once, on one
 train/test split. Nothing in it is specific to quantum kernels.
-Required: \texttt{method}, \texttt{seed}, \texttt{n\_train},
-\texttt{n\_test}, \texttt{test\_base\_rate},
-\texttt{test\_average\_precision}, \texttt{test\_roc\_auc}. Strongly
+Required: \texttt{method}, \texttt{seed}, \texttt{n\_\allowbreak{}train},
+\texttt{n\_\allowbreak{}test}, \texttt{test\_\allowbreak{}base\_\allowbreak{}rate},
+\texttt{test\_\allowbreak{}average\_\allowbreak{}precision}, \texttt{test\_\allowbreak{}roc\_\allowbreak{}auc}. Strongly
 recommended, with each check degrading to SKIP and naming what its
-absence makes unanswerable: \texttt{test\_label\_fingerprint} (the test
+absence makes unanswerable: \texttt{test\_\allowbreak{}label\_\allowbreak{}fingerprint} (the test
 labels hashed \textbf{in order}, without which no paired test can be
-verified, only assumed), \texttt{shuffled}, \texttt{final\_converged},
-\texttt{inner\_score}.
+verified, only assumed), \texttt{shuffled}, \texttt{final\_\allowbreak{}converged},
+\texttt{inner\_\allowbreak{}score}.
 
 The format is the load-bearing part. \textbf{A file that does not record
 enough to be checked cannot be checked by anyone}, and the claim here is
@@ -1789,7 +1789,7 @@ comparison cheap.
 
 Tier 2 asks about the kernel, which a results file does not contain, so
 the pipeline supplies three optional functions --- \texttt{gram},
-\texttt{training\_data}, \texttt{refit} --- and the audit imports
+\texttt{training\_\allowbreak{}data}, \texttt{refit} --- and the audit imports
 nothing of its own. It covers kernel conditioning and classical
 surrogate equivalence. \textbf{Cost: kernel recomputation, which is the
 dominant expense}; \texttt{-\/-hook-sample} is the knob, and readings
@@ -1856,11 +1856,11 @@ largest thing.
 \textbf{What it found} is in section 2: that Huang's F19 is the reversed
 ordered comparison relative to Equation (5), that Flórez Ablan et
 al.~read it the natural way, and that the quantity they compare against
-\(\sqrt{N}\) is therefore \texttt{g(K\_Q\textbar{}\textbar{}K\_C)} where
-the screening quantity is \texttt{g(K\_C\textbar{}\textbar{}K\_Q)}. It
+\(\sqrt{N}\) is therefore \texttt{g(K\_\allowbreak{}Q\textbar{}\textbar{}K\_C)} where
+the screening quantity is \texttt{g(K\_\allowbreak{}C\textbar{}\textbar{}K\_Q)}. It
 also found, in their released code, ROC-AUC computed on hard predicted
 labels --- making the reported quantity balanced accuracy rather than a
-ranking measure --- and \texttt{g\_tra} computed throughout and never
+ranking measure --- and \texttt{g\_\allowbreak{}tra} computed throughout and never
 compared to anything.
 
 \textbf{What it does not establish.} Nothing about whether their
@@ -1880,7 +1880,7 @@ it as a stranger would, from the public artefact alone.
 authors have not already published --- which is the point.
 
 \textbf{What it found, run against this project.} Every one of the
-15,120 result records stores a \texttt{git\_commit} that does not exist
+15,120 result records stores a \texttt{git\_\allowbreak{}commit} that does not exist
 on the public repository. A history rewrite invalidated all three stored
 hashes; they resolve only from a branch recovered from a folder that had
 been queued for deletion. A tree-identity mapping to public counterparts
@@ -1902,7 +1902,7 @@ published, nor diff the two to see what differs.
 
 \textbf{What remains independently checkable}: every analysis script, in
 full; the data provenance, which is separate and unaffected, with
-sources and checksums in \texttt{data/README.md}; the records
+sources and checksums in \texttt{data/\allowbreak{}README.md}; the records
 themselves, which are intact; and the public half of the tree-identity
 mapping --- that each named counterpart on \texttt{main} carries the
 stated tree.
@@ -1952,12 +1952,12 @@ are evidence that this project eventually noticed its own.
 stating precisely.} In week 6 the audit was run against Kakavand et
 al.'s public Zenodo deposit through an adapter. It produced \textbf{one
 measurement and eight refusals}: kernel conditioning across all six
-deposited \texttt{ibm\_fez} Grams, worst 4.5e+05, against this project's
+deposited \texttt{ibm\_\allowbreak{}fez} Grams, worst 4.5e+05, against this project's
 own 7.8e+19 to 1.1e+33; and eight statements of what the deposit cannot
 answer --- four required fields absent, so chance correction, power and
 the precision floor each name their gap; no classical arm in the
 hardware phase, so cross-arm has nothing to pair; one seed, so
-unit-of-analysis warns and power cannot speak; no \texttt{inner\_score},
+unit-of-analysis warns and power cannot speak; no \texttt{inner\_\allowbreak{}score},
 so selection cannot be shown.
 
 \textbf{It found no defect in their pipeline, and was not looking for
@@ -1989,7 +1989,7 @@ found four further defects, \textbf{all four in the checks rather than
 in the records}, with the full test suite passing on every one.
 
 The third is the registered adjudicator of grid adequacy. Section 7 of
-the pre-registration names \texttt{scripts/check\_grid\_edges.py} as
+the pre-registration names \texttt{scripts/\allowbreak{}check\_\allowbreak{}grid\_\allowbreak{}edges.py} as
 what decides whether a grid is too narrow, and requires the decision to
 be made against a shuffled-label null. The script computed that null
 when asked, printed it, and told the reader to do the subtraction by
@@ -1999,7 +1999,7 @@ that ratio as a defect, because the maximum over a grid grows with the
 number of points searched and so cannot separate an optimum lying
 outside the grid from a surface too noisy to rank; the threshold week 3
 describes as pre-declared existed nowhere in the code. The committed log
-\texttt{results/analysis/grid\_edges\_fraud.log} therefore carried the
+\texttt{results/\allowbreak{}analysis/\allowbreak{}grid\_\allowbreak{}edges\_\allowbreak{}fraud.log} therefore carried the
 verdict \textbf{UNDER-TUNED, widen the grids and re-run week 3}, where
 the registered comparison returns adequate. The correct answer was in
 the week-3 record throughout and the project acted on it, so no result
@@ -2013,7 +2013,7 @@ performed none of five checks; when the deposit behind one was read,
 \textbf{six of seven claims in that paragraph were wrong or misleading}.
 It declared four checks unrunnable when three were not --- one needed
 nothing at all. And the confirmatory script printed a \textbf{superseded
-exclusion bound for eleven days}: \texttt{scripts/primary\_tests.py}
+exclusion bound for eleven days}: \texttt{scripts/\allowbreak{}primary\_\allowbreak{}tests.py}
 quoted the registered 0.0059 for fraud's primary cell while every
 document here quoted D6's corrected 0.0063, the committed analysis log
 carried the wrong figure, and a regression test asserted it. Nobody
@@ -2087,14 +2087,14 @@ reporting code for claims the data does not support}, which is where all
 four lived.
 
 \textbf{What now exists, and what it would not have caught.} Since 19
-October 2026 \texttt{scripts/check\_paper\_figures.py} re-derives
+October 2026 \texttt{scripts/\allowbreak{}check\_\allowbreak{}paper\_\allowbreak{}figures.py} re-derives
 figures this paper prints from the stored records, and a test asserts
-that the exclusion bound \texttt{scripts/primary\_tests.py} prints
-matches the copy \texttt{scripts/audit\_sweep.py} checks against
+that the exclusion bound \texttt{scripts/\allowbreak{}primary\_\allowbreak{}tests.py} prints
+matches the copy \texttt{scripts/\allowbreak{}audit\_\allowbreak{}sweep.py} checks against
 regenerated data. Neither is part of the protocol, and the figures check
 would have caught \textbf{none of the four items above}. All four were
 divergences between code and record in which this paper's prose was
-correct or unaffected: the fifth repair had \texttt{primary\_tests.py}
+correct or unaffected: the fifth repair had \texttt{primary\_\allowbreak{}tests.py}
 printing 0.0059 while every document here quoted 0.0063, so a check
 reading the paper against the records would have passed it without
 comment. What would have caught it is the narrower assertion, the one
@@ -2106,14 +2106,14 @@ this paper the figures check covers, which is very little.
 \textbf{A further group found by reading and deliberately not counted.}
 Three separate generators defaulted to not recording their output: the
 \texttt{.docx} exporter wrote no provenance,
-\texttt{scripts/exploratory\_sweep.py} required \texttt{-\/-out} with no
+\texttt{scripts/\allowbreak{}exploratory\_\allowbreak{}sweep.py} required \texttt{-\/-out} with no
 default, and the paper existed only as section files until an assembler
 was written for it. An unrecorded output is an absent value rather than
 a wrong one, so none of these joins the count above. One of them did
 publish a stale artefact: on 15 October 2026
-\texttt{docs/deviations.docx} was sixteen days and roughly 1,400 record
+\texttt{docs/\allowbreak{}deviations.docx} was sixteen days and roughly 1,400 record
 lines behind its source, because generating the document was a step
-somebody had to remember. \texttt{scripts/check\_docx\_fresh.py} now
+somebody had to remember. \texttt{scripts/\allowbreak{}check\_\allowbreak{}docx\_\allowbreak{}fresh.py} now
 stores the SHA-256 of each export's source and fails when it moves.
 \textbf{It does not hash the generator}, so a change there leaves every
 export reported current while its output would differ, and \textbf{it
@@ -2232,7 +2232,7 @@ In Flórez Ablan et al., that reversal propagates: their equation, their
 code and their stated interpretation agree with one another, and the
 quantity they compare against \(\sqrt{N}\) is the reverse of the
 screening quantity. In their released code, ROC-AUC is computed from
-hard predicted labels, and \texttt{g\_tra} --- the diagnostic their own
+hard predicted labels, and \texttt{g\_\allowbreak{}tra} --- the diagnostic their own
 source quotes as the condition under which g is meaningful --- is
 computed throughout and never compared to anything.
 
@@ -2428,7 +2428,7 @@ them.
 \subsection{7.1 The two documents, and the rule between
 them}\label{the-two-documents-and-the-rule-between-them}
 
-\textbf{\texttt{docs/pre-registration.md} v1.0 is the registered design
+\textbf{\texttt{docs/\allowbreak{}pre-registration.md} v1.0 is the registered design
 and is never edited.} Where it is wrong, it stays wrong and the
 correction lives elsewhere. Three of its statements are known to be
 false as written --- a claim of OSF registration, a claim that two cited
@@ -2438,7 +2438,7 @@ their corrections recorded against them. This is deliberate: a
 registration that is edited after results are seen is not a
 registration.
 
-\textbf{\texttt{docs/deviations.md} is authoritative for every change.}
+\textbf{\texttt{docs/\allowbreak{}deviations.md} is authoritative for every change.}
 Sixteen records, D1 to D16, several carrying dated amendments. Each
 states what moved, when it was decided, when it was declared, and
 whether the affected results had been seen.
@@ -2466,11 +2466,11 @@ read
 \bottomrule\noalign{}
 \endlastfoot
 what was registered, before anything moved &
-\texttt{docs/pre-registration.md} v1.0 \\
+\texttt{docs/\allowbreak{}pre-registration.md} v1.0 \\
 every movement from that design, in one table & \textbf{\S{}3.9 of this
 paper} \\
 why a given movement was made, and when it was declared & the numbered
-record in \texttt{docs/deviations.md} \\
+record in \texttt{docs/\allowbreak{}deviations.md} \\
 what the record left open, and how it was closed & \S{}7.3 --- one
 branch, now published \\
 \end{longtable}
@@ -2588,7 +2588,7 @@ for {[}1{]} on that basis. That was wrong: \texttt{README.md} records
 them, and the claim was made without searching for them. And this
 project has dropped a co-author once --- an earlier internal document
 named two authors of {[}2{]} where there are three, corrected in
-\texttt{docs/florez-ablan-code-check.md} C1 --- which is why the
+\texttt{docs/\allowbreak{}florez-ablan-code-check.md} C1 --- which is why the
 paragraph above says where each field came from instead of presenting
 all of them as equally checked.
 
@@ -2625,7 +2625,7 @@ establishes from their equation (line 210), their argument assignment
 (line 213) and their released code that the quantity they compare
 against \(\sqrt{N}\) is the reverse of the screening quantity, and that
 their paper, equation and implementation are mutually consistent.
-\S{}2.4 also records that their pipeline computes \texttt{g\_tra} and
+\S{}2.4 also records that their pipeline computes \texttt{g\_\allowbreak{}tra} and
 never compares it to anything, and that their \(\lambda\) = 1/(2C) with
 C \(\in\) {[}32, 1024{]} (line 393) substitutes a C-derived \(\lambda\)
 for the selection rule in {[}1{]}. \textbf{No claim in this paper
@@ -2636,14 +2636,14 @@ asserts an error in their conclusions.}
 Tabular Data.} arXiv:2604.18837. Deposit: DOI 10.5281/zenodo.19197916.
 
 The only foreign records this study's audit was run against, in week 6,
-through \texttt{scripts/foreign/kakavand\_adapter.py}. \S{}5.6 reports
+through \texttt{scripts/\allowbreak{}foreign/\allowbreak{}kakavand\_\allowbreak{}adapter.py}. \S{}5.6 reports
 what that run produced --- one measurement and eight refusals --- and
 states that \textbf{it found no defect in their work and was not looking
 for one.} \S{}5.6 also records that an earlier paragraph of this
 project's asserted things about this deposit from the manuscript alone,
 of which six of seven claims were wrong or misleading once the deposit
 was read. Their statistical treatment is described in
-\texttt{docs/audit-protocol.md} as more careful than this project's own
+\texttt{docs/\allowbreak{}audit-protocol.md} as more careful than this project's own
 registered design at the equivalent stage.
 
 \textbf{{[}4{]} Tekeli (2026).} arXiv:2608.29422, 29 August 2026.
@@ -2651,8 +2651,8 @@ registered design at the equivalent stage.
 repository}, so none is given here.
 
 Derives in closed form a property of the ZZ feature map that this
-project checked numerically in \texttt{scripts/tekeli\_check.py}; the
-check and its boundary are reported in \texttt{docs/week-06-report.md}.
+project checked numerically in \texttt{scripts/\allowbreak{}tekeli\_\allowbreak{}check.py}; the
+check and its boundary are reported in \texttt{docs/\allowbreak{}week-06-report.md}.
 Used as a cross-check on this study's own kernels, not as a source for
 any claim about the geometric difference.
 
@@ -2678,7 +2678,7 @@ recorded in the weeks 10 to 12 record.
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \textbf{Datasets.} Sources, licences and checksums are in
-\texttt{data/README.md}. The customer-churn dataset carries a
+\texttt{data/\allowbreak{}README.md}. The customer-churn dataset carries a
 \texttt{copyright-authors} licence and \textbf{is not redistributed by
 this repository}; the credit-card fraud dataset likewise is referenced
 rather than republished. Neither appears in version control.
